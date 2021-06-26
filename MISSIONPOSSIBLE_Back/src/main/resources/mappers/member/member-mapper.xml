@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.missionpossibleback.mvc.member.model.mapper.MemberMapper">
+
+ 	<sql id="selectMemberSql">
+ 		SELECT  ID,
+ 				GRADE_NAME,
+ 				MEMBER_NO, 
+			    PASSWORD, 
+			    NICKNAME, 
+			    EMAIL,  
+			    POINT,
+			    STATUS
+		FROM MEMBER
+ 	</sql>
+
+ 	<resultMap type="Member" id="memberResultMap">
+ 		<id property="memberNo" column="MEMBER_NO"/>
+ 		<result property="id" column="ID" />
+ 		<result property="password" column="PASSWORD"/>
+ 		<result property="gradeName" column="GRADE_NAME"/>
+ 		<result property="nickname" column="NICKNAME"/>
+ 		<result property="email" column="EMAIL"/>
+ 		<result property="point" column="POINT"/>
+ 		<result property="status" column="STATUS"/>
+ 	</resultMap>
+ 	
+ 	
+ 	<select id="selectMember" parameterType="string" resultMap="memberResultMap">
+ 		<include refid="selectMemberSql" />
+		WHERE ID = #{id} AND STATUS ='Y'
+ 	</select>
+ 	
+ </mapper>
