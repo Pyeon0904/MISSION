@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- 제이쿼리 import -->
-<script src="${path}/js/jquery-3.6.0.min.js"></script>
+<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
 		/* 전체 영역--------------------------------------------------------------------------*/
@@ -122,9 +122,12 @@
 	<div id="box">
 		<section id="section">
 			<div id="conbox">
+
+															
 		
 				<div id="subHeaderContainer">
 					<h2>진행중인 챌린지 목록</h2>
+					<!-- 챌린지 검색 바... 이거도 구현해야함...ㅠ.ㅠ -->
 					<div class="searchArea">
 						<form action="#" method="GET" class="" id="challengeSearchForm">
 							<input type="hidden" name="" value="" />
@@ -154,7 +157,8 @@
 					<div id="challengeDisplay">
 						<div class="categoryArea">
 							<h3>진행중인 챌린지</h3>
-							<p>총 00개</p>
+							<!-- 조회된 챌린지의 개수 -->
+							<p>총 <c:out value="${ pageInfo.listCount }"/>개</p>
 						</div>
 						<hr>
 						<div class="challengeList">
@@ -163,51 +167,85 @@
 							<!-- 상품 리스트 내역 -->
 								<div class="challengeListDisplay">
 									<ul>
-									<%-- if(list.isEmpty()) { --%>
-									<!-- <li style="width:25%;">
+									<c:if test="${ list == null }">
+										<li style="width:25%;">
 											<div class="itemCont">
 												<div class="itemPhotoBox">
-													<img src="<%--request.getContextPath() --%>/resources/images/logo-orange.png" alt="desc" width="200px">
+													<img src="${path}/resources/images/file.png" alt="desc" width="200px">
 												</div>
 												<div class="itemInfoCont">
 													<p>
-														<span class="itemTitle">상품이 등록되지 않았습니다.</span><br>
+														<span class="itemTitle">등록된 챌린지를 찾을 수 없습니다.</span><br>
 														<span class="itemSubCont">NONE!</span>
 													</p>
 												</div>
 											</div>
 										</li>
-									-->	
-									<%--} else { 
-											for(Product product : list) {
-									--%>
-									<% 
-									for(int i = 0; i < 12; i++) {
-										%>	
-										<li style="width:25%;">
-											<div class="itemCont">
-												<div class="itemPhotoBox">
-													<img src="${path}/resources/upload/challenge/<%-- product.getRenamedFileName() --%>challenge_test01.jpg" alt="챌린지 썸네일" width="180px">
-													<div class="itemShowMenu" onclick="location.href='${ path }/challenge/ongoing'">
-														<span class="details">상세보기</span>
+									</c:if>
+									<c:if test="${ list != null }">
+										<c:forEach var="challenge" items="${ list }">
+											<li style="width:25%;">
+												<div class="itemCont">
+													<div class="itemPhotoBox">
+														<c:if test="${ challenge.thumbnailFile == null }">
+															<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
+														</c:if>
+														<c:if test="${ challenge.thumbnailFile != null }">
+															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
+																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
+														</c:if>
+														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/ongoing?no=${ challenge.challengeNo }'">
+															<span class="details">상세보기</span>
+														</div>
+													</div>
+													<div class="itemInfoCont">
+														<p>
+															<span class="itemTitle">
+																<c:out value="${ challenge.title }"/>
+															</span>
+															<br>
+															<span class="itemSubCont">챌린지 종료까지</span>
+															<br>
+															<!-- 
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현 
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+															-->
+															
+															<!-- 챌린지 모집기간 마감 D-Day 구하기 위해 오늘 날짜 구하기 시작 -->
+															<c:set var="today" value="<%= new java.util.Date()%>"/>
+															<fmt:formatDate var="todayDate" value="${ today }" pattern="yyyyMMdd"/>
+															<!-- 챌린지 모집기간 마감 D-Day 구하기 위해 오늘 날짜 구하기 끝 -->
+															
+															<!-- D-Day 구하기 시작(Date객체를 숫자로 형변환) -->
+															<!-- 챌린지 시작일을 날짜로 형변환 -->
+															<fmt:formatDate var="startstartDate" value="${ challenge.startDate }" pattern="yyyyMMdd"/>
+															<!-- 챌린지 수료일을 날짜로 형변환 -->
+															<fmt:formatDate var="endDate" value="${ challenge.deadline }" pattern="yyyyMMdd"/>
+															<!-- 
+																오늘 날짜 및 데이터베이스에 저장된 날짜를 숫자로 형변환 
+															-->
+															<fmt:parseDate value="${ todayDate }" var="tDate" pattern = "yyyyMMdd"/>
+															<fmt:parseDate value="${ startstartDate }" var="sDate" pattern = "yyyyMMdd"/>
+															<fmt:parseDate value="${ endDate }" var="eDate" pattern = "yyyyMMdd"/>
+															<fmt:parseNumber value="${tDate.time / (1000*60*60*24)}" integerOnly="true" var="todayNum" scope="request" />
+															<fmt:parseNumber value="${sDate.time / (1000*60*60*24)}" integerOnly="true" var="startNum" scope="request" />
+															<fmt:parseNumber value="${eDate.time / (1000*60*60*24)}" integerOnly="true" var="endNum" scope="request" />
+															
+															<!-- 
+																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
+															-->
+															<span class="itemProgressStatus">
+																D-<c:out value="${ endNum - todayNum }"></c:out>
+															</span>
+														</p>
 													</div>
 												</div>
-												<div class="itemInfoCont">
-													<p>
-														<span class="itemTitle"><%-- product.getProductName() --%>[단체]독서 챌린지</span><br>
-														<span class="itemSubCont"><%-- product.getPrice() --%>챌린지 종료까지</span><br>
-														<span class="itemProgressStatus"><%-- product.getPrice() --%>D-2</span>
-													</p>
-												</div>
-											</div>
-										</li>
-									<%--
-											}
-										}
-									--%>
-									<% 
-									}
-									%>
+											</li>
+										</c:forEach>
+									</c:if>
 									<script>
 										$(document).ready(()=>{
 											$("div.itemShowMenu").hide();
@@ -248,22 +286,27 @@
 							-->
 							
 							<!-- 이전 페이지로 -->
-							<div class="pageArrow" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=페이지인포.getPrvePage()' --%>">
+							<div class="pageArrow" onclick="location.href='${ path }/challenge/ongoingList?page=${ pageInfo.prvePage }'">
 								 <i class="fa fa-caret-left" aria-hidden="true"></i>
 							</div>			
 							<!--  10개 페이지 목록 -->
-							<% for (int p = 1; p <= 3; p++) { %>
-							<%-- if(p == pageInfo.getCurrentPage()) { 
-							<button disabled><%= p %></button>--%>
-							<%-- } else { --%>
-								<div class="pageCount" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=<%= p %>'--%>"></div>
-							<%-- } --%>
-							<% } %>
-											
-							<!-- 다음 페이지로 -->
-							<div class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<페이지인포Info.getNextPage()%>'--%>">
-								<i class="fa fa-caret-right" aria-hidden="true"></i>
-							</div>			
+							<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
+					        	<c:if test="${ pageInfo.currentPage == status.current}">
+									<div class="pageCount" style="background-color:yellow;">
+					              		<c:out value="${ status.current }"/>
+					               	</div>
+					            </c:if>
+					            <c:if test="${ pageInfo.currentPage != status.current}">
+					               	<div class="pageCount" onclick="location.href='${ path }/challenge/ongoingList?page=${ status.current }'">
+					               		<c:out value="${ status.current }"/>
+					               	</div>
+					            </c:if>
+					        </c:forEach>
+					        <!-- 다음 페이지로 -->
+							<div class="pageArrow" onclick="location.href='${ path }/challenge/ongoingList?page=${ pageInfo.nextPage }'">
+								 <i class="fa fa-caret-right" aria-hidden="true"></i>
+							</div>
+									
 							<!-- 맨 끝으로 
 							<button class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<%= pageInfo.getMaxPage() %>'--%>"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>'
 							-->

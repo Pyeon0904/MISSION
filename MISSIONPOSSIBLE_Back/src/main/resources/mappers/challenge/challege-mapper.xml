@@ -57,12 +57,84 @@
 		<result property="minusPoint" column="MINUS_POINT"/>
 	</resultMap>
 
-	
-	<select id="selectChallenge" resultMap="challengeResultMap">
+	<!-- 챌린지 전체 조회 -->
+	<select id="selectChallengeList" resultMap="challengeResultMap">
 		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS='Y'
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
 	
+	<!-- 모집중인 챌린지 조회 -->
+	<select id="selectRecruitList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE
+		<![CDATA[ 
+			((CLG.START_DATE > SYSDATE ) AND (CLG.DEADLINE > SYSDATE) AND (CLG.STATUS = 'Y'))
+		]]>
+			
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 진행중인 챌린지 조회 -->
+	<select id="selectOngoingList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE 
+		<![CDATA[ 
+			((CLG.START_DATE < SYSDATE ) AND (CLG.DEADLINE > SYSDATE) AND (CLG.STATUS = 'Y'))
+		]]>
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 종료된 챌린지 조회 -->
+	<select id="selectEndList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE 
+		<![CDATA[ 
+			((CLG.START_DATE < SYSDATE ) AND (CLG.DEADLINE < SYSDATE) AND (CLG.STATUS = 'Y'))
+		]]>
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 전체 챌린지 수 확인 -->
+	<select id="selectChallengeCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<!-- 모집중인 챌린지 수 확인 -->
+	<select id="selectRecruitCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE 
+		<![CDATA[
+			((START_DATE > SYSDATE ) AND (DEADLINE > SYSDATE) AND (STATUS = 'Y'))
+		]]>
+		
+	</select>
+	
+	<!-- 진행중인 챌린지 수 확인 -->
+	<select id="selectOngoingCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE
+		<![CDATA[
+			((START_DATE < SYSDATE ) AND (DEADLINE > SYSDATE) AND (STATUS = 'Y'))
+		]]>
+		
+	</select>
+	
+	<!-- 종료된 챌린지 수 확인 -->
+	<select id="selectEndCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE 
+		<![CDATA[
+			((START_DATE < SYSDATE ) AND (DEADLINE < SYSDATE) AND (STATUS = 'Y'))
+		]]>
+	</select>
+	
+	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
 		INSERT INTO CHALLENGE (
 			CHALLENGE_NO,

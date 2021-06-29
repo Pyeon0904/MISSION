@@ -1,5 +1,7 @@
 package com.missionpossibleback.mvc.challenge.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +29,13 @@ public class challengeController {
 	@Autowired
 	private ChallengeService service; 
 	
+	//첼린지 등록 GET
 	@GetMapping("/challenge/challengeRegister")
 	public void challengeRegisterView() {
 		log.info("챌린지 등록페이지 요청");
 	}
 	
+	//챌린지 등록 POST
 	@PostMapping("/challenge/challengeRegister")
 	public ModelAndView challengeRegister(ModelAndView model, HttpServletRequest request,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
@@ -112,11 +117,13 @@ public class challengeController {
 		return "challenge/signPopup";
 	}
 	
+	//참여중인 챌린지 VIEW GET
 	@GetMapping("/challenge/participate")
 	public void participateView() {
 		log.info("참여중인 챌린지뷰 요청");
 	}
 	
+	//참여중인 챌린지 VIEW POST
 	@PostMapping("/challenge/participate")
 	public ModelAndView participate(@SessionAttribute("loginMember") Member loginMember, ModelAndView model) {
 		
@@ -135,14 +142,26 @@ public class challengeController {
 		
 	}
 	
+	//종료된 챌린지 LIST
 	@GetMapping("/challenge/endList")
-	public String endListView() {
-		log.info("종료된 챌린지 목록 요청");
-	
-	
-		return "challenge/endList";
+	public ModelAndView endList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page) {
+		
+		int listCount = service.getEndCount();
+		
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		
+		list = service.getEndList(pageInfo);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/endList");
+		
+		return model;
 	}
 	
+	//모집중인 챌린지 VIEW
 	@GetMapping("/challenge/recruit")
 	public String recruitView() {
 		
@@ -151,22 +170,45 @@ public class challengeController {
 		return "challenge/recruit";
 	}
 	
+	//모집중인 챌린지 LIST
 	@GetMapping("/challenge/recruitList")
-	public String recruitListView() {
+	public ModelAndView recruitList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page) {
 		
-		log.info("모집중인 챌린지 리스트뷰 요청");
+		int listCount = service.getRecruitCount();
 		
-		return "challenge/recruitList";
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		
+		list = service.getRecruitList(pageInfo);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/recruitList");
+		
+		return model;
 	}
 	
+	//진행중인 챌린지 LIST
 	@GetMapping("/challenge/ongoingList")
-	public String ongoingListView() {
+	public ModelAndView ongoingList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page) {
 		
-		log.info("진행중인 챌린지 리스트뷰 요청");
+		int listCount = service.getOngoingCount();
 		
-		return "challenge/ongoingList";
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		
+		list = service.getOngoingList(pageInfo);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/ongoingList");
+		
+		return model;
 	}
 	
+	//진행중인 챌린지 VIEW
 	@GetMapping("/challenge/ongoing")
 	public String ongoingView() {
 		
@@ -175,6 +217,7 @@ public class challengeController {
 		return "challenge/ongoing";
 	}
 	
+	//찜한 챌린지 LIST
 	@GetMapping("/challenge/zzimList")
 	public String zzimListView() {
 		
@@ -183,6 +226,7 @@ public class challengeController {
 		return "challenge/zzimList";
 	}
 	
+	//챌린지 인증 LIST VIEW
 	@GetMapping("/challenge/certList")
 	public String certListView() {
 		
@@ -191,6 +235,7 @@ public class challengeController {
 		return "challenge/certList";
 	}
 	
+	//종료된 챌린지 VIEW
 	@GetMapping("/challenge/end")
 	public String endView() {
 		
@@ -200,6 +245,7 @@ public class challengeController {
 		return "challenge/recruit";
 	}
 	
+	//챌린지 포기 신청 VIEW 
 	@GetMapping("/challenge/giveup")
 	public String giveup() {
 		
