@@ -163,11 +163,16 @@ public class challengeController {
 	
 	//모집중인 챌린지 VIEW
 	@GetMapping("/challenge/recruit")
-	public String recruitView() {
+	public ModelAndView recruitView(ModelAndView model, @RequestParam("no") int challengeNo) {
 		
 		log.info("모집중인 챌린지 View 요청");
 		
-		return "challenge/recruit";
+		Challenge challenge = service.findByNo(challengeNo);
+		
+		model.addObject("challenge", challenge);
+		model.setViewName("challenge/recruit");
+		
+		return model;
 	}
 	
 	//모집중인 챌린지 LIST

@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- 제이쿼리 import -->
-	<script src="${path}/js/jquery-3.6.0.min.js"></script>
+	<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 	<style>
 	
@@ -122,8 +122,48 @@
 			<div id="challengeContTable">
 				<table id="detailContInfo">
 					<tr>
+						<!-- 챌린지 제목 단 -->
 						<td colspan="2">
-							<span style="font-size:1.2em;">[d-day][참여가능여부][카테고리이름][챌린지제목]</span>
+							<!-- 챌린지 모집기간 마감 D-Day 구하기 위해 오늘 날짜 구하기 시작 -->
+							<c:set var="today" value="<%= new java.util.Date()%>"/>
+							<fmt:formatDate var="todayDate" value="${ today }" pattern="yyyyMMdd"/>
+							<!-- 챌린지 모집기간 마감 D-Day 구하기 위해 오늘 날짜 구하기 끝 -->
+														
+							<!-- D-Day 구하기 시작(Date객체를 숫자로 형변환) -->
+							<!-- 챌린지 시작일을 날짜로 형변환 -->
+							<fmt:formatDate var="startstartDate" value="${ challenge.startDate }" pattern="yyyyMMdd"/>
+							<!-- 챌린지 수료일을 날짜로 형변환 -->
+							<fmt:formatDate var="endDate" value="${ challenge.deadline }" pattern="yyyyMMdd"/>
+							<!-- 
+								오늘 날짜 및 데이터베이스에 저장된 날짜를 숫자로 형변환 
+							-->
+							<fmt:parseDate value="${ todayDate }" var="tDate" pattern = "yyyyMMdd"/>
+							<fmt:parseDate value="${ startstartDate }" var="sDate" pattern = "yyyyMMdd"/>
+							<fmt:parseDate value="${ endDate }" var="eDate" pattern = "yyyyMMdd"/>
+							<fmt:parseNumber value="${tDate.time / (1000*60*60*24)}" integerOnly="true" var="todayNum" scope="request" />
+							<fmt:parseNumber value="${sDate.time / (1000*60*60*24)}" integerOnly="true" var="startNum" scope="request" />
+							<fmt:parseNumber value="${eDate.time / (1000*60*60*24)}" integerOnly="true" var="endNum" scope="request" />															
+																						
+							<!-- 
+								챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
+							-->
+							<span style="font-size:1.2em;">
+								D-<c:out value="${ startNum - todayNum }"></c:out>&nbsp;
+							</span>
+							
+							<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
+								<span style="font-size:1.2em;">[단체]</span>
+							</c:if>
+							<c:if test="${ challenge.attendStatus == 'PRIVATE' }">
+								<span style="font-size:1.2em;">[개인]</span>
+							</c:if>
+							
+							<span style="font-size:1.2em;">
+								[<c:out value="${ challenge.categoryName }"/>]
+							</span>
+							<span style="font-size:1.2em;">
+								&nbsp;<c:out value="${ challenge.title }"/>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -131,7 +171,10 @@
 							<span>등록일</span>
 						</td>
 						<td>
-							<span>[yyyy-MM-dd]</span>
+							<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy-MM-dd"/>
+							<span>
+								<c:out value="${ regDate }"/>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -139,7 +182,10 @@
 							<span>모집기간</span>
 						</td>
 						<td>
-							<span>[yyyy-MM-dd]까지</span>
+							<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy-MM-dd"/>
+							<span>
+								<c:out value="${ recruitEnd }"/>까지
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -147,7 +193,10 @@
 							<span>진행기간</span>
 						</td>
 						<td>
-							<span>[yyyy-MM-dd]까지</span>
+							<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
+							<span>
+								<c:out value="${ clgEnd }"/>까지
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -155,7 +204,15 @@
 							<span>모집 인원</span>
 						</td>
 						<td>
-							<span>[maxCount]명</span>
+							<span>
+								<c:if test="${ challenge.maxCount != 9999 }">
+									<c:out value="${ challenge.maxCount }"/>명
+								</c:if>
+								<c:if test="${ challenge.maxCount == 9999 }">
+									제한 없음
+								</c:if>
+								
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -171,7 +228,9 @@
 							<span>참여시 차감 포인트</span>
 						</td>
 						<td>
-							<span>1000P</span>
+							<span>
+								<c:out value="${ challenge.minusPoint }"/>P
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -179,27 +238,17 @@
 							<span>오픈 카톡 링크</span>
 						</td>
 						<td>
-							<span>[링크url]ex.https://open.kakao.com/o/gWfD3Ugd</span>
+							<span>
+								<c:out value="${ challenge.opentalkLink }"/>
+							</span>
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<span>참고파일</span>
-						</td>
-						<td>
-							<span>[업로드된파일LIST]</span>
-						</td>
-					</tr>
-					<tr>
+						<!-- 챌린지 상세 설명(Content) -->
 						<td colspan="2">
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
+							<p>
+								<c:out value="${ challenge.content }"/><br>
+							</p>
 						</td>
 					</tr>
 				</table>

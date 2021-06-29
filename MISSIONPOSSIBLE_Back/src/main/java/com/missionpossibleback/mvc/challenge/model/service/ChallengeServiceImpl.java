@@ -159,4 +159,11 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectZzimCount(id);
 	}
 	
+	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)
+	@Override
+	public Challenge findByNo(int challengeNo) {
+		
+		return mapper.selectChallengeByNo(challengeNo);
+	}	
+	
 }

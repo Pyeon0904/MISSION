@@ -64,6 +64,12 @@
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
 	
+	<!-- 챌린지NO로 챌린지 찾기 -->
+	<select id="selectChallengeByNo" parameterType="_int" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS = 'Y' AND CLG.CHALLENGE_NO = #{challengeNo}
+	</select>
+	
 	<!-- 모집중인 챌린지 조회 -->
 	<select id="selectRecruitList" resultMap="challengeResultMap">
 		<include refid="selectChallengeSql"/>

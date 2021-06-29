@@ -33,4 +33,6 @@ public interface ChallengeService {
 	
 	List<Challenge> getZzimList(PageInfo pageInfo, String id);
 	
+	Challenge findByNo(int challengeNo);	
+	
 }
