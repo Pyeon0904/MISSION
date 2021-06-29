@@ -21,6 +21,8 @@ public interface ChallengeService {
 
 	int getEndCount();
 	
+	int getZzimCount(String id);	
+	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	
 	List<Challenge> getRecruitList(PageInfo pageInfo);
@@ -28,5 +30,7 @@ public interface ChallengeService {
 	List<Challenge> getOngoingList(PageInfo pageInfo);
 	
 	List<Challenge> getEndList(PageInfo pageInfo);
+	
+	List<Challenge> getZzimList(PageInfo pageInfo, String id);
 	
 }

@@ -112,6 +112,16 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectEndList(rowBounds);
 	}
 	
+	// 찜한 챌린지 조회
+	@Override
+	public List<Challenge> getZzimList(PageInfo pageInfo, String id) {
+		
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectZzimList(rowBounds, id);
+	}	
+	
 	// 챌린지 전체 개수 출력
 	@Override
 	public int getChallengeCount() {
@@ -139,6 +149,14 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		return mapper.selectEndCount();
 	}
-
+	
+	//찜한 챌린지 개수 출력
+	@Override
+	public int getZzimCount(String id) {
+		
+		log.info("getZzimCount 요청한 ID : " + id);
+		
+		return mapper.selectZzimCount(id);
+	}
 	
 }

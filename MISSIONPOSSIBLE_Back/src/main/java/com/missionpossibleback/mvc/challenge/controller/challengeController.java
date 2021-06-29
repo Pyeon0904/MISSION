@@ -219,11 +219,29 @@ public class challengeController {
 	
 	//찜한 챌린지 LIST
 	@GetMapping("/challenge/zzimList")
-	public String zzimListView() {
+	public ModelAndView zzimListView(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 		
-		log.info("찜한 챌린지 리스트뷰 요청");
 		
-		return "challenge/zzimList";
+		String id = loginMember.getId();
+		
+		log.info("로그인한 ID : " + id);
+		
+		int listCount = service.getZzimCount(id);
+		
+		log.info("찜한 챌린지 수 : " + listCount);
+		
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		
+		list = service.getZzimList(pageInfo, id);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/zzimList");
+		
+		return model;
 	}
 	
 	//챌린지 인증 LIST VIEW

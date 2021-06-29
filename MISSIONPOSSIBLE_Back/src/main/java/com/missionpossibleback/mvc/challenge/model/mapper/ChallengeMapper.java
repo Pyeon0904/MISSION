@@ -16,7 +16,9 @@ public interface ChallengeMapper {
 
 	int selectOngoingCount();
 
-	int selectEndCount();	
+	int selectEndCount();
+	
+	int selectZzimCount(String id);
 	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
@@ -25,6 +27,8 @@ public interface ChallengeMapper {
 	List<Challenge> selectOngoingList(RowBounds rowBounds);
 	
 	List<Challenge> selectEndList(RowBounds rowBounds);
+	
+	List<Challenge> selectZzimList(RowBounds rowBounds, String id);
 	
 	int insertChallenge(Challenge challenge);
 
