@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- 제이쿼리 import -->
-	<script src="${path}/js/jquery-3.6.0.min.js"></script>
+	<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 	<style>
 
@@ -129,7 +129,23 @@
 							<table id="detailContInfo">
 								<tr>
 									<td colspan="2">
-										<span style="font-size:1.2em;">[카테고리이름][챌린지제목]</span>
+										<!-- [개인] / [단체] 상태 출력 -->
+										<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
+											<span style="font-size:1.2em;">[단체]</span>
+										</c:if>
+										<c:if test="${ challenge.attendStatus == 'PRIVATE' }">
+											<span style="font-size:1.2em;">[개인]</span>
+										</c:if>
+										
+										<!-- 카테고리 이름 출력 부분-->
+										<span style="font-size:1.2em;">
+											[<c:out value="${ challenge.categoryName }"/>]
+										</span>
+										
+										<!-- 챌린지 제목 출력 부분 -->
+										<span style="font-size:1.2em;">
+											<c:out value="${ challenge.title }"/>
+										</span>
 									</td>
 								</tr>
 								<tr>
@@ -137,8 +153,22 @@
 										<span>진행 기간</span>
 									</td>
 									<td>
-										<span>[챌린지 마감 d-day]ex.D-60</span>
-										<span>[yyyy-MM-dd]까지</span>
+									
+									<!-- D-Day 로직 구현한 파일 include -->
+									<%@ include file="date.jsp" %>	
+										<!-- 챌린지 수료까지의 D-Day -->
+										<span>
+											D-<c:out value="${ endNum - todayNum }"/>
+										</span>
+										<!-- 챌린지 시작일 및 수료일 => Date 포맷으로 변경 -->
+										<fmt:formatDate var="clgStart" value="${ challenge.startDate }" pattern="yyyy년 MM월 dd일"/>
+										<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy년 MM월 dd일"/>
+										<span>
+											<c:out value="${ clgStart }"/>
+											부터&nbsp;
+											<c:out value="${ clgEnd }"/>
+											까지
+										</span>
 									</td>
 								</tr>
 								<tr>
@@ -146,7 +176,9 @@
 										<span>참여 인원</span>
 									</td>
 									<td>
-										<span>[챌린지 참여한 총 인원 수]명</span>
+										<span>
+											<c:out value="${ challenge.currentCount }"/>명
+										</span>
 									</td>
 								</tr>
 								<tr>
@@ -154,19 +186,14 @@
 										<span>오픈 카톡 링크</span>
 									</td>
 									<td>
-										<span>[링크url]ex.https://open.kakao.com/o/gWfD3Ugd</span>
+										<span>
+											<c:out value="${ challenge.opentalkLink }"/>
+										</span>
 									</td>
 								</tr>
 								<tr>
 									<td colspan="2">
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
-										[챌린지textEditor내용 출력]<br>
+										<c:out value="${ challenge.content }"/>
 									</td>
 								</tr>
 							</table>

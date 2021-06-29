@@ -215,11 +215,16 @@ public class challengeController {
 	
 	//진행중인 챌린지 VIEW
 	@GetMapping("/challenge/ongoing")
-	public String ongoingView() {
+	public ModelAndView ongoingView(ModelAndView model, @RequestParam("no") int challengeNo) {
 		
-		log.info("진행중인 챌린지 리스트뷰 요청");
+		log.info("진행중인 챌린지 View 요청");
 		
-		return "challenge/ongoing";
+		Challenge challenge = service.findByNo(challengeNo);
+		
+		model.addObject("challenge", challenge);
+		model.setViewName("challenge/ongoing");
+		
+		return model;
 	}
 	
 	//찜한 챌린지 LIST
