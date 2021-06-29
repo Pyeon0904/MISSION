@@ -9,6 +9,9 @@
 
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
+<!-- D-Day 로직 구현한 파일 include -->
+<%@ include file="date.jsp" %>		
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,6 +74,10 @@
 
 	
 			<div id="subHeaderContainer">
+			
+			<!-- 모집중인 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
+			<c:if test="${ (todayNum < startNum) and (todayNum < endNum) }">
+			
 				<h2>모집중인 챌린지 정보</h2>
 				<div class="funcArea">
 					<form action="#" method="GET" class="" id="challengeJoinForm">
@@ -117,22 +124,46 @@
 					</form>
 				</div>
 				
+			</c:if>
+			
+			<!-- 종료된 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
+			<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
+			
+				<h2>종료된 챌린지 정보</h2>
+				<div class="funcArea">
+					<form action="${ path }/challenge/endList" method="GET" class="" id="challengeListForm">
+						<input type="hidden" name="" value="" />
+						<input class="btn btnList" type="submit" value="목록으로"/>
+					</form>
+				</div>
+				
+			</c:if>
+			
 			</div>
 			
 			<div id="challengeContTable">
 				<table id="detailContInfo">
 					<tr>
 						<!-- 챌린지 제목 단 -->
-						<td colspan="2">
-							<!-- D-Day 로직 구현한 파일 include -->
-							<%@ include file="date.jsp" %>															
+						<td colspan="2">													
 																						
 							<!-- 
 								챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
 							-->
-							<span style="font-size:1.2em;">
-								D-<c:out value="${ startNum - todayNum }"></c:out>&nbsp;
-							</span>
+							
+							<!-- 모집중인 챌린지 조회 상태일 때의 D-Day 부분-->
+							<c:if test="${ (todayNum < startNum) and (todayNum < endNum) }">
+								<span style="font-size:1.2em;">
+									D-<c:out value="${ startNum - todayNum }"></c:out>&nbsp;
+								</span>
+							</c:if>
+							
+							<!-- 종료된 챌린지 조회 상태일 때의 D-Day 부분 -->
+							<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
+								<span style="font-size:1.2em;">
+									[챌린지종료]
+								</span>
+							</c:if>
 							
 							<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
 								<span style="font-size:1.2em;">[단체]</span>
@@ -141,9 +172,12 @@
 								<span style="font-size:1.2em;">[개인]</span>
 							</c:if>
 							
+							<!-- 카테고리 이름 출력 부분-->
 							<span style="font-size:1.2em;">
 								[<c:out value="${ challenge.categoryName }"/>]
 							</span>
+							
+							<!-- 챌린지 제목 출력 부분 -->
 							<span style="font-size:1.2em;">
 								&nbsp;<c:out value="${ challenge.title }"/>
 							</span>
@@ -154,7 +188,7 @@
 							<span>등록일</span>
 						</td>
 						<td>
-							<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy-MM-dd"/>
+							<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy년 MM월 dd일"/>
 							<span>
 								<c:out value="${ regDate }"/>
 							</span>
@@ -165,7 +199,7 @@
 							<span>모집기간</span>
 						</td>
 						<td>
-							<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy-MM-dd"/>
+							<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy년 MM월 dd일"/>
 							<span>
 								<c:out value="${ recruitEnd }"/>까지
 							</span>
@@ -176,7 +210,7 @@
 							<span>진행기간</span>
 						</td>
 						<td>
-							<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
+							<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy년 MM월 dd일"/>
 							<span>
 								<c:out value="${ clgEnd }"/>까지
 							</span>
@@ -231,6 +265,19 @@
 						<td colspan="2">
 							<p>
 								<c:out value="${ challenge.content }"/><br>
+								⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣴⣾⣿⣶⣶⣆⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀<br>
+								⢀⢀⢀⣀⢀⣤⢀⢀⡀⢀⣿⣿⣿⣿⣷⣿⣿⡇⢀⢀⢀⢀⣤⣀⢀⢀⢀⢀⢀<br>
+								⢀⢀ ⣶⢻⣧⣿⣿⠇ ⢸⣿⣿⣿⣷⣿⣿⣿⣷⢀⢀⢀⣾⡟⣿⡷⢀⢀⢀⢀<br>
+								⢀⢀⠈⠳⣿⣾⣿⣿⢀⠈⢿⣿⣿⣷⣿⣿⣿⣿⢀⢀⢀⣿⣿⣿⠇⢀⢀⢀⢀<br>
+								⢀⢀⢀⢀⢿⣿⣿⣿⣤⡶⠺⣿⣿⣿⣷⣿⣿⣿⢄⣤⣼⣿⣿⡏⢀⢀⢀⢀⢀<br>
+								⢀⢀⢀⢀⣼⣿⣿⣿⠟⢀⢀⠹⣿⣿⣿⣷⣿⣿⣎⠙⢿⣿⣿⣷⣤⣀⡀⢀⢀<br>
+								⢀⢀⢀ ⢸⣿⣿⣿⡿⢀⢀⣤⣿⣿⣿⣷⣿⣿⣿⣄⠈⢿⣿⣿⣷⣿⣿⣷⡀⢀<br>
+								⢀⢀⢀⣿⣿⣿⣿⣷⣀⣀⣠⣿⣿⣿⣿⣷⣿⣷⣿⣿⣷⣾⣿⣿⣿⣷⣿⣿⣿⣆<br>
+								⣿⣿⠛⠋⠉⠉⢻⣿⣿⣿⣿⡇⡀⠘⣿⣿⣿⣷⣿⣿⣿⠛⠻⢿⣿⣿⣿⣿⣷⣦<br>
+								⣿⣿⣧⡀⠿⠇⣰⣿⡟⠉⠉⢻⡆⠈⠟⠛⣿⣿⣿⣯⡉⢁⣀⣈⣉⣽⣿⣿⣿⣷<br>
+								⡿⠛⠛⠒⠚⠛⠉⢻⡇⠘⠃⢸⡇⢀⣤⣾⠋⢉⠻⠏⢹⠁⢤⡀⢉⡟⠉⡙⠏⣹<br>
+								⣿⣦⣶⣶⢀⣿⣿⣿⣷⣿⣿⣿⡇⢀⣀⣹⣶⣿⣷⠾⠿⠶⡀⠰⠾⢷⣾⣷⣶⣿<br>
+								⣿⣿⣿⣿⣇⣿⣿⣿⣷⣿⣿⣿⣇⣰⣿⣿⣷⣿⣿⣷⣤⣴⣶⣶⣦⣼⣿⣿⣿⣷<br>
 							</p>
 						</td>
 					</tr>
