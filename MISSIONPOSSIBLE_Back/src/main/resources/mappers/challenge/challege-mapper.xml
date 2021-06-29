@@ -33,6 +33,7 @@
 		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
 	</sql>
 	
+	<!-- 챌린지 객체 매핑 -->
 	<resultMap id="challengeResultMap" type="Challenge">
 		<id property="challengeNo" column="CHALLENGE_NO" /><!-- PK -->
 		<result property="id" column="ID" />
@@ -55,6 +56,14 @@
 		<result property="startDate" column="START_DATE"/>
 		<result property="opentalkLink" column="OPENTALK_LINK"/>
 		<result property="minusPoint" column="MINUS_POINT"/>
+	</resultMap>
+	
+	<!-- MyChallengeList 객체 매핑 -->
+	<resultMap id="myChallengeListResultMap" type="MyChallengeList" >
+		<id property="no" column="NO"/>
+		<result property="id" column="ID"/>
+		<result property="myChallengeNo" column="MY_CHALLENGE_NO"/>
+		<result property="myStatus" column="MY_STATUS"/>
 	</resultMap>
 
 	<!-- 챌린지 전체 조회 -->
@@ -226,5 +235,19 @@
 		)
 	</insert>
 
+	<!-- 찜/참여중 상태 등록 MyChallengeList.. -->
+	<insert id="insertMyChallengeList" parameterType="map" useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+		INSERT INTO MY_CHALLENGE_LIST (
+			NO,
+			ID,
+			MY_CHALLENGE_NO,
+			MY_STATUS
+		) VALUES (
+			SEQ_MYCHALLENGELIST_NO.NEXTVAL,
+			#{id},
+			#{myChallengeNo},
+			#{myStatus}
+		)
+	</insert>
 
 </mapper>

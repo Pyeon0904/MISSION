@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.missionpossibleback.mvc.challenge.model.mapper.ChallengeMapper;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,21 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		return result;
 	}
+	
+	// 찜하기 / 참여중 상태를 MY_CHALLENGE_LIST에 저장하는 로직
+	@Override
+	@Transactional //선언적 트랜잭션 - RuntimeException에 대해서만 롤백처리가 가능하게끔 해주는 어노테이션 / 인터페이스를 사용하는 클래스에서만 활용가능
+	public int saveMyChallengeList(MyChallengeList myChallengeList) {
+		int result = 0;
+		
+		if(myChallengeList.getNo() != 0) {
+//			result = mapper.updateMyChallengeList(myChallengeList);
+		} else {
+			result = mapper.insertMyChallengeList(myChallengeList);
+		}
+		
+		return result;
+	}	
 	
 	// 파일 저장하는 로직
 	@Override

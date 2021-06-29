@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 
 @Mapper
 public interface ChallengeMapper {
@@ -34,7 +35,7 @@ public interface ChallengeMapper {
 	Challenge selectChallengeByNo(@Param("challengeNo") int challengeNo);	
 	
 	int insertChallenge(Challenge challenge);
-
-
+	
+	int insertMyChallengeList(MyChallengeList myChallengeList);
 	
 }

@@ -98,22 +98,21 @@
 						});
 					});
 					</script>
-					<form action="${ path }/challenge/zzimList" method="GET" class="" id="challengeZzimForm">
-						<input type="hidden" name="" value="" />
+					
+					<!-- 찜하기 버튼 클릭시 addMyChallengeList.do로 찜하기 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
+					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeZzimForm">
+						<input type="hidden" name="myStatus" value="ZZIM" />
+						<input type="hidden" name="myChallengeNo" value="${ challenge.challengeNo }"/>
 						<input class="btn btnZzim" type="submit" value="찜하기"/>
 					</form>
 					<script>
-					var path = "<c:out value='${path}'/>";
 
 					$(document).ready(()=>{	
 						$("#challengeZzimForm").on("click",function(event){
 							if(confirm("해당 챌린지를 찜하시겠습니까?")){
-								alert("찜하기를 완료했습니다.");
-								location.replace(path + "/challenge/zzimList");
 							}
 							else{
 								alert("취소되었습니다.");
-								location.replace('/');
 							}
 						});
 					});
@@ -188,7 +187,7 @@
 							<span>등록일</span>
 						</td>
 						<td>
-							<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy년 MM월 dd일"/>
+							<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy-MM-dd"/>
 							<span>
 								<c:out value="${ regDate }"/>
 							</span>
@@ -199,7 +198,7 @@
 							<span>모집기간</span>
 						</td>
 						<td>
-							<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy년 MM월 dd일"/>
+							<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy-MM-dd"/>
 							<span>
 								<c:out value="${ recruitEnd }"/>까지
 							</span>
@@ -210,7 +209,7 @@
 							<span>진행기간</span>
 						</td>
 						<td>
-							<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy년 MM월 dd일"/>
+							<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
 							<span>
 								<c:out value="${ clgEnd }"/>까지
 							</span>
