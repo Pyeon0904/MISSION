@@ -103,16 +103,17 @@
 					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeZzimForm">
 						<input type="hidden" name="myStatus" value="ZZIM" />
 						<input type="hidden" name="myChallengeNo" value="${ challenge.challengeNo }"/>
-						<input class="btn btnZzim" type="submit" value="찜하기"/>
+						<input class="btn btnZzim" type="button" value="찜하기"/>
 					</form>
 					<script>
 
 					$(document).ready(()=>{	
 						$("#challengeZzimForm").on("click",function(event){
 							if(confirm("해당 챌린지를 찜하시겠습니까?")){
+								$("#challengeZzimForm").submit();
 							}
 							else{
-								alert("취소되었습니다.");
+								alert("요청이 취소되었습니다.");
 							}
 						});
 					});
