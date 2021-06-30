@@ -22,6 +22,8 @@ public interface ChallengeMapper {
 	
 	int selectZzimCount(String id);
 	
+	int selelctJoinListCount(@Param("no") int no, @Param("id") String id);
+	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
 	List<Challenge> selectRecruitList(RowBounds rowBounds);

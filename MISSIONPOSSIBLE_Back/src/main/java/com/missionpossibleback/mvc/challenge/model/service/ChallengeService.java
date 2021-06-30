@@ -26,6 +26,8 @@ public interface ChallengeService {
 	
 	int getZzimCount(String id);	
 	
+	int getJoinListCount(int no, String id);
+	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	
 	List<Challenge> getRecruitList(PageInfo pageInfo);

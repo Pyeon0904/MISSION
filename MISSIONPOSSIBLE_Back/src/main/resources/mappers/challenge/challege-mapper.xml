@@ -188,6 +188,23 @@
 		WHERE ((ID = #{id}) AND (MY_STATUS = 'ZZIM'))
 	</select>	
 	
+	<!-- 
+		로그인한 유저가 누른 챌린지가 참여중인 챌린지인지 아닌지 판단하는 로직 
+			- 참여하고 있으면 1 리턴 : 참여중인 챌린지 View
+			- 참여하지 않으면 0 리턴 : 진행중인 챌린지 View
+	-->
+	<select id="selelctJoinListCount" parameterType="map" resultType="_int">
+		SELECT COUNT(*) 
+    	FROM 
+    		MY_CHALLENGE_LIST MCL 
+    	JOIN 
+    		MEMBER M ON(M.ID = MCL.ID)
+    	WHERE
+        	(MCL.MY_STATUS = 'JOIN') AND 
+        	(MCL.MY_CHALLENGE_NO = #{no}) AND
+        	(MCL.ID = #{id})
+	</select>
+	
 	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
 		INSERT INTO CHALLENGE (

@@ -120,12 +120,6 @@ public class challengeController {
 	
 	//참여중인 챌린지 VIEW GET
 	@GetMapping("/challenge/participate")
-	public void participateView() {
-		log.info("참여중인 챌린지뷰 요청");
-	}
-	
-	//참여중인 챌린지 VIEW POST
-	@PostMapping("/challenge/participate")
 	public ModelAndView participate(@SessionAttribute("loginMember") Member loginMember, ModelAndView model) {
 		
 		log.info("참여중인 챌린지뷰 요청");
@@ -136,7 +130,7 @@ public class challengeController {
 			return model;
 		} else {
 			model.addObject("msg", "로그인이 필요한 서비스입니다. 로그인 후 다시 시도하여 주십시오.");
-			model.addObject("location", "/");
+			model.addObject("location", "/member/login");
 			model.setViewName("common/msg");
 			return model;
 		}
@@ -227,6 +221,29 @@ public class challengeController {
 		
 		return model;
 	}
+	
+	//진행중인 챌린지 & 참여중인 챌린지 로직
+	@GetMapping("/challenge/setViewIO.do")
+	public ModelAndView setViewIO(ModelAndView model, @RequestParam("no") int no,
+			@SessionAttribute(name="loginMember", required = false) Member loginMember) {
+		
+		int result = service.getJoinListCount(no, loginMember.getId());
+		
+		log.info("setViewIO.do result값 : " + result);
+		
+		if(result != 0) {
+			//참여하고 있는 챌린지인 경우
+			model.addObject("msg", "상세 페이지로 이동합니다.");
+			model.addObject("location","/challenge/participate?no="+no);
+		} else {
+			//참여하고 있지 않은 챌린지인 경우 - 진행중인 챌린지
+			model.addObject("msg", "상세 페이지로 이동합니다.");
+			model.addObject("location","/challenge/ongoing?no="+no);
+		}
+		
+		model.setViewName("common/msg");
+		return model;
+	}	
 	
 	//찜하기 or 참가신청 버튼 눌렀을 때, 동작하는 메소드
 	@GetMapping("/challenge/saveMyChallengeList.do")

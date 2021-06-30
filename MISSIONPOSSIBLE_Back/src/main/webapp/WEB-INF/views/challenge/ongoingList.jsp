@@ -194,7 +194,7 @@
 															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
 																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
 														</c:if>
-														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/ongoing?no=${ challenge.challengeNo }'">
+														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/setViewIO.do?no=${ challenge.challengeNo }'">
 															<span class="details">상세보기</span>
 														</div>
 													</div>
@@ -206,9 +206,33 @@
 															<br>
 															<span class="itemSubCont">챌린지 종료까지</span>
 															<br>
+															<!-- 
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현 
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+																D-Day / 오늘날짜 / startDate / deadline 값 사용하기 위한 로직 구현
+															-->
 															
-															<!-- D-Day 로직 구현한 파일 include -->
-															<%@ include file="date.jsp" %>
+															<!-- 챌린지 모집기간 마감 D-Day 구하기 위해 오늘 날짜 구하기 시작 -->
+															<c:set var="today" value="<%= new java.util.Date()%>"/>
+															<fmt:formatDate var="todayDate" value="${ today }" pattern="yyyyMMdd"/>
+															<!-- 챌린지 모집기간 마감 D-Day 구하기 위해 오늘 날짜 구하기 끝 -->
+															
+															<!-- D-Day 구하기 시작(Date객체를 숫자로 형변환) -->
+															<!-- 챌린지 시작일을 날짜로 형변환 -->
+															<fmt:formatDate var="startstartDate" value="${ challenge.startDate }" pattern="yyyyMMdd"/>
+															<!-- 챌린지 수료일을 날짜로 형변환 -->
+															<fmt:formatDate var="endDate" value="${ challenge.deadline }" pattern="yyyyMMdd"/>
+															<!-- 
+																오늘 날짜 및 데이터베이스에 저장된 날짜를 숫자로 형변환 
+															-->
+															<fmt:parseDate value="${ todayDate }" var="tDate" pattern = "yyyyMMdd"/>
+															<fmt:parseDate value="${ startstartDate }" var="sDate" pattern = "yyyyMMdd"/>
+															<fmt:parseDate value="${ endDate }" var="eDate" pattern = "yyyyMMdd"/>
+															<fmt:parseNumber value="${tDate.time / (1000*60*60*24)}" integerOnly="true" var="todayNum" scope="request" />
+															<fmt:parseNumber value="${sDate.time / (1000*60*60*24)}" integerOnly="true" var="startNum" scope="request" />
+															<fmt:parseNumber value="${eDate.time / (1000*60*60*24)}" integerOnly="true" var="endNum" scope="request" />
 															
 															<!-- 
 																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
@@ -234,10 +258,6 @@
 													$(this).find(".itemShowMenu").fadeOut(200);
 												}
 											);
-											
-											$(".itemShowMenu").on("click",function(event){
-												alert("해당 챌린지 상세 페이지로 이동합니다!");
-											});
 											
 											$("#categoryBar ul li").hover(
 													function(){

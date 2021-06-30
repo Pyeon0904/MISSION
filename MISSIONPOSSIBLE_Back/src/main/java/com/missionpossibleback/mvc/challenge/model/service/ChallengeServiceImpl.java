@@ -175,6 +175,15 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectZzimCount(id);
 	}
 	
+	//해당 챌린지가 로그인한 유저가 참여하고 있으면 1리턴, 참여하지 않고 있으면 0리턴
+	@Override
+	public int getJoinListCount(int no, String id) {
+		
+		log.info("getJoinListCount 요청 - 챌린지NO : " + no + ", 요청한 ID : " + id);
+		
+		return mapper.selelctJoinListCount(no, id);
+	}	
+	
 	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)
 	@Override
 	public Challenge findByNo(int challengeNo) {
