@@ -236,17 +236,27 @@
 	</insert>
 
 	<!-- 찜/참여중 상태 등록 MyChallengeList.. -->
-	<insert id="insertMyChallengeList" parameterType="map" useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+	<insert id="insertMyChallengeList" parameterType="map">
 		INSERT INTO MY_CHALLENGE_LIST (
-			NO,
-			ID,
-			MY_CHALLENGE_NO,
-			MY_STATUS
-		) VALUES (
+		    NO,
+		    ID,
+		    MY_CHALLENGE_NO,
+		    MY_STATUS
+		) SELECT
 			SEQ_MYCHALLENGELIST_NO.NEXTVAL,
 			#{id},
 			#{myChallengeNo},
 			#{myStatus}
+		FROM DUAL
+		WHERE NOT EXISTS(
+			SELECT
+			ID, MY_CHALLENGE_NO, MY_STATUS
+			FROM
+				MY_CHALLENGE_LIST
+			WHERE
+				(ID = #{id}) AND
+				(MY_CHALLENGE_NO = #{myChallengeNo}) AND
+				(MY_STATUS = #{myStatus})
 		)
 	</insert>
 

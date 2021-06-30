@@ -259,7 +259,7 @@ public class challengeController {
 			}
 			
 		} else {
-			model.addObject("msg", "요청이 정상적으로 처리되지 않았거나 취소되었습니다.");
+			model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
 			model.addObject("location", "/");
 		}
 		
