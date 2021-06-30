@@ -80,20 +80,20 @@
 			
 				<h2>모집중인 챌린지 정보</h2>
 				<div class="funcArea">
-					<form action="#" method="GET" class="" id="challengeJoinForm">
-						<input type="hidden" name="" value="" />
-						<input class="btn btnJoin" type="submit" value="참가신청"/>
+					<!-- 참가신청 버튼 클릭시 addMyChallengeList.do로 참가신청을 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
+					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeJoinForm">
+						<input type="hidden" name="myStatus" value="JOIN" />
+						<input type="hidden" name="myChallengeNo" value="${ challenge.challengeNo }"/>
+						<input class="btn btnJoin" type="button" value="참가신청"/>
 					</form>
 					<script>
 					$(document).ready(()=>{	
 						$("#challengeJoinForm").on("click",function(event){
 							if(confirm("해당 챌린지에 참여하시겠습니까?")){
-								alert("참여신청을 완료했습니다.")
-								location.replace('#');
+								$("#challengeJoinForm").submit();
 							} 
 							else {
 								alert("취소되었습니다.");
-								location.replace('#');
 							}
 						});
 					});

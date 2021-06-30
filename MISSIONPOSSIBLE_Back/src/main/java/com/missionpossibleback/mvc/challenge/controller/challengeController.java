@@ -228,18 +228,18 @@ public class challengeController {
 		return model;
 	}
 	
-	//찜하기 신청 버튼 눌렀을 때, 동작하는 메소드
+	//찜하기 or 참가신청 버튼 눌렀을 때, 동작하는 메소드
 	@GetMapping("/challenge/saveMyChallengeList.do")
 	public ModelAndView saveMyChallengeList(ModelAndView model,
-			@SessionAttribute(name="loginMember", required = false) Member loginMember,//찜하기 버튼 누른 Member의 ID값을 받아오기 위함
+			@SessionAttribute(name="loginMember", required = false) Member loginMember,//찜하고 or 참가신청 버튼 누른 Member의 ID값을 받아오기 위함
 			@RequestParam(value="myChallengeNo", required=false) int myChallengeNo,//clgNo="챌린지NO"값 받음
-			@RequestParam(value="myStatus", required=false) String myStatus,//myStatus="ZZIM"값 받음
+			@RequestParam(value="myStatus", required=false) String myStatus,//myStatus="ZZIM" or "JOIN"값 받음
 			@ModelAttribute MyChallengeList myChallengeList) {
 		int result = 0;
 		
 		String id = loginMember.getId();// 찜하기 버튼을 누른 Member의 ID값 선언
 		
-		log.info("찜하기 버튼 클릭! \n myStatus : " + myStatus + "\n clgNo : " + myChallengeNo + "\n loginMember.id : "+ id +" 전달받음!");
+		log.info("\n myStatus : " + myStatus + "\n clgNo : " + myChallengeNo + "\n loginMember.id : "+ id +" 전달받음!");
 		
 		myChallengeList.setId(id);
 		myChallengeList.setMyChallengeNo(myChallengeNo);
@@ -252,21 +252,23 @@ public class challengeController {
 		if(result > 0) {
 			if(myStatus.equals("ZZIM")) {
 				model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
-				model.addObject("location", "/challenge/recruit?no="+myChallengeNo);
-			} else {
+			} else if(myStatus.equals("JOIN")) {
 				model.addObject("msg", "챌린지 참가 신청이 정상적으로 완료되었습니다.");
-				model.addObject("location", "/");
 			}
 			
 		} else {
-			model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
-			model.addObject("location", "/");
+			if(myStatus.equals("ZZIM")) {
+				model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
+			} else if(myStatus.equals("JOIN")) {
+				model.addObject("msg", "이미 참가신청한 챌린지입니다.");
+			}
 		}
 		
+		model.addObject("location", "/challenge/recruit?no="+myChallengeNo);
 		model.setViewName("common/msg");
 		
 		return model;
-	}	
+	}
 	
 	//찜한 챌린지 LIST
 	@GetMapping("/challenge/zzimList")
