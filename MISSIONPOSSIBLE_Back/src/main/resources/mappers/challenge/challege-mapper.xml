@@ -205,6 +205,15 @@
         	(MCL.ID = #{id})
 	</select>
 	
+	<!-- 참여중인 챌린지 - 참여중인 유저 수 구하는 쿼리 -->
+	<select id="selectCurrentCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) 
+    	FROM MY_CHALLENGE_LIST
+    	WHERE
+        (MY_STATUS = 'JOIN') AND 
+        (MY_CHALLENGE_NO = #{no}) 
+	</select>
+	
 	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
 		INSERT INTO CHALLENGE (
@@ -276,5 +285,13 @@
 				(MY_STATUS = #{myStatus})
 		)
 	</insert>
+	
+	<update id="updateCurrentCount" parameterType="map">
+		UPDATE CHALLENGE
+		SET
+			CURRENT_COUNT = #{currentCount}
+		WHERE
+			CHALLENGE_NO = #{challengeNo}
+	</update>
 
 </mapper>

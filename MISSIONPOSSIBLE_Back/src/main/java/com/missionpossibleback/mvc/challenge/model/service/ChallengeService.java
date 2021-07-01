@@ -16,6 +16,8 @@ public interface ChallengeService {
 	
 	String saveFile(MultipartFile upfile, String savePath);
 
+	int saveCurrentCount(Challenge challenge);
+
 	int getChallengeCount();
 
 	int getRecruitCount();
@@ -28,6 +30,8 @@ public interface ChallengeService {
 	
 	int getJoinListCount(int no, String id);
 	
+	int getCurrentCount(int myChallengeNo);
+	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	
 	List<Challenge> getRecruitList(PageInfo pageInfo);
@@ -38,6 +42,9 @@ public interface ChallengeService {
 	
 	List<Challenge> getZzimList(PageInfo pageInfo, String id);
 	
-	Challenge findByNo(int challengeNo);	
+	Challenge findByNo(int challengeNo);
+
+
+	
 	
 }

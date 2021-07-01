@@ -40,8 +40,10 @@ public class challengeController {
 	@PostMapping("/challenge/challengeRegister")
 	public ModelAndView challengeRegister(ModelAndView model, HttpServletRequest request,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-			@ModelAttribute Challenge challenge, @RequestParam("upfile") MultipartFile upfile,
-			@RequestParam("id") String id) {
+			@ModelAttribute Challenge challenge,
+			@RequestParam("upfile") MultipartFile upfile,
+			@RequestParam("id") String id, 
+			@ModelAttribute MyChallengeList myChallengeList) {
 		int result = 0;
 		
 		log.info("챌린지 등록 요청");
@@ -78,6 +80,21 @@ public class challengeController {
 			if(result > 0) {
 				model.addObject("msg", "챌린지가 정상적으로 등록되었습니다.");
 				model.addObject("location", "/");
+				
+				myChallengeList.setId(challenge.getId());
+				myChallengeList.setMyChallengeNo(challenge.getChallengeNo());
+				myChallengeList.setMyStatus("JOIN");
+				
+				int value = service.saveMyChallengeList(myChallengeList);
+				
+				if(value > 0) {
+					log.info("내 챌린지 리스트에 추가됨 : " + myChallengeList);
+				} else {
+					log.info("내 챌린지 리스트에 정상적으로 추가되지 않았습니다.");
+				}
+				
+				
+				
 			} else {
 				model.addObject("msg", "챌린지 등록을 실패하였습니다.");
 				model.addObject("location", "/");
@@ -233,15 +250,16 @@ public class challengeController {
 	public ModelAndView setViewIO(ModelAndView model, @RequestParam("no") int no,
 			@SessionAttribute(name="loginMember", required = false) Member loginMember) {
 		
-		int result = service.getJoinListCount(no, loginMember.getId());
+		int isJoin = service.getJoinListCount(no, loginMember.getId());
 		
-		log.info("setViewIO.do result값 : " + result);
+		log.info("setViewIO.do result값 : " + isJoin);
 		
-		if(result != 0) {
+		if(isJoin != 0) {
 			//참여하고 있는 챌린지인 경우
 			model.addObject("msg", "상세 페이지로 이동합니다.");
 			model.addObject("location","/challenge/participate?no="+no);
 		} else {
+			
 			//참여하고 있지 않은 챌린지인 경우 - 진행중인 챌린지
 			model.addObject("msg", "상세 페이지로 이동합니다.");
 			model.addObject("location","/challenge/ongoing?no="+no);
@@ -275,7 +293,26 @@ public class challengeController {
 		if(result > 0) {
 			if(myStatus.equals("ZZIM")) {
 				model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
-			} else if(myStatus.equals("JOIN")) {
+			} else if(myStatus.equals("JOIN")) {			
+				// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
+				// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
+				// 현재 참여자 불러오는 메소드
+				int participantsCount = service.getCurrentCount(myChallengeNo); 
+				
+				// 챌린지NO값으로 챌린지 불러오기 
+				Challenge challenge = service.findByNo(myChallengeNo);
+				
+				// 불러온 현재 참여자 수를 불러온 챌린지에 저장
+				challenge.setCurrentCount(participantsCount);
+				
+				// 변경된 챌린지 정보를 업데이트하는 메소드
+				int updateCurrCount = service.saveCurrentCount(challenge);
+				
+				if(updateCurrCount > 0) {
+					log.info("현재 인원수 업데이트 완료");
+				} else {
+					log.info("현재 인원수 업데이트 실패");
+				}	
 				model.addObject("msg", "챌린지 참가 신청이 정상적으로 완료되었습니다.");
 			}
 			

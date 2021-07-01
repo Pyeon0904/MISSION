@@ -53,9 +53,15 @@ public class ChallengeServiceImpl implements ChallengeService {
 		} else {
 			result = mapper.insertMyChallengeList(myChallengeList);
 		}
-		
 		return result;
 	}	
+	
+	// 챌린지 현재 참여 인원 수정
+	@Override
+	@Transactional
+	public int saveCurrentCount(Challenge challenge) {
+		return mapper.updateCurrentCount(challenge);
+	}
 	
 	// 파일 저장하는 로직
 	@Override
@@ -184,11 +190,22 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selelctJoinListCount(no, id);
 	}	
 	
+	// 참여하고 있는 챌린지에서 현재 참여하고 있는 참가자 수를 리턴하는 메소드
+	@Override
+	public int getCurrentCount(int no) {
+		
+		return mapper.selectCurrentCount(no);
+	}	
+	
 	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)
 	@Override
 	public Challenge findByNo(int challengeNo) {
 		
 		return mapper.selectChallengeByNo(challengeNo);
-	}	
+	}
+
+
+
+	
 	
 }

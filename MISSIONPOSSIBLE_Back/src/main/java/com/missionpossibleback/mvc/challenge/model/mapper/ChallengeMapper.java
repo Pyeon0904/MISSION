@@ -24,6 +24,8 @@ public interface ChallengeMapper {
 	
 	int selelctJoinListCount(@Param("no") int no, @Param("id") String id);
 	
+	int selectCurrentCount(int no);
+	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
 	List<Challenge> selectRecruitList(RowBounds rowBounds);
@@ -39,5 +41,7 @@ public interface ChallengeMapper {
 	int insertChallenge(Challenge challenge);
 	
 	int insertMyChallengeList(MyChallengeList myChallengeList);
+
+	int updateCurrentCount(Challenge challenge);
 	
 }
