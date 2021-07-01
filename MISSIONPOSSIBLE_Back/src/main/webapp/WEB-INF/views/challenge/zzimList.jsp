@@ -164,6 +164,7 @@
 						<!-- 상품 리스트 -->
 							<div class="challengeListCont">
 							<!-- 상품 리스트 내역 -->
+							
 								<div class="challengeListDisplay">
 									<ul>
 									<c:if test="${ (list == null) or (pageInfo.listCount == 0) }">
@@ -183,8 +184,22 @@
 									</c:if>
 									<c:if test="${ list != null }">
 										<c:forEach var="challenge" items="${ list }">
+											
+											<!-- D-Day 로직 구현한 파일 include -->
+											<%@ include file="date.jsp" %>
+											
 											<li style="width:25%;">
-												<div class="itemCont">
+												
+												<!-- 모집중인 챌린지(오늘이 챌린지 시작일보다 작은 경우) -->
+												<c:if test="${ todayNum < startNum }">
+													<div class="itemCont" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
+												</c:if>
+												
+												<!-- 진행중/참여중인 챌린지(오늘이 챌린지 시작일보다 큰 경우) -->
+												<c:if test="${ todayNum >= startNum }">
+													<div class="itemCont" onclick="location.href='${ path }/challenge/setViewIO.do?no=${ challenge.challengeNo }'">
+												</c:if>
+												
 													<div class="itemPhotoBox">
 														<c:if test="${ challenge.thumbnailFile == null }">
 															<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
@@ -193,7 +208,7 @@
 															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
 																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
 														</c:if>
-														<div class="itemShowMenu" onclick="location.href='#'">
+														<div class="itemShowMenu" onclick="location.href=''">
 															<span class="details">X</span>
 														</div>
 													</div>
@@ -206,8 +221,7 @@
 															<span class="itemSubCont">챌린지 모집기간</span>
 															<br>
 															
-															<!-- D-Day 로직 구현한 파일 include -->
-															<%@ include file="date.jsp" %>															
+																														
 																										
 															<!-- 
 																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
