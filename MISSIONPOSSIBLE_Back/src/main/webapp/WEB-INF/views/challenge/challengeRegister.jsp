@@ -26,7 +26,7 @@
 			}
 			/*-------------------컨텐츠 영역---------------------*/
 			#conbox{
-				width:3000px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
+				width:800px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
 				position:relative; 
 				top:20px;
 				margin:auto;
@@ -201,17 +201,6 @@
 						<th>진행기간</th>
 						<td>
 							<input type="date" name="startDate" id="startDate"/> ~ <input type="date" name="deadline"/> 까지 챌린지 진행
-						</td>
-					</tr>
-					<tr>
-						<th>기본 인증 방법</th>
-						<td>
-							<select name="signRule">
-								<option value="" selected>인증방법 선택</option>
-								<option value="picture">사진 포함 필수 인증</option>
-								<option value="letter">인증 게시글로만 인증</option>
-								<option value="">인증3</option>
-							</select>	
 						</td>
 					</tr>
 					<tr>
