@@ -110,6 +110,7 @@ public class challengeController {
 		return catName; 
 	}
 	
+	//챌린지 인증 팝업
 	@GetMapping("/challenge/signPopup")
 	public String signPopupView() {
 		log.info("챌린지 인증 팝업페이지 요청");
@@ -120,12 +121,17 @@ public class challengeController {
 	
 	//참여중인 챌린지 VIEW GET
 	@GetMapping("/challenge/participate")
-	public ModelAndView participate(@SessionAttribute("loginMember") Member loginMember, ModelAndView model) {
+	public ModelAndView participate(ModelAndView model,
+			@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("no") int challengeNo) {
 		
 		log.info("참여중인 챌린지뷰 요청");
 		
+		Challenge challenge = service.findByNo(challengeNo);
+		
 		if(loginMember != null) {
 			model.addObject("loginMember", loginMember);
+			model.addObject("challenge", challenge);
 			model.setViewName("challenge/participate");
 			return model;
 		} else {
