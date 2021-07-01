@@ -234,14 +234,6 @@
 					</tr>
 					<tr>
 						<td>
-							<span>기본 인증 방법</span>
-						</td>
-						<td>
-							<span>인증 사진 등록</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
 							<span>참여시 차감 포인트</span>
 						</td>
 						<td>
