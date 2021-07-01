@@ -126,7 +126,7 @@
 				<input type="submit" class="btn btn-outline-success btn-lg" id="enrollSubmit" value="로그인"/><br><br>
 				<input type="button" value="회원가입" id="btnEnroll" class="btn btn-default" onclick="location.href='<%= request.getContextPath()%>/member/enrollCheck'"/><br>
 				<br>
-				<button type="button"  class="btn" id="finId" >아이디 </button>&nbsp &nbsp &nbsp &nbsp
+				<button type="button"  class="btn" id="finId" >아이디 찾기</button>&nbsp &nbsp &nbsp &nbsp
 				<button type="button"  class="btn" id="findPw" >비밀번호 찾기</button>
 			</form>
 		</div>

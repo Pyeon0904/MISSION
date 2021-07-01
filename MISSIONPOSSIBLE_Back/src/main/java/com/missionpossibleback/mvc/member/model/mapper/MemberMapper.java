@@ -9,5 +9,9 @@ import com.missionpossibleback.mvc.member.model.vo.Member;
 @Mapper
 public interface MemberMapper {
 	Member selectMember(@Param("id") String id);
+	
+	int updateTempPw(@Param("tempPassword") String tempPassword, @Param("memberNo") int memberNo);
+
+	Member selectMemberbyNick(@Param("Nickname") String nickname);
 
 }

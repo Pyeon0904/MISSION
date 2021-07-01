@@ -33,7 +33,7 @@ div { position:relative;
 				<th>이메일</th>
 				<td></td>
 				<td><input type="email" name="userEmail" id="email"
-					placeholder="test@test.org" required /></td>
+					placeholder="email@email.org" required /></td>
 			</tr>
 		</table>
 		<br>

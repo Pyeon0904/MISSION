@@ -7,6 +7,15 @@ public interface MemberService {
 	
 	Member findById(String id);
 	
+	Member findByNick(String Nickname);
+	
 	boolean validate(String userId);
+
+	Member validateIdEm(String userId, String userEmail);
+
+	void updateTempPw(String tempPassword, int memberNo);
+
+	Member validateNickEm(String userNickname, String userEmail);
+
 
 }

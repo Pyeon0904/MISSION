@@ -35,4 +35,16 @@
 		WHERE ID = #{id} AND STATUS ='Y'
  	</select>
  	
+ 	<select id="selectMemberbyNick" parameterType="string" resultMap="memberResultMap">
+ 		<include refid="selectMemberSql" />
+		WHERE NICKNAME = #{Nickname} AND STATUS ='Y'
+ 	</select>
+ 	
+ 	<update id="updateTempPw" parameterType="Member">
+ 		UPDATE MEMBER 
+ 		SET 
+ 			PASSWORD = #{tempPassword}
+		WHERE MEMBER_NO = #{memberNo}
+ 	</update>
+ 	
  </mapper>
