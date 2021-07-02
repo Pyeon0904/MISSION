@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.missionpossibleback.mvc.challenge.model.mapper.ChallengeMapper;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
@@ -37,6 +38,21 @@ public class ChallengeServiceImpl implements ChallengeService {
 //			result = mapper.updateChallenge(challenge);
 		} else {
 			result = mapper.insertChallenge(challenge);
+		}
+		
+		return result;
+	}
+	
+	// 첼린지 인증 게시물 저장 로직
+	@Override
+	public int saveCertify(ChallengeCertify certify) {
+		
+		int result = 0;
+		
+		if(certify.getNo() != 0) {
+//			result = mapper.updateChallenge(challenge);
+		} else {
+			result = mapper.insertCertify(certify);
 		}
 		
 		return result;

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 
 @Mapper
@@ -42,6 +43,8 @@ public interface ChallengeMapper {
 	
 	int insertMyChallengeList(MyChallengeList myChallengeList);
 
+	int insertCertify(ChallengeCertify certify);
+	
 	int updateCurrentCount(Challenge challenge);
 	
 }

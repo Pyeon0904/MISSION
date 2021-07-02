@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
@@ -127,13 +128,84 @@ public class challengeController {
 		return catName; 
 	}
 	
-	//챌린지 인증 팝업
+	//챌린지 인증 팝업 GET 요청
 	@GetMapping("/challenge/signPopup")
-	public String signPopupView() {
-		log.info("챌린지 인증 팝업페이지 요청");
+	public ModelAndView signPopupView(ModelAndView model,
+				@SessionAttribute(name="loginMember", required=false) Member loginMember,
+				@RequestParam("no") int challengeNo) {
+		log.info("챌린지 인증 팝업페이지 GET 요청");
+		
+		Challenge challege = service.findByNo(challengeNo);
+		
+		// id값과 challenge객체를 보냄
+		model.addObject("id", loginMember.getId());
+		model.addObject("challenge", challege);
+		model.setViewName("challenge/signPopup");
+		
+		return model;
+	}
 	
+	//챌린지 인증 POST 요청
+	@PostMapping("/challenge/signPopup")
+	public ModelAndView signPopup(ModelAndView model, HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@ModelAttribute ChallengeCertify certify,
+			@RequestParam("upfile") MultipartFile upfile,
+			@RequestParam("id") String id,
+			@RequestParam("challengeNo") int challengeNo) {
+		int result = 0;
+		
+		log.info("챌린지 인증 등록 요청");
+		
+		// 업로드 X -> ""
+		// 업로드 O -> "파일명"
+		System.out.println("업로드한 원본파일명 : " + upfile.getOriginalFilename());
+		// 업로드 X -> true
+		// 업로드 O -> false
+		System.out.println("업로드한 파일이 비었나요? "+upfile.isEmpty());
+		
+		if(loginMember.getId().equals(id)) {
+			certify.setId(loginMember.getId());
+			certify.setChallengeNo(challengeNo);
+			
+			// 1. 파일업로드 했는지 확인 후 파일 업로드
+			if(upfile != null && !upfile.isEmpty()) {
+				// 파일저장로직 구현
+				String rootPath = request.getSession().getServletContext().getRealPath("resources");
+				String savePath = rootPath + "\\upload\\challenge\\certify";				
+				String renameFileName = service.saveFile(upfile, savePath);
+				
+				if(renameFileName != null) {
+					certify.setOriginalFilename(upfile.getOriginalFilename());
+					certify.setRenamedFilename(renameFileName);
+				}
+			}	
+			
+			System.out.println(certify);
+				
+			result = service.saveCertify(certify);
+				
+			if(result > 0) {
+				model.addObject("msg", "챌린지 인증이 정상적으로 처리되었습니다. 팝업이 닫힙니다.");
+				model.addObject("location", "/challenge/windowClose");
+			} else {
+				model.addObject("msg", "챌린지 인증을 실패하였습니다. 팝업이 닫힙니다.");
+				model.addObject("location", "/challenge/windowClose");
+			}
+		} else {
+			model.addObject("msg", "잘못된 접근입니다. 팝업이 닫힙니다.");
+			model.addObject("location", "/challenge/windowClose");
+		}
+		
+		model.setViewName("common/msg");
+		
+		return model;
+	}
 	
-		return "challenge/signPopup";
+	//팝업창 닫게하는 파일 로드하는 메소드
+	@GetMapping("/challenge/windowClose")
+	public String winClose() {
+		return "challenge/windowClose";
 	}
 	
 	//참여중인 챌린지 VIEW GET
@@ -158,6 +230,15 @@ public class challengeController {
 			return model;
 		}
 		
+	}
+	
+	// 참여중인 챌린지 VIEW 페이지에 INCLUDE될 챌린지 인증 페이지!
+	@GetMapping("/challege/certList")
+	public ModelAndView certList(ModelAndView model) {
+		
+		model.setViewName("challenge/certList");
+		
+		return model;
 	}
 	
 	//종료된 챌린지 LIST

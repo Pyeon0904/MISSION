@@ -58,6 +58,20 @@
 		<result property="minusPoint" column="MINUS_POINT"/>
 	</resultMap>
 	
+	<!-- ChallengeCertify 객체 매핑 (챌린지 인증 게시물) -->
+	<resultMap id="challengeCertifyResultMap" type="ChallengeCertify">
+		<id property="no" column="NO"/>
+		<result property="challengeNo" column="CHALLENGE_NO"/>
+		<result property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+		<result property="renamedFilename" column="RENAMED_FILENAME"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+	
 	<!-- MyChallengeList 객체 매핑 -->
 	<resultMap id="myChallengeListResultMap" type="MyChallengeList" >
 		<id property="no" column="NO"/>
@@ -258,6 +272,33 @@
 			#{startDate},
 			#{opentalkLink},
 			#{minusPoint}
+		)
+	</insert>
+	
+	<!-- 챌린지 인증 팝업에서 인증 등록 ChallengeCertify -->
+	<insert id="insertCertify" parameterType="map">
+		INSERT INTO CHALLENGE_CERTIFY (
+			NO,
+			CHALLENGE_NO,
+			ID,
+			TITLE,
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			CONTENT,
+			CREATE_DATE,
+			MODIFY_DATE,
+			STATUS
+		) VALUES (
+			SEQ_CHALLENGECERTIFY_NO.NEXTVAL,
+			#{challengeNo},
+			#{id},
+			#{title},
+			#{originalFilename},
+			#{renamedFilename},
+			#{content},
+			DEFAULT,
+			DEFAULT,
+			DEFAULT
 		)
 	</insert>
 

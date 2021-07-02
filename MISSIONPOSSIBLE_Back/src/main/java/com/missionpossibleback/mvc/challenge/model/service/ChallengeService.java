@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
@@ -13,6 +14,8 @@ public interface ChallengeService {
 	int save(Challenge challenge);
 	
 	int saveMyChallengeList(MyChallengeList myChallengeList);
+	
+	int saveCertify(ChallengeCertify certify);
 	
 	String saveFile(MultipartFile upfile, String savePath);
 
