@@ -3,16 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ include file="../common/header.jsp"%> 
-
-<c:set var="path" value="${ pageContext.request.contextPath }" />
+<%@ include file="../common/header.jsp"%>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>후기 게시판</title>
-
+<title>후기 상세</title>
+<script src="${ path }/js/jquery-3.6.0.min.js"></script>
 <style>
    #box{ 
             background-color:rgb(224, 239, 132);
@@ -113,116 +112,178 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
 </style>
 
-<div id="box">
-      <section id="section">
-         <div id="conbox">
-<div id="wrap">
-	<div id="container">
-		<div class="inner">		
-			<h2>후기 게시판</h2>	
-			
-			<!-- 검색 폼 시작--------------------- -->
-         <form id="reviewSearch" name="form1" method="GET" action="${path}/review/reviewSearch">
-            <div align="right" class="row m-4">
-               <select name="key" class="form-control" required>
-                  <option value="" selected disabled hidden>::검색 유형::</option>
-                  <option value="1">글제목</option>
-                  <option value="2">작성자</option>
-                  <option value="3">글내용</option>
-                  <option value="4">챌린지이름</option>
-                  <option value="5">전체</option>
-               </select>
-          
-               <input type="text" name="word" class="form-control"
-                   style="padding: 3px 20px 6px 20px" value=${ word }>
-               <button type="submit" class="btn btn-warning" >검색</button>
-            </div>
-         </form>
-         <!-- 검색 폼 끝---------------------- -->
-         <br><br>
-			<form id="boardForm" name="boardForm">
-				<input type="hidden" id="function_name" name="function_name" value="getBoardList" />
-				<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
-				
-			
-				<table width="100%" class="table01">
-					<colgroup>
-						<col width="10%" />
-						<col width="25%" />
-						<col width="15%" />
-						<col width="20%" />
-						<col width="10%" />
-					</colgroup>
-					<thead>		
-						<tr id="titleTd">
-							<th>글번호</th>
-							<th>제목</th>
-							<th>챌린지</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>조회수</th>
-						</tr>
-						<c:if test="${ list == null }">
-							<tr>
-	                  			<td colspan="6">조회된 게시글이 없습니다.</td>
-	               			</tr>
-						</c:if>
-					</thead>
-					<tbody id="tbody">
-						<c:if test="${ list != null }">
-							<c:forEach var="review" items="${ list }">
-							<tr>
-								<td><c:out value="${ review.no }"/></td>
-								<td>
-									<a href="${ path }/review/reviewView?no=${review.no}">
-										<c:out value="${ review.title }"/>
-									</a>
-								</td>
-								<td><c:out value="${ review.challengeTitle }"/></td>
-								<td><c:out value="${ review.writerId }"/></td>
-								<td><fmt:formatDate type="date" value="${ review.createDate }"/></td>
-								<td><c:out value="${ review.viewCount }"/></td>
-							</tr>	
-				</c:forEach>
-			</c:if>
-					</tbody>	
-				</table>
-			</form>		
-			<div class="btn_right mt15">
-				<c:if test="${ loginMember != null }">
-					<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewWrite'">글쓰기</button>
-				</c:if>
-			</div>
-		</div>
-		
-		<div id="pageBar" style="align:center;">
-			<!-- 맨 처음으로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=1'">&lt;&lt;</button>
-			
-			<!-- 이전 페이지로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.prvePage }'">&lt;</button>
+</head>
+<body>
+	<div id="box">
+		<section id="section">
+			<div id="conbox">
+				<div id="wrap">
+					<div id="container">
+						<div class="inner">
+							<h2>후기 게시판</h2>
+							<form id="boardForm" name="boardForm">
+								<input type="hidden" name="no" value="${ review.no }" />
+								<table width="100%" class="table01">
+									<colgroup>
+										<col width="15%">
+										<col width="35%">
+										<col width="15%">
+										<col width="*">
+									</colgroup>
+									<tbody id="tbody">
+										<tr>
+											<th>글번호</th>
+											<td>${ review.no }</td>
+											<th>조회수</th>
+											<td>${ review.viewCount }</td>
+										</tr>
 
-			<!--  10개 페이지 목록 -->
-			<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-				<c:if test="${ pageInfo.currentPage == status.current }">
-					<button disabled><c:out value="${ status.current }" /></button>
-				</c:if>
-				<c:if test="${ pageInfo.currentPage != status.current }">
-					<button onclick="location.href='${ path }/review/reviewList?page=${ status.current }'"><c:out value="${ status.current }" /></button>
-				</c:if>
-			</c:forEach>
-			
-			<!-- 다음 페이지로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.nextPage }'">&gt;</button>
-			
-			<!-- 맨 끝으로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.maxPage }'">&gt;&gt;</button>
-		</div>
+
+
+										<tr>
+											<th>작성자</th>
+											<td>${ review.writerId }</td>
+											<th>작성일</th>
+											<td><fmt:formatDate type="date" value="${ review.createDate }"/></td>
+										</tr>
+
+										<tr>
+											<th>챌린지 이름</th>
+											<td colspan="3">${ review.challengeTitle }</td>
+										</tr>
+
+										<tr>
+											<th>제목</th>
+											<td colspan="3">${ review.title }</td>
+										</tr>
+
+										<tr>
+											<th>첨부파일</th>
+											<td colspan="3"><c:if
+													test="${ !empty review.originalFileName }">
+													<a
+														href="javascript:fileDownload('${ review.originalFileName }', '${ review.renamedFileName }')">
+														<img src="${ path }/images/file.png" width="20"
+														height="20" /> <c:out value="${ review.originalFileName }"></c:out>
+													</a>
+						<script>
+							function fileDownload(oriname, rename) {
+								const url = "${ path }/review/fileDown";
+
+								let oName = encodeURIComponent(oriname);
+								let rName = encodeURIComponent(rename);
+								
+								location.assign(url + "?oriname=" + oName + "&rename=" + rName);
+							}
+						</script>
+						</c:if> 
+						<c:if test="${ empty review.originalFileName }">
+								<span> - </span>
+						</c:if></td>
+										</tr>
+
+										<tr>
+											<th>글 내용</th>
+											<td colspan="3">${ review.content }</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+							
+							
+							<br>
+							<c:if test="${ !empty loginMember }">
+							<form action="${ path }/review/reviewReply" method="POST">
+								<input type="hidden" name="reviewNo" value="${ review.no }">
+	    						<input type="hidden" name="writerId" value="${loginMember.id}">
+							<table width="800" class="table01">
+								<tr>
+									<td width="95" height="30" bgcolor="#eeeeee" align="center">댓글
+										내용</td>
+									<td width="380" style="padding-left: 10px;">
+										<textarea rows="2" cols="55" class="boxTA" style="width: 500px; height: 50px" id="replyContent" name="content"></textarea>
+									</td>
+									<td width="100" rowspan="3" height="30" align="right" style="padding-right: 15px;">
+										<input type="submit" value="등록" class="btn2" style="width: 50pt; height: 50pt;">
+									</td>
+								</tr>
+							</table>
+							</form>
+							</c:if>
+							<br /> <span id="listData" style="display: none;"></span>
+
+
+
+	    <table id="tbl-comment">
+	    <c:forEach var="reply" items="${ list }">
+    	   	<tr class="level1">
+	    		<td>
+	    			<sub class="comment-writer">${ reply.writerId }</sub>
+	    			<sub class="comment-date">${ reply.createDate }</sub>
+	    			<br>
+	    			${ reply.content }
+	    		</td>
+	    		<td>
+	    			<c:if test="${ !empty loginMember && loginMember.id == reply.getWriterId }">
+    				<button class="btn-delete">삭제</button>
+    				</c:if>
+    				
+	    		</td>
+	    	</tr>
+	    	</c:forEach>
+	    </table>
+
+							<div class="btn_right mt15">
+								<c:if test="${ !empty loginMember && (loginMember.id != review.writerId )}">
+									<input type="button" class="btn black" id="btn-report"
+										value="신고하기">
+								</c:if>
+								<button type="button" class="btn black mr5"
+									onclick="location.href='${path}/review/reviewList'">목록으로</button>
+								<c:if
+									test="${ !empty loginMember && (loginMember.id == review.writerId )}">
+									<button type="button" class="btn black mr5" id="update">수정하기</button>
+									<button type="button" class="btn black" id="delete">삭제하기</button>
+								</c:if>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</div>
-</div>
-</div>
-</section>
-</div>
+
+	<script type="text/javascript">
+	$("#btn-report").on("click", (e)=>{
+		// 신고하기 창 띄우기
+		const url = "${path}/review/reviewReport?id=${loginMember.getId()}&reviewNo=${ review.no }&reviewTitle=${ review.title }";
+		const status="left=500px, top=200px, width=500px; height=400px";
+		
+		open(url, "", status);
+});	
+
+
+	$(document).ready(() => {
+		
+		$("#update").on("click", (e) => {
+			location.href = "${ path }/review/reviewModify?no=${ review.no }";
+		});
+		
+		$("#delete").on("click", (e) => {
+			if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
+				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
+			}
+		});
+	});
+	$("#replyContent").on("focus", (e)=>{
+		if(${!empty loginMember}){
+		alert("로그인 후 작성해주세요");
+		$("#userId").focus();
+		}
+	});
+});
+	
+</script>
 </body>
 </html>
 <%@ include file="../common/footer.jsp"%>

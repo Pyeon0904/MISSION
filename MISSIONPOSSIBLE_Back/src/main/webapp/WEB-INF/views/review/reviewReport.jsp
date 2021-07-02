@@ -20,17 +20,22 @@
             	<tr>
                     <td></td>
                     <td> <!-- 현재 페이지 세션에 담긴 게시글 제목 -->
-                        <input type="text" name="reviewTitle" id="reviewTitle" class="reportList" value="" readonly/>
+                        <input type="text" name="title" id="title" value="${ review.title }"readonly>
+                        <input type="hidden" name="R_No" id="R_No" value="${ review.no }"readonly>
+                        <input type="hidden" name="reportedId" id="reportedId" value="${ review.writerId }"readonly>
+                        <input type="hidden" name="sendId" id="sendId" value="${ loginMember.getId() }"readonly>
                     </td>
                 </tr>
                 <tr>
                 <td></td>
                     <td>           
-                    <select name="findType" class="form-control">
+                    <select name="category" class="form-control">
                   		<option value="">신고 유형 선택</option>
                   		<option value="1">욕설/비방</option>
-	                  <option value="2">광고</option>
-	                  <option value="3">음란</option>
+	                  	<option value="2">광고</option>
+	                  	<option value="3">음란</option>
+	                  	<option value="4"></option>
+	                  	<option value="5">기타</option>
 	              	 </select>
                     </td>
                 </tr>
@@ -52,5 +57,7 @@
         </form>   
 
         </section>
+        <script>
+        </script>
 </body>
 </html>

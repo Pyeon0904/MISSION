@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.missionpossibleback.mvc.review.model.mapper.ReviewMapper">
+	<sql id="reviewListSql">
+		SELECT  R.NO,
+				R.WRITER_ID,
+				R.TITLE, 
+				R.C_TITLE,
+				R.CONTENT,
+				R.VIEW_COUNT, 
+				R.ORIGINAL_FILENAME, 
+				R.RENAMED_FILENAME, 
+				R.CREATE_DATE, 
+				R.MODIFY_DATE
+		FROM REVIEW R
+		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
+		WHERE R.STATUS = 'Y'
+	</sql>
+	
+	<resultMap type="Review" id="reviewListResultMap">
+		<id property="no" column="NO"/>
+		<result property="writerId" column="WRITER_ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="challengeTitle" column="C_TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
+		<result property="renamedFileName" column="RENAMED_FILENAME"/>
+		<result property="viewCount" column="VIEW_COUNT"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+
+	<resultMap type="Review" extends="reviewListResultMap" id="reviewDetailResultMap">
+		<collection property="replies" javaType="arraylist" columnPrefix="R_" resultMap="reviewReplyResultMap"/>
+	</resultMap>
+	
+	<resultMap type="Reply" id="reviewReplyResultMap">
+		<id property="no" column="NO"/>
+		<result property="reviewNo" column="NO"/>
+		<result property="writerId" column="WRITER_ID"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<resultMap type="Report" id="reviewReportResultMap">
+		<id property="no" column="NO"/>
+		<result property="sendId" column="SEND_ID"/>
+		<result property="reportedId" column="REPORTED_ID"/>
+		<result property="C_No" column="REPORTED_C_NO"/>
+		<result property="R_No" column="REPORTED_R_NO"/>
+		<result property="category" column="CATEGORY"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="statue" column="STATUS"/>
+	</resultMap>
+	
+	<select id="selectReviewList" resultMap="reviewListResultMap">
+		<include refid="reviewListSql"/>
+		ORDER BY R.NO DESC
+	</select>
+	
+	<select id="selectSearchReviewList" resultMap="reviewListResultMap">
+		SELECT  R.NO,
+				R.WRITER_ID,
+				R.TITLE, 
+				R.C_TITLE,
+				R.CONTENT,
+				R.VIEW_COUNT, 
+				R.ORIGINAL_FILENAME, 
+				R.RENAMED_FILENAME, 
+				R.CREATE_DATE, 
+				R.MODIFY_DATE
+		FROM REVIEW R
+		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
+		WHERE R.STATUS = 'Y'
+		<if test="key == '1'.toString()">
+		AND TITLE LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '2'.toString()">
+        AND WRITER_ID like '%'||#{word}||'%' 
+        </if> 
+		<if test="key == '3'.toString()">
+		AND CONTENT like '%'||#{word}||'%'
+		</if>
+		<if test="key == '4'.toString()">
+		AND C_TITLE LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '5'.toString()">
+		AND C_TITLE LIKE '%'||#{word}||'%'
+		OR TITLE LIKE '%'||#{word}||'%'
+		OR WRITER_ID like '%'||#{word}||'%' 
+		OR CONTENT like '%'||#{word}||'%'
+		</if>
+		ORDER BY NO DESC
+	</select>
+	
+	<select id="selectSerchReviewCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM REVIEW
+		WHERE STATUS='Y'
+		<if test="key == '1'.toString()">
+		AND TITLE LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '2'.toString()">
+        AND WRITER_ID like '%'||#{word}||'%' 
+        </if> 
+		<if test="key == '3'.toString()">
+		AND CONTENT like '%'||#{word}||'%'
+		</if>
+		<if test="key == '4'.toString()">
+		AND C_TITLE LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '5'.toString()">
+		AND C_TITLE LIKE '%'||#{word}||'%'
+		OR TITLE LIKE '%'||#{word}||'%'
+		OR WRITER_ID like '%'||#{word}||'%' 
+		OR CONTENT like '%'||#{word}||'%'
+		</if>
+		ORDER BY NO DESC
+	</select>
+
+	
+	<select id="selectReviewCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM REVIEW
+		WHERE STATUS='Y'
+	</select>
+	
+	<select id="selectReviewByNo" parameterType="_int" resultMap="reviewDetailResultMap">
+ 		SELECT R.NO,
+ 			   R.WRITER_ID,
+ 			   M.ID,
+		       R.TITLE, 
+		       R.C_TITLE,
+		       R.ORIGINAL_FILENAME, 
+		       R.RENAMED_FILENAME, 
+		       R.CONTENT,
+		       R.CREATE_DATE, 
+		       R.MODIFY_DATE,
+		       R.VIEW_COUNT,
+		       L.REVIEW_NO AS R_NO, 
+		       L.REVIEW_NO AS L_REVIEW_NO, 
+		       L.CONTENT AS L_CONTENT, 
+		       M2.ID AS L_WRITER_ID, 
+		       L.CREATE_DATE AS L_CREATE_DATE, 
+		       L.MODIFY_DATE AS L_MODIFY_DATE
+		FROM REVIEW R
+		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
+		LEFT OUTER JOIN REPLY L ON(R.NO = L.REVIEW_NO)
+		LEFT OUTER JOIN MEMBER M2 ON(L.WRITER_ID = M2.ID)
+		WHERE R.STATUS='Y' AND R.NO=#{reviewNo}
+	</select>
+	
+	<insert id="insertReview" parameterType="map"
+			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+		INSERT INTO REVIEW (
+			NO,
+			WRITER_ID,
+			TITLE,
+			C_TITLE,
+			CONTENT,
+			CREATE_DATE,
+			MODIFY_DATE,		
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			VIEW_COUNT,
+			STATUS
+		) VALUES (
+			SEQ_REVIEW_NO.NEXTVAL,
+			#{writerId},
+			#{title},
+			#{challengeTitle},
+			#{content},
+			DEFAULT,
+			DEFAULT,
+			#{originalFileName},
+			#{renamedFileName},
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	<update id="updateReview" parameterType="map">
+		UPDATE REVIEW
+			SET 
+				TITLE=#{title},
+				CONTENT=#{content},
+				<if test="originalFileName != null">
+					ORIGINAL_FILENAME=#{originalFileName},
+				</if>
+				<if test="renamedFileName != null">
+					RENAMED_FILENAME=#{renamedFileName},
+				</if>
+				MODIFY_DATE=SYSDATE 
+			WHERE 
+				NO=#{no}
+	</update>
+	
+	<delete id="deleteReview" parameterType="int">
+		DELETE FROM REVIEW WHERE NO = #{reviewNo}
+	</delete>
+	
+	<update id="plusCnt" parameterType="int">
+  		UPDATE REVIEW SET VIEW_COUNT = VIEW_COUNT + 1 WHERE NO = #{reviewNo}
+	</update>
+	
+	<insert id="insertReport" parameterType="map"
+			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+		INSERT INTO REPORT (
+			NO,
+			SEND_ID,
+			REPORTED_ID,
+			REPORTED_C_NO,
+			REPORTED_R_NO,
+			CATEGORY,
+			CONTENT,
+			CREATE_DATE,
+			STATUS
+			) VALUES (
+			SEQ_REPORT_NO.NEXTVAL,
+			#{sendId},
+			#{reportedId},
+			NULL,
+			#{R_No},
+			#{category},
+			#{content},
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	<insert id="insertRely" parameterType="map"
+			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+		INSERT INTO REPLY (
+			NO,
+			REVIEW_NO,
+			WRITER_ID,
+			CONTENT,
+			STATUS,
+			CREATE_DATE,
+			MODIFY_DATE 
+			) VALUES (
+			SEQ_REPLY_NO.NEXTVAL,
+			#{reviewNo},
+			#{writerId},
+			#{content},
+			DEFAULT,
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+
+	<select id="selectReplyList" resultMap="reviewReplyResultMap">
+		SELECT * FROM REVIEW R
+		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
+		WHERE R.STATUS = 'Y'
+		ORDER BY R.NO DESC
+	</select>
+</mapper>
+

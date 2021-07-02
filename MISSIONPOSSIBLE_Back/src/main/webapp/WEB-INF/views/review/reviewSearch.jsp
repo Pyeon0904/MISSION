@@ -12,7 +12,6 @@
 <head>
 <meta charset="UTF-8">
 <title>후기 게시판</title>
-
 <style>
    #box{ 
             background-color:rgb(224, 239, 132);
@@ -122,10 +121,10 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 			<h2>후기 게시판</h2>	
 			
 			<!-- 검색 폼 시작--------------------- -->
-         <form id="reviewSearch" name="form1" method="GET" action="${path}/review/reviewSearch">
+         <form id="reviewSearch" name="form1" method="post" action="${path}/review/reviewSearch">
             <div align="right" class="row m-4">
-               <select name="key" class="form-control" required>
-                  <option value="" selected disabled hidden>::검색 유형::</option>
+               <select name="key" class="form-control">
+                  <option value="">::검색 유형::</option>
                   <option value="1">글제목</option>
                   <option value="2">작성자</option>
                   <option value="3">글내용</option>
@@ -162,14 +161,14 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 							<th>작성일</th>
 							<th>조회수</th>
 						</tr>
-						<c:if test="${ list == null }">
+						<c:if test="${ count == 0 }">
 							<tr>
 	                  			<td colspan="6">조회된 게시글이 없습니다.</td>
 	               			</tr>
 						</c:if>
 					</thead>
 					<tbody id="tbody">
-						<c:if test="${ list != null }">
+						<c:if test="${ count != 0 }">
 							<c:forEach var="review" items="${ list }">
 							<tr>
 								<td><c:out value="${ review.no }"/></td>
@@ -197,10 +196,10 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 		
 		<div id="pageBar" style="align:center;">
 			<!-- 맨 처음으로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=1'">&lt;&lt;</button>
+			<button onclick="location.href='${ path }/review/reviewSearch?page=1'">&lt;&lt;</button>
 			
 			<!-- 이전 페이지로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.prvePage }'">&lt;</button>
+			<button onclick="location.href='${ path }/review/reviewSearch?page=${  pageInfo.prvePage }&key=${key}&word=${word}'">&lt;</button>
 
 			<!--  10개 페이지 목록 -->
 			<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
@@ -208,15 +207,15 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 					<button disabled><c:out value="${ status.current }" /></button>
 				</c:if>
 				<c:if test="${ pageInfo.currentPage != status.current }">
-					<button onclick="location.href='${ path }/review/reviewList?page=${ status.current }'"><c:out value="${ status.current }" /></button>
+					<button onclick="location.href='${ path }/review/reviewSearch?page=${ status.current }&key=${key}&word=${word}'"><c:out value="${ status.current }" /></button>
 				</c:if>
 			</c:forEach>
 			
 			<!-- 다음 페이지로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.nextPage }'">&gt;</button>
+			<button onclick="location.href='${ path }/review/reviewSearch?page=${  pageInfo.nextPage }&key=${key}&word=${word}'">&gt;</button>
 			
 			<!-- 맨 끝으로 -->
-			<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.maxPage }'">&gt;&gt;</button>
+			<button onclick="location.href='${ path }/review/reviewSearch?page=${  pageInfo.maxPage }&key=${key}&word=${word}'">&gt;&gt;</button>
 		</div>
 	</div>
 </div>
