@@ -31,11 +31,12 @@
                     <td>           
                     <select name="category" class="form-control">
                   		<option value="">신고 유형 선택</option>
-                  		<option value="1">욕설/비방</option>
-	                  	<option value="2">광고</option>
-	                  	<option value="3">음란</option>
-	                  	<option value="4"></option>
-	                  	<option value="5">기타</option>
+                  		<option value="욕설/비방">욕설/비방</option>
+                  		<option value="광고">도배</option>
+	                  	<option value="광고">광고</option>
+	                  	<option value="음란물">음란물</option>
+	                  	<option value="개인정보 침해">개인정보 침해</option>
+	                  	<option value="기타">기타</option>
 	              	 </select>
                     </td>
                 </tr>
