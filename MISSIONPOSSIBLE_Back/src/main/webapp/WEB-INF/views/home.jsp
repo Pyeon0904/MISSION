@@ -46,20 +46,36 @@
 
 /*-----------------------------------------------------------------------------------*/
 /*----------------------랜덤한 사진+글-----------------------------------*/
-.temaevent1{
+.Runing{
 position:absolute;
 left:330px;
 font-size: 25px;
 font-weight: bold;
 }
-.temaevent2{
+.JSPARK{
 position:absolute;
 left:30%;
 color:white;
 font-size: 20px;
+}
+.JORDAN{
+position:absolute;
+color:white;
+left:300px;
+}
+.JORDAN2{
+position:absolute;
+color:white;
+left:665px;
+font-size: 20px;
+}
+.teamevent1{
 
 }
-.temaevent3{
+.teamevent2{
+
+}
+.teamevent3{
 
 }
 /* --------------------- 간단히 홈페이지소개 ---------------------- */
@@ -166,10 +182,10 @@ function animateCSS(element, animationName, callback) {
     node.addEventListener('animationend', handleAnimationEnd)
 }
     
-//animateCSS('.my-element', 'bounce	','lightSpeedIn')
+animateCSS('.my-element', 'fadeInLeft	','fadeInLeft')
 
 //or
-animateCSS('.my-element', 'bounce	','lightSpeedIn',' ',function() {
+animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
 // Do something after animation
 })
 	$(document).on('mouseover', '.list8', function() {
@@ -190,21 +206,25 @@ animateCSS('.my-element', 'bounce	','lightSpeedIn',' ',function() {
 			<div id="temaevent">
 				<div id="show">
 					<div class="fotorama" data-width="1200px" 
-					data-height="400px"data-autoplay="90000" data-loop="true">
+					data-height="400px"data-autoplay="9000" data-loop="true">
 						<div data-img="${path}/resources/images/Runing.png">
-							<div class="animated fast fadeOutLeftBig delay-2s">
-							<p class="temaevent1">오늘 하루는 얼마나달려볼까?</p>
+						<p class=Runing>오늘 하루는 얼마나달려볼까?</p>
+							<div class="animated fast fadeInLeft delay-1s">
+							<p class="temaevent1">서브</p>
+							
 							</div>
 						</div>
 						<div data-img="${path}/resources/images/JSPark.jpg">
-							<div class="animated slow fadeInLeft delay-2s">
-							<p class="temaevent2">
-							<br><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							-박지성-</p></div>
+						<p class=JSPARK><br><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							-박지성-</p>
+							<div class="animated slow fadeInLeft delay-3s">
+							<p class="temaevent2">서브</p></div>
 						</div>
 						<div data-img="${path}/resources/images/JORDAN.jpg">
-							<div class="animated slow fadeInLeft delay-2s">
-							<p class="temaevent3">한 번 포기하면 습관이된다. 절대 포기하지 말아라. -마이클 조던-</p></div>
+						<p class=JORDAN><br><br><br>한 번 포기하면 습관이된다. </p>
+						<p class=JORDAN2><br><br>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
+							<div class="animated slow fadeInLeft delay-5s">
+							<p class="temaevent3">서브</p></div>
 						</div>
 					</div>
 				</div>
