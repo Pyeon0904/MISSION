@@ -126,7 +126,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 <div id="wrap">
 	<div id="container">
 		<div class="inner">		
-			<h2>게시글 작성</h2>
+			<h2 style="padding-bottom:20px;">게시글 작성</h2>
 			<form action="${ path }/review/reviewWrite" enctype="multipart/form-data" method="POST">
 				<table width="100%" class="table02">
 				<caption><strong><span class="t_red">*</span> 표시는 필수입력 항목입니다.</strong></caption>

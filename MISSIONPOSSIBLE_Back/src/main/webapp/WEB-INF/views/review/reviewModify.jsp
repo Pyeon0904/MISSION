@@ -129,7 +129,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 <div id="wrap">
    <div id="container">
       <div class="inner">   
-         <h2>게시글 수정</h2>
+         <h2 style="padding-bottom:20px;">게시글 수정</h2>
          <form action="${ path }/review/reviewModify" enctype="multipart/form-data" method="POST">   
          	<input type="hidden" name="no" value="${ review.no }" />
          	<input type="hidden" name="originalFileName" value="${ review.originalFileName }" />

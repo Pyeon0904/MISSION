@@ -120,7 +120,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 				<div id="wrap">
 					<div id="container">
 						<div class="inner">
-							<h2>후기 게시판</h2>
+							<h2 style="padding-bottom:20px;">후기 게시판</h2>
 							<form id="boardForm" name="boardForm">
 								<input type="hidden" name="no" value="${ review.no }" />
 								<table width="100%" class="table01">
@@ -191,6 +191,35 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 							</form>
 							
 							
+							
+							<br>
+							<table id="tbl-comment" width="800" class="table01">
+								<colgroup>
+									<col width="10%">
+									<col width="10%">
+									<col width="10%">
+									<col width="40%">
+									<col width="10%">
+									<col width="10%">
+									<col width="*">
+								</colgroup>
+							    <c:forEach var="reply" items="${ list }">
+							    <tr>
+											<th>작성자</th>
+											<td>${ reply.writerId }</td>
+											<th>내용</th>
+											<td>${ reply.content }</td>
+											<th>날짜</th>
+											<td>${ reply.createDate }</td>
+											<td>
+							    			<c:if test="${ !empty loginMember && loginMember.id == reply.writerId }">
+						    					<button id="Replyx">삭제</button>
+						    				</c:if>
+							    		</td>
+										</tr>
+							    	</c:forEach>
+						    </table>
+							
 							<br>
 							<c:if test="${ !empty loginMember }">
 							<form action="${ path }/review/reviewReply" method="POST">
@@ -211,27 +240,6 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 							</form>
 							</c:if>
 							<br /> <span id="listData" style="display: none;"></span>
-
-
-
-	    <table id="tbl-comment">
-	    <c:forEach var="reply" items="${ list }">
-    	   	<tr class="level1">
-	    		<td>
-	    			<sub class="comment-writer">${ reply.writerId }</sub>
-	    			<sub class="comment-date">${ reply.createDate }</sub>
-	    			<br>
-	    			${ reply.content }
-	    		</td>
-	    		<td>
-	    			<c:if test="${ !empty loginMember && loginMember.id == reply.getWriterId }">
-    				<button class="btn-delete">삭제</button>
-    				</c:if>
-    				
-	    		</td>
-	    	</tr>
-	    	</c:forEach>
-	    </table>
 
 							<div class="btn_right mt15">
 								<c:if test="${ !empty loginMember && (loginMember.id != review.writerId )}">
@@ -274,7 +282,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
 			}
 		});
-	});
+	
 	$("#replyContent").on("focus", (e)=>{
 		if(${!empty loginMember}){
 		alert("로그인 후 작성해주세요");
@@ -283,6 +291,12 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 	});
 });
 	
+	$("#Replyx").on("click", (e) => {
+		if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
+			location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
+		}
+	});
+
 </script>
 </body>
 </html>

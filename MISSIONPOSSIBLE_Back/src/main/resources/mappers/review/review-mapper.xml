@@ -255,10 +255,8 @@
 	</insert>
 
 	<select id="selectReplyList" resultMap="reviewReplyResultMap">
-		SELECT * FROM REVIEW R
-		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
-		WHERE R.STATUS = 'Y'
-		ORDER BY R.NO DESC
+		SELECT * FROM REPLY
+		WHERE REVIEW_NO = #{review.no}
 	</select>
 </mapper>
 

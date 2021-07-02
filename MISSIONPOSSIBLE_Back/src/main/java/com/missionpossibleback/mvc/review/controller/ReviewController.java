@@ -87,12 +87,17 @@ public class ReviewController {
 	// 리뷰 게시글 상세보기
     @GetMapping("/review/reviewView")
     public ModelAndView view(ModelAndView model,
-			@RequestParam("no") int reviewNo) {
+			@RequestParam("no") int reviewNo,
+			@ModelAttribute Reply reply) {
 		
 		Review review = service.findByNo(reviewNo);
+		List<Reply> list = null;
+		
+		list = service.getReplyList(reviewNo);
 		service.plusCnt(reviewNo);
 		
 		model.addObject("review",review);
+		model.addObject("list",list);
 		model.setViewName("review/reviewView");
 		
 		return model;
@@ -312,11 +317,8 @@ public class ReviewController {
 			HttpServletRequest request,
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Reply reply) {
-    	
-    		List<Reply> list = null;
     		
     		Review review = service.findByNo(reviewNo); 
-    		list = service.getReplyList(reviewNo);
     		
     		int result = 0;
     		
@@ -330,7 +332,6 @@ public class ReviewController {
     			
     		
     		model.setViewName("common/msg");
-    		model.addObject("list", list);
     		
     		return model;
     	}
