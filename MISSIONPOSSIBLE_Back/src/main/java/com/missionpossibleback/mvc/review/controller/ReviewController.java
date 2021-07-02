@@ -70,12 +70,10 @@ public class ReviewController {
 		List<Review> list = null;
 		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchReviewCount(key, word), 10); 
 		int count = 0;
-		
-		count = service.getSerchReviewCount(key, word);
+
 		list = service.getSearchReviewList(key, word, pageInfo);
 		
 		model.addObject("list", list);
-		model.addObject("count", count);
 		model.addObject("key", key);
 		model.addObject("word", word);
 		model.addObject("pageInfo", pageInfo);
@@ -220,7 +218,7 @@ public class ReviewController {
     				model.addObject("script","self.close()");
     			} else {
     				model.addObject("msg", "신고 접수에 실패하였습니다.");
-    				model.addObject("location", "/review/reviewList");
+    				model.addObject("location", "self.close()");
     			}
     			
     		
