@@ -14,10 +14,7 @@
 <title>게시판 목록</title>
 
 <style>
-/* 전체 영역--------------------------------------------------------------------------*/
-            
-         /*---------------제일 바깥 영역 설정-----------------*/
-         #box{ 
+	#box{ 
             background-color:rgb(224, 239, 132);
             width:100%;
             height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
@@ -26,18 +23,20 @@
             margin-left:-10px;
             padding:10px;
          }
-         /*-------------------컨텐츠 영역---------------------*/
+
          #conbox{
             width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
             position:relative; 
             top:20px;
             margin:auto;
          }
-             
-      /*-----------------------------------------------------------------------------------*/
+
+h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
 
 input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
-input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
+input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
 input[type="checkbox"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
 input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
 input[type="password"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
@@ -51,19 +50,20 @@ html, body{padding:0;margin:0;width:100%;height:100%;}
 
 #wrap{position:relative;width:100%;height:100%}
 #container .inner{width:1000px; margin:0 auto; padding:10px 0}
-
+ 
 /* table */
 table.table01 {border-collapse:separate;border-spacing:0;text-align:center;line-height:1.5;border-top:1px solid #ccc;border-left:1px solid #ccc;margin:auto;}
 table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
 table.table01 td {padding:10px;vertical-align:middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 
-table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:1px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 caption.center{padding-top:6px;height:39px;line-height:130%;text-align:center;color:#333;padding-left:0;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody th{padding:10px;vertical-align:middle;font-family:'malgunbd';color:#333;border-right:1px solid #c9c9c9;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody td{padding:10px;vertical-align:middle;padding-left:15px;background:#fafafa;border-bottom:1px solid #c9c9c9}
 
-/* link_style */
-
+/* link_style 
+a:link, a:visited, a:hover, a:active{color:#666;text-decoration:underline}
+a:hover{color:#0076c8} */
 
 /* button */
 .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
@@ -110,7 +110,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
-div#pageBar{margin-top:10px; text-align:center; background-color: white;}
+div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
 </style>
 
 
@@ -139,9 +139,9 @@ div#pageBar{margin-top:10px; text-align:center; background-color: white;}
 <div id="wrap">
 	<div id="container">
 		<div class="inner">		
-			<h2>고객센터</h2>			
+			<h2>고객센터</h2>	
 			
-			<!-- 검색 폼 시작--------------------- -->
+		<!-- 검색 폼 시작--------------------- -->
          <form name="sf" action="find" onsubmit="return check()">
             <div align="right" class="row m-4">
 
@@ -158,7 +158,6 @@ div#pageBar{margin-top:10px; text-align:center; background-color: white;}
                <button type="button" onclick="check()" class="btn btn-warning" >검색</button>
 
             </div>
-            <!--  row end -->
          </form>
          <!-- 검색 폼 끝---------------------- -->
          <br><br>
@@ -193,9 +192,13 @@ div#pageBar{margin-top:10px; text-align:center; background-color: white;}
 						<c:if test="${ list != null }">
 					      	 <c:forEach var="board" items="${ list }">
 					      	 	<tr>
-					      	 		<td><c:out value="${ board.no }"/></td>
-					      	 		<td><c:out value="${ board.title }"/></td>
-					      	 		<td><c:out value="${ board.writerId }"/></td>
+					      	 		<td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
+					      	 		<td>
+					      	 			<a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+					      	 				<c:out value="${ board.title }"/>
+					      	 			</a>
+					      	 		</td>
+					      	 		<td><c:out value="${ board.writer }"/></td>
 					      	 		<td><fmt:formatDate type="both" value="${ board.createDate }"/></td>
 					      	 		<td><c:out value="${ board.readCount }"/></td>
 					      	 	</tr>
@@ -213,26 +216,26 @@ div#pageBar{margin-top:10px; text-align:center; background-color: white;}
 		
 		<div id="pageBar" style="align:center;">
          <!-- 맨 처음으로 -->
-         <button onclick="location.href='${ path }/board/list?page=1'">&lt;&lt;</button>
+         <button onclick="location.href='${ path }/board/boardList?page=1'">&lt;&lt;</button>
          
          <!-- 이전 페이지로 -->
-         <button onclick="location.href='${ path }/board/list?page=${ pageInfo.prvePage }'">&lt;</button>
+         <button onclick="location.href='${ path }/board/boardList?page=${ pageInfo.prvePage }'">&lt;</button>
 
          <!--  10개 페이지 목록 -->
          <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status"> <!-- status는 반복될 때 해당하는 페이지 -->
-          	<c:if test="${ pageInfo.currentPage == status.current }">
+          	<c:if test="${ pageInfo.currentPage == status.current }"> <!-- 현재 페이지와 현재 반복하는 숫자가 같으면 -->
           		<button disabled><c:out value="${ status.current }" /></button>
           	</c:if>
           	<c:if test="${ pageInfo.currentPage != status.current }">
-          		<button onclick="location.href='${ path }/board/list?page=${ status.current }'"><c:out value="${ status.current }" /></button>
+          		<button onclick="location.href='${ path }/board/boardList?page=${ status.current }'"><c:out value="${ status.current }" /></button>
           	</c:if>
          </c:forEach>
          
          <!-- 다음 페이지로 -->
-         <button onclick="location.href='${ path }/board/list?page=${ pageInfo.nextPage }'">&gt;</button>
+         <button onclick="location.href='${ path }/board/boardList?page=${ pageInfo.nextPage }'">&gt;</button>
          
          <!-- 맨 끝으로 -->
-         <button onclick="location.href='${ path }/board/list?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
+         <button onclick="location.href='${ path }/board/boardList?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
       </div>
 			
 	</div>

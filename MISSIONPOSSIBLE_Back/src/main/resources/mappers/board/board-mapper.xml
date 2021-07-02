@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Mapper 설정 파일임을 선언하는 부분 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.missionpossibleback.mvc.board.model.mapper.BoardMapper"> <!-- 풀패키지명 써주기 -->
+	
+	<!-- <resultMap type="com.kh.mybatis.board.model.vo.Board" id=""> -->
+	<resultMap type="Board" id="boardListResultMap">
+      <id property="qna_no" column="QNA_NO"/> <!-- No를 Board의 no에 매핑 -->
+      <result property="title" column="TITLE"/>
+      <result property="writer" column="WRITER"/>
+      <result property="content" column="CONTENT"/>
+      <result property="readCount" column="READCOUNT"/>
+      <result property="pass" column="PASS"/>
+      <result property="status" column="STATUS"/>
+      <result property="originalFileName" column="ORIGINAL_FILENAME"/>
+      <result property="renamedFileName" column="RENAMED_FILENAME"/>
+      <result property="createDate" column="CREATE_DATE"/>
+      <result property="modifyDate" column="MODIFY_DATE"/>   
+      <result property="groupno" column="GROUPNO"/>
+      <result property="groupord" column="GROUPORD"/>
+      <result property="dept" column="DEPT"/>
+   </resultMap>
+	
+	<select id="selectAll" resultMap="boardListResultMap">
+		SELECT  Q.QNA_NO,
+				Q.TITLE, 
+				Q.WRITER, 
+				Q.CONTENT,
+				Q.READCOUNT, 
+				Q.PASS,
+				Q.ORIGINAL_FILENAME, 
+				Q.RENAMED_FILENAME, 
+				Q.CREATE_DATE, 
+				Q.MODIFY_DATE,
+				Q.GROUPNO,
+				Q.GROUPORD,
+				Q.DEPT
+		FROM QNA Q
+		WHERE Q.STATUS = 'Y'
+		ORDER BY Q.QNA_NO DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+	</select>
+	
+	<!-- 파라미터는 #{변수 이름}으로 사용함 -->
+	<!-- resultType : 쿼리 실행 후 조회된 결과값의 자료형 -->
+	<select id="selectBoardByNo" parameterType="_int" resultType="Board"> 
+		SELECT 	Q.QNA_NO,
+				Q.TITLE, 
+				Q.WRITER, 
+				Q.CONTENT,
+				Q.READCOUNT,
+				Q.PASS,
+				Q.ORIGINAL_FILENAME, 
+				Q.RENAMED_FILENAME, 
+				Q.CREATE_DATE, 
+				Q.MODIFY_DATE,
+				Q.GROUPNO,
+				Q.GROUPORD,
+				Q.DEPT
+		FROM QNA Q, MEMBER M
+		WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
+	</select>
+   
+   <!-- 조회수 증가 -->
+	<update id="readCount" parameterType="int">
+		UPDATE QNA SET READCOUNT=READCOUNT+1 WHERE QNA_NO=#{qna_no}
+	</update>
+	
+	
+	<!-- 
+		게시글 상세 보기(댓글 포함)	 
+		  1. 쿼리문을 각각 만들어서 하나의 ResultMap에서 매핑하는 방법 
+			 <select id="selectBoardByNo" parameterType="_int" resultMap="boardDetailResultMap" >
+			 	<include refid="boardListSql" />
+			 	AND B.NO = #{boardNo}
+			 </select>
+			
+			<select id="selectBoardReplies" parameterType="_int" resultMap="boardReplyResultMap">	
+				SELECT R.NO, 
+					   R.BOARD_NO, 
+					   R.CONTENT, 
+					   M.ID, 
+					   R.CREATE_DATE, 
+					   R.MODIFY_DATE
+				FROM REPLY R
+				JOIN MEMBER M ON(R.WRITER_NO = M.NO)
+				WHERE R.STATUS='Y' AND BOARD_NO=#{boardNo}
+				ORDER BY R.NO DESC
+			</select>
+			
+		  2. 하나의 쿼리문을 만들어서 하나의 ResultMap에서 매핑하는 방법
+	 -->
+	
+	<!--  글 삽입  -->
+	<!-- parameterType: 조회결과 객체 -->
+	<insert id="insert" parameterType="Board" useGeneratedKeys="true" keyProperty="qna_no" keyColumn="QNA_NO">
+		INSERT INTO QNA(
+			QNA_NO,
+			TITLE,
+			WRITER,
+			CONTENT,
+			READCOUNT,
+			PASS,
+			STATUS,
+			CREATE_DATE,
+			MODIFY_DATE,
+			GROUPNO,
+			GROUPORD,
+			DEPT,
+			ORIGINAL_FILENAME,
+            RENAMED_FILENAME
+         ) VALUES(
+         	SEQ_QNA_NO.NEXTVAL,
+         	#{title},
+         	#{writer},
+         	#{content},
+         	DEFAULT,
+         	#{pass},
+         	DEFAULT,
+         	DEFAULT,
+         	DEFAULT,
+         	SEQ_QNA_NO.CURRVAL,
+         	0,
+         	0,
+			#{originalFileName},
+            #{renamedFileName}
+         )
+	</insert>
+	
+	<select id="selectBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
+		SELECT COUNT(*)
+		FROM QNA
+		WHERE STATUS='Y' 
+	</select>
+	
+	<update id="update" parameterType="map">
+   		UPDATE QNA
+   		SET
+   			TITLE=#{title},
+   			CONTENT=#{content},
+   			<if test="originalFileName != null">
+   				ORIGINAL_FILENAME=#{originalFileName},
+   			</if>
+   			<if test="renamedFileName != null">
+   				RENAMED_FILENAME=#{renamedFileName},
+   			</if>
+   			MODIFY_DATE=SYSDATE
+   		WHERE
+   			QNA_NO=#{qna_no}
+   </update>
+
+
+
+
+
+   
+
+</mapper>
