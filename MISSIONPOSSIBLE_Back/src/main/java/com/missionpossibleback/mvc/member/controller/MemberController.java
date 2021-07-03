@@ -48,11 +48,6 @@ public class MemberController {
 	
 	@Autowired
 	private  MemberService service;
-
-	@GetMapping(value = "/member/login")
-	public String login() {
-		return "member/login";
-	}
 	
 	@GetMapping(value = "/member/myPage")
 	public String myPage() {
@@ -84,11 +79,6 @@ public class MemberController {
 		
 		return "member/checkNickEm";
 	}
-	
-	@GetMapping(value = "/member/logout")
-	public String logout() {
-		return "member/logout";
-	}
 	   
 	@GetMapping("/member/enrollCheck")
 	   public String enroll2() {
@@ -109,17 +99,58 @@ public class MemberController {
 	      return "member/checkNickname"; 
 	}
 	
-	@GetMapping("/member/withdrawal")
-	   public String withdrawal() {
-	      
-	      return "member/withdrawal"; 
-	}
-	
 	@GetMapping("/member/report")
 	   public String report() {
 	      
 	      return "member/report"; 
 	}
+//탈퇴	
+	@GetMapping("/member/withdrawal")
+	   public String withdrawal() {
+	      
+	      return "member/withdrawal"; 
+	}
+	@RequestMapping(value = "/member/withdrawal", method = {RequestMethod.POST})
+	public ModelAndView withdrawal(ModelAndView model,
+			@RequestParam("reasonWithdrawal") String reasonWithdrawal,
+			@RequestParam("userPW")String userPW,
+			@RequestParam("selboxDirect")String selboxDirect,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			SessionStatus status ) {
+		
+		//본인인증
+		Member valiMember = service.login(loginMember.getId(), userPW);
+		
+		if(valiMember != null) {
+			//탈퇴 이유 디비에 저장
+			int result = 0;
+			
+			//직접입력 했을때, 선택했을때 나눠서 처리
+			if(reasonWithdrawal.equals("direct")) {
+				result = service.withdrawal(loginMember, selboxDirect);
+			}else {
+				result = service.withdrawal(loginMember, reasonWithdrawal);
+			}
+			
+			if(result > 0) {
+				//탈퇴 후 로그아웃
+				model.addObject("msg", "탈퇴되었습니다.");
+				status.setComplete();
+				model.addObject("location", "/");
+			}else {
+				model.addObject("msg", "탈퇴 실패했습니다");
+				model.addObject("location", "/member/withdrawal");
+			}
+		} else {
+			model.addObject("msg", "패스워드가 일치하지 않습니다.");
+			model.addObject("location", "/member/withdrawal");
+		}
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+	
+	
 //회원가입
 	@GetMapping("/member/enroll")
 	   public String enroll() {
@@ -182,6 +213,11 @@ public class MemberController {
 	}
 	
 //로그아웃
+	@GetMapping(value = "/member/logout")
+	public String logout() {
+		return "member/logout";
+	}
+	
 	@RequestMapping(value = "/member/logout", method = {RequestMethod.POST})
 	public String logout(SessionStatus status) {
 		
@@ -328,6 +364,11 @@ public class MemberController {
 		return model;
 	}
 //로그인
+	@GetMapping(value = "/member/login")
+	public String login() {
+		return "member/login";
+	}
+	
 	@RequestMapping(value = "/member/login", method = {RequestMethod.POST})
 	public ModelAndView login(ModelAndView model,
 			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd) {

@@ -25,5 +25,7 @@ public interface MemberService {
 
 	String saveFile(MultipartFile upfile, String savePath);
 
+	int withdrawal(Member loginMember, String reasonWithdrawal);
+
 
 }

@@ -126,5 +126,18 @@ public class MemberServiceImpl implements MemberService {
 		
 		return renameFileName;
 	}
+//탈퇴
+	@Override
+	public int withdrawal(Member loginMember, String reasonWithdrawal) {
+		int result = 1;
+		
+		//member status값 변경
+		result *= mapper.deleteMember(loginMember.getMemberNo());
+		
+		//withdrawal 값 추가
+		result *= mapper.saveWithdrawal(loginMember.getId(), reasonWithdrawal);
+		
+		return result;
+	}
 
 }

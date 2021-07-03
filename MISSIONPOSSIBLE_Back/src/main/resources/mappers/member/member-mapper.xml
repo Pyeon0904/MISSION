@@ -91,4 +91,22 @@
 		WHERE MEMBER_NO = #{memberNo}
  	</update>
  	
+ 	<update id="deleteMember" parameterType="_int">
+ 		UPDATE MEMBER
+ 		SET
+ 			STATUS='N'
+ 		WHERE 
+ 			MEMBER_NO = #{memberNo}
+ 	</update>
+ 	
+ 	<insert id="saveWithdrawal">
+	 	INSERT INTO WITHDRAWAL ( 
+		    ID,  
+		    REASON
+		    
+		) VALUES(
+			#{id},
+			#{reasonWithdrawal}
+		)
+ 	</insert>
  </mapper>

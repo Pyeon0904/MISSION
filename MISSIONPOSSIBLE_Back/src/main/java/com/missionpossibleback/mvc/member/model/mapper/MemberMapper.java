@@ -18,4 +18,8 @@ public interface MemberMapper {
 
 	int insertMember(Member member);
 
+	int deleteMember(@Param("memberNo") int memberNo);
+
+	int saveWithdrawal(@Param("id") String id, @Param("reasonWithdrawal") String reasonWithdrawal);
+
 }
