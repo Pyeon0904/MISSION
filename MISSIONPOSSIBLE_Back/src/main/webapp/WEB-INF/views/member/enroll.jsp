@@ -535,7 +535,6 @@ ul {
 					console.log(e);
 				}
 			});
-
 	   });
 	
 	   //회원가입 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행     
@@ -598,6 +597,7 @@ ul {
         location.href = "${ path }";
     }
  	
+ 	//프로필 썸네일 띄우기
     function setThumbnail(event) { 
     	var reader = new FileReader(); 
     	reader.onload = function(event) { 

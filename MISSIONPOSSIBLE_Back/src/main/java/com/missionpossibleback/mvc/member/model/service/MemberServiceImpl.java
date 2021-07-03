@@ -78,19 +78,22 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.selectMemberbyNick(Nickname);
 	}
 	
-//회원가입 메소드
+//회원가입 메소드, 회원 수정 메소드
 	@Override
 	@Transactional
 	public int save(Member member) {
 		int result = 0;
 		
-		//if(member.getMemberNo() != 0) {
-		//	result = mapper.updateMember(member);
-		//} else {
-			member.setPassword(passwordEncoder.encode(member.getPassword()));
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		
+		if(member.getMemberNo() != 0) {
+
+			result = mapper.updateMember(member);
 			
+		} else {
+		
 			result = mapper.insertMember(member);
-		//}	
+		}	
 		
 		return result;
 	}

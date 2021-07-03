@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,11 +67,6 @@ public class MemberController {
 	@GetMapping(value = "/member/followList")
 	public String followList() {
 		return "member/followList";
-	}
-	
-	@GetMapping(value = "/member/updateMemberInfo")
-	public String updateMemberInfo() {
-		return "member/updateMemberInfo";
 	}
 	
 	@GetMapping(value = "/member/findPassword")
@@ -192,6 +188,54 @@ public class MemberController {
 		status.setComplete();
 		
 		return "redirect:/";
+	}
+//회원 정보 수정
+	@GetMapping(value = "/member/updateMemberInfo")
+	public String updateMemberInfo() {
+		return "member/updateMemberInfo";
+	}
+	
+	@RequestMapping(value = "/member/updateMemberInfo", method = {RequestMethod.POST})
+	public ModelAndView update(ModelAndView model, 
+			HttpServletRequest request,
+			@ModelAttribute Member member,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestParam("upfile") MultipartFile upfile ) {
+		
+		int result = 0;
+		
+		if(loginMember.getId().equals(member.getId())) {
+			member.setMemberNo(loginMember.getMemberNo());
+			
+			if(upfile != null && !upfile.isEmpty()) {
+				String rootPath = request.getSession().getServletContext().getRealPath("resources");
+				String savePath = rootPath + "/upload/profile";				
+				String renameFileName = service.saveFile(upfile, savePath);
+							
+				if(renameFileName != null) {
+					member.setOriginalFileName(upfile.getOriginalFilename());
+					member.setRenamedFileName(renameFileName);
+				}
+			}			
+			
+			result = service.save(member);		
+			
+			if(result > 0) {
+				model.addObject("loginMember" , service.findById(loginMember.getId()));
+				model.addObject("msg", "회원정보 수정을 완료했습니다.");
+				model.addObject("location", "/member/myPage");
+			} else {
+				model.addObject("msg", "회원정보 수정에 실패했습니다.");
+				model.addObject("location", "/member/myPage");
+			}			
+		} else {
+			model.addObject("msg", "잘못된 접근입니다");
+			model.addObject("location", "/");
+		}
+		
+		model.setViewName("common/msg");
+		
+		return model;
 	}
 //프로필
 	@GetMapping("/member/profile")

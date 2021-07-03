@@ -42,12 +42,19 @@
          <div id="conbox">
 		<br><br><br><br><br><br>
 		<h4>마이페이지</h4>
+		<br><br>
 		<hr>
+		<br><br>
 		<div id="myPage-container">
 			<table class="table table-bordered table-hover" border="1" style="width:900px; height:200px; margin:auto; background-color: white;">
 				<tr>
 					<td rowspan="4" style="width:250px; height:200px;">
-						<!-- 사용자 프로필 사진  --> 
+						<c:if test="${ loginMember.renamedFileName == null }">
+							<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+						</c:if>
+						<c:if test="${ loginMember.renamedFileName != null }">
+							<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+						</c:if>
 					</td>
 					<td>
 						<h4><b>닉네임</b></h4>
