@@ -35,6 +35,8 @@ public interface ChallengeService {
 	
 	int getCurrentCount(int myChallengeNo);
 	
+	int getCertCount(int no);
+	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	
 	List<Challenge> getRecruitList(PageInfo pageInfo);
@@ -44,6 +46,8 @@ public interface ChallengeService {
 	List<Challenge> getEndList(PageInfo pageInfo);
 	
 	List<Challenge> getZzimList(PageInfo pageInfo, String id);
+	
+	List<ChallengeCertify> getCertList(PageInfo pageInfo, int no);
 	
 	Challenge findByNo(int challengeNo);
 

@@ -233,9 +233,24 @@ public class challengeController {
 	}
 	
 	// 참여중인 챌린지 VIEW 페이지에 INCLUDE될 챌린지 인증 페이지!
-	@GetMapping("/challege/certList")
-	public ModelAndView certList(ModelAndView model) {
+	// 		챌린지 인증 리스트
+	@GetMapping("/challenge/certList")
+	public ModelAndView certList(ModelAndView model,
+			@RequestParam("no") int no) {
 		
+		log.info("참여중인 챌린지뷰에서 해당 챌린지 인증 리스트 요청");
+		
+		int listCount = service.getCertCount(no);
+		
+		System.out.println("certList의 listCount : " + listCount);
+		
+		List<ChallengeCertify> list = null;
+		PageInfo pageInfo = new PageInfo(1, 10, listCount, listCount);
+		
+		list = service.getCertList(pageInfo, no);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
 		model.setViewName("challenge/certList");
 		
 		return model;
@@ -436,15 +451,6 @@ public class challengeController {
 		model.setViewName("challenge/zzimList");
 		
 		return model;
-	}
-	
-	//챌린지 인증 LIST VIEW
-	@GetMapping("/challenge/certList")
-	public String certListView() {
-		
-		log.info("인증 리스트 요청");
-		
-		return "challenge/certList";
 	}
 	
 	//종료된 챌린지 VIEW

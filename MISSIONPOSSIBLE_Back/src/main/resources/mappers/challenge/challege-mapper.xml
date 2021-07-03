@@ -155,6 +155,24 @@
 	
 	</select>
 	
+	<!-- 챌린지 인증 리스트 조회 -->
+	<select id="selectCertList" parameterType="_int" resultMap="challengeCertifyResultMap">
+		SELECT
+			NO,
+			CHALLENGE_NO,
+			ID,
+			TITLE,
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			CONTENT,
+			CREATE_DATE,
+			MODIFY_DATE,
+			STATUS
+		FROM
+			CHALLENGE_CERTIFY
+		WHERE
+			CHALLENGE_NO = #{no}
+	</select>
 	
 	<!-- 전체 챌린지 수 확인 -->
 	<select id="selectChallengeCount" resultType="_int">
@@ -226,6 +244,13 @@
     	WHERE
         (MY_STATUS = 'JOIN') AND 
         (MY_CHALLENGE_NO = #{no}) 
+	</select>
+	
+	<!-- 챌린지 인증 리스트 수 조회 -->
+	<select id="selectCertCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) 
+		FROM CHALLENGE_CERTIFY 
+		WHERE CHALLENGE_NO = #{no}
 	</select>
 	
 	<!-- 챌린지 등록 -->

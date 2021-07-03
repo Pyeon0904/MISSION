@@ -160,6 +160,16 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectZzimList(rowBounds, id);
 	}	
 	
+	// 챌린지 인증 리스트 조회
+	@Override
+	public List<ChallengeCertify> getCertList(PageInfo pageInfo, int no) {
+		
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectCertList(rowBounds, no);
+	}
+	
 	// 챌린지 전체 개수 출력
 	@Override
 	public int getChallengeCount() {
@@ -211,6 +221,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int getCurrentCount(int no) {
 		
 		return mapper.selectCurrentCount(no);
+	}	
+
+	// 챌린지NO를 이용해 해당 챌린지 인증 LIST의 수를 알려주는 메소드
+	@Override
+	public int getCertCount(int no) {
+		
+		return mapper.selectCertCount(no);
 	}	
 	
 	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)

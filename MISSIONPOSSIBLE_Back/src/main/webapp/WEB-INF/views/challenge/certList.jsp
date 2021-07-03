@@ -39,30 +39,34 @@
 <body>
 	<div class="certListDisplay">
 		<ul>
-			<% 
-				for(int i = 0; i < 12; i++) {
-			%>	
-			<li>
-				<div class="certItemCont">
-					<div class="certItemPhotoBox">
-						<img src="${path}/resources/images/file.png" alt="챌린지 썸네일" width="70px" height="70px">
-					</div>
-			
-					<div class="certItemInfoCont">
-						<div class="certItemTitle"><%-- product.getProductName() --%>
-							00월 00일 챌린지인증합니다.
+			<c:if test="${ list == null or pageInfo.listCount == 0}">
+				<li>
+					<h3>조회된 챌린지 인증 내역이 없습니다.</h3>
+				</li>
+			</c:if>
+			<c:if test="${ list != null }">
+				<c:forEach var="certify" items="${ list }">
+					<li>
+						<div class="certItemCont">
+							<div class="certItemPhotoBox">
+								<img src="${path}/resources/upload/challenge/certify/${ certify.renamedFilename }" alt="챌린지 썸네일" width="70px" height="70px">
+							</div>
+					
+							<div class="certItemInfoCont">
+								<div class="certItemTitle">
+									<fmt:formatDate var="certifyDate" value="${ certify.createDate }" pattern="MM월 dd일"/>
+									<c:out value="${ certifyDate }"/>
+									<c:out value="${ certify.id }"/>
+									<c:out value="${ certify.title }"/>
+								</div>
+								<div class="certItemSubCont">									
+									<c:out value="${ certify.content }"/> 							
+								</div>
+							</div>
 						</div>
-						<div class="certItemSubCont"><%-- product.getPrice() --%>										
-							챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-							챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-							챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 							
-						</div>
-					</div>
-				</div>
-			</li>
-		<%
-			}
-		%>
+					</li>
+				</c:forEach>	
+			</c:if>
 		</ul>
 	</div>
 </body>

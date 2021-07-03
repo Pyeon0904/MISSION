@@ -222,35 +222,14 @@
 						<td id="memberCertList">
 							<h4>구성원들의 인증내역</h4>
 							<div class="certListCont">
-								<!-- 상품 리스트 내역 -->
-								<div class="certListDisplay">
-									<ul>
-									<% 
-										for(int i = 0; i < 12; i++) {
-									%>	
-										<li>
-											<div class="certItemCont">
-												<div class="certItemPhotoBox">
-													<img src="${path}/resources/upload/challenge/<%-- product.getRenamedFileName() --%>gf_cert.jpg" alt="챌린지 썸네일" width="70px" height="70px">
-												</div>
-												<div class="certItemInfoCont">
-													<div class="certItemTitle"><%-- product.getProductName() --%>00월 00일 챌린지 인증합니다</div>
-													<div class="certItemSubCont"><%-- product.getPrice() --%>
-														
-														챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-														챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-														챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-														챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-														
-													</div>
-												</div>
-											</div>
-										</li>
-									<% 
-										}
-									%>
-									</ul>
-								</div>
+								<!-- 
+									현재 진행중/참여중인 챌린지의 인증 내역을 보여주는 페이지 INCLUDE
+									파라미터는 간단하게 참여중인 챌린지의 CHALLENGE_NO값만 보내줌
+									아래 jsp:include 태그의 page속성 빨간줄(오류)은 무시가능! 정상작동함!
+								-->
+								<jsp:include page="/challenge/certList">
+									<jsp:param name="no" value="${ challenge.challengeNo }"/>
+								</jsp:include>
 							</div>
 						</td>
 					</tr>

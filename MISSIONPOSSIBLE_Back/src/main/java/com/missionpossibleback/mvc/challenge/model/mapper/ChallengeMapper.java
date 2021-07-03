@@ -27,6 +27,8 @@ public interface ChallengeMapper {
 	
 	int selectCurrentCount(int no);
 	
+	int selectCertCount(int no);
+	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
 	List<Challenge> selectRecruitList(RowBounds rowBounds);
@@ -36,6 +38,8 @@ public interface ChallengeMapper {
 	List<Challenge> selectEndList(RowBounds rowBounds);
 	
 	List<Challenge> selectZzimList(RowBounds rowBounds, String id);
+	
+	List<ChallengeCertify> selectCertList(RowBounds rowBounds, int no);
 	
 	Challenge selectChallengeByNo(@Param("challengeNo") int challengeNo);	
 	
