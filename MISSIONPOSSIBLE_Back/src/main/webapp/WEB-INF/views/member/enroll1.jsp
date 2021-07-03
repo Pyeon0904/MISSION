@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
@@ -13,6 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<script src="${ path }/js/jquery-3.6.0.min.js"></script>
 <style>
 
 .section_join{
@@ -367,41 +366,11 @@ ul {
      margin-left : 10px;
      color: red;
 }
- 
-#box{ 
-      background-color:rgb(224, 239, 132);
-      width:100%;
-      height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-      margin-top:330px;
-      margin-bottom:100px;
-      margin-left:-10px;
-      padding:10px;
-}       
-#conbox{
-	     width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-	     position:relative; 
-	     top:20px;
-	     margin:auto;
-}
-.input-file-button{
-
-	  padding: 10px 20px;
-	  background-color:black;
-	  border-radius: 4px;
-	  color: white;
-	  cursor: pointer;
-}
 
 </style>
 <script type="text/javascript">
+
 	$(document).ready(() => {	
-		$("#profile").on("click", (e)=>{
-			
-			const url = "${path}/member/profile";
-			const status="left=500px, top=200px, width=450px; height=300px";
-			
-			open(url, "", status);
-		});	
 		
 	   $("#member_pw1").blur((event) => {
 	      let pass1 = $("#member_pw").val();         
@@ -444,9 +413,9 @@ ul {
        });
 	   
 	   // 닉네임 유효성 검사
-	   $("#member_nickname").on("input",function(){
+	   $("#member_name").on("input",function(){
            var regex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
-           var result = regex.exec($("#member_nickname").val());
+           var result = regex.exec($("#member_name").val());
            
            if(result != null){
               $(".name.regex").html("");  
@@ -470,7 +439,7 @@ ul {
 	 
 	    
     // 아이디 중복을 확인 처리 콜백함수
-	   $("#checkIdDuplicate").on("click",function(){
+	   $("#checkDuplicate").on("click",function(){
 	      // 중복확인전에 아이디 값이 4글자 이상인지 확인
 	      var id = $("#member_id").val().trim();
 	      
@@ -478,63 +447,52 @@ ul {
 	         alert("아이디는 최소 4글자 이상 입력하세요.")
 	         return;
 	      }
-  
-	      $.ajax({
-				type: "get",
-				url: "${path}/member/idCheck",
-				dataType: "json",
-				data: {
-					id // 속성의 키값과 변수명이 동일할 경우
-				},
-				success: function(data) {
-					console.log(data);
-					
-					if(data.validate === true) {
-						alert("이미 사용중인 아이디 입니다.");
-						$("#member_id").val('');
-					} else {
-						alert("사용 가능한 아이디 입니다.");		
-						$("#checkid").val('통과');
-					}
-				},
-				error: function(e) {
-					console.log(e);
-				}
-			});
+
+		      // 중복 확인할 새창 띄우기
+		      const url = "<%= request.getContextPath()%>/member/checkId";
+		      const title = "duplicate";
+		      const status = "left=500px,top=100px,width=500px,height=300px";
+		      
+		      open("", title, status);
+		      
+		      // form에 데이터들을 채우고 open된 윈도우에서 결과를 받는 로직을 구성한다.
+		      // 자바스크립트에서 form은 name 속성으로 요소를 가져올 수 있다.
+		      checkIdForm.target = title; // form 전송하는 윈도우를 설정한다.
+		      checkIdForm.action = url;
+		      checkIdForm.method = "post";
+		      checkIdForm.userId.value = id;
+		      
+		      // form 전송하기
+		      checkIdForm.submit();
+
 	   });
     
 	// 닉네임 중복을 확인 처리 콜백함수
-	   $("#checkNicknameDuplicate").on("click",function(){
+	   $("#checkName").on("click",function(){
 	      // 중복확인전에 닉네임 값이 2글자 이상인지 확인
-	      var nickname = $("#member_nickname").val().trim();
+	      var name = $("#member_name").val().trim();
 	      
-	      if (nickname.length < 1) {
+	      if (name.length < 1) {
 	         alert("닉네임은 최소 2글자 이상 입력하세요.")
 	         return;
 	      }
 
-	      $.ajax({
-				type: "get",
-				url: "${path}/member/nicknameCheck",
-				dataType: "json",
-				data: {
-					nickname // 속성의 키값과 변수명이 동일할 경우
-				},
-				success: function(data) {
-					console.log(data);
-					
-					if(data.validate === true) {
-						alert("이미 사용중인 닉네임 입니다.");
-						$("#member_nickname").val('');
-					} else {
-						alert("사용 가능한 닉네임 입니다.");
-						$("#checkNickname").val('통과');
-					}
-				},
-				error: function(e) {
-					console.log(e);
-				}
-			});
+		      // 중복 확인할 새창 띄우기
+		      const url = "<%= request.getContextPath()%>/member/checkName";
+		      const title = "duplicate";
+		      const status = "left=500px,top=100px,width=500px,height=300px";
+		      
+		      open("", title, status);
+		      
+		      // form에 데이터들을 채우고 open된 윈도우에서 결과를 받는 로직을 구성한다.
+		      // 자바스크립트에서 form은 name 속성으로 요소를 가져올 수 있다.
+		      checkNameForm.target = title; // form 전송하는 윈도우를 설정한다.
+		      checkNameForm.action = url;
+		      checkNameForm.method = "post";
+		      checkNameForm.userName.value = name;
+		      
+		      // form 전송하기
+		      checkNameForm.submit();
 
 	   });
 	
@@ -577,8 +535,8 @@ ul {
 	   	        return;
    	    	}
     	 
-    	 // 빈칸 없을 때 제출
-    	   ${"join_content"}.submit();
+    	 // 빈칸 없을 때 제출.
+    	 ${"join_content"}.submit();
 
        })
 	});
@@ -598,135 +556,98 @@ ul {
         location.href = "${ path }";
     }
  	
-    function setThumbnail(event) { 
-    	var reader = new FileReader(); 
-    	reader.onload = function(event) { 
-    		var img = document.getElementById("profile");
-    		img.setAttribute("src", event.target.result);
-    };
-    	reader.readAsDataURL(event.target.files[0]); 	
-   }
-
-
- 
-</script>
-
+ 	
+	</script>
 </head>
 <body>
-<br><br><br>
 
-<div id="box">
-      <section id="section">
-         <div id="conbox">
-	<br><br><br><br><br><br>
-	<h4 style="text-align: center;">회원가입</h4>
-	<br><br>
-	<hr>
-	<br><br>
-	<div id="enroll-container">
-		<form name ="memberEnrollFrm" id="join_content" action="enroll" method="post" enctype="multipart/form-data">
-			<table  border="1" style="margin:0 auto;">
-				<tr>
-					<td style="width:300px; height:300px;">
-						<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
-					</td>
-					<td>
-						<ul class="join_ulcss">
-				            <li>기본정보
-				                <label><b style="color:red;">·</b>표시는 반드시 입력하세요 하는 항목입니다.</label>
-				            </li>
-				
-				            <li>
-				                <span class="join_li_title"><b style="color:red;">·</b>아이디</span>
-				                <div class="join_li_input">
-				                    <input type="text" class="member_id" name="id" id="member_id"
-				                        style="width: 280px; margin-right: 10px;">
-				                    <button type="button" class="addr_btn" onclick="" id="checkIdDuplicate">중복확인</button>
-				                    <div class="id regex"></div>
-				                </div>
-				            </li>
-				
-				            <li>
-				                <span class="join_li_title">
-				                    <b style="color:red;">·</b>비밀번호</span>
-				                <div class="join_li_input">
-				                    <input type="password" class="member_pw" id="member_pw" name="password"
-				                        placeholder="영문대/소문자, 숫자 4-12자리">
-				                    <div class="pw regex"></div>
-				                       
-				                </div>
-				            </li>
-				
-				            <li>
-				                <span class="join_li_title"><b style="color:red;">·</b>비밀번호 확인</span>
-				                <div class="join_li_input">
-				                    <input type="password" class="member_pw" id="member_pw1">
-				                    <div class="repw regex"></div>
-				                </div>
-				            </li>
-				
-				            <li>
-				                <span class="join_li_title"><b style="color:red;">·</b>닉네임</span>
-				                <div class="join_li_input">
-				                <input type="text" class="member_nickname" id="member_nickname" name="nickname"
-				                	style="width: 280px; margin-right: 10px;">
-				                <button type="button" class="addr_btn" onclick="" id="checkNicknameDuplicate">중복확인</button>
-				                <div class="name regex"></div>
-				                </div>
-				            </li>
-				
-				            <li>
-				                <span class="join_li_title2"><b style="color:red;">·</b>이메일</span>
-				                <div class="join_li_input2">
-				                    <div class="join_li_input_out">
-				                        <input type="text" class="member_email" id="member_email" name="email">
-				                        <select class="member_email_select" id="member_email_select" onchange="email_select();">
-				                            <option value="" selected>직접입력</option>
-				                            <option value="@naver.com">naver.com</option>
-				                            <option value="@daum.net">daum.net</option>
-				                            <option value="@nate.com">nate.com</option>
-				                            <option value="@gmail.com">gmail.com</option>
-				                        </select>
-				                        <div class="email regex"></div>
-				                        
-				                    </div>
-				                    <div class="join_li_input_out_1">
-				                        <input type="checkbox" class="member_event" name="member_event" id="member_event" value="Y">
-				                        <label for="member_event">정보/이벤트 메일 수신에 동의합니다.</label>
-				                    </div>
-				                </div>
-				            </li>
-			          </ul> 
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: center">
-						<label class="input-file-button" for="input-file">
-						  프로필 사진 등록
-						</label>
-						<input type="file" id="input-file"  name="upfile" style="display:none" accept="image/*" onchange="setThumbnail(event);"/> 
-						<br>
-					</td>
-				</tr>
-			</table>
-			<br>
-			<label class="join_btns">
-            	<div class="join_btns_out">
-               	 	<span class="cancel_btn" onclick="join_cn();">취소</span>
-                	<span class="join_all_btn" id="enrollSubmit">회원가입</span>
-            	</div>
-        	</label>
-		</form>
-	</div>
-</div>
-</section>
-</div>
+<form name="join_content" id="join_content" action="" method="POST">
+    <div class="join_out">
+        <p class="join_title">JOIN US</p>
+        <input type="hidden" id="check_num" name="check_num" value="0">
+        <ul class="join_ulcss">
+            <li>기본정보
+                <label><b style="color:red;">·</b>표시는 반드시 입력하세요 하는 항목입니다.</label>
+            </li>
+
+            <li>
+                <span class="join_li_title"><b style="color:red;">·</b>아이디</span>
+                <div class="join_li_input">
+                    <input type="text" class="member_id" name="member_id" id="member_id"
+                        style="width: 280px; margin-right: 10px;">
+                    <button type="button" class="addr_btn" onclick="" id="checkDuplicate">중복확인</button>
+                    <div class="id regex"></div>
+                </div>
+            </li>
+
+            <li>
+                <span class="join_li_title">
+                    <b style="color:red;">·</b>비밀번호</span>
+                <div class="join_li_input">
+                    <input type="password" class="member_pw" id="member_pw" name="member_pw"
+                        placeholder="영문대/소문자, 숫자 4-12자리">
+                    <div class="pw regex"></div>
+                       
+                </div>
+            </li>
+
+            <li>
+                <span class="join_li_title"><b style="color:red;">·</b>비밀번호 확인</span>
+                <div class="join_li_input">
+                    <input type="password" class="member_pw" id="member_pw1">
+                    <div class="repw regex"></div>
+                </div>
+            </li>
+
+            <li>
+                <span class="join_li_title"><b style="color:red;">·</b>닉네임</span>
+                <div class="join_li_input">
+                <input type="text" class="member_name" id="member_name" name="member_name"
+                	style="width: 280px; margin-right: 10px;">
+                <button type="button" class="addr_btn" onclick="" id="checkName">중복확인</button>
+                <div class="name regex"></div>
+                </div>
+            </li>
+
+            <li>
+                <span class="join_li_title2">이메일</span>
+                <div class="join_li_input2">
+                    <div class="join_li_input_out">
+                        <input type="text" class="member_email" id="member_email" name="member_email">
+                        <select class="member_email_select" id="member_email_select" onchange="email_select();">
+                            <option value="" selected>직접입력</option>
+                            <option value="@naver.com">naver.com</option>
+                            <option value="@daum.net">daum.net</option>
+                            <option value="@nate.com">nate.com</option>
+                            <option value="@gmail.com">gmail.com</option>
+                        </select>
+                        <div class="email regex"></div>
+                        
+                    </div>
+                
+                    <div class="join_li_input_out_1">
+                        <input type="checkbox" class="member_event" name="member_event" id="member_event" value="Y">
+                        <label for="member_event">정보/이벤트 메일 수신에 동의합니다.</label>
+                    </div>
+                </div>
+            </li>
+            
+        </ul> 
+        
+        <label class="join_btns">
+            <div class="join_btns_out">
+                <span class="cancel_btn" onclick="join_cn();">취소</span>
+                <span class="join_all_btn" id="enrollSubmit" onclick="join_confirm();">회원가입</span>
+            </div>
+        </label>
+    </div>
+</form>
 <form name="checkIdForm">
          <input type="hidden" name="userId" id="checkid">
 </form>
-<form name="checkNicknameForm">
-         <input type="hidden" name="userNickname" id="checkNickname">
+
+<form name="checkNameForm">
+         <input type="hidden" name="userName" id="checkname">
 </form>
 </body>
 </html>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>

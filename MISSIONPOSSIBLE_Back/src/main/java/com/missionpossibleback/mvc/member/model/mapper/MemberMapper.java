@@ -14,4 +14,8 @@ public interface MemberMapper {
 
 	Member selectMemberbyNick(@Param("Nickname") String nickname);
 
+	int updateMember(Member member);
+
+	int insertMember(Member member);
+
 }

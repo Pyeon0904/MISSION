@@ -1,6 +1,8 @@
 package com.missionpossibleback.mvc.member.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.activation.CommandMap;
@@ -16,16 +18,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.member.model.service.MemberService;
@@ -86,17 +93,10 @@ public class MemberController {
 	public String logout() {
 		return "member/logout";
 	}
-	
-	@GetMapping("/member/enroll")
-	   public String enroll1() {
-	      log.info("회원가입");
-	      
-	      return "member/enroll";
-	}
 	   
 	@GetMapping("/member/enrollCheck")
 	   public String enroll2() {
-	      log.info("이용약관");
+		 log.info("이용약관");
 	      
 	      return "member/enrollCheck"; 
 	}
@@ -105,12 +105,6 @@ public class MemberController {
 	   public String checkIdPw() {
 	      
 	      return "member/checkIdPw"; 
-	}
-	
-	@GetMapping("/member/checkId")
-	   public String checkId() {
-	      
-	      return "member/checkId"; 
 	}
 	
 	@GetMapping("/member/checkNickname")
@@ -125,18 +119,73 @@ public class MemberController {
 	      return "member/withdrawal"; 
 	}
 	
-	@GetMapping("/member/profile")
-	   public String profile() {
-	      
-	      return "member/profile"; 
-	}
-	
 	@GetMapping("/member/report")
 	   public String report() {
 	      
 	      return "member/report"; 
 	}
+//회원가입
+	@GetMapping("/member/enroll")
+	   public String enroll() {
+	      
+	      return "member/enroll";
+	}
 	
+	@RequestMapping(value = "/member/enroll", method = {RequestMethod.POST})
+	public ModelAndView enroll(ModelAndView model, @ModelAttribute Member member, HttpServletRequest request, @RequestParam("upfile") MultipartFile upfile) {
+		
+		if(upfile != null && !upfile.isEmpty()) {
+			String rootPath = request.getSession().getServletContext().getRealPath("resources");
+			String savePath = rootPath + "/upload/profile";				
+			String renameFileName = service.saveFile(upfile, savePath);
+						
+			if(renameFileName != null) {
+				member.setOriginalFileName(upfile.getOriginalFilename());
+				member.setRenamedFileName(renameFileName);
+			}
+		}	
+		
+		//System.out.println(member); 업로드 콘솔에서 확인
+
+		int result = service.save(member);		
+		
+		if(result > 0) {
+			model.addObject("msg", "회원가입이 정상적으로 완료되었습니다.");
+			model.addObject("location", "/");
+		} else { 
+			model.addObject("msg", "회원가입을 실패하였습니다.");
+			model.addObject("location", "/member/enroll");
+		}
+		
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+//회원가입시 아이디 중복체크
+	@GetMapping("/member/idCheck")
+	public ResponseEntity<Map<String, Object>> idCheck(@RequestParam("id") String userId) {
+		log.info("User ID : {}", userId);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("validate", service.validate(userId));
+		
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
+	
+//회원가입시 닉네임 중복체크
+	@GetMapping("/member/nicknameCheck")
+	public ResponseEntity<Map<String, Object>> nicknameCheck(@RequestParam("nickname") String userNickname) {
+		log.info("User Nickname : {}", userNickname);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("validate", service.validateNick(userNickname));
+		
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
+	
+//로그아웃
 	@RequestMapping(value = "/member/logout", method = {RequestMethod.POST})
 	public String logout(SessionStatus status) {
 		
@@ -144,7 +193,12 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
-	
+//프로필
+	@GetMapping("/member/profile")
+	   public String profile() {
+	      
+	      return "member/profile"; 
+	}
 	@RequestMapping(value = "/member/profile", method = {RequestMethod.POST})
 	public ModelAndView profile(ModelAndView model) {
 		
@@ -154,6 +208,7 @@ public class MemberController {
 		return model;
 	}
 	
+//신고
 	@RequestMapping(value = "/member/report", method = {RequestMethod.POST})
 	public ModelAndView report(ModelAndView model) {
 		
@@ -163,6 +218,7 @@ public class MemberController {
 		return model;
 	}
 	
+//비밀번호 재설정 - 메일 전송
 	@GetMapping(value = "/member/sendMail")
 	public String sendMail() {
 		
@@ -190,6 +246,7 @@ public class MemberController {
 		return model;
 	}
 	
+//본인인증(ID, PW)
 	@RequestMapping(value = "/member/checkIdPw", method = {RequestMethod.POST})
 	public ModelAndView checkIdPw(ModelAndView model,
 			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd) {
@@ -207,7 +264,7 @@ public class MemberController {
 		model.setViewName("common/msg_popup");
 		return model;
 	}
-	
+//본인인증(NICKNAME, EMAIL)
 	@RequestMapping(value = "/member/checkNickEm", method = {RequestMethod.POST})
 	public ModelAndView checkNickEm(ModelAndView model,
 			@RequestParam("userNickname")String userNickname, @RequestParam("userEmail")String userEmail) {
@@ -226,7 +283,7 @@ public class MemberController {
 		
 		return model;
 	}
-	
+//로그인
 	@RequestMapping(value = "/member/login", method = {RequestMethod.POST})
 	public ModelAndView login(ModelAndView model,
 			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd) {
@@ -265,7 +322,7 @@ public class MemberController {
 	    final String bodyEncoding = "UTF-8"; //콘텐츠 인코딩
 	    
 	    String subject = "작전 - 비밀번호 재설정 메일"; 	//메일 제목
-	    String fromEmail = "hge4587@gmail.com";		//보낸사람 이메일
+	    String fromEmail = "MISSOINPOSSIBLE";		//보낸사람 이메일
 	    String fromUsername = "작전";					//보낸사람 이름
 	    String toEmail = loginMember.getEmail(); // 보낼 이메일 / 콤마(,)로 여러개 나열		
 	    

@@ -27,8 +27,9 @@
  		<result property="email" column="EMAIL"/>
  		<result property="point" column="POINT"/>
  		<result property="status" column="STATUS"/>
+ 		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
+ 		<result property="renamedFileName" column="RENAMED_FILENAME"/>
  	</resultMap>
- 	
  	
  	<select id="selectMember" parameterType="string" resultMap="memberResultMap">
  		<include refid="selectMemberSql" />
@@ -46,5 +47,34 @@
  			PASSWORD = #{tempPassword}
 		WHERE MEMBER_NO = #{memberNo}
  	</update>
+ 	
+ 	<insert id="insertMember" parameterType="Member"
+ 		useGeneratedKeys="true" keyColumn="MEMBER_NO" keyProperty="memberNo" >
+
+	 	INSERT INTO MEMBER ( 
+		    ID,  
+		    GRADE_NAME,
+		    MEMBER_NO,
+		    PASSWORD,
+		    NICKNAME, 
+		    EMAIL, 
+		    POINT, 
+		    STATUS, 
+		    ORIGINAL_FILENAME, 
+		    RENAMED_FILENAME
+		    
+		) VALUES(
+			#{id},
+			DEFAULT,
+		    SEQ_UNO.NEXTVAL, 
+		    #{password},
+		    #{nickname},
+		    #{email},
+		    DEFAULT,
+		    DEFAULT,
+		    #{originalFileName},
+		    #{renamedFileName}
+		)
+ 	</insert>
  	
  </mapper>

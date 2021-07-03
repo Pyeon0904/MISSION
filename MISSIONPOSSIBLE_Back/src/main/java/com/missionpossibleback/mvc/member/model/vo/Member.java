@@ -24,4 +24,8 @@ public class Member {
 	
 	private String status;
 	
+	private String originalFileName;	//프로필
+	
+	private String renamedFileName;
+	
 }
