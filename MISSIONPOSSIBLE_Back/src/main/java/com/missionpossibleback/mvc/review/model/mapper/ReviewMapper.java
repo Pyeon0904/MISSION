@@ -22,10 +22,12 @@ public interface ReviewMapper {
 	int updateReview(Review review);
 
 	int selectReviewCount();
+	
+	int updateReplyCount(int reviewNo);
 
 	boolean deleteReview(int reviewNo);
 	
-	boolean plusCnt(int reviewNo);
+	int plusCnt(int reviewNo);
 
 	List<Review> selectSearchReviewList(@Param("key") String key, @Param("word") String word, RowBounds rowBounds);
 
@@ -36,5 +38,7 @@ public interface ReviewMapper {
 	int insertRely(Reply reply);
 
 	List<Reply> selectReplyList(int reviewNo);
+
+	boolean deleteReply(int replyNo);
 
 }

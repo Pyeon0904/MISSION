@@ -12,22 +12,20 @@ import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
 
 public interface ReviewService {
+	
+	List<Review> getReviewList(PageInfo pageInfo);
+
+	Review findByNo(int reviewNo);
+	
+	int getReviewCount();
 
 	int save(Review review);
 	
 	String saveFile(MultipartFile upfile, String savePath);
 
-	List<Review> getReviewList(PageInfo pageInfo);
-
-	Review findByNo(int reviewNo);
-
 	void deleteFile(String filePath);
-
-	int getReviewCount();
 	
 	boolean deleteReview(int reviewNo);
-	
-	boolean plusCnt(int reviewNo);
 
 	List<Review> getSearchReviewList(@Param("key") String key, @Param("word") String word, PageInfo pageInfo);
 
@@ -39,4 +37,7 @@ public interface ReviewService {
 
 	List<Reply> getReplyList(int reviewNo);
 
+	boolean deleteReply(int replyNo);
+
+	int getReplyCount(int reviewNo);
 }

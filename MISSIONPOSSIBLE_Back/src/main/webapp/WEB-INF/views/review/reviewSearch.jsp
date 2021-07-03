@@ -123,8 +123,8 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 			<!-- 검색 폼 시작--------------------- -->
          <form id="reviewSearch" name="form1" method="post" action="${path}/review/reviewSearch">
             <div align="right" class="row m-4">
-               <select name="key" class="form-control">
-                  <option value="">::검색 유형::</option>
+               <select name="key" class="form-control" required>
+                  <option value="" selected disabled hidden>::검색 유형::</option>
                   <option value="1">글제목</option>
                   <option value="2">작성자</option>
                   <option value="3">글내용</option>
@@ -132,8 +132,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                   <option value="5">전체</option>
                </select>
           
-               <input type="text" name="word" class="form-control"
-                   style="padding: 3px 20px 6px 20px" value=${ word }>
+               <input type="text" name="word" class="form-control" style="padding: 3px 20px 6px 20px" value=${ word }>
                <button type="submit" class="btn btn-warning" >검색</button>
             </div>
          </form>

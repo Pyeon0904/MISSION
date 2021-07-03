@@ -28,6 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	private ReviewMapper mapper;
 
+	// 리뷰 게시글 등록&수정
 	@Override
 	@Transactional
 	public int save(Review review) {
@@ -42,12 +43,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return result;
 	}
 	
+	// 리뷰 게시글 페이징 처리 위한 갯수 세기
 	@Override
 	public int getReviewCount() {
 		
 		return mapper.selectReviewCount();
 	}
 
+	// 리뷰 게시글 페이징 처리
 	@Override
 	public List<Review> getReviewList(PageInfo pageInfo) {
 		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
@@ -56,12 +59,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectReviewList(rowBounds);
 	}
 
+	// 리뷰 번호로 리뷰 찾아오기
 	@Override
 	public Review findByNo(int reviewNo) {
-		
+		mapper.plusCnt(reviewNo);
 		return mapper.selectReviewByNo(reviewNo);
 	}
 	
+	// 리뷰 게시글 파일 저장
 	@Override
 	public String saveFile(MultipartFile upfile, String savePath) {
 		String renamedFileName = null;
@@ -93,6 +98,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return renamedFileName;
 	}
 	
+	// 파일 새로 등록시 기존 파일 지우기
 	@Override
 	public void deleteFile(String filePath) {
 		log.info("FILE PATH : {} ", filePath);
@@ -105,16 +111,19 @@ public class ReviewServiceImpl implements ReviewService {
 		
 	}
 
+	// 게시글 삭제
 	@Override
 	public boolean deleteReview(int reviewNo) {
 		return mapper.deleteReview(reviewNo);
 	}
-
+	
+	// 리뷰 게시글 검색 페이징 처리 위한 갯수 세기
 	@Override
-	public boolean plusCnt(int reviewNo) {
-	  return mapper.plusCnt(reviewNo);
+	public int getSerchReviewCount(@Param("key") String key, @Param("word") String word) {
+		return mapper.selectSerchReviewCount(key, word);
 	}
 
+	// 키워드 통해 리뷰 게시글 검색&페이징
 	@Override
 	public List<Review> getSearchReviewList(@Param("key") String key, @Param("word") String word, PageInfo pageInfo) {
 		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
@@ -123,26 +132,36 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectSearchReviewList(key, word, rowBounds);
 	}
 
-	@Override
-	public int getSerchReviewCount(@Param("key") String key, @Param("word") String word) {
-		return mapper.selectSerchReviewCount(key, word);
-	}
-
+	// 리뷰 게시글 신고하기
 	@Override
 	public int report(Report report) {
 		
 		return mapper.insertReport(report);
 	}
 
+	// 리뷰 게시글 댓글 등록
 	@Override
 	public int reply(Reply reply) {
 		return mapper.insertRely(reply);
 	}
 
+	// 리뷰 게시글 댓글 불러오기
 	@Override
 	public List<Reply> getReplyList(int reviewNo) {
 		return mapper.selectReplyList(reviewNo);
 	}
 
+	// 리뷰 게시글 댓글 삭제
+	@Override
+	public boolean deleteReply(int replyNo) {
+		return mapper.deleteReply(replyNo);
+		
+	}
+	
+	@Override
+	public int getReplyCount(int reviewNo) {
+		
+		return mapper.updateReplyCount(reviewNo);
+	}
 
 }

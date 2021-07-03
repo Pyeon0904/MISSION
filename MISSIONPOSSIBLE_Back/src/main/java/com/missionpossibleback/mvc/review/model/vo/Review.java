@@ -30,10 +30,10 @@ public class Review {
 	private String renamedFileName;
 
 	private int viewCount;
+	
+	private int replyCount;
 
 	private String status;
 	
 	private List<Reply> replies;
-	
-	private String searchKeyword;
 }

@@ -12,7 +12,9 @@
 <head>
 <meta charset="UTF-8">
 <title>후기 게시판</title>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
    #box{ 
             background-color:rgb(224, 239, 132);
@@ -133,8 +135,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                   <option value="5">전체</option>
                </select>
           
-               <input type="text" name="word" class="form-control"
-                   style="padding: 3px 20px 6px 20px" value=${ word }>
+               <input type="text" name="word" class="form-control" style="padding: 3px 20px 6px 20px" value=${ word }>
                <button type="submit" class="btn btn-warning" >검색</button>
             </div>
          </form>
@@ -175,7 +176,10 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 								<td><c:out value="${ review.no }"/></td>
 								<td>
 									<a href="${ path }/review/reviewView?no=${review.no}">
-										<c:out value="${ review.title }"/>
+										<c:out value="${ review.title } "/>
+										<c:if test="${ review.replyCount != 0 }">
+												[${ review.replyCount }]
+										</c:if>
 									</a>
 								</td>
 								<td><c:out value="${ review.challengeTitle }"/></td>

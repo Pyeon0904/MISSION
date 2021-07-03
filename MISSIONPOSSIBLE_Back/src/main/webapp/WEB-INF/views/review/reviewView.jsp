@@ -110,6 +110,43 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
 div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
+
+
+section{ width: 100%; padding: 20px; margin: 20px; }
+/* 커뮤니티 게시글 관련 */
+#community-container { border: 1px solid black; width: 600px; height: auto; }
+#write-community { border: 1px solid black; width: 600px; height: auto; }
+#goToLogin { margin-left: 20px; padding: 5px; }
+#writeContent { margin : 20px; }
+#btn-login { border: none; font-weight: bold; background: none; }
+#user-information { margin-left: 20px; }
+#community-content { padding: 20px; margin: 20px; width: 500px; height: 10px; }
+hr { background-color: black; color: black; width: 100%; }
+
+
+
+
+table.type04 {
+  border-collapse: separate;
+  border-spacing: 1px;
+  text-align: left;
+  line-height: 1.5;
+  border-top: 1px solid #ccc;
+  margin : 20px 10px;
+}
+table.type04 th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+}
+table.type04 td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+}
 </style>
 
 </head>
@@ -120,7 +157,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 				<div id="wrap">
 					<div id="container">
 						<div class="inner">
-							<h2 style="padding-bottom:20px;">후기 게시판</h2>
+							<h2 style="padding-bottom: 20px;">후기 게시판</h2>
 							<form id="boardForm" name="boardForm">
 								<input type="hidden" name="no" value="${ review.no }" />
 								<table width="100%" class="table01">
@@ -144,7 +181,8 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 											<th>작성자</th>
 											<td>${ review.writerId }</td>
 											<th>작성일</th>
-											<td><fmt:formatDate type="date" value="${ review.createDate }"/></td>
+											<td><fmt:formatDate type="date"
+													value="${ review.createDate }" /></td>
 										</tr>
 
 										<tr>
@@ -164,9 +202,10 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 													<a
 														href="javascript:fileDownload('${ review.originalFileName }', '${ review.renamedFileName }')">
 														<img src="${ path }/images/file.png" width="20"
-														height="20" /> <c:out value="${ review.originalFileName }"></c:out>
+														height="20" /> <c:out
+															value="${ review.originalFileName }"></c:out>
 													</a>
-						<script>
+													<script>
 							function fileDownload(oriname, rename) {
 								const url = "${ path }/review/fileDown";
 
@@ -176,10 +215,9 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 								location.assign(url + "?oriname=" + oName + "&rename=" + rName);
 							}
 						</script>
-						</c:if> 
-						<c:if test="${ empty review.originalFileName }">
-								<span> - </span>
-						</c:if></td>
+												</c:if> <c:if test="${ empty review.originalFileName }">
+													<span> - </span>
+												</c:if></td>
 										</tr>
 
 										<tr>
@@ -189,58 +227,51 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 									</tbody>
 								</table>
 							</form>
-							
-							
-							
-							<br>
-							<table id="tbl-comment" width="800" class="table01">
-								<colgroup>
-									<col width="10%">
-									<col width="10%">
-									<col width="10%">
-									<col width="40%">
-									<col width="10%">
-									<col width="10%">
-									<col width="*">
-								</colgroup>
-							    <c:forEach var="reply" items="${ list }">
-							    <tr>
-											<th>작성자</th>
-											<td>${ reply.writerId }</td>
-											<th>내용</th>
-											<td>${ reply.content }</td>
-											<th>날짜</th>
-											<td>${ reply.createDate }</td>
-											<td>
-							    			<c:if test="${ !empty loginMember && loginMember.id == reply.writerId }">
-						    					<button id="Replyx">삭제</button>
-						    				</c:if>
-							    		</td>
-										</tr>
-							    	</c:forEach>
-						    </table>
-							
-							<br>
-							<c:if test="${ !empty loginMember }">
-							<form action="${ path }/review/reviewReply" method="POST">
-								<input type="hidden" name="reviewNo" value="${ review.no }">
-	    						<input type="hidden" name="writerId" value="${loginMember.id}">
-							<table width="800" class="table01">
-								<tr>
-									<td width="95" height="30" bgcolor="#eeeeee" align="center">댓글
-										내용</td>
-									<td width="380" style="padding-left: 10px;">
-										<textarea rows="2" cols="55" class="boxTA" style="width: 500px; height: 50px" id="replyContent" name="content"></textarea>
-									</td>
-									<td width="100" rowspan="3" height="30" align="right" style="padding-right: 15px;">
-										<input type="submit" value="등록" class="btn2" style="width: 50pt; height: 50pt;">
-									</td>
-								</tr>
-							</table>
-							</form>
-							</c:if>
-							<br /> <span id="listData" style="display: none;"></span>
 
+
+							<table class="type04">
+								<tr>
+									<th style="vertical-align: middle;">${ loginMember.id }</th>
+									<td>
+										<form action="${ path }/review/reviewReply" method="POST">
+										<input type="hidden" name="reviewNo" value="${ review.no }">
+										<input type="hidden" name="writerId" value="${loginMember.id}">
+										<textarea rows="2" cols="55" class="boxTA"
+											style="width: 500px; height: 50px" id="replyContent"
+											name="content" placeholder="댓글을 작성하려면 로그인이 필요합니다." required></textarea>
+									</td>
+									<td>&emsp;</td>
+									<td style="vertical-align: middle;">
+										<c:if test="${ !empty loginMember}">
+											<input type="submit" value="등록" class="btn2"/>
+											<input type="reset" value="취소" class="btn2"/>
+										</c:if>
+									</td>
+										</form>
+								</tr>
+								<c:forEach var="reply" items="${ list }">
+									<tr>
+										<th scope="row">${ reply.writerId }</th>
+										<td>${ reply.content }</td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm"
+												value="${ reply.createDate }" /></td>
+										<td>
+											<c:if test="${ !empty loginMember && (loginMember.id == reply.writerId )}">
+												<button id="replyDelete">삭제</button> 
+												<button id="replyUpdate">수정</button>
+												<script>	
+									    			$("#replyDelete").on("click", (e) => {
+									    				if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
+									    					location.replace("${ path }/review/replyDelete?replyNo=${ reply.no }&reviewNo=${ review.no }");
+									    				}
+									    			});	
+									    		</script>
+											</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+							</table>
+							
 							<div class="btn_right mt15">
 								<c:if test="${ !empty loginMember && (loginMember.id != review.writerId )}">
 									<input type="button" class="btn black" id="btn-report"
@@ -248,8 +279,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 								</c:if>
 								<button type="button" class="btn black mr5"
 									onclick="location.href='${path}/review/reviewList'">목록으로</button>
-								<c:if
-									test="${ !empty loginMember && (loginMember.id == review.writerId )}">
+								<c:if test="${ !empty loginMember && (loginMember.id == review.writerId )}">
 									<button type="button" class="btn black mr5" id="update">수정하기</button>
 									<button type="button" class="btn black" id="delete">삭제하기</button>
 								</c:if>
@@ -260,17 +290,18 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 			</div>
 		</section>
 	</div>
-
-	<script type="text/javascript">
+	
+<script type="text/javascript">
+	
+	// 신고하기 버튼 클릭시 팝업 띄우기
 	$("#btn-report").on("click", (e)=>{
-		// 신고하기 창 띄우기
 		const url = "${path}/review/reviewReport?id=${loginMember.getId()}&reviewNo=${ review.no }&reviewTitle=${ review.title }";
-		const status="left=500px, top=200px, width=500px; height=400px";
+		const status="left=500px, top=200px, width=510px; height=320px";
 		
 		open(url, "", status);
 });	
 
-
+	// 게시글 수정&삭제 버튼 클릭시
 	$(document).ready(() => {
 		
 		$("#update").on("click", (e) => {
@@ -282,21 +313,26 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
 			}
 		});
-	
-	$("#replyContent").on("focus", (e)=>{
-		if(${!empty loginMember}){
-		alert("로그인 후 작성해주세요");
-		$("#userId").focus();
-		}
-	});
 });
 	
-	$("#Replyx").on("click", (e) => {
-		if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
-			location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
+	// 댓글창 focus시 입력창 배경색 바꾸기
+	$("#replyContent").on({
+		focus : function(){
+			$(this).css("background-color","#eee");
+		},
+		blur : function(){
+			$(this).css("background-color","white");
 		}
 	});
+	
+	// 댓글창 클릭시 alert창 띄우기
+	$("#replyContent").on("click", (e) => {
+	if(${ empty loginMember}){
+		alert("로그인 후 사용하세요")
+	}
+	});
 
+	
 </script>
 </body>
 </html>

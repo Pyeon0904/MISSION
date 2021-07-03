@@ -14,7 +14,8 @@
 				R.ORIGINAL_FILENAME, 
 				R.RENAMED_FILENAME, 
 				R.CREATE_DATE, 
-				R.MODIFY_DATE
+				R.MODIFY_DATE,
+				R.REPLY_COUNT
 		FROM REVIEW R
 		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
 		WHERE R.STATUS = 'Y'
@@ -32,6 +33,7 @@
 		<result property="renamedFileName" column="RENAMED_FILENAME"/>
 		<result property="viewCount" column="VIEW_COUNT"/>
 		<result property="status" column="STATUS"/>
+		<result property="replyCount" column="REPLY_COUNT"/>
 	</resultMap>
 
 	<resultMap type="Review" extends="reviewListResultMap" id="reviewDetailResultMap">
@@ -40,7 +42,7 @@
 	
 	<resultMap type="Reply" id="reviewReplyResultMap">
 		<id property="no" column="NO"/>
-		<result property="reviewNo" column="NO"/>
+		<result property="reviewNo" column="REVIEW_NO"/>
 		<result property="writerId" column="WRITER_ID"/>
 		<result property="content" column="CONTENT"/>
 		<result property="createDate" column="CREATE_DATE"/>
@@ -74,7 +76,8 @@
 				R.ORIGINAL_FILENAME, 
 				R.RENAMED_FILENAME, 
 				R.CREATE_DATE, 
-				R.MODIFY_DATE
+				R.MODIFY_DATE,
+				R.REPLY_COUNT
 		FROM REVIEW R
 		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
 		WHERE R.STATUS = 'Y'
@@ -143,6 +146,7 @@
 		       R.CREATE_DATE, 
 		       R.MODIFY_DATE,
 		       R.VIEW_COUNT,
+		       R.REPLY_COUNT,
 		       L.REVIEW_NO AS R_NO, 
 		       L.REVIEW_NO AS L_REVIEW_NO, 
 		       L.CONTENT AS L_CONTENT, 
@@ -200,9 +204,13 @@
 				NO=#{no}
 	</update>
 	
-	<delete id="deleteReview" parameterType="int">
-		DELETE FROM REVIEW WHERE NO = #{reviewNo}
-	</delete>
+	<update id="deleteReview" parameterType="int">
+		UPDATE REVIEW
+			SET 
+				STATUS = 'N'
+			WHERE 
+				NO=#{reviewNo}
+	</update>
 	
 	<update id="plusCnt" parameterType="int">
   		UPDATE REVIEW SET VIEW_COUNT = VIEW_COUNT + 1 WHERE NO = #{reviewNo}
@@ -253,10 +261,24 @@
 			DEFAULT
 		)
 	</insert>
+	
+	<update id="updateReplyCount" parameterType="int">
+		UPDATE REVIEW SET REPLY_COUNT = (SELECT COUNT(*) FROM REPLY WHERE REVIEW_NO = #{reviewNo} AND STATUS = 'Y')
+		WHERE NO = #{reviewNo}
+	</update>
 
 	<select id="selectReplyList" resultMap="reviewReplyResultMap">
 		SELECT * FROM REPLY
 		WHERE REVIEW_NO = #{review.no}
+		AND STATUS = 'Y'
 	</select>
+
+	<update id="deleteReply" parameterType="map">
+		UPDATE REPLY
+			SET 
+				STATUS = 'N'
+			WHERE 
+				NO=#{reply.no}
+	</update>
 </mapper>
 

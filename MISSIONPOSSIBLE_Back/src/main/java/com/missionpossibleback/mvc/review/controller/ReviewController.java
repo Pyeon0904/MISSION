@@ -60,28 +60,58 @@ public class ReviewController {
 		return model;		
 	}
 	
-	// 리뷰 게시판 검색
-	@RequestMapping(value="/review/reviewSearch" , method={RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView searchList(ModelAndView model,
-			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam("key") String key,
-			@RequestParam("word") String word
-    		) {
-		List<Review> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchReviewCount(key, word), 10); 
-		int count = 0;
-
-		list = service.getSearchReviewList(key, word, pageInfo);
+	// 리뷰 게시글 작성
+		@GetMapping("/review/reviewWrite")
+		public void writeView() {
+			log.info("게시글 작성 페이지 요청");
+		}
 		
-		model.addObject("list", list);
-		model.addObject("key", key);
-		model.addObject("word", word);
-		model.addObject("pageInfo", pageInfo);
-		model.setViewName("review/reviewSearch");
+		@PostMapping("/review/reviewWrite")
+		public ModelAndView write(ModelAndView model, HttpServletRequest request,
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+				@ModelAttribute Review review, @RequestParam("upfile") MultipartFile upfile) {
+			int result = 0;
+			
+			log.info("게시글 작성 요청");
+			
+			if(loginMember.getId().equals(review.getWriterId())) {
+				review.setWriterId(loginMember.getId());
+				
+				// 1. 파일을 업로드 했는지 확인 후 파일 업로드
+				if(upfile != null && !upfile.isEmpty()) {
+					// 파일을 저장하는 로직 작성
+					String rootPath = request.getSession().getServletContext().getRealPath("resources");
+					String savePath = rootPath + "/upload/review";				
+					String renamedFileName = service.saveFile(upfile, savePath);
+					
+					if(renamedFileName != null) {
+						review.setOriginalFileName(upfile.getOriginalFilename());
+						review.setRenamedFileName(renamedFileName);
+					}
+				}
+				
+				System.out.println(review);
+				
+				// 2. 데이터 베이스에 저장
+				result = service.save(review);
+				
+				if(result > 0) {
+					model.addObject("msg", "게시글이 정상적으로 등록되었습니다.");
+					model.addObject("location", "/review/reviewList");
+				} else {
+					model.addObject("msg", "게시글이 등록을 실패하였습니다.");
+					model.addObject("location", "/review/reviewList");
+				}
+			} else {
+				model.addObject("msg", "잘못된 접근입니다");
+				model.addObject("location", "/");
+			}		
+			
+			model.setViewName("common/msg");
+			
+			return model;
+		}
 		
-		return model;		
-	}
-
 	// 리뷰 게시글 상세보기
     @GetMapping("/review/reviewView")
     public ModelAndView view(ModelAndView model,
@@ -89,10 +119,7 @@ public class ReviewController {
 			@ModelAttribute Reply reply) {
 		
 		Review review = service.findByNo(reviewNo);
-		List<Reply> list = null;
-		
-		list = service.getReplyList(reviewNo);
-		service.plusCnt(reviewNo);
+		List<Reply> list = service.getReplyList(reviewNo);
 		
 		model.addObject("review",review);
 		model.addObject("list",list);
@@ -134,58 +161,7 @@ public class ReviewController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-    
-    // 리뷰 게시글 작성
-	@GetMapping("/review/reviewWrite")
-	public void writeView() {
-		log.info("게시글 작성 페이지 요청");
-	}
-	
-	@PostMapping("/review/reviewWrite")
-	public ModelAndView write(ModelAndView model, HttpServletRequest request,
-			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-			@ModelAttribute Review review, @RequestParam("upfile") MultipartFile upfile) {
-		int result = 0;
-		
-		log.info("게시글 작성 요청");
-		
-		if(loginMember.getId().equals(review.getWriterId())) {
-			review.setWriterId(loginMember.getId());
-			
-			// 1. 파일을 업로드 했는지 확인 후 파일 업로드
-			if(upfile != null && !upfile.isEmpty()) {
-				// 파일을 저장하는 로직 작성
-				String rootPath = request.getSession().getServletContext().getRealPath("resources");
-				String savePath = rootPath + "/upload/review";				
-				String renamedFileName = service.saveFile(upfile, savePath);
-				
-				if(renamedFileName != null) {
-					review.setOriginalFileName(upfile.getOriginalFilename());
-					review.setRenamedFileName(renamedFileName);
-				}
-			}
-			
-			System.out.println(review);
-			
-			// 2. 데이터 베이스에 저장
-			result = service.save(review);
-			
-			if(result > 0) {
-				model.addObject("msg", "게시글이 정상적으로 등록되었습니다.");
-				model.addObject("location", "/review/reviewList");
-			} else {
-				model.addObject("msg", "게시글이 등록을 실패하였습니다.");
-				model.addObject("location", "/review/reviewList");
-			}
-		} else {
-			model.addObject("msg", "잘못된 접근입니다");
-			model.addObject("location", "/");
-		}		
-		
-		model.setViewName("common/msg");
-		
-		return model;
-	}
+
 
     // 리뷰 게시글 신고
     @GetMapping("/review/reviewReport")
@@ -226,22 +202,14 @@ public class ReviewController {
     		
     		return model;
     	}
-    
-    // 리뷰 게시글 챌린지 검색
-    @GetMapping("/review/challengeSearch")
-    public String challangeSearch() {
-          
-       return "review/challengeSearch";
-    }
-
 
     // 리뷰 게시글 삭제
     @GetMapping("/review/reviewDelete")
-    public String delete(@RequestParam("reviewNo")int reviewNo) {
+    public String deleteReview(@RequestParam("reviewNo")int reviewNo) {
     	service.deleteReview(reviewNo);
     	return "redirect: reviewList";
     }
-    
+
     // 리뷰 게시글 수정
     @GetMapping("/review/reviewModify")
 	public ModelAndView updateView(ModelAndView model,
@@ -308,7 +276,7 @@ public class ReviewController {
 	}
 	
 	
-    // 댓글 등록하기
+    // 리뷰 게시글 댓글 등록
     @PostMapping("/review/reviewReply")
     public ModelAndView reviewReply (ModelAndView model,
 			@SessionAttribute(name = "id", required = false) Member loginMember,
@@ -316,16 +284,19 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Reply reply) {
     		
-    		Review review = service.findByNo(reviewNo); 
+    		Review review = service.findByNo(reviewNo);
     		
     		int result = 0;
     		
     			result = service.reply(reply);
     			
     			if(result > 0) {
+    				service.getReplyCount(reviewNo);
     				model.addObject("msg", "댓글이 등록되었습니다.");
+    				model.addObject("location", "/review/reviewView?no=" +review.getNo());
     			} else {
     				model.addObject("msg", "댓글 등록에 실패하였습니다.");
+    				model.addObject("location", "/review/reviewView?no=" +review.getNo());
     			}
     			
     		
@@ -333,4 +304,52 @@ public class ReviewController {
     		
     		return model;
     	}
+    
+    // 리뷰 게시글 댓글 삭제
+    @GetMapping("/review/replyDelete")
+    public ModelAndView deleteReply(ModelAndView model,
+    		@RequestParam("reviewNo") int reviewNo,
+    		@RequestParam("replyNo")int replyNo) {
+    	
+    	Review review = service.findByNo(reviewNo); 
+    	service.deleteReply(replyNo);
+    	service.getReplyCount(reviewNo);
+    	
+    	model.addObject("msg", "댓글을 삭제했습니다.");
+    	model.addObject("location", "/review/reviewView?no=" +review.getNo());
+    	model.setViewName("common/msg");
+    	
+    	return model;
+    }
+    
+    
+    // 리뷰 게시글 챌린지 검색
+    @GetMapping("/review/challengeSearch")
+    public String challangeSearch() {
+          
+       return "review/challengeSearch";
+    }
+    
+	// 리뷰 게시판 검색
+	@RequestMapping(value="/review/reviewSearch" , method={RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView searchList(ModelAndView model,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam("key") String key,
+			@RequestParam("word") String word
+    		) {
+		List<Review> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchReviewCount(key, word), 10); 
+		int count = 0;
+
+		list = service.getSearchReviewList(key, word, pageInfo);
+		
+		model.addObject("list", list);
+		model.addObject("key", key);
+		model.addObject("word", word);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("review/reviewSearch");
+		
+		return model;		
+	}
+
 }
