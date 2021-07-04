@@ -25,16 +25,30 @@
         margin:auto;
      }
 </style>
+<script type="text/javascript">
+	$(document).ready(() => {
+		$("#selboxDirect").hide();
 
+		$("#selbox").change(function() {
+				if($("#selbox").val() == "direct") {
+					$("#selboxDirect").show();
+				}else {
+					$("#selboxDirect").hide();
+				}
+		}); 
+	});
+</script>
 <div id="box">
       <section id="section">
          <div id="conbox">
 			<br><br><br><br><br><br>
 			<h4>회원탈퇴</h4>
+			<br><br>
 			<hr>
+			<br><br>
 			<div id="withdrawal-container">
-				<form action="withdrawalMember" method="GET">
-					<table class="table table-bordered table-hover" border="1" style="width:700px; height:200px; margin:auto; background-color: white">
+				<form action="withdrawal" method="POST">
+					<table class="table table-bordered table-hover" border="1" style="width:1000px; height:500px; margin:auto; background-color: white">
 						<tr>
 							<td colspan="2" style="text-align:left;">
 								<h8>
@@ -52,10 +66,12 @@
 							</td>
 							<td>
 								<div class="input-group">
-									<select name="withdrawalMemberSelect" class="form-control">
-										<option value="">다른사이트가 더 좋아서 탈퇴합니다.</option>
-										<option value="">개인적인 사정으로 인해 탈퇴합니다.</option>
+									<select name="reasonWithdrawal" class="form-control" id="selbox">
+										<option value="other">다른사이트가 더 좋아서 탈퇴합니다.</option>
+										<option value="personal">개인적인 사정으로 인해 탈퇴합니다.</option>
+										<option value="direct">직접입력</option>
 									</select>
+									<input type="text" id="selboxDirect" name="selboxDirect" style="width:500px;"/>
 								</div>
 							</td>
 						</tr>
