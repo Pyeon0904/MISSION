@@ -29,49 +29,75 @@
 	margin: auto;
 }
 
-/*-----------------------------------------------------------------------------------*/
-.img1{
-position: absolute;
-  padding-left: 10%;
-  padding-top: 0px;
+/*---------------------------------이미지 영역--------------------------------------------------*/
+.img1 {
+	position: absolute;
+	padding-left: 10%;
+	padding-top: 0px;
 }
-.img2{
-position: absolute;
-   padding-left: 40%;
-  padding-top: 0px;
+
+.img2 {
+	position: absolute;
+	padding-left: 40%;
+	padding-top: 0px;
 }
-.img3{
-position: absolute;
-   padding-left: 70%;
-  padding-top: 0px;
+
+.img3 {
+	position: absolute;
+	padding-left: 70%;
+	padding-top: 0px;
 }
-.img4{
-position: absolute;
-   padding-left: 10%;
-  padding-top: 600px;
+
+.img4 {
+	position: absolute;
+	padding-left: 10%;
+	padding-top: 600px;
 }
-.img5{
-position: absolute;
-  padding-left: 40%;
-  padding-top: 600px;
+
+.img5 {
+	position: absolute;
+	padding-left: 40%;
+	padding-top: 600px;
 }
-.img6{
-position: absolute;
-   padding-left: 70%;
-  padding-top: 600px;
+
+.img6 {
+	position: absolute;
+	padding-left: 70%;
+	padding-top: 600px;
 }
-.nameTitle{
-color: black;
-	line-height: 2em;
-	font-size: 13pt;
-	font-weight: 100;
+/*---------------------------------------------개발자소개 영역---------------------------------*/
+.nameTitle {
+	font-size: 20pt;
+	font-weight: bold;
 	color: black;
 	text-align: center;
 }
-.nameTitle span{
-font-size: 20pt;
-	font-weight: bold;
+
+.Title {
 	color: black;
+	width: 100px;
+	line-height: 150%;
+	font-size: 14pt;
+	text-align: left;
+	display: inline-block;
+}
+
+.sign {
+	color: black;
+	width: 200px;
+	line-height: 150%;
+	font-size: 14pt;
+	text-align: center;
+	padding-right: 10px;
+}
+
+.text {
+	color: black;
+	width: 200px;
+	line-height: 150%;
+	font-size: 14pt;
+	text-align: left;
+	display: inline-block;
 }
 </style>
 <head>
@@ -82,69 +108,124 @@ font-size: 20pt;
 		<section id="section">
 			<div id="conbox">
 				<table>
-				<!-- 첫번째 줄 -->
+	<!-------------------- 첫번째 줄 ---------------------------->
 					<tr>
-					<td>
-					<div class="img1">
-				<img src="${path}/resources/images/Lee.png" 
-				style="float: left;" width="300px" height="300px"/>
-				<p class="nameTitle"><span>이지은</span>
-				<br>개발자 소개 테스트 테스트 테스트 테스트 
-				<br>두번째줄</p>
-				
-				</div>
-					</td>
-					<td>
-						<div class="img2">
-				<img src="${path}/resources/images/son.jpg" 
-				style="display: block; margin:0 auto;" width="300px" height="300px"/>
-				<p class="nameTitle"><span>손현종</span>
-				<br>개발자 소개 테스트 테스트 테스트 테스트 
-				<br>두번째줄</p>
-				</div>
-					</td>
-					<td>
-						<div class="img3"> 
-				<img src="${path}/resources/images/Pyeon.png" 
-				style="float: right;" width="300px" height="300px"/>
-				<p class="nameTitle"><span>편준장</span>
-				<br>개발자 소개 테스트 테스트 테스트 테스트 
-				<br>두번째줄</p>
-				</div>
-					</td>
+						<td>
+							<div class="img1">
+								<img src="${path}/resources/images/Lee.png" style="float: left;"
+									width="300px" height="300px" />
+								<div class="lee">
+									<p class="nameTitle">이지은</p>
+									<span class="Title">Introduce</span>
+									<span class="sign">|</span>
+									<span class="text">(본인소개 1줄 소개)</span> <br>
+									<span class="Title">Role</span>
+									<span class="sign">|</span>
+									<span class="text">(우선 빈칸으로)</span> <br>
+									<span class="Title">Email</span>
+									<span class="sign">|</span>
+									<span class="text">x931112@naver.com</span>
+							 </div>
+						</div>
+				   </td>
+					    <td>
+							<div class="img2">
+								<img src="${path}/resources/images/Son.jpg"
+									style="display: block; margin: 0 auto;" width="300px"
+									height="300px" />
+								<div class="Son">
+									<p class="nameTitle">손현종</p>
+									<span class="Title">Introduce</span>
+									<span class="sign">|</span>
+									<span class="text">(본인소개 1줄 소개)</span> <br> 
+									<span class="Title">Role</span>
+									<span class="sign">|</span>
+									<span class="text">(우선 빈칸으로)</span> <br>
+									<span class="Title">Email</span>
+									<span class="sign">|</span>
+									<span class="text">x931112@naver.com</span>
+								</div>
+							</div>
+						</td>
+						<td>
+							<div class="img3">
+								<img src="${path}/resources/images/Pyeon.png"
+									style="float: right; margin: 0 auto;" width="300px"
+									height="300px" />
+								<div class="Pyeon">
+									<p class="nameTitle">편준장</p>
+									<span class="Title">Introduce</span>
+									<span class="sign">|</span>
+									<span class="text">(본인소개 1줄 소개)</span> <br> 
+									<span class="Title">Role</span>
+									<span class="sign">|</span>
+									<span class="text">(우선 빈칸으로)</span> <br>
+									<span class="Title">Email</span>
+									<span class="sign">|</span>
+									<span class="text">x931112@naver.com</span>
+								</div>
+							</div>
+						</td>
 					</tr>
-					<!-- 두번째 줄 -->
+    <!-------------------- 두번째 줄 ---------------------------->
 					<tr>
-					<td>
-						<div class="img4">
-				<img src="${path}/resources/images/Cho.png" 
-				style="display: block; margin:0 auto;" width="300px" height="300px"/>
-				<p class="nameTitle"><span>조민형</span>
-				<br>개발자 소개 테스트 테스트 테스트 테스트 
-				<br>두번째줄</p>
-				</div>
+						<td>
+							<div class="img4">
+								<img src="${path}/resources/images/Cho.png" style="float: left;"
+									width="300px" height="300px" />
+								<div class="Cho">
+									<p class="nameTitle">조민형</p>
+									<span class="Title">Introduce</span>
+									<span class="sign">|</span>
+									<span class="text">(본인소개 1줄 소개)</span> <br>
+									<span class="Title">Role</span>
+									<span class="sign">|</span>
+									<span class="text">(우선 빈칸으로)</span> <br>
+									<span class="Title">Email</span>
+									<span class="sign">|</span>
+									<span class="text">x931112@naver.com</span>
+							 </div>
+						</div>
 					</td>
-					<td>
-				<div class="img5">
-				<img src="${path}/resources/images/choi.jpg" 
-				style="display: block; margin:0 auto;" width="300px" height="300px"/>
-				<p class="nameTitle"><span>최혜정</span>
-				<br>개발자 소개 테스트 테스트 테스트 테스트 
-				<br>두번째줄</p>
-				</div>
-					</td>
-					<td>
-						<div class="img6">
-				<img src="${path}/resources/images/Park.png" 
-				style="display: block; margin:0 auto;" width="300px" height="300px"/>
-				<p class="nameTitle"><span>박진영</span>
-				<br>개발자 소개 테스트 테스트 테스트 테스트 
-				<br>두번째줄</p>
-				</div>
-					</td>
-					</tr>
-				</table>
-			</div>
+						<td>
+							<div class="img5">
+								<img src="${path}/resources/images/Choi.jpg"
+									style="display: block; margin: 0 auto;" width="300px"
+									height="300px" />
+								<div class="Choi">
+									<p class="nameTitle">최혜정</p>
+									<span class="Title">Introduce</span>
+									<span class="sign">|</span>
+									<span class="text">(본인소개 1줄 소개)</span> <br> 
+									<span class="Title">Role</span>
+									<span class="sign">|</span>
+									<span class="text">(우선 빈칸으로)</span> <br>
+									<span class="Title">Email</span>
+									<span class="sign">|</span>
+									<span class="text">x931112@naver.com</span>
+							  </div>
+						 </div>
+					 </td>
+						 <td>
+							<div class="img6">
+								<img src="${path}/resources/images/Park.png"
+									style="float: right;" width="300px" height="300px" />
+								<div class="Park">
+									<p class="nameTitle">박진영</p>
+									<span class="Title">Introduce</span>
+									<span class="sign">|</span>
+									<span class="text">(본인소개 1줄 소개)</span> <br>
+									<span class="Title">Role</span>
+									<span class="sign">|</span>
+									<span class="text">(우선 빈칸으로)</span> <br>
+									<span class="Title">Email</span>
+									<span class="sign">|</span>
+									<span class="text">x931112@naver.com</span>
+								</div>
+							</div>
+					    </tr>
+				 </table>
+			  </div>
 		</section>
 	</div>
 </body>

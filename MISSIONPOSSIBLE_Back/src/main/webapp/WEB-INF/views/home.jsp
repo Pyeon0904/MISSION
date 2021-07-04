@@ -5,17 +5,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <c:set var="path" value="${pageContext.request.contextPath}" />
-
+<!DOCTYPE html>
+<html>
+<head>
 <!-- jQuery 1.8 or later, 33 KB -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- Fotorama from CDNJS, 19 KB -->
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css"
 	rel="stylesheet">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+<!-- Animate.CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <style>
@@ -25,7 +30,7 @@
 #box {
 	background-color: rgb(224, 239, 132);
 	width: 100%;
-	height: 2500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+	height: 2300px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
 	margin-top: 100px;
 	margin-bottom: 100px;
 	margin-left: -10px;
@@ -40,8 +45,40 @@
 }
 
 /*-----------------------------------------------------------------------------------*/
+/*----------------------랜덤한 사진+글-----------------------------------*/
+.Runing{
+position:absolute;
+left:330px;
+font-size: 25px;
+font-weight: bold;
+}
+.JSPARK{
+position:absolute;
+left:30%;
+color:white;
+font-size: 20px;
+}
+.JORDAN{
+position:absolute;
+color:white;
+left:300px;
+}
+.JORDAN2{
+position:absolute;
+color:white;
+left:665px;
+font-size: 20px;
+}
+.teamevent1{
 
-/* --------------------- 소개 ---------------------- */
+}
+.teamevent2{
+
+}
+.teamevent3{
+
+}
+/* --------------------- 간단히 홈페이지소개 ---------------------- */
 
 /*홈페이지 소개 테이블 전체 영역 지정*/
 .introTable {
@@ -103,7 +140,7 @@
 	object-fit: cover;
 }
 .boardFont span{
-font-size: 24pt;
+font-size: 25pt;
 font-weight: bold;
 	color: black;
 }
@@ -131,6 +168,26 @@ font-size: 30pt;
 }
 </style>
 <script>
+function animateCSS(element, animationName, callback) {
+    const node = document.querySelector(element)
+    node.classList.add('animated', animationName)
+
+    function handleAnimationEnd() {
+        node.classList.remove('animated', animationName)
+        node.removeEventListener('animationend', handleAnimationEnd)
+
+        if (typeof callback === 'function') callback()
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd)
+}
+    
+animateCSS('.my-element', 'fadeInLeft	','fadeInLeft')
+
+//or
+animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
+// Do something after animation
+})
 	$(document).on('mouseover', '.list8', function() {
 		$('.hlist8wd').show();
 	});
@@ -139,25 +196,35 @@ font-size: 30pt;
 		$('.hlist8wd').hide();
 	});
 </script>
+
+</head>
+<body>
 <!-- 기획의도 -->
 <div id="box">
 	<section id="section">
 		<div id="conbox">
 			<div id="temaevent">
-				<div id="slide">
-					<div class="fotorama" data-width="1200px" data-height="350px"
-						data-autoplay="true" data-loop="true">
-						<div data-img="${path}/resources/images/file.png">
-							<a href="#" class="fes-title"></a>
-							<p>원1111111111111111111111111111111111<br>111111111111</p>
+				<div id="show">
+					<div class="fotorama" data-width="1200px" 
+					data-height="400px"data-autoplay="9000" data-loop="true">
+						<div data-img="${path}/resources/images/Runing.png">
+						<p class=Runing>오늘 하루는 얼마나달려볼까?</p>
+							<div class="animated fast fadeInLeft delay-1s">
+							<p class="temaevent1">서브</p>
+							
+							</div>
 						</div>
-						<div data-img="${path}/resources/images/file.png">
-							<a href="#" class="fes-title"></a>
-							<p>투</p>
+						<div data-img="${path}/resources/images/JSPark.jpg">
+						<p class=JSPARK><br><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							-박지성-</p>
+							<div class="animated slow fadeInLeft delay-3s">
+							<p class="temaevent2">서브</p></div>
 						</div>
-						<div data-img="${path}/resources/images/file.png">
-							<a href="#" class="fes-title"></a>
-							<p>쓰리</p>
+						<div data-img="${path}/resources/images/JORDAN.jpg">
+						<p class=JORDAN><br><br><br>한 번 포기하면 습관이된다. </p>
+						<p class=JORDAN2><br><br>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
+							<div class="animated slow fadeInLeft delay-5s">
+							<p class="temaevent3">서브</p></div>
 						</div>
 					</div>
 				</div>
@@ -168,13 +235,13 @@ font-size: 30pt;
 					<table class="introTable">
 						<tr>
 							<td rowspan="2"><img class="introImg"
-								src="${path}/resources/images/flower.png"></td>
+								src="${path}/resources/images/flower1.png"></td>
 							<td>
-							<p class="introTitle">홈페이지소개 제목</p>
+							<p class="introTitle">챌린지 홈페이지에 오신걸 환영합니다!</p>
 							</td>
 								<td>
 							<div class="ViewMore">
-								<a href="${ path }/introduce/introduce">자세히 보기</a>
+								<a href="#">자세히 보기</a>
 							</div>
 							</td>
 						</tr>
@@ -195,11 +262,11 @@ font-size: 30pt;
 	 <table id="Introchalltable">
 		 <tr>
 		   <td>
-		     <img class="introchallImg" src="${path}/resources/images/file.png">
+		     <img class="introchallImg" src="${path}/resources/images/flower1.png">
 				    </td>
 				    	<td>
 							<div class="ViewMore2">
-								<a href="${ path }/challenge/recruitList">자세히 보기</a>
+								<a href="#">자세히 보기</a>
 							  </div>
 					       </td>
 		                </tr>
@@ -222,12 +289,12 @@ font-size: 30pt;
 		         <table class="boardtable">
 		       <tr>
 		     <td>
-		     <img class="boardImg" src="${path}/resources/images/file.png" style="margin-right:50px;">
+		     <img class="boardImg" src="${path}/resources/images/flower1.png" style="margin-right:50px;">
 		     <p class="boardFont"><span>나 올해 챌린지 얼마나했지?</span>
 		     <br>소개소개소개소개</p>
 		     </td>
 		     <td>
-		     <img class="boardImg" src="${path}/resources/images/file.png"  style="margin-left:50px;">
+		     <img class="boardImg" src="${path}/resources/images/river2.PNG"  style="margin-left:50px;">
 		     <div class="boardFont" style="margin-left:50px;">
 		       <p><span>asffasasfasfasfasfasf</span>
 		        <br>소개소개소개소개</p>
@@ -235,7 +302,7 @@ font-size: 30pt;
 		     </td>
 		     <td>
 				<div class="ViewMore2">
-					<a href="${ path }/review/reviewList">자세히 보기</a>
+					<a href="#">자세히 보기</a>
 					 </div>
 				</td>
 		     </tr>
