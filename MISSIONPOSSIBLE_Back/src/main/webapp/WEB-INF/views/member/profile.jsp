@@ -6,10 +6,7 @@
 
 <c:set var="path" value="${pageContext.request.contextPath}" />
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+
 <title>프로필 등록</title>
 <style> 
 	div{ 
@@ -20,18 +17,46 @@
 		margin-right: 60px;
 	} 
 </style> 
-</head>
+<script type="text/javascript">
+	function setProfile() {
+		// 입력 된 프로필사진을 부모창에 대입
+		const profile = "<%= request.getParameter("profile") %>";
+
+		opener.memberEnrollFrm.profile.src = profile;
+		
+		// 팝업창 닫아주기
+		close();			
+	}
+	
+	function setThumbnail(event) { 
+		var reader = new FileReader(); 
+		
+		reader.onload = function(event) { 
+			var img = document.createElement("img");
+			img.setAttribute("src", event.target.result); 
+			document.querySelector("#image_container").appendChild(img);
+		};
+			reader.readAsDataURL(event.target.files[0]); 
+	}
+
+
+</script>
 <body>
 <div>
 	<form action="profile" method="POST">
 		<table>
 			<tr>
 			    <th>첨부파일</th>
-				<td><input type="file" name="upfile"></td>
+				<td><input type="file" id="image" accept="image/*" onchange="setThumbnail(event);"/></td>
+			</tr>
+			<tr>
+				<td>
+					<img src="" id="image_container" style="width: 250px; height: 200px;"/>
+				</td>
 			</tr>
 		</table>
 		<br>
-		<button type="submit" style="width: 250px; height: 30px;" onClick='self.close()'>등록하기</button>
+		<button type="submit" style="width: 250px; height: 30px;" onClick='setProfile();'>등록하기</button>
 	</form>
 </div>
 </body>

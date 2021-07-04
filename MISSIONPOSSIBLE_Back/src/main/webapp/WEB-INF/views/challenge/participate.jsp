@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- 제이쿼리 import -->
-	<script src="${path}/js/jquery-3.6.0.min.js"></script>
+	<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 	
 	<style>
 		/* 
@@ -124,10 +124,10 @@
 								<input type="hidden" name="" value="" />
 								<button class="btn btnGiveup" type="submit">포기하기</button>
 							</form>
-							<form action="#" method="GET" class="" id="challengeCertifyForm">
-								<input type="hidden" name="" value="" />
-								<button type="button" onclick="window.open('${ path }/challenge/signPopup','인증팝업','width=500px, height=400px, left=500px, top=200px, scrollbars= 0, toolbar=0, menubar=no')" class="btn btnCertify" >인증하기</button>
-							</form>
+							<button type="button" class="btn btnCertify" 
+								onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=400,scrollbars= 0, toolbar=0, menubar=no')">
+								인증하기
+							</button>
 							<form action="#" method="GET" class="" id="challengeChatForm">
 								<input type="hidden" name="" value="" />
 								<button class="btn btnChat" type="submit">채팅방 입장</button>
@@ -139,7 +139,77 @@
 					<table>
 						<tr>
 							<td rowspan="3" id="detailCont">
-								내용
+								<table id="detailContInfo">
+									<tr>
+										<td colspan="2">
+											<!-- [개인] / [단체] 상태 출력 -->
+											<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
+												<span style="font-size:1.2em;">[단체]</span>
+											</c:if>
+											<c:if test="${ challenge.attendStatus == 'PRIVATE' }">
+												<span style="font-size:1.2em;">[개인]</span>
+											</c:if>
+											
+											<!-- 카테고리 이름 출력 부분-->
+											<span style="font-size:1.2em;">
+												[<c:out value="${ challenge.categoryName }"/>]
+											</span>
+											
+											<!-- 챌린지 제목 출력 부분 -->
+											<span style="font-size:1.2em;">
+												<c:out value="${ challenge.title }"/>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span>진행 기간</span>
+										</td>
+										<td>
+											<!-- D-Day 로직 구현한 파일 include -->
+											<%@ include file="date.jsp" %>
+											<!-- 챌린지 수료까지의 D-Day -->
+											<span>
+												D-<c:out value="${ endNum - todayNum }"/>
+											</span>
+											<!-- 챌린지 시작일 및 수료일 => Date 포맷으로 변경 -->
+											<fmt:formatDate var="clgStart" value="${ challenge.startDate }" pattern="yyyy년 MM월 dd일"/>
+											<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy년 MM월 dd일"/>
+											<span>
+												<c:out value="${ clgStart }"/>
+												부터&nbsp;
+												<c:out value="${ clgEnd }"/>
+												까지
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span>참여 인원</span>
+										</td>
+										<td>
+											<span>
+												<c:out value="${ challenge.currentCount }"/>명
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span>오픈 카톡 링크</span>
+										</td>
+										<td>
+											<span>
+												<c:out value="${ challenge.opentalkLink }"/>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<c:out value="${ challenge.content }"/>
+										</td>
+									</tr>
+								</table>
+								
 							</td>
 							<td id="certCalendarArea">
 								<div id="calContainer">
@@ -283,34 +353,14 @@
 							<td id="memberCertList">
 								<h4>구성원들의 인증내역</h4>
 								<div class="certListCont">
-									<!-- 상품 리스트 내역 -->
-									<div class="certListDisplay">
-										<ul>
-										<% 
-											for(int i = 0; i < 12; i++) {
-										%>	
-											<li>
-												<div class="certItemCont">
-													<div class="certItemPhotoBox">
-														<img src="${path}/resources/upload/challenge/gf_cert.jpg" alt="챌린지 썸네일" width="70px" height="70px">
-													</div>
-													<div class="certItemInfoCont">
-														<div class="certItemTitle"><%-- product.getProductName() --%>00월 00일 챌린지인증합니다.</div>
-														<div class="certItemSubCont"><%-- product.getPrice() --%>
-															
-															챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-															챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-															챌린지 인증합니다! 챌린지 인증합니다! 챌린지 인증합니다! 
-															
-														</div>
-													</div>
-												</div>
-											</li>
-										<%
-											}
-										%>
-										</ul>
-									</div>
+									<!-- 
+										현재 참여중인 챌린지의 인증 내역을 보여주는 페이지 INCLUDE
+										파라미터는 간단하게 참여중인 챌린지의 CHALLENGE_NO값만 보내줌
+										아래 jsp:include 태그의 page속성 빨간줄(오류)은 무시가능! 정상작동함!
+									 -->
+									<jsp:include page="/challenge/certList">
+										<jsp:param name="no" value="${ challenge.challengeNo }"/>
+									</jsp:include>
 								</div>
 							</td>
 						</tr>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.missionpossibleback.mvc.challenge.model.mapper.ChallengeMapper">
+
+	<sql id="selectChallengeSql">
+		SELECT
+			CLG.CHALLENGE_NO,
+			CLG.ID,
+			CLG.CATEGORY_NO,
+			CLG.CATEGORY_NAME,
+			CLG.THUMBNAIL_FILE,
+			CLG.CHALLENGE_STATUS,
+			CLG.ATTEND_STATUS,
+			CLG.STATUS,
+			CLG.TITLE,
+			CLG.CONTENT,
+			CLG.DEADLINE,
+			CLG.MAX_COUNT,
+			CLG.CURRENT_COUNT,
+			CLG.ORIGINAL_FILENAME,
+			CLG.RENAMED_FILENAME,
+			CLG.CREATE_DATE,
+			CLG.MODIFY_DATE,
+			CLG.START_DATE,
+			CLG.OPENTALK_LINK,
+			CLG.MINUS_POINT
+		FROM CHALLENGE CLG
+		JOIN MEMBER MEM ON(CLG.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+	</sql>
+	
+	<!-- 챌린지 객체 매핑 -->
+	<resultMap id="challengeResultMap" type="Challenge">
+		<id property="challengeNo" column="CHALLENGE_NO" /><!-- PK -->
+		<result property="id" column="ID" />
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="categoryName" column="CATEGORY_NAME"/>
+		<result property="thumbnailFile" column="THUMBNAIL_FILE"/>
+		<result property="challengeStatus" column="CHALLENGE_STATUS"/>
+		<result property="attendStatus" column="ATTEND_STATUS"/>
+		<result property="status" column="STATUS"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="deadline" column="DEADLINE"/>
+		<result property="maxCount" column="MAX_COUNT"/>
+		<result property="currentCount" column="CURRENT_COUNT"/>
+		<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+		<result property="renamedFilename" column="RENAMED_FILENAME"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<!-- new insert vo -->
+		<result property="startDate" column="START_DATE"/>
+		<result property="opentalkLink" column="OPENTALK_LINK"/>
+		<result property="minusPoint" column="MINUS_POINT"/>
+	</resultMap>
+	
+	<!-- ChallengeCertify 객체 매핑 (챌린지 인증 게시물) -->
+	<resultMap id="challengeCertifyResultMap" type="ChallengeCertify">
+		<id property="no" column="NO"/>
+		<result property="challengeNo" column="CHALLENGE_NO"/>
+		<result property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+		<result property="renamedFilename" column="RENAMED_FILENAME"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+	
+	<!-- MyChallengeList 객체 매핑 -->
+	<resultMap id="myChallengeListResultMap" type="MyChallengeList" >
+		<id property="no" column="NO"/>
+		<result property="id" column="ID"/>
+		<result property="myChallengeNo" column="MY_CHALLENGE_NO"/>
+		<result property="myStatus" column="MY_STATUS"/>
+	</resultMap>
+
+	<!-- 챌린지 전체 조회 -->
+	<select id="selectChallengeList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS='Y'
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 챌린지NO로 챌린지 찾기 -->
+	<select id="selectChallengeByNo" parameterType="_int" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS = 'Y' AND CLG.CHALLENGE_NO = #{challengeNo}
+	</select>
+	
+	<!-- 모집중인 챌린지 조회 -->
+	<select id="selectRecruitList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE
+		<![CDATA[ 
+			((CLG.START_DATE > SYSDATE ) AND (CLG.DEADLINE > SYSDATE) AND (CLG.STATUS = 'Y'))
+		]]>
+			
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 진행중인 챌린지 조회 -->
+	<select id="selectOngoingList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE 
+		<![CDATA[ 
+			((CLG.START_DATE < SYSDATE ) AND (CLG.DEADLINE > SYSDATE) AND (CLG.STATUS = 'Y'))
+		]]>
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 종료된 챌린지 조회 -->
+	<select id="selectEndList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE 
+		<![CDATA[ 
+			((CLG.START_DATE < SYSDATE ) AND (CLG.DEADLINE < SYSDATE) AND (CLG.STATUS = 'Y'))
+		]]>
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 찜한 챌린지 리스트 조회 -->
+	<select id="selectZzimList" parameterType="string" resultMap="challengeResultMap">
+		SELECT
+		    CLG.CHALLENGE_NO,
+		    CLG.ID,
+		    CLG.CATEGORY_NO,
+		    CLG.CATEGORY_NAME,
+		    CLG.THUMBNAIL_FILE,
+		    CLG.CHALLENGE_STATUS,
+		    CLG.ATTEND_STATUS,
+		    CLG.STATUS,
+		    CLG.TITLE,
+		    CLG.CONTENT,
+		    CLG.DEADLINE,
+		    CLG.MAX_COUNT,
+		    CLG.CURRENT_COUNT,
+		    CLG.ORIGINAL_FILENAME,
+		    CLG.RENAMED_FILENAME,
+		    CLG.CREATE_DATE,
+		    CLG.MODIFY_DATE,
+		    CLG.START_DATE,
+		    CLG.OPENTALK_LINK,
+		    CLG.MINUS_POINT
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		WHERE ((CLG.STATUS = 'Y') AND (MCL.MY_STATUS = 'ZZIM') AND (MCL.ID = #{id}))
+	
+	</select>
+	
+	<!-- 챌린지 인증 리스트 조회 -->
+	<select id="selectCertList" parameterType="_int" resultMap="challengeCertifyResultMap">
+		SELECT
+			NO,
+			CHALLENGE_NO,
+			ID,
+			TITLE,
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			CONTENT,
+			CREATE_DATE,
+			MODIFY_DATE,
+			STATUS
+		FROM
+			CHALLENGE_CERTIFY
+		WHERE
+			CHALLENGE_NO = #{no}
+	</select>
+	
+	<!-- 전체 챌린지 수 확인 -->
+	<select id="selectChallengeCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<!-- 모집중인 챌린지 수 확인 -->
+	<select id="selectRecruitCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE 
+		<![CDATA[
+			((START_DATE > SYSDATE ) AND (DEADLINE > SYSDATE) AND (STATUS = 'Y'))
+		]]>
+		
+	</select>
+	
+	<!-- 진행중인 챌린지 수 확인 -->
+	<select id="selectOngoingCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE
+		<![CDATA[
+			((START_DATE < SYSDATE ) AND (DEADLINE > SYSDATE) AND (STATUS = 'Y'))
+		]]>
+		
+	</select>
+	
+	<!-- 종료된 챌린지 수 확인 -->
+	<select id="selectEndCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE 
+		<![CDATA[
+			((START_DATE < SYSDATE ) AND (DEADLINE < SYSDATE) AND (STATUS = 'Y'))
+		]]>
+	</select>
+	
+	<!-- 찜한 챌린지 수 확인 -->
+	<select id="selectZzimCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM MY_CHALLENGE_LIST
+		WHERE ((ID = #{id}) AND (MY_STATUS = 'ZZIM'))
+	</select>	
+	
+	<!-- 
+		로그인한 유저가 누른 챌린지가 참여중인 챌린지인지 아닌지 판단하는 로직 
+			- 참여하고 있으면 1 리턴 : 참여중인 챌린지 View
+			- 참여하지 않으면 0 리턴 : 진행중인 챌린지 View
+	-->
+	<select id="selelctJoinListCount" parameterType="map" resultType="_int">
+		SELECT COUNT(*) 
+    	FROM 
+    		MY_CHALLENGE_LIST MCL 
+    	JOIN 
+    		MEMBER M ON(M.ID = MCL.ID)
+    	WHERE
+        	(MCL.MY_STATUS = 'JOIN') AND 
+        	(MCL.MY_CHALLENGE_NO = #{no}) AND
+        	(MCL.ID = #{id})
+	</select>
+	
+	<!-- 참여중인 챌린지 - 참여중인 유저 수 구하는 쿼리 -->
+	<select id="selectCurrentCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) 
+    	FROM MY_CHALLENGE_LIST
+    	WHERE
+        (MY_STATUS = 'JOIN') AND 
+        (MY_CHALLENGE_NO = #{no}) 
+	</select>
+	
+	<!-- 챌린지 인증 리스트 수 조회 -->
+	<select id="selectCertCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) 
+		FROM CHALLENGE_CERTIFY 
+		WHERE CHALLENGE_NO = #{no}
+	</select>
+	
+	<!-- 챌린지 등록 -->
+	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
+		INSERT INTO CHALLENGE (
+			CHALLENGE_NO,
+			ID,
+			CATEGORY_NO,
+			THUMBNAIL_FILE,
+			CHALLENGE_STATUS,
+			ATTEND_STATUS,
+			STATUS,
+			TITLE,
+			CONTENT,
+			DEADLINE,
+			MAX_COUNT,
+			CURRENT_COUNT,
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			CREATE_DATE,
+			MODIFY_DATE,
+			CATEGORY_NAME,
+			START_DATE,
+			OPENTALK_LINK,
+			MINUS_POINT
+		) VALUES (
+			SEQ_CHALLENGE_NO.NEXTVAL,
+			#{id},
+			#{categoryNo},
+			#{thumbnailFile},
+			DEFAULT,
+			#{attendStatus},
+			DEFAULT,
+			#{title},
+			#{content},
+			#{deadline},
+			#{maxCount},
+			DEFAULT,
+			#{originalFilename},
+			#{renamedFilename},
+			DEFAULT,
+			DEFAULT,
+			#{categoryName},
+			#{startDate},
+			#{opentalkLink},
+			#{minusPoint}
+		)
+	</insert>
+	
+	<!-- 챌린지 인증 팝업에서 인증 등록 ChallengeCertify -->
+	<insert id="insertCertify" parameterType="map">
+		INSERT INTO CHALLENGE_CERTIFY (
+			NO,
+			CHALLENGE_NO,
+			ID,
+			TITLE,
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			CONTENT,
+			CREATE_DATE,
+			MODIFY_DATE,
+			STATUS
+		) VALUES (
+			SEQ_CHALLENGECERTIFY_NO.NEXTVAL,
+			#{challengeNo},
+			#{id},
+			#{title},
+			#{originalFilename},
+			#{renamedFilename},
+			#{content},
+			DEFAULT,
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+
+	<!-- 찜/참여중 상태 등록 MyChallengeList.. -->
+	<insert id="insertMyChallengeList" parameterType="map">
+		INSERT INTO MY_CHALLENGE_LIST (
+		    NO,
+		    ID,
+		    MY_CHALLENGE_NO,
+		    MY_STATUS
+		) SELECT
+			SEQ_MYCHALLENGELIST_NO.NEXTVAL,
+			#{id},
+			#{myChallengeNo},
+			#{myStatus}
+		FROM DUAL
+		WHERE NOT EXISTS(
+			SELECT
+			ID, MY_CHALLENGE_NO, MY_STATUS
+			FROM
+				MY_CHALLENGE_LIST
+			WHERE
+				(ID = #{id}) AND
+				(MY_CHALLENGE_NO = #{myChallengeNo}) AND
+				(MY_STATUS = #{myStatus})
+		)
+	</insert>
+	
+	<update id="updateCurrentCount" parameterType="map">
+		UPDATE CHALLENGE
+		SET
+			CURRENT_COUNT = #{currentCount}
+		WHERE
+			CHALLENGE_NO = #{challengeNo}
+	</update>
+
+</mapper>

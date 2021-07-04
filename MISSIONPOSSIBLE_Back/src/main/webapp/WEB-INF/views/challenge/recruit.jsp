@@ -9,6 +9,9 @@
 
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
+<!-- D-Day 로직 구현한 파일 include -->
+<%@ include file="date.jsp" %>		
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +21,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- 제이쿼리 import -->
-	<script src="${path}/js/jquery-3.6.0.min.js"></script>
+	<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 	<style>
 	
@@ -71,42 +74,46 @@
 
 	
 			<div id="subHeaderContainer">
+			
+			<!-- 모집중인 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
+			<c:if test="${ (todayNum < startNum) and (todayNum < endNum) }">
+			
 				<h2>모집중인 챌린지 정보</h2>
 				<div class="funcArea">
-					<form action="#" method="GET" class="" id="challengeJoinForm">
-						<input type="hidden" name="" value="" />
-						<input class="btn btnJoin" type="submit" value="참가신청"/>
+					<!-- 참가신청 버튼 클릭시 addMyChallengeList.do로 참가신청을 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
+					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeJoinForm">
+						<input type="hidden" name="myStatus" value="JOIN" />
+						<input type="hidden" name="myChallengeNo" value="${ challenge.challengeNo }"/>
+						<input class="btn btnJoin" type="button" value="참가신청"/>
 					</form>
 					<script>
 					$(document).ready(()=>{	
 						$("#challengeJoinForm").on("click",function(event){
 							if(confirm("해당 챌린지에 참여하시겠습니까?")){
-								alert("참여신청을 완료했습니다.")
-								location.replace('#');
+								$("#challengeJoinForm").submit();
 							} 
 							else {
 								alert("취소되었습니다.");
-								location.replace('#');
 							}
 						});
 					});
 					</script>
-					<form action="${ path }/challenge/zzimList" method="GET" class="" id="challengeZzimForm">
-						<input type="hidden" name="" value="" />
-						<input class="btn btnZzim" type="submit" value="찜하기"/>
+					
+					<!-- 찜하기 버튼 클릭시 addMyChallengeList.do로 찜하기 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
+					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeZzimForm">
+						<input type="hidden" name="myStatus" value="ZZIM" />
+						<input type="hidden" name="myChallengeNo" value="${ challenge.challengeNo }"/>
+						<input class="btn btnZzim" type="button" value="찜하기"/>
 					</form>
 					<script>
-					var path = "<c:out value='${path}'/>";
 
 					$(document).ready(()=>{	
 						$("#challengeZzimForm").on("click",function(event){
 							if(confirm("해당 챌린지를 찜하시겠습니까?")){
-								alert("찜하기를 완료했습니다.");
-								location.replace(path + "/challenge/zzimList");
+								$("#challengeZzimForm").submit();
 							}
 							else{
-								alert("취소되었습니다.");
-								location.replace('/');
+								alert("요청이 취소되었습니다.");
 							}
 						});
 					});
@@ -117,13 +124,63 @@
 					</form>
 				</div>
 				
+			</c:if>
+			
+			<!-- 종료된 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
+			<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
+			
+				<h2>종료된 챌린지 정보</h2>
+				<div class="funcArea">
+					<form action="${ path }/challenge/endList" method="GET" class="" id="challengeListForm">
+						<input type="hidden" name="" value="" />
+						<input class="btn btnList" type="submit" value="목록으로"/>
+					</form>
+				</div>
+				
+			</c:if>
+			
 			</div>
 			
 			<div id="challengeContTable">
 				<table id="detailContInfo">
 					<tr>
-						<td colspan="2">
-							<span style="font-size:1.2em;">[d-day][참여가능여부][카테고리이름][챌린지제목]</span>
+						<!-- 챌린지 제목 단 -->
+						<td colspan="2">													
+																						
+							<!-- 
+								챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
+							-->
+							
+							<!-- 모집중인 챌린지 조회 상태일 때의 D-Day 부분-->
+							<c:if test="${ (todayNum < startNum) and (todayNum < endNum) }">
+								<span style="font-size:1.2em;">
+									D-<c:out value="${ startNum - todayNum }"></c:out>&nbsp;
+								</span>
+							</c:if>
+							
+							<!-- 종료된 챌린지 조회 상태일 때의 D-Day 부분 -->
+							<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
+								<span style="font-size:1.2em;">
+									[챌린지종료]
+								</span>
+							</c:if>
+							
+							<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
+								<span style="font-size:1.2em;">[단체]</span>
+							</c:if>
+							<c:if test="${ challenge.attendStatus == 'PRIVATE' }">
+								<span style="font-size:1.2em;">[개인]</span>
+							</c:if>
+							
+							<!-- 카테고리 이름 출력 부분-->
+							<span style="font-size:1.2em;">
+								[<c:out value="${ challenge.categoryName }"/>]
+							</span>
+							
+							<!-- 챌린지 제목 출력 부분 -->
+							<span style="font-size:1.2em;">
+								&nbsp;<c:out value="${ challenge.title }"/>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -131,7 +188,10 @@
 							<span>등록일</span>
 						</td>
 						<td>
-							<span>[yyyy-MM-dd]</span>
+							<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy-MM-dd"/>
+							<span>
+								<c:out value="${ regDate }"/>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -139,7 +199,10 @@
 							<span>모집기간</span>
 						</td>
 						<td>
-							<span>[yyyy-MM-dd]까지</span>
+							<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy-MM-dd"/>
+							<span>
+								<c:out value="${ recruitEnd }"/>까지
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -147,7 +210,10 @@
 							<span>진행기간</span>
 						</td>
 						<td>
-							<span>[yyyy-MM-dd]까지</span>
+							<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
+							<span>
+								<c:out value="${ clgEnd }"/>까지
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -155,15 +221,15 @@
 							<span>모집 인원</span>
 						</td>
 						<td>
-							<span>[maxCount]명</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>기본 인증 방법</span>
-						</td>
-						<td>
-							<span>인증 사진 등록</span>
+							<span>
+								<c:if test="${ challenge.maxCount != 9999 }">
+									<c:out value="${ challenge.maxCount }"/>명
+								</c:if>
+								<c:if test="${ challenge.maxCount == 9999 }">
+									제한 없음
+								</c:if>
+								
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -171,7 +237,9 @@
 							<span>참여시 차감 포인트</span>
 						</td>
 						<td>
-							<span>1000P</span>
+							<span>
+								<c:out value="${ challenge.minusPoint }"/>P
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -179,27 +247,30 @@
 							<span>오픈 카톡 링크</span>
 						</td>
 						<td>
-							<span>[링크url]ex.https://open.kakao.com/o/gWfD3Ugd</span>
+							<span>
+								<c:out value="${ challenge.opentalkLink }"/>
+							</span>
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<span>참고파일</span>
-						</td>
-						<td>
-							<span>[업로드된파일LIST]</span>
-						</td>
-					</tr>
-					<tr>
+						<!-- 챌린지 상세 설명(Content) -->
 						<td colspan="2">
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
-							[챌린지textEditor내용 출력]<br>
+							<p>
+								<c:out value="${ challenge.content }"/><br>
+								⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣴⣾⣿⣶⣶⣆⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀<br>
+								⢀⢀⢀⣀⢀⣤⢀⢀⡀⢀⣿⣿⣿⣿⣷⣿⣿⡇⢀⢀⢀⢀⣤⣀⢀⢀⢀⢀⢀<br>
+								⢀⢀ ⣶⢻⣧⣿⣿⠇ ⢸⣿⣿⣿⣷⣿⣿⣿⣷⢀⢀⢀⣾⡟⣿⡷⢀⢀⢀⢀<br>
+								⢀⢀⠈⠳⣿⣾⣿⣿⢀⠈⢿⣿⣿⣷⣿⣿⣿⣿⢀⢀⢀⣿⣿⣿⠇⢀⢀⢀⢀<br>
+								⢀⢀⢀⢀⢿⣿⣿⣿⣤⡶⠺⣿⣿⣿⣷⣿⣿⣿⢄⣤⣼⣿⣿⡏⢀⢀⢀⢀⢀<br>
+								⢀⢀⢀⢀⣼⣿⣿⣿⠟⢀⢀⠹⣿⣿⣿⣷⣿⣿⣎⠙⢿⣿⣿⣷⣤⣀⡀⢀⢀<br>
+								⢀⢀⢀ ⢸⣿⣿⣿⡿⢀⢀⣤⣿⣿⣿⣷⣿⣿⣿⣄⠈⢿⣿⣿⣷⣿⣿⣷⡀⢀<br>
+								⢀⢀⢀⣿⣿⣿⣿⣷⣀⣀⣠⣿⣿⣿⣿⣷⣿⣷⣿⣿⣷⣾⣿⣿⣿⣷⣿⣿⣿⣆<br>
+								⣿⣿⠛⠋⠉⠉⢻⣿⣿⣿⣿⡇⡀⠘⣿⣿⣿⣷⣿⣿⣿⠛⠻⢿⣿⣿⣿⣿⣷⣦<br>
+								⣿⣿⣧⡀⠿⠇⣰⣿⡟⠉⠉⢻⡆⠈⠟⠛⣿⣿⣿⣯⡉⢁⣀⣈⣉⣽⣿⣿⣿⣷<br>
+								⡿⠛⠛⠒⠚⠛⠉⢻⡇⠘⠃⢸⡇⢀⣤⣾⠋⢉⠻⠏⢹⠁⢤⡀⢉⡟⠉⡙⠏⣹<br>
+								⣿⣦⣶⣶⢀⣿⣿⣿⣷⣿⣿⣿⡇⢀⣀⣹⣶⣿⣷⠾⠿⠶⡀⠰⠾⢷⣾⣷⣶⣿<br>
+								⣿⣿⣿⣿⣇⣿⣿⣿⣷⣿⣿⣿⣇⣰⣿⣿⣷⣿⣿⣷⣤⣴⣶⣶⣦⣼⣿⣿⣿⣷<br>
+							</p>
 						</td>
 					</tr>
 				</table>

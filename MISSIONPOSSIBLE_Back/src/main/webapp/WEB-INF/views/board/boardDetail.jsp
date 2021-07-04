@@ -15,7 +15,7 @@
 <title>게시판 상세</title>
 
 <style>
-	#box{ 
+		#box{ 
             background-color:rgb(224, 239, 132);
             width:100%;
             height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
