@@ -65,10 +65,12 @@ height:20px;
       	
 				<div id="updatePassword">
 					<form action="${ path }/board/password" method="POST">
+					<input type="hidden" name="qna_no" value="${ board.qna_no }" />
+					
 						<table>
 							<tr>
 								<th>비밀번호</th>
-								<td><input type="password" name="pass" id="pass1" required></td>
+								<td><input type="password" name="pass" id="pass1"></td>
 							
 							</tr>
 							<tr>

@@ -36,13 +36,6 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
-	@GetMapping("/password")
-	public String password() {
-		log.info("비밀번호 확인");
-		
-		return "board/password";
-	}
-	
 	// 글목록 보기
 	@GetMapping("/boardList")
 	public ModelAndView list(ModelAndView model,
@@ -217,7 +210,7 @@ public class BoardController {
 			model.addObject("location", "/board/boardList");
 		}
 		
-		System.out.println(board);
+//		System.out.println(board);
 //		System.out.println(reloadFile.getOriginalFilename());
 		
 		model.setViewName("common/msg");
@@ -225,24 +218,104 @@ public class BoardController {
 		return model;
 	}
 	
-	/*
+
 	// 게시글 삭제
 		@GetMapping("/delete")
 		public ModelAndView delete(ModelAndView model,
-				@RequestParam("qna_no") int qna_no) {
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+				@RequestParam("qna_no") int qna_no,
+				@ModelAttribute Board board){
 			
-			System.out.println(qna_no);
-		
-			Board board = service.delete(qna_no);
+			log.info("게시글 삭제 요청");
 			
-			model.addObject("board", board); // view한테 전달해줄 데이터
-			model.setViewName("board/boardDetail");
+			int result = 0;
+			result = service.delete(qna_no);
+			
+			if(loginMember.getId().equals(board.getWriter())) {
+				
+				if(result > 0) {
+					model.addObject("msg", "게시글이 정상적으로 삭제되었습니다.");
+					model.addObject("location", "/board/boardList");
+				} else {
+					model.addObject("msg", "게시글 삭제를 실패하였습니다.");
+					model.addObject("location", "/board/boardDetail=?qna_no=" + board.getQna_no());
+				}
+				
+			} else  {
+				model.addObject("msg", "잘못된 접근입니다.");
+				model.addObject("location", "/board/boardList");
+			}
+			
+			model.setViewName("common/msg");
 			
 			return model;
 		}
-		*/
+		
 	
-	
+		// 비밀글
+		@GetMapping("/password")
+		public ModelAndView checkPwView(ModelAndView model,
+				@RequestParam("qna_no") int qna_no) {
+			
+			System.out.println("비밀번호 : " + qna_no);
+			log.info("비밀번호 확인 뷰 요청");
+			
+			model.setViewName("board/password");
+			
+			return model;
+		}
 
-	
+/*
+		@PostMapping("/password") 
+		public ModelAndView checkPw(ModelAndView model,
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+				@RequestParam("pass") String pass,
+				@RequestParam("qna_no") int qna_no){
+
+			log.info("비밀번호 확인");
+			
+			Board board = service.checkPw(qna_no);
+			
+			if(loginMember.getId().equals(board.getWriter())) { 
+				if(board.getPass().equals(pass)) {
+					model.addObject("board", board);
+					model.addObject("location", "/board/boardDetail=?qna_no=" + board.getQna_no());
+				} 	
+			} else  {
+				model.addObject("msg", "잘못된 접근입니다.");
+				model.setViewName("board/password");
+				model.setViewName("common/msg");
+			}
+			
+			return model;
+		}
+		
+		
+		/*
+		@PostMapping("/password") 
+		public ModelAndView checkPw(ModelAndView model,
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+				@RequestParam("pass") String pass,
+				@RequestParam("qna_no") int qna_no){
+
+			log.info("비밀번호 확인");
+			
+			Board board = service.checkPw(qna_no);
+			
+			if(loginMember.getId().equals(board.getWriter())) {
+				model.addObject("board", board);
+				model.setViewName("board/boardModify");
+			} else {
+				model.addObject("msg", "잘못된 접근입니다.");
+				model.addObject("location", "/board/boardList");
+				model.setViewName("common/msg");
+			}
+			
+			return model;
+		}
+	*/
+
 }
+		
+
+

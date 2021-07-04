@@ -194,9 +194,16 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 					      	 	<tr>
 					      	 		<td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
 					      	 		<td>
+					      	 			<c:if test="${ board.pass != null }">
+											<a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+					      	 				<c:out value="${ board.title }"/>
+					      	 			</a>
+										</c:if>
+										<c:if test="${ board.pass == null }">
 					      	 			<a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
 					      	 				<c:out value="${ board.title }"/>
 					      	 			</a>
+					      	 			</c:if>
 					      	 		</td>
 					      	 		<td><c:out value="${ board.writer }"/></td>
 					      	 		<td><fmt:formatDate type="both" value="${ board.createDate }"/></td>

@@ -129,12 +129,14 @@
          )
 	</insert>
 	
+	<!-- 게시글 개수 가져오기 -->
 	<select id="selectBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
 		SELECT COUNT(*)
 		FROM QNA
 		WHERE STATUS='Y' 
 	</select>
 	
+	<!-- 게시글 업데이트 -->
 	<update id="update" parameterType="map">
    		UPDATE QNA
    		SET
@@ -148,13 +150,19 @@
    			</if>
    			MODIFY_DATE=SYSDATE
    		WHERE
-   			QNA_NO=#{qna_no}
+   			QNA_NO=#{qna_no} AND STATUS='Y'
    </update>
 
+	<!-- 게시글 삭제 -->
+	<update id="delete" parameterType="_int" > 
+		UPDATE QNA SET STATUS='N' WHERE QNA_NO=#{qna_no}
+	</update>
 
-
-
-
+	<!-- 비밀번호 확인 -->
+	<select id="pass"  parameterType="_int">
+		SELECT * FROM QNA
+		WHERE QNA_NO=#{qna_no}
+	</select>
    
 
 </mapper>
