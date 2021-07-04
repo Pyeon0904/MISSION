@@ -18,9 +18,9 @@ public interface BoardService {
 
 	int delete(int qna_no);
 
-//	Boolean checkPw(int qna_no);
+//	Boolean checkPw(int qna_no, String pass);
 	
-//	Board checkPw(int qna_no);
+	Board checkPw(int qna_no);
 	
 //	public BoardDetail selectOne(int board_id);
 

@@ -222,7 +222,6 @@ public class BoardController {
 	// 게시글 삭제
 		@GetMapping("/delete")
 		public ModelAndView delete(ModelAndView model,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 				@RequestParam("qna_no") int qna_no,
 				@ModelAttribute Board board){
 			
@@ -231,21 +230,14 @@ public class BoardController {
 			int result = 0;
 			result = service.delete(qna_no);
 			
-			if(loginMember.getId().equals(board.getWriter())) {
-				
 				if(result > 0) {
 					model.addObject("msg", "게시글이 정상적으로 삭제되었습니다.");
 					model.addObject("location", "/board/boardList");
 				} else {
 					model.addObject("msg", "게시글 삭제를 실패하였습니다.");
-					model.addObject("location", "/board/boardDetail=?qna_no=" + board.getQna_no());
+					model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
 				}
 				
-			} else  {
-				model.addObject("msg", "잘못된 접근입니다.");
-				model.addObject("location", "/board/boardList");
-			}
-			
 			model.setViewName("common/msg");
 			
 			return model;
@@ -257,18 +249,17 @@ public class BoardController {
 		public ModelAndView checkPwView(ModelAndView model,
 				@RequestParam("qna_no") int qna_no) {
 			
-			System.out.println("비밀번호 : " + qna_no);
-			log.info("비밀번호 확인 뷰 요청");
+			Board board = service.findByNo(qna_no);
 			
+			model.addObject("board", board); // view한테 전달해줄 데이터
 			model.setViewName("board/password");
 			
 			return model;
 		}
 
-/*
+
 		@PostMapping("/password") 
 		public ModelAndView checkPw(ModelAndView model,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 				@RequestParam("pass") String pass,
 				@RequestParam("qna_no") int qna_no){
 
@@ -276,45 +267,23 @@ public class BoardController {
 			
 			Board board = service.checkPw(qna_no);
 			
-			if(loginMember.getId().equals(board.getWriter())) { 
-				if(board.getPass().equals(pass)) {
-					model.addObject("board", board);
-					model.addObject("location", "/board/boardDetail=?qna_no=" + board.getQna_no());
-				} 	
-			} else  {
-				model.addObject("msg", "잘못된 접근입니다.");
-				model.setViewName("board/password");
-				model.setViewName("common/msg");
-			}
+//			System.out.println(board);
+//			System.out.println(pass);
 			
-			return model;
-		}
-		
-		
-		/*
-		@PostMapping("/password") 
-		public ModelAndView checkPw(ModelAndView model,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-				@RequestParam("pass") String pass,
-				@RequestParam("qna_no") int qna_no){
-
-			log.info("비밀번호 확인");
-			
-			Board board = service.checkPw(qna_no);
-			
-			if(loginMember.getId().equals(board.getWriter())) {
+			if(board.getPass().equals(pass)) {
 				model.addObject("board", board);
-				model.setViewName("board/boardModify");
+				model.addObject("msg", "비밀번호가 일치합니다.");
+				model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
+				
 			} else {
-				model.addObject("msg", "잘못된 접근입니다.");
+				model.addObject("msg", "비밀번호가 일치하지 않습니다.");
 				model.addObject("location", "/board/boardList");
-				model.setViewName("common/msg");
+				
 			}
-			
+			model.setViewName("common/msg");
 			return model;
 		}
-	*/
-
+	
 }
 		
 

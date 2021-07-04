@@ -159,7 +159,7 @@
 	</update>
 
 	<!-- 비밀번호 확인 -->
-	<select id="pass"  parameterType="_int">
+	<select id="pass"  parameterType="_int" resultType="Board">
 		SELECT * FROM QNA
 		WHERE QNA_NO=#{qna_no}
 	</select>

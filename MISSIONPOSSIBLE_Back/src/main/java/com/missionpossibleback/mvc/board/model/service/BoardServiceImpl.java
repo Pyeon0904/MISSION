@@ -77,7 +77,34 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 
-/*
+	/*
+	@Override
+	public Boolean checkPw(int qna_no, String pass) {
+		boolean result = false;
+		
+		if(result)
+		
+		return checkPw;
+	}
+
+	 // 삭제
+    public boolean boardDelete(int qna_no)
+    {
+        boolean bCheck=false;
+        String db_pwd=mapper.boardGetPassword(no);
+        if(db_pwd.equals(pwd))
+        {
+            bCheck=true;
+            mapper.boardDelete(no);
+        }
+        else
+        {
+            bCheck=false;
+        }
+        return bCheck;
+    }
+    */
+
 	@Override
 	public Board checkPw(int qna_no) {
 		
@@ -86,22 +113,6 @@ public class BoardServiceImpl implements BoardService {
 
 	
 	
-	// 삭제
-    public boolean checkPw(int qna_no)
-    {
-    	 boolean bCheck=false;
-         String db_pwd=mapper.pass(qna_no);
-         if(db_pwd.equals(pwd))
-         {
-             bCheck=true;
-             mapper.boardDelete(no);
-         }
-         else
-         {
-             bCheck=false;
-         }
-         return bCheck;
-     }
-*/
+	
 
 }

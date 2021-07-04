@@ -30,9 +30,7 @@ public interface BoardMapper {
 	
 	int delete(@Param("qna_no") int qna_no);
 
-//	Board pass(int qna_no);
-	
-//	String pass(int qna_no);
+	Board pass(int qna_no);
 	
 	
 }
