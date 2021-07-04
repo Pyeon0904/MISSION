@@ -11,9 +11,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시판 글쓰기</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="${ path }/resources/se2/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+<!-- <script type="text/javascript" src="${ path }/resources/se2/se2/js/HuskyEZCreator.js" charset=" -->
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+
+<script src="${path}/resources/summernote/summernote-lite.js"></script>
+<script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 
 <style>
 	#box{ 
@@ -33,8 +41,12 @@
             margin:auto;
          }
 
+h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+
 input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
-input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
+input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
 input[type="checkbox"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
 input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
 input[type="password"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
@@ -54,11 +66,14 @@ table.table01 {border-collapse:separate;border-spacing:0;text-align:center;line-
 table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
 table.table01 td {padding:10px;vertical-align:middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 
-table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:1px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 caption.center{padding-top:6px;height:39px;line-height:130%;text-align:center;color:#333;padding-left:0;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody th{padding:10px;vertical-align:middle;font-family:'malgunbd';color:#333;border-right:1px solid #c9c9c9;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody td{padding:10px;vertical-align:middle;padding-left:15px;background:#fafafa;border-bottom:1px solid #c9c9c9}
 
+/* link_style 
+a:link, a:visited, a:hover, a:active{color:#666;text-decoration:underline}
+a:hover{color:#0076c8} */
 
 /* button */
 .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
@@ -114,8 +129,8 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 <div id="wrap">
 	<div id="container">
 		<div class="inner">		
-			<h2>게시글 작성</h2>
-			<form id="boardForm" name="boardForm" action="/board/insertBoard" enctype="multipart/form-data" method="post" onsubmit="return false;">
+			<h2 style="padding-bottom:20px;">게시글 작성</h2>
+			<form id="boardForm" name="boardForm" action="${ path }/board/boardWrite" enctype="multipart/form-data" method="POST">
 				<table width="100%" class="table02">
 				<caption><strong><span class="t_red">*</span> 표시는 필수입력 항목입니다.</strong></caption>
 				    <colgroup>
@@ -125,16 +140,19 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 				    <tbody id="tbody">
 						<tr>
 							<th>제목<span class="t_red">*</span></th>
-							<td><input id="board_subject" name="board_subject" value="" class="tbox01"/></td>
+							<td><input id="board_subject" name="title" value="" class="tbox01"/></td>
 						</tr>
 						<tr>
 							<th>작성자<span class="t_red">*</span></th>
-							<td><input id="board_writer" name="board_writer" value="" class="tbox01"/></td>
+							<td><input id="board_writer" name="writer" value="${ loginMember.id }" class="tbox01" readonly/></td>
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
-							<td><textarea name="editor" id="editor" rows="10" cols="100" style="width:700px; height:412px;"></textarea></td>
+							<td><textarea class="summernote" name="content" style=""></textarea></td>
+							<!-- <td><textarea name="editor" id="editor" rows="10" cols="100" style="width:700px; height:412px;"></textarea></td> -->
 						</tr>
+						
+						<!-- 
 						<tr>
 							<th scope="row">첨부파일1</th>
 							<td><input type="file" name="upfile" value=""></td>
@@ -143,13 +161,30 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 							<th scope="row">첨부파일2</th>
 							<td><input type="file" name="upfile" value=""></td>
 						</tr>
+						 -->
+						 
+						<tr>
+							<th scope="row">비밀번호</th>
+							<td><input type="password" class="tbox01" name="pass"></td>
+						</tr>
+						
+						<!-- 
+						<tr class="form-inline">
+							<th scope="row">비밀글</th>
+						    <td style="vertical-align : middle;">
+						    <input type="radio" name="cs_open" id="cs_open" value="Y" class="radio" /><span class="ml_10">공개</span>
+						    <input type="radio" name="cs_open" id="cs_open" value="N" class="radio" checked="checked" /><span class="ml_10" >비공개</span>
+						    </td>
+						</tr>
+						-->
+						
 				    </tbody>
 				</table>
-			</form>
-			<div class="btn_right mt15">
+				<div class="btn_right mt15">
 				<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
-				<button type="button" class="btn black" onclick="javascript:insertBoard();">등록하기</button>
-			</div>
+				<input type="submit" class="btn black" value="등록하기">
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -157,7 +192,43 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 </section>
 </div>
 
+<script>
+$('.summernote').summernote({
+	  height: 410,                 // 에디터 높이
+	  minHeight: null,             // 최소 높이
+	  maxHeight: null,             // 최대 높이
+	  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+	  lang: "ko-KR",					// 한글 설정
+	  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+		  toolbar: [
+			    // [groupName, [list of button]]
+			    ['fontname', ['fontname']],
+			    ['fontsize', ['fontsize']],
+			    ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+			    ['color', ['forecolor','color']],
+			    ['table', ['table']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['insert',['picture','link','video']],
+			    ['view', ['fullscreen', 'help']]
+			  ],
+			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
+			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+			
+			callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+				onImageUpload: function(files, editor, welEditable) { 
+					for (var i = files.length - 1; i >= 0; i--) { 
+						sendFile(files[i], this); 
+					} 
+				},	
+			}
+});
 
+</script>
+
+
+
+<!-- 
 <script type="text/javascript">
     //전역변수
     var obj = [];
@@ -176,7 +247,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
         }
     });
 </script>
-
+-->
 </body>
 </html>
-<%@ include file="../common/footer.jsp"%> 
+<%@ include file="../common/footer.jsp"%>
