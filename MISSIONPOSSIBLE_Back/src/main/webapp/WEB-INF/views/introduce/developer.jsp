@@ -144,9 +144,9 @@
 									<span class="Title">Email</span>
 									<span class="sign">|</span>
 									<span class="text">x931112@naver.com</span>
-								</div>
 							</div>
-						</td>
+						</div>
+					</td>
 						<td>
 							<div class="img3">
 								<img src="${path}/resources/images/Pyeon.png"

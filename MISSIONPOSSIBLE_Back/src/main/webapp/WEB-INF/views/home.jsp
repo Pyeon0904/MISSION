@@ -30,7 +30,7 @@
 #box {
 	background-color: rgb(224, 239, 132);
 	width: 100%;
-	height: 2300px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+	height: 2100px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
 	margin-top: 100px;
 	margin-bottom: 100px;
 	margin-left: -10px;
@@ -45,7 +45,7 @@
 }
 
 /*-----------------------------------------------------------------------------------*/
-/*----------------------랜덤한 사진+글-----------------------------------*/
+/*----------------------기획 의도-----------------------------------*/
 .Runing{
 position:absolute;
 left:330px;
@@ -72,7 +72,7 @@ font-size: 20px;
 .teamevent1{
 
 }
-.teamevent2{
+.temaevent2{
 
 }
 .teamevent3{
@@ -80,91 +80,133 @@ font-size: 20px;
 }
 /* --------------------- 간단히 홈페이지소개 ---------------------- */
 
-/*홈페이지 소개 테이블 전체 영역 지정*/
-.introTable {
-	width: 1000px;
-	height: 200px;
-	font-family: 'GmarketSansLight';
-	margin-top: 0px;
+/* 간단히 소개 이미지*/
+.introImg{
+  width:500px;
+  height:360px;
 }
-
-
-/* 홈페이지 소개 제목*/
-.introTitle {
-	font-family: 'GmarketSansMedium';
-	color: black;
-	font-size: 25pt;
-	font-weight: bold;
-}
-/* 홈페이지 설명 영역 지정 */
+/* 간단히 홈페이지 설명 영역 지정 */
 .introcontent {
-	width: 300px;
-	height: 300px;
-	padding-top: 40px;
-	padding-bottom: 10px;
+	width: 500px;
+	height: 350px;
+	text-align:center;
+	font-size: 20pt;
 }
-/* 홈페이지 마지막 제목 */
-.introlast{
-   padding-top: 1000px;
-   padding-bottom: 10px;
-}
-/* 홈페이지 뜻 문단 스타일*/
-.introcontent span {
-	font-size: 18pt;
+
+
+/*------------------------------챌린지 소개--------------------------*/
+/*챌린지 소개 글*/
+.challTitle{
+    font-size: 18pt;
 	font-weight: bold;
 	color: black;
+	line-height: 1.5em;
 }
-/*-------------챌린지 소개----------------*/
-.Introchalltable{
-    width: 1000px;
-	height: 200px;
-	font-family: 'GmarketSansLight';
-	margin-top: 0px;
-}
-/* 챌린지 소개 이미지 */
-.IntrochallImg{
-    width: 900px;
-	height: 500px;
-	object-fit: cover;
-}
-/* 챌린지 문장 폰트*/
-.challcontent{
-	font-size: 20pt;
+.challcontext{
+    width:550px;
+    height:420px;
+	font-size: 13.5pt;
 	color: black;
-	margin-top: 100px;
+	text-align:left;
+	line-height: 2.5em;
+}
+.challcontext span{
+font-weight: bold;
+	color: red;
+}
+
+/*챌린지 소개 이미지*/
+.IntrochallImg1{
+	position:absolute;
+	object-fit: cover;
+    width: 500px;
+	height: 300px;
+	left: 550px;
+	top:870px;
+}
+.IntrochallImg2{
+    position:absolute;
+	object-fit: cover;
+    width: 500px;
+	height: 300px;
+	left: 550px;
+	top:1220px;
+}
+/*챌린지 소개 이미지 소개 글*/
+.challImgtext1{
+ text-align:center;
+ position:absolute;
+ top:1180px;
+ left:555px;
+ font-size:22px;
+ font-weight: bold;
+ color: black;
+}
+.challImgtext2{
+ text-align:center;
+ width:1180px;
+ height:30px;
+ font-size:22px;
+ font-weight: bold;
+ color: black;
 }
 /*------------------게시판 소개------------------*/
-.boardImg{
- width: 400px;
+.boardImg1{
+    width: 400px;
 	height: 400px;
 	object-fit: cover;
+	
 }
-.boardFont span{
+.boardImg2{
+    width: 400px;
+	height: 400px;
+	object-fit: cover;
+	margin-top:50px;
+}
+.boardService{
 font-size: 25pt;
 font-weight: bold;
 	color: black;
+	
 }
-.boardFont{
-font-size: 15pt;
+.boardReview{
+font-size: 25pt;
 font-weight: bold;
 	color: black;
+	
 }
-/*공통*/
-span{
-font-size: 30pt;
-	font-weight: bold;
-	color: black;
-}
-/* 자세히보기 */
+/*-----------------------공통-----------------------*/
+
+/*자세히보기 */
 .ViewMore {
-	width: 100px;
+  position:absolute;
+	width: 1280px;
 	height: 30px;
-	text-align: center;
+	top:450px;
+	left:1100px;
 }
 .ViewMore2 {
-	width: 400px;
-	height: 400px;
-	text-align: center;
+ position:absolute;
+	width: 1280px;
+	height: 30px;
+	top:880px;
+	left:1100px;
+}
+
+/*제목 */
+.introTitle {
+    width:500px;
+    height:50px;
+	color: black;
+	font-size: 20pt;
+	font-weight: bold;
+	text-align:left;
+}
+/*포인트 스타일*/
+.span{
+	font-size: 18pt;
+	font-weight: bold;
+	color: black;
 }
 </style>
 <script>
@@ -200,18 +242,17 @@ animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
 </head>
 <body>
 <!-- 기획의도 -->
-<div id="box">
-	<section id="section">
-		<div id="conbox">
-			<div id="temaevent">
-				<div id="show">
-					<div class="fotorama" data-width="1200px" 
-					data-height="400px"data-autoplay="9000" data-loop="true">
-						<div data-img="${path}/resources/images/Runing.png">
-						<p class=Runing>오늘 하루는 얼마나달려볼까?</p>
-							<div class="animated fast fadeInLeft delay-1s">
-							<p class="temaevent1">서브</p>
-							
+    <div id="box">
+	   <section id="section">
+		   <div id="conbox">
+			    <div id="plan">
+				    <div id="show">
+					    <div class="fotorama" data-width="1200px" 
+					      data-height="400px"data-autoplay="9000" data-loop="true">
+						   <div data-img="${path}/resources/images/Runing.png">
+						     <p class=Runing>오늘 하루는 얼마나달려볼까?</p>
+							   <div class="animated fast fadeInLeft delay-1s">
+							    <p class="temaevent1">서브</p>
 							</div>
 						</div>
 						<div data-img="${path}/resources/images/JSPark.jpg">
@@ -229,84 +270,82 @@ animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
 					</div>
 				</div>
 			</div>
-    <hr>
-			<!-- 간단히 홈페이지 소개  -->
-			<div id="intro">
-					<table class="introTable">
-						<tr>
-							<td rowspan="2"><img class="introImg"
-								src="${path}/resources/images/flower1.png"></td>
-							<td>
-							<p class="introTitle">챌린지 홈페이지에 오신걸 환영합니다!</p>
-							</td>
-								<td>
+        <hr style="margin-bottom:10px;">
+        
+<!-- 간단히 홈페이지 소개  -->
+		     <div id="intro">
+				<table class="introTable">
+				    <tr>
+						<td rowspan="2">
+							<div class="introTitle">챌린지 홈페이지에 오신걸 환영합니다!</div>
+							<img class="introImg"src="${path}/resources/images/Lewan.PNG">
+					       </td>
+						   <td>
 							<div class="ViewMore">
-								<a href="#">자세히 보기</a>
+								<a href="${ path }/introduce/introduce">자세히 보기</a>
 							</div>
-							</td>
-						</tr>
+						</td>
+					</tr>
 						<tr>
 							<td>
-								<p class="introcontent">
-									&nbsp;&nbsp;<span>홈페이지</span>를 소개합니다~~~~ <br>
-									소개소개소개소개소개소개소개소개소개소개<br><br><br><br><br>
-								    <span>라스트라스트라스트라스트라스트라스트라스트라스트</span>
-								    </p>
+								<div class="introcontent">
+									<span>준장이형을 소개합니다~~~~</span><br>
+									준장이형이 준 문구 넣기~ 문구를 주세요~<br><br><br><br><br>
+								    준장이형~~~~
+								    </div>
 							     </td>
 						      </tr>
 					     </table>
 				   </div>
-		      <hr style="margin-bottom:50px;"> 
+ <hr style="margin-bottom:10px;"> 
+ 
 <!-- 챌린지 소개 -->
-  <div id=challintro>
-	 <table id="Introchalltable">
-		 <tr>
-		   <td>
-		     <img class="introchallImg" src="${path}/resources/images/flower1.png">
-				    </td>
-				    	<td>
-							<div class="ViewMore2">
-								<a href="#">자세히 보기</a>
-							  </div>
-					       </td>
-		                </tr>
-			          <tr>
-		            <td>
-				       <div class="challcontent">
-							<p>
-							&nbsp;&nbsp;<span>챌린지 소개 소개소개소개</span><br><br>
-							asdasdasd<br>
-							asdasdasdasdasdasdasd
-							</p>
-						</div>
-					  </td>
-		    	</tr>
-      </table>
-</div>
-<hr style="margin-bottom:50px;">
+          <div id=challintro>
+	          <table id="Introchalltable">
+	              <tr>
+					<td>
+					  <div class="introTitle">챌린지 소개</div><br><br><br><br>
+		     <span class="challTitle">지키고 싶은<br> 나와의 약속을 고르세요</span><br><br>
+					  <p class="challcontext">
+                       1.포스트 코로나 시대속 다양한 챌린지 모임 제공<br>
+                       2.외출,인원,방문 각종 제한속에서 지혜롭게일상을 보내는 방안제시<br>
+                       3.다양한 참가자들과의 열정공유, 의지확립으로 코로나 극복<br>
+      <span>TIP 원하는 챌린지가 없다면<br>
+             "챌린지 개설"로 직접 만들어 보세요.</span></p>
+				   <img class="IntrochallImg1"src="${path}/resources/images/mission.png">
+					  <div class="challImgtext1"> 매일 오전 6시 기상</div>
+						<img class="IntrochallImg2"src="${path}/resources/images/mission2.png">
+						  <p class="challImgtext2"><span>책 읽기</span></p>
+					        </td>
+						       <td>
+							      <div class="ViewMore2">
+								     <a href="${ path }/challenge/recruitList">자세히 보기</a>
+							   </div>
+						   </td>
+					 </tr>
+		     </table>
+	    </div>
+<hr style="margin-bottom:10px;">
      <!-- 게시판 소개 -->
 		      <div class="boardintro">
 		         <table class="boardtable">
 		       <tr>
 		     <td>
-		     <img class="boardImg" src="${path}/resources/images/flower1.png" style="margin-right:50px;">
-		     <p class="boardFont"><span>나 올해 챌린지 얼마나했지?</span>
-		     <br>소개소개소개소개</p>
+		     <p class="introTitle">소통의 장</p>
+		     <a href="${ path }/board/boardList">
+		     <img class="boardImg1" src="${path}/resources/images/Service.jpg">
+		     </a>
+		     <p class="boardService"><span>고객센터</span></p>		    
 		     </td>
 		     <td>
-		     <img class="boardImg" src="${path}/resources/images/river2.PNG"  style="margin-left:50px;">
-		     <div class="boardFont" style="margin-left:50px;">
-		       <p><span>asffasasfasfasfasfasf</span>
-		        <br>소개소개소개소개</p>
+		     <a href="${ path }/review/reviewList">
+		     <img class="boardImg2" src="${path}/resources/images/flower.png">
+		     </a>
+		     <div class="boardReview"><p><span>후기게시판</span></p>
 		        </div>
 		     </td>
-		     <td>
-				<div class="ViewMore2">
-					<a href="#">자세히 보기</a>
-					 </div>
-				</td>
-		     </tr>
-		         </table>
+		  </tr>
+		     </table>
 		      </div>
           </div>
 	   </section>
