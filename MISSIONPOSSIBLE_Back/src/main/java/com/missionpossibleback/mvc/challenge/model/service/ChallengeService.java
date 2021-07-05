@@ -55,5 +55,9 @@ public interface ChallengeService {
 	Challenge findByNo(int challengeNo);
 
 	List<String> findCertIdList(int challengeNo);
+
+	int getSearchCount(String key, String word);
+
+	List<Challenge> getSearchList(String key, String word, PageInfo pageInfo);
 	
 }

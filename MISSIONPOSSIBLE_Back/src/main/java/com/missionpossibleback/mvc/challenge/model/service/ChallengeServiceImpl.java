@@ -252,6 +252,25 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectCertIdList(no);
 	}
 
+	/*
+	 ============= 검색 기능 =============
+	 */ 
+	// 챌린지 검색 페이징 처리를 위한 개수 세기
+	@Override
+	public int getSearchCount(String key, String word) {
+		
+		return mapper.selectSearchCount(key, word);
+	}
+
+	// 키워드 통해 챌린지 검색 및 페이징
+	@Override
+	public List<Challenge> getSearchList(String key, String word, PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());	
+		
+		return mapper.selectSearchList(key, word, rowBounds);
+	}
+
 
 
 	

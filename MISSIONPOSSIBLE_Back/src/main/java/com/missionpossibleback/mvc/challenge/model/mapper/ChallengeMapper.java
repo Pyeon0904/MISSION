@@ -54,5 +54,9 @@ public interface ChallengeMapper {
 	int updateCurrentCount(Challenge challenge);
 
 	List<String> selectCertIdList(@Param("no") int no);
+
+	int selectSearchCount(@Param("key") String key, @Param("word") String word);
+
+	List<Challenge> selectSearchList(@Param("key") String key, @Param("word") String word, RowBounds rowBounds);
 	
 }

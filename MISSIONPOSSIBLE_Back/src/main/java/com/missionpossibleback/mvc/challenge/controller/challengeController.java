@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -505,6 +507,27 @@ public class challengeController {
 		log.info("챌린지 포기 신청뷰 요청");
 		
 		return "challenge/giveup";
+	}
+    
+	// 챌린지 검색
+	@RequestMapping(value="/challenge/search" , method={RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView searchList(ModelAndView model,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam("key") String key,
+			@RequestParam("word") String word
+    		) {
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, service.getSearchCount(key, word), 12);
+
+		list = service.getSearchList(key, word, pageInfo);
+		
+		model.addObject("list", list);
+		model.addObject("key", key);
+		model.addObject("word", word);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/search");
+		
+		return model;	
 	}
 	
 }
