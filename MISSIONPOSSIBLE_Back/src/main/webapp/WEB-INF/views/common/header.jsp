@@ -30,7 +30,7 @@
 		height:82px;
 		margin:0 auto;
 	}
-	ul.headerMenu, ul.introMenu, ul{
+	ul.headerMenu, ul.introMenu, ul.challengeMenu, ul{
 		list-style-type:none;
 	}
 	ul.headerMenu li.header_li {
@@ -53,6 +53,22 @@
 		margin-left:-50px;
 	}
 	ul.headerMenu>li.introduce>ul.introMenu li {
+		width:120px;
+		height:50px;
+		float:left;
+		font-size:0.8em;
+		font-weight:bold;
+		text-align:center;
+		line-height:3;
+		display:none;
+		float:left;
+	}
+	ul.headerMenu>li.challenge>ul.challengeMenu{
+		width:250px;
+		height:60px;
+		margin-left:-50px;
+	}
+	ul.headerMenu>li.challenge>ul.challengeMenu li {
 		width:120px;
 		height:50px;
 		float:left;
@@ -116,6 +132,12 @@
 		$(".introduce").on("mouseleave", () => {
 			$(".introMenu li").slideUp(400);
 		});
+		$(".challenge").on("mouseenter", () => {
+			$(".challengeMenu li").slideDown(400);
+		});
+		$(".challenge").on("mouseleave", () => {
+			$(".challengeMenu li").slideUp(400);
+		});
 		$("#hamburger").hide();
 	    $(".btnHBG").on("click", () => {
 	       $("#hamburger").animate({width:'toggle'}, 400);
@@ -135,7 +157,13 @@
 							<li><a href="${ path }/introduce/developer">개발자 소개</a></li>
 						</ul>
 					</li>
-					<li class="header_li"><a href="${ path }/challenge/recruitList">챌린지</a></li>
+					<li class="header_li challenge">
+						<a href="${ path }/challenge/recruitList">챌린지</a>
+						<ul class="challengeMenu">
+							<li><a href="${ path }/challenge/challengeRegister">챌린지 등록</a></li>
+							<li><a href="${ path }/challenge/recruitList">챌린지 목록</a></li>
+						</ul>
+					</li>
 					<li class="header_li">
 						<a href="${ path }">
 							<!-- 로고 이미지 -->
@@ -180,7 +208,7 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="찜>"/><hr>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/><hr>
 						<table style="width: 300px; margin:auto;">
 							<tr>
 								<td>보유 포인트</td>
