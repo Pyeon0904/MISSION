@@ -90,9 +90,13 @@ font-size: 20px;
 	width: 500px;
 	height: 350px;
 	text-align:center;
-	font-size: 20pt;
+	font-size: 18pt;
+	line-height:3.0em;
 }
-
+.introcontent span{
+font-weight: bold;
+	color: black;
+}
 
 /*------------------------------챌린지 소개--------------------------*/
 /*챌린지 소개 글*/
@@ -289,9 +293,11 @@ animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
 						<tr>
 							<td>
 								<div class="introcontent">
-									<span>준장이형을 소개합니다~~~~</span><br>
-									준장이형이 준 문구 넣기~ 문구를 주세요~<br><br><br><br><br>
-								    준장이형~~~~
+									<span>지극히 평범한 일상을 벗어나고 싶으신가요?</span><br>
+                                         절망의 끝자락에서 마음이 낙심될 때,<br>
+                                         우리가 손잡고 함께하겠습니다.<br>
+                                         '작전' 챌린지와 지금 당장 시작해봅시다!<br>
+									         
 								    </div>
 							     </td>
 						      </tr>
