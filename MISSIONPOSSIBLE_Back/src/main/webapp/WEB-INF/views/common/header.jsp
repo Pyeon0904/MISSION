@@ -89,6 +89,7 @@
 		box-shadow: -20px 20px 20px grey;
 		position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 		z-index: 999;
+		display:none;
 	}
 	#login{
 		width:450px;
@@ -126,19 +127,22 @@
 </style>
 <script type="text/javascript">
 	$(document).ready(()=>{
-		$(".introduce").on("mouseenter", () => {
-			$(".introMenu li").slideDown(400);
-		});
-		$(".introduce").on("mouseleave", () => {
-			$(".introMenu li").slideUp(400);
-		});
-		$(".challenge").on("mouseenter", () => {
-			$(".challengeMenu li").slideDown(400);
-		});
-		$(".challenge").on("mouseleave", () => {
-			$(".challengeMenu li").slideUp(400);
-		});
-		$("#hamburger").hide();
+		$(".introduce").hover(
+			function(){
+				$(".introMenu li").not(':animated').slideDown(400);
+			},	
+			function(){
+				$(".introMenu li").not(':animated').slideUp(400);
+			}	
+		);
+		$(".challenge").hover(
+			function(){
+				$(".challengeMenu li").not(':animated').slideDown(400);
+			},	
+			function(){
+				$(".challengeMenu li").not(':animated').slideUp(400);
+			}	
+		);
 	    $(".btnHBG").on("click", () => {
 	       $("#hamburger").animate({width:'toggle'}, 400);
 	    });
