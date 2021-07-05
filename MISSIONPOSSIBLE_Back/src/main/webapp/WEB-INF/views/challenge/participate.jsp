@@ -334,8 +334,8 @@
 									<h4>나의 진행도</h4>
 									
 									<!-- 챌린지 총 일수와 내가 인증한 일수 값 받아오게끔 하기 -->
-									<c:set var="totalDay" value="100"/>
-									<c:set var="successDay" value="50"/>
+									<c:set var="totalDay" value="${ endNum - startNum }"/>
+									<c:set var="successDay" value="${ successCount }"/>
 									
 									<!-- 챌린지 달성률 계산식 -->
 									<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>

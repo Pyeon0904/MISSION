@@ -1,5 +1,7 @@
 package com.missionpossibleback.mvc.challenge.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -219,9 +221,17 @@ public class challengeController {
 		Challenge challenge = service.findByNo(challengeNo);
 		
 		if(loginMember != null) {
+			
+			String id = loginMember.getId();
+			
+			int successCount = service.getCertCountById(challengeNo, id);
+			
+			
 			model.addObject("loginMember", loginMember);
 			model.addObject("challenge", challenge);
+			model.addObject("successCount", successCount);
 			model.setViewName("challenge/participate");
+			
 			return model;
 		} else {
 			model.addObject("msg", "로그인이 필요한 서비스입니다. 로그인 후 다시 시도하여 주십시오.");
@@ -335,7 +345,25 @@ public class challengeController {
 		
 		Challenge challenge = service.findByNo(challengeNo);
 		
+		// 인증 일수의 합
+		int sumSuccess = 0;
+		// 참여중인 ID list 저장
+		List<String> list = service.findCertIdList(challengeNo);
+		
+		System.out.print("챌린지 참여중인 ID 목록 : ");
+		// 참여중인 ID각각의 챌린지 인증 일수를 더한다.
+		for(String u_id : list) {
+			System.out.print(u_id+", ");
+			sumSuccess += service.getCertCountById(challengeNo, u_id);
+		}
+		System.out.println();
+		
+		// 더한 값에 ID리스트의 수를 나눈다 = 평균
+		double avgSuccess = (double) sumSuccess / list.size();
+		log.info("avgSuccess : " + avgSuccess);
+		
 		model.addObject("challenge", challenge);
+		model.addObject("avgSuccess", avgSuccess);
 		model.setViewName("challenge/ongoing");
 		
 		return model;
@@ -346,17 +374,24 @@ public class challengeController {
 	public ModelAndView setViewIO(ModelAndView model, @RequestParam("no") int no,
 			@SessionAttribute(name="loginMember", required = false) Member loginMember) {
 		
-		int isJoin = service.getJoinListCount(no, loginMember.getId());
-		
-		log.info("setViewIO.do result값 : " + isJoin);
-		
-		if(isJoin != 0) {
-			//참여하고 있는 챌린지인 경우
-			model.addObject("msg", "상세 페이지로 이동합니다.");
-			model.addObject("location","/challenge/participate?no="+no);
-		} else {
+		if(loginMember != null) {
 			
-			//참여하고 있지 않은 챌린지인 경우 - 진행중인 챌린지
+			int isJoin = service.getJoinListCount(no, loginMember.getId());
+			
+			log.info("setViewIO.do result값 : " + isJoin);
+			
+			if(isJoin != 0) {
+				//로그인한 상태의 ID가 참여하고 있는 챌린지인 경우 - 참여중인 챌린지 보이기
+				model.addObject("msg", "상세 페이지로 이동합니다.");
+				model.addObject("location","/challenge/participate?no="+no);
+			} else {
+				//로그인한 상태의 ID가 참여하고 있지 않은 챌린지인 경우 - 진행중인 챌린지 보이기
+				model.addObject("msg", "상세 페이지로 이동합니다.");
+				model.addObject("location","/challenge/ongoing?no="+no);
+			}
+			
+		} else {
+			//로그인하지 않았을 경우 - 진행중인 챌린지 보이기
 			model.addObject("msg", "상세 페이지로 이동합니다.");
 			model.addObject("location","/challenge/ongoing?no="+no);
 		}

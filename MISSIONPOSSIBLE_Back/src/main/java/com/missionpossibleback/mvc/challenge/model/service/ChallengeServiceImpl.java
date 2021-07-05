@@ -230,11 +230,26 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectCertCount(no);
 	}	
 	
+	// 챌린지 인증 개수 출력 (ID값을 통해 로그인한 유저의 진행도 파악 가능)
+	@Override
+	public int getCertCountById(int no, String id) {
+		
+		return mapper.selectCertCountById(no, id);
+	}
+	
+	
 	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)
 	@Override
 	public Challenge findByNo(int challengeNo) {
 		
 		return mapper.selectChallengeByNo(challengeNo);
+	}
+	
+	// 챌린지 NO를 이용해 인증게시물등록한 ID리스트 출력
+	@Override
+	public List<String> findCertIdList(int no) {
+		
+		return mapper.selectCertIdList(no);
 	}
 
 

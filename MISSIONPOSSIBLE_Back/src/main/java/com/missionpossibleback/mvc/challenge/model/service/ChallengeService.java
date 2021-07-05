@@ -1,5 +1,6 @@
 package com.missionpossibleback.mvc.challenge.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +38,8 @@ public interface ChallengeService {
 	
 	int getCertCount(int no);
 	
+	int getCertCountById(int no, String id);
+	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	
 	List<Challenge> getRecruitList(PageInfo pageInfo);
@@ -51,7 +54,6 @@ public interface ChallengeService {
 	
 	Challenge findByNo(int challengeNo);
 
-
-	
+	List<String> findCertIdList(int challengeNo);
 	
 }

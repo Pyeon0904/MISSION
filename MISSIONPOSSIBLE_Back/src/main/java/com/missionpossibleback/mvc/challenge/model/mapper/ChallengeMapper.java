@@ -29,6 +29,8 @@ public interface ChallengeMapper {
 	
 	int selectCertCount(int no);
 	
+	int selectCertCountById(@Param("no") int no, @Param("id") String id);
+	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
 	List<Challenge> selectRecruitList(RowBounds rowBounds);
@@ -50,5 +52,7 @@ public interface ChallengeMapper {
 	int insertCertify(ChallengeCertify certify);
 	
 	int updateCurrentCount(Challenge challenge);
+
+	List<String> selectCertIdList(@Param("no") int no);
 	
 }

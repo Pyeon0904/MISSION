@@ -253,6 +253,21 @@
 		WHERE CHALLENGE_NO = #{no}
 	</select>
 	
+	<!-- 챌린지 인증 리스트 수 조회 (로그인한 멤버의 챌린지 인증개수) -->
+	<select id="selectCertCountById" parameterType="map" resultType="_int">
+		SELECT COUNT(*) 
+		FROM CHALLENGE_CERTIFY 
+		WHERE 
+			CHALLENGE_NO = #{no}
+			AND
+			ID = #{id}
+	</select>
+	
+	<!-- selectCertIdList -->
+	<select id="selectCertIdList" parameterType="_int" resultType="String">
+		SELECT ID FROM MY_CHALLENGE_LIST WHERE MY_CHALLENGE_NO = #{no} AND MY_STATUS = 'JOIN'
+	</select>
+	
 	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
 		INSERT INTO CHALLENGE (

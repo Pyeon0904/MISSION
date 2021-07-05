@@ -84,28 +84,6 @@
     	}
     	
     	.certListCont {width:100%; height:90%; overflow:scroll; overflow-x:hidden;}
-    	.certListCont .certListDisplay ul{list-style-type : none; margin-left:25px;}
-		.certListCont .certListDisplay ul li .certItemCont {
-			width:380px; height:75px; margin-bottom:10px;
-		}
-		.certListCont .certListDisplay ul li .certItemCont .certItemPhotoBox{
-			width:72px; height:72px; border:1px solid gray; float:left;
-		}
-		.certListCont .certListDisplay ul li .certItemCont .certItemInfoCont{
-			width:300px; height:70px; display:inline-block; float:left;
-		}
-		.certListCont .certListDisplay ul li .certItemCont .certItemInfoCont .certItemTitle{
-			width:100%; height:20px; font-weight:bold; padding-left:5px;
-			overflow:hidden; text-overflow: ellipsis;white-space:nowrap;
-		}
-		.certListCont .certListDisplay ul li .certItemCont .certItemInfoCont .certItemSubCont{
-			width:100%; height:50px;padding-left:5px;
-			line-height:1.8;
-			overflow:hidden; 
-			display: -webkit-box;
-	        -webkit-line-clamp: 2;
-	        -webkit-box-orient: vertical;
-	    }
 	</style>
 </head>
 <body>
@@ -203,8 +181,8 @@
 								<h4>구성원들의 평균 달성률 </h4>
 								
 								<!-- 챌린지 총 일수와 내가 인증한 일수 값 받아오게끔 하기 -->
-								<c:set var="totalDay" value="100"/>
-								<c:set var="successDay" value="80"/>
+								<c:set var="totalDay" value="${ endNum - startNum }"/>
+								<c:set var="successDay" value="${ avgSuccess }"/>
 								
 								<!-- 챌린지 달성률 계산식 -->
 								<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>
@@ -214,6 +192,21 @@
 								</div>
 								<div class="progStatus">
 									<p>${successDay} / ${totalDay}</p>
+								</div>
+								
+								<h4>챌린지 경과일 수</h4>
+								
+								<!-- 챌린지 총 일수와 내가 인증한 일수 값 받아오게끔 하기 -->
+								<c:set var="progressDay" value="${ todayNum - startNum }"/>
+								
+								<!-- 챌린지 달성률 계산식 -->
+								<c:set var="progPercent" value="${(progressDay / totalDay) * 100}"/>
+								
+								<div class="barEmpty">
+									<div class="barGreen" style="width:${progPercent}%"></div>
+								</div>
+								<div class="progStatus">
+									<p>${progressDay} / ${totalDay}</p>
 								</div>
 							</div>
 						</td>						
