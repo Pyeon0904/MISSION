@@ -29,9 +29,11 @@ public class introduceController {
 	      return "introduce/developer";
 	   }
 	   @GetMapping("/introduce/home")
-	   public String view3() {
+	   public String homeview() {
 	      log.info("회원정보 페이지 요청");
 	      
 	      return "finalmember/developer";
 	   }
+	  
+	   
 }
