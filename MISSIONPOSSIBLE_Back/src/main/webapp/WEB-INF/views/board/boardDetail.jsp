@@ -166,9 +166,9 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 			
 				</form>
 				<div class="btn_right mt15">
-					<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?${board.qna_no}'">답글쓰기</button>
 					<%--글작성자/관리자인경우 수정삭제 가능 --%>
 					<c:if test="${ !empty loginMember && (loginMember.id == board.writer || loginMember.id == '관리자') }">
+					<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?qna_no=${board.qna_no}'">답글쓰기</button>
 					<button type="button" class="btn black mr5" id="btnUpdate">수정하기</button>
 					<button type="button" class="btn black" id="btnDelete">삭제하기</button>
 					</c:if>

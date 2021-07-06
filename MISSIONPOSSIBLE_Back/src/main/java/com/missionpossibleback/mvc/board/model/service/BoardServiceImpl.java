@@ -112,7 +112,34 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	
+	@Override
+	public int replyInsert(Board board) {
+		int result = mapper.minGroupord(board);
+		
+		if(result == 0) {
+			int set = mapper.maxDept(board);
+			
+			board.setGroupord(set-1);
+			
+			
+		} else {
+			mapper.groupordUpdate(board);
+			
+		
+		}
+		return mapper.replyInsert(board);
+	}
+
 	
-	
+	/*
+	@Override
+	public int replyInsert(Board board) {
+		
+			mapper.groupordUpdate(board);
+			
+			return mapper.replyInsert(board);
+
+	}
+*/
 
 }

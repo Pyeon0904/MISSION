@@ -257,9 +257,10 @@ public class BoardController {
 			return model;
 		}
 
-
+		// 게시글 비밀번호 확인
 		@PostMapping("/password") 
 		public ModelAndView checkPw(ModelAndView model,
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 				@RequestParam("pass") String pass,
 				@RequestParam("qna_no") int qna_no){
 
@@ -270,19 +271,72 @@ public class BoardController {
 //			System.out.println(board);
 //			System.out.println(pass);
 			
-			if(board.getPass().equals(pass)) {
-				model.addObject("board", board);
-				model.addObject("msg", "비밀번호가 일치합니다.");
-				model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
-				
-			} else {
-				model.addObject("msg", "비밀번호가 일치하지 않습니다.");
-				model.addObject("location", "/board/boardList");
-				
-			}
+
+				if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
+					model.addObject("board", board);
+					model.addObject("msg", "비밀번호가 일치합니다.");
+					model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
+					
+				} else {
+					model.addObject("msg", "비밀번호가 일치하지 않습니다.");
+					model.addObject("location", "/board/boardList");
+					
+				}
+			
 			model.setViewName("common/msg");
 			return model;
 		}
+		
+		// 답글쓰기
+		@GetMapping("/boardReply")
+		public ModelAndView replyView(ModelAndView model,
+				@RequestParam("qna_no") int qna_no) {
+			
+			Board board = service.findByNo(qna_no);
+			
+			model.addObject("board", board); // view한테 전달해줄 데이터
+			model.setViewName("board/boardReply");
+			
+			return model;
+		}
+		
+
+		@PostMapping("/boardReply")
+		public ModelAndView reply(ModelAndView model, HttpServletRequest request,
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+				@ModelAttribute Board board) {
+			
+			log.info("답글 쓰기");
+		
+			if(loginMember.getId().equals(board.getWriter())) { 
+				board.setWriter(loginMember.getId()); // writerno에 로그인멤버의 no 저장
+			
+				int result = service.replyInsert(board);
+				
+				System.out.println(result);
+		
+				if(result > 0) {
+					model.addObject("msg", "게시글 등록 성공!");
+					model.addObject("location", "/board/boardList");
+				
+				} else {
+				model.addObject("msg", "게시글이 등록을 실패하였습니다.");
+				model.addObject("location", "/board/boardList");
+				}
+				
+			} else {
+				model.addObject("msg", "잘못된 접근입니다.");
+				model.addObject("location", "/");
+			}
+
+			model.setViewName("common/msg");
+			
+			return model;
+		}
+		
+		
+		
+	
 	
 }
 		

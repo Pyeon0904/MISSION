@@ -40,7 +40,7 @@
 				Q.DEPT
 		FROM QNA Q
 		WHERE Q.STATUS = 'Y'
-		ORDER BY Q.QNA_NO DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+		ORDER BY Q.GROUPNO DESC, Q.GROUPORD ASC
 	</select>
 	
 	<!-- 파라미터는 #{변수 이름}으로 사용함 -->
@@ -163,6 +163,74 @@
 		SELECT * FROM QNA
 		WHERE QNA_NO=#{qna_no}
 	</select>
+	
+	<!-- 답글 관련 -->
+	<!-- 답글 등록 -->
+	<insert id="replyInsert" parameterType="Board" useGeneratedKeys="true" keyProperty="qna_no" keyColumn="QNA_NO">
+		INSERT INTO QNA(
+			QNA_NO,
+			TITLE,
+			WRITER,
+			CONTENT,
+			READCOUNT,
+			PASS,
+			STATUS,
+			CREATE_DATE,
+			MODIFY_DATE,
+			GROUPNO,
+			GROUPORD,
+			DEPT,
+			ORIGINAL_FILENAME,
+            RENAMED_FILENAME
+         ) VALUES(
+         	SEQ_QNA_NO.NEXTVAL,
+         	#{title},
+         	#{writer},
+         	#{content},
+         	DEFAULT,
+         	#{pass},
+         	DEFAULT,
+         	DEFAULT,
+         	DEFAULT,
+         	#{groupno},
+         	#{groupord}+1,
+         	#{dept}+1,
+			#{originalFileName},
+            #{renamedFileName}
+         )
+	</insert>
+	
+	<!-- 답변일 경우 groupord 변경 -->
+	<!-- groupord는 원글의 순번 -->
+	<update id="groupordUpdate" parameterType="Board">
+		UPDATE QNA SET GROUPORD=GROUPORD+1
+		WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord}
+	</update>
+	
+	<!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
+	<select id="countDept" parameterType="Board" resultType="_int"><!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
+		SELECT COUNT(GROUPNO) FROM BOARD WHERE GROUPNO=#{groupno} AND DEPT = #{dept}
+	</select>
+	
+	<select id="minGroupord" parameterType="Board" resultType="int">
+		SELECT NVL(MIN(GROUPORD),0) FROM QNA
+		WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord} AND DEPT &lt;=#{dept}
+	</select>
+	
+	<select id="maxDept" parameterType="Board" resultType="int">
+		SELECT NVL(MAX(GROUPORD),0)+1 FROM QNA
+		WHERE GROUPNO=#{groupno}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
    
 
 </mapper>

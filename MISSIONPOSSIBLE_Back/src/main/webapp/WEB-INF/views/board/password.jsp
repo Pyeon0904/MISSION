@@ -12,8 +12,7 @@
 <html>
 <head>
 <style>
-
-#box{ 
+		#box{ 
             background-color:rgb(224, 239, 132);
             width:100%;
             height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
@@ -58,6 +57,9 @@ height:20px;
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+<div id="box">
+<section id="section">
+<div id="conbox">
  <div class="form-box">
 	<section id="section">
 				<p style="text-align:center">이 글은 비밀글입니다.<b>비밀번호를 입력하여 주세요.</b></p>
@@ -81,6 +83,9 @@ height:20px;
 					</form>
 				</div>
 	</section>
+</div>
+</div>
+</section>
 </div>
 </body>
 </html>

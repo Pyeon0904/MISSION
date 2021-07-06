@@ -13,7 +13,7 @@ import com.missionpossibleback.mvc.board.model.vo.Board;
 
 @Mapper
 public interface BoardMapper {
-	
+
 	int insert(Board board);
 	
 	int selectBoardCount();
@@ -31,6 +31,14 @@ public interface BoardMapper {
 	int delete(@Param("qna_no") int qna_no);
 
 	Board pass(int qna_no);
+	
+	int replyInsert(Board board);
+
+	int groupordUpdate(Board board);
+
+	int minGroupord(Board board);
+	
+	int maxDept(Board board);
 	
 	
 }

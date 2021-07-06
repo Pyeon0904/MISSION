@@ -21,8 +21,11 @@ public interface BoardService {
 //	Boolean checkPw(int qna_no, String pass);
 	
 	Board checkPw(int qna_no);
+
+	int replyInsert(Board board);
 	
 //	public BoardDetail selectOne(int board_id);
+
 
 
 }

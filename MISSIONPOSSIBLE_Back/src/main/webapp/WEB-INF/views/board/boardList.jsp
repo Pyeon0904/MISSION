@@ -169,7 +169,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 				<table width="100%" class="table01">
 					<colgroup>
 						<col width="10%" />
-						<col width="25%" />
+						<col width="30%" />
 						<col width="15%" />
 						<col width="20%" />
 						<col width="10%" />
@@ -193,17 +193,30 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 					      	 <c:forEach var="board" items="${ list }">
 					      	 	<tr>
 					      	 		<td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
-					      	 		<td>
+					      	 		<td style="text-align:left; padding-left:30px;">
 					      	 			<c:if test="${ board.pass != null }">
 											<a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
-					      	 				<c:out value="${ board.title }"/>
-					      	 			</a>
+					      	 					<c:if test="${ board.groupord > 0 }">
+						      	 					<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
+						      	 				</c:if>
+						      	 				<c:if test="${ board.groupord == 0 }">
+						      	 					<c:out value="${ board.title }"/>
+						      	 				</c:if>
+					      	 				</a>
 										</c:if>
 										<c:if test="${ board.pass == null }">
-					      	 			<a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
-					      	 				<c:out value="${ board.title }"/>
-					      	 			</a>
+						      	 			<a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+						      	 				<c:if test="${ board.groupord > 0 }">
+						      
+						      	 					<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
+						      	 				</c:if>
+						      	 				<c:if test="${ board.groupord == 0 }">
+						      	 					<c:out value="${ board.title }"/>
+						      	 				</c:if>
+						      	 			</a>
 					      	 			</c:if>
+
+					      	 	
 					      	 		</td>
 					      	 		<td><c:out value="${ board.writer }"/></td>
 					      	 		<td><fmt:formatDate type="both" value="${ board.createDate }"/></td>
