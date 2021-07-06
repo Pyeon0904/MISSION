@@ -80,50 +80,52 @@
 				R.REPLY_COUNT
 		FROM REVIEW R
 		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
-		WHERE R.STATUS = 'Y'
+		WHERE
 		<if test="key == '1'.toString()">
-		AND TITLE LIKE '%'||#{word}||'%'
+		TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '2'.toString()">
-        AND WRITER_ID like '%'||#{word}||'%' 
+        WRITER_ID like '%'||#{word}||'%' 
         </if> 
 		<if test="key == '3'.toString()">
-		AND CONTENT like '%'||#{word}||'%'
+		CONTENT like '%'||#{word}||'%'
 		</if>
 		<if test="key == '4'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '5'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		OR TITLE LIKE '%'||#{word}||'%'
 		OR WRITER_ID like '%'||#{word}||'%' 
 		OR CONTENT like '%'||#{word}||'%'
 		</if>
+		AND R.STATUS = 'Y'
 		ORDER BY NO DESC
 	</select>
 	
 	<select id="selectSerchReviewCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM REVIEW
-		WHERE STATUS='Y'
+		WHERE
 		<if test="key == '1'.toString()">
-		AND TITLE LIKE '%'||#{word}||'%'
+		TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '2'.toString()">
-        AND WRITER_ID like '%'||#{word}||'%' 
+        WRITER_ID like '%'||#{word}||'%' 
         </if> 
 		<if test="key == '3'.toString()">
-		AND CONTENT like '%'||#{word}||'%'
+		CONTENT like '%'||#{word}||'%'
 		</if>
 		<if test="key == '4'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '5'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		OR TITLE LIKE '%'||#{word}||'%'
 		OR WRITER_ID like '%'||#{word}||'%' 
 		OR CONTENT like '%'||#{word}||'%'
 		</if>
+		AND STATUS='Y'
 		ORDER BY NO DESC
 	</select>
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
@@ -15,7 +16,7 @@ public interface ReviewService {
 	
 	List<Review> getReviewList(PageInfo pageInfo);
 
-	Review findByNo(int reviewNo);
+	Review findByNo(int reviewNo, boolean hasRead);
 	
 	int getReviewCount();
 
@@ -40,4 +41,7 @@ public interface ReviewService {
 	boolean deleteReply(int replyNo);
 
 	int getReplyCount(int reviewNo);
+
+	int plusCnt(int reviewNo);
+
 }

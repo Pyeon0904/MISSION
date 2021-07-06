@@ -1,11 +1,19 @@
 package com.missionpossibleback.mvc.review.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -21,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +38,7 @@ import com.missionpossibleback.mvc.review.model.service.ReviewService;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 
@@ -114,22 +124,59 @@ public class ReviewController {
 		
 	// 리뷰 게시글 상세보기
     @GetMapping("/review/reviewView")
-    public ModelAndView view(ModelAndView model,
+    public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+    		ModelAndView model,
 			@RequestParam("no") int reviewNo,
 			@ModelAttribute Reply reply) {
 		
-		Review review = service.findByNo(reviewNo);
-		List<Reply> list = service.getReplyList(reviewNo);
 		
-		model.addObject("review",review);
-		model.addObject("list",list);
-		model.setViewName("review/reviewView");
+		Cookie[] cookies = request.getCookies();
+		String boardHistory = "";
+		boolean hasRead = false;
 		
-		return model;
+    	if(cookies != null) {
+    		String name = null;
+    		String value = null;
+    		
+    		for(Cookie cookie : cookies) {
+    			name = cookie.getName();
+    			value = cookie.getValue();
+    			
+    			// boardHistory인 쿠키값을 찾기
+    			if("boardHistory".equals(name)) {
+    				boardHistory = value;
+    				
+    				if(boardHistory.contains("|" + reviewNo + "|")) {
+    					// 읽은 게시글
+    					hasRead = true;
+    					
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	
+    	// 2. 읽지 않은 게시글이면 cookie에 기록
+    	if(!hasRead) {
+    		Cookie cookie = new Cookie("boardHistory", boardHistory + "|" + reviewNo + "|");
+    		
+    		cookie.setMaxAge(-1);	// 브라우저 종료시 삭제
+    		response.addCookie(cookie);
+    		
+    	}
+    	
+			Review review = service.findByNo(reviewNo, hasRead);
+			List<Reply> list = service.getReplyList(reviewNo);
+		
+    		model.addObject("hasRead",hasRead);
+    		model.addObject("review",review);
+    		model.addObject("list",list);
+            model.setViewName("review/reviewView");
+            return model;
     }
     
 	// 리뷰 게시글 파일 다운로드
-    @GetMapping("/fileDown")
+    @GetMapping("/review/fileDown")
 	public ResponseEntity<Resource> fileDown(
 			@RequestParam("oriname")String oriname, @RequestParam("rename")String rename,
 			@RequestHeader(name = "user-agent")String header) {
@@ -169,7 +216,7 @@ public class ReviewController {
 			HttpServletRequest request,
 			@RequestParam("reviewNo") int reviewNo) {
     	
-    		Review review = service.findByNo(reviewNo); 
+    		Review review = service.findByNo(reviewNo, true); 
         
 			model.addObject("review", review);
 			model.setViewName("/review/reviewReport");
@@ -183,7 +230,7 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Report report) {
     	
-    		Review review = service.findByNo(reviewNo); 
+    		Review review = service.findByNo(reviewNo, true); 
     		
     		int result = 0;
     		
@@ -216,7 +263,7 @@ public class ReviewController {
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestParam("no") int reviewNo) {
 		
-		Review review = service.findByNo(reviewNo); 
+		Review review = service.findByNo(reviewNo, true); 
 		
 		if(loginMember.getId().equals(review.getWriterId())) {
 			model.addObject("review", review);
@@ -284,7 +331,7 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Reply reply) {
     		
-    		Review review = service.findByNo(reviewNo);
+    		Review review = service.findByNo(reviewNo, true);
     		
     		int result = 0;
     		
@@ -311,7 +358,7 @@ public class ReviewController {
     		@RequestParam("reviewNo") int reviewNo,
     		@RequestParam("replyNo")int replyNo) {
     	
-    	Review review = service.findByNo(reviewNo); 
+    	Review review = service.findByNo(reviewNo, true); 
     	service.deleteReply(replyNo);
     	service.getReplyCount(reviewNo);
     	
@@ -351,5 +398,4 @@ public class ReviewController {
 		
 		return model;		
 	}
-
 }

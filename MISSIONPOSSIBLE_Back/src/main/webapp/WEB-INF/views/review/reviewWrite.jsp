@@ -189,9 +189,7 @@ $(document).ready(function() {
 		  lang: "ko-KR",				// 한글 설정
 		  placeholder: '',				//placeholder 설정
 	      onImageUpload : function(files, editor, welEditable) {
-	    	  for (var i = files.length - 1; i >= 0; i--) {
-	    		  sendFile(files[i], this);
-	    	  }
+	    		  sendFile(files[i], editor, welEditable);
 	      },
 		  toolbar: [
 			    // [groupName, [list of button]]
@@ -210,9 +208,9 @@ $(document).ready(function() {
 	});
 });
 
-function sendFile(file, el) {
-    var form_data = new FormData();
-    form_data.append('file', file);
+function sendFile(file, editor, welEditable) {
+    var data = new FormData();
+    data.append('file', file);
     $.ajax({
     	data: form_data,
         type: "POST",
@@ -221,9 +219,8 @@ function sendFile(file, el) {
         enctype: 'multipart/form-data',
         contentType : false,
         processData : false,
-        success: function(url) {
-            $(el).summernote('editor.insertImage', url);
-            $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
+        success: function(data) {
+        	editor.insertImage(welEditable, data.url);
           }
     });
 }

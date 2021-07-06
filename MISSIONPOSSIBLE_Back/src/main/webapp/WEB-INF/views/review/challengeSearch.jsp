@@ -15,8 +15,7 @@
 <body>
 
  <form id="reviewSearch" name="form1" method="POST" action="${path}/review/challengeSearch">
- <input type="text" name="findChallenge" class="form-control"
-	placeholder="검색하고 싶은 챌린지를 입력하세요" style="width: 300px;height:30px" value=${ challenge }>
+ <input type="text" name="word" class="form-control" placeholder="검색하고 싶은 챌린지를 입력하세요" style="width: 300px;height:30px" value=${ challenge }>
 <button type="submit" class="btn btn-warning" style="height:30px" >검색</button>
  </form>
 	 				<table width="100%" class="table01">

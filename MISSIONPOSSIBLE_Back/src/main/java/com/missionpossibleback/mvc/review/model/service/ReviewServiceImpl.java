@@ -17,6 +17,7 @@ import com.missionpossibleback.mvc.review.model.mapper.ReviewMapper;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 
@@ -61,8 +62,10 @@ public class ReviewServiceImpl implements ReviewService {
 
 	// 리뷰 번호로 리뷰 찾아오기
 	@Override
-	public Review findByNo(int reviewNo) {
+	public Review findByNo(int reviewNo, boolean hasRead) {
+		if(!hasRead) {
 		mapper.plusCnt(reviewNo);
+		}
 		return mapper.selectReviewByNo(reviewNo);
 	}
 	
@@ -164,4 +167,8 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.updateReplyCount(reviewNo);
 	}
 
+	@Override
+	public int plusCnt(int reviewNo) {
+		return mapper.plusCnt(reviewNo);
+	}
 }
