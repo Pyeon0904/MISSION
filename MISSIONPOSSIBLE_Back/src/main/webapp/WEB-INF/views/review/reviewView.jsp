@@ -245,25 +245,19 @@ table.type04 td {
 								<!-- 댓글 테이블 : 등록된 댓글 불러오기----------------------->
 								<c:forEach var="reply" items="${ list }">
 									<tr>
-										<th id="replyWriterId" scope="row">${ reply.writerId }<input type="hidden" id="replyNo" value="${ reply.no }"/></th>
+										<th id="replyWriterId" scope="row">${ reply.writerId }</th>
 										<td id="replyContent">${ reply.content }</td>
 										<td id="replyCreateDate"><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" /></td>
 										<td>
 											<c:if test="${ !empty loginMember && (loginMember.id == reply.writerId )}">
-												<button id="replyUpdate">수정</button>
-												<button id="replyDelete">삭제</button>
+												<input type="hidden" id="replyNo" value="${ reply.no }"/>
+												<button id="replyUpdate" data-no="${ reply.no }">수정</button>
+												<button id="replyDelete" data-no="${ reply.no }">삭제</button>
 											</c:if>
 										</td>
 									</tr>
-									<script>	
-									$("#replyDelete").on("click", (e) => {
-										if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
-										 location.replace("${ path }/review/replyDelete?replyNo=${ reply.no }&reviewNo=${ review.no }");
-										    				}
-										    			});	
-									</script>
 								</c:forEach>
-								</tbody>
+								</tbody>									
 							</table>
 							<!-- 로그인X : 목록으로 / 로그인O : 신고하기 / 작성자 로그인 : 수정하기, 삭제하기 -->
 							<div class="btn_right mt15">
@@ -284,6 +278,14 @@ table.type04 td {
 	</div>
 
 <script type="text/javascript">
+$(document).on("click","#replyDelete",function(){ 
+			var replyNo = $(this).attr("data-no")
+			if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
+	 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }");
+	    	}
+	});	
+
+
 	// 신고하기 버튼 클릭시 팝업 띄우기
 	$("#btn-report").on("click", (e)=>{
 		const url = "${path}/review/reviewReport?id=${loginMember.getId()}&reviewNo=${ review.no }&reviewTitle=${ review.title }";

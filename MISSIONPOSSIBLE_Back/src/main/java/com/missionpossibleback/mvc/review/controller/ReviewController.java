@@ -129,10 +129,14 @@ public class ReviewController {
 			@RequestParam("no") int reviewNo,
 			@ModelAttribute Reply reply) {
 		
-		
+    	// 새로고침시 조회수가 증가하는 것을 방지하는 로직
+    	// 쿠키에 조회한 내용을 기록하여 한 번 조회하면 그 뒤에는 조회수가 올라가지 않도록 설정
+    	// reviewHistory라는 쿠키에 내가 읽은 게시물이 저장되고 있다! (ex. |1| |2| |13|...)
+    	// reviewHistory에 내가 지금 보고 있는 페이지가 있는지? (=이미 한번 본 게시글인지)
+    	// 1. 쿠키에 조회한 이력이 있는지 확인		
 		Cookie[] cookies = request.getCookies();
-		String boardHistory = "";
-		boolean hasRead = false;
+		String reviewHistory = "";	// 쿠키에서 게시글 조회 이력을 읽어오는 변수
+		boolean hasRead = false;	// 읽은 글이면 true, 읽지 않은 글이면 false
 		
     	if(cookies != null) {
     		String name = null;
@@ -142,11 +146,11 @@ public class ReviewController {
     			name = cookie.getName();
     			value = cookie.getValue();
     			
-    			// boardHistory인 쿠키값을 찾기
-    			if("boardHistory".equals(name)) {
-    				boardHistory = value;
+    			// reviewHistory인 쿠키값을 찾기
+    			if("reviewHistory".equals(name)) {
+    				reviewHistory = value;
     				
-    				if(boardHistory.contains("|" + reviewNo + "|")) {
+    				if(reviewHistory.contains("|" + reviewNo + "|")) {
     					// 읽은 게시글
     					hasRead = true;
     					
@@ -158,7 +162,7 @@ public class ReviewController {
     	
     	// 2. 읽지 않은 게시글이면 cookie에 기록
     	if(!hasRead) {
-    		Cookie cookie = new Cookie("boardHistory", boardHistory + "|" + reviewNo + "|");
+    		Cookie cookie = new Cookie("reviewHistory", reviewHistory + "|" + reviewNo + "|");
     		
     		cookie.setMaxAge(-1);	// 브라우저 종료시 삭제
     		response.addCookie(cookie);
