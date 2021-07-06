@@ -15,11 +15,24 @@ import com.missionpossibleback.mvc.board.model.vo.Board;
 public interface BoardMapper {
 	
 	int insert(Board board);
+	
 	int selectBoardCount();
+	
 	int readCount(int qna_no);
+	
 	List<Board> selectAll(RowBounds rowBounds);
+	
 	// List<Board> selectAll(@Param("page") int page, int no, RowBounds rowBounds);
 
 	Board selectBoardByNo(@Param("qna_no") int qna_no);
+	
 	int update(Board board);
+	
+	int delete(@Param("qna_no") int qna_no);
+
+//	Board pass(int qna_no);
+	
+//	String pass(int qna_no);
+	
+	
 }

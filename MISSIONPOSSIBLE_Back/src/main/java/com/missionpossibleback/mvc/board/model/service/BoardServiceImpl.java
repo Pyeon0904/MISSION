@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,5 +67,41 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.selectBoardByNo(qna_no);
 	}
 
+	// 삭제
+	@Override
+	public int delete(int qna_no) {
+		int result = 0;
+		
+		result = mapper.delete(qna_no);
+		
+		return result;
+	}
+
+/*
+	@Override
+	public Board checkPw(int qna_no) {
+		
+		return mapper.pass(qna_no);
+	}
+
+	
+	
+	// 삭제
+    public boolean checkPw(int qna_no)
+    {
+    	 boolean bCheck=false;
+         String db_pwd=mapper.pass(qna_no);
+         if(db_pwd.equals(pwd))
+         {
+             bCheck=true;
+             mapper.boardDelete(no);
+         }
+         else
+         {
+             bCheck=false;
+         }
+         return bCheck;
+     }
+*/
 
 }

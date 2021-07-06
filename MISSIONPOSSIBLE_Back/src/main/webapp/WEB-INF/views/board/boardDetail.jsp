@@ -120,9 +120,6 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 		<div id="container">
 			<div class="inner">	
 				<h2 style="padding-bottom:20px;">고객센터</h2>
-				<c:if test="${ board.pass != null }">
-					<form action="${ path }/board/password }" method="POST"></form>
-				</c:if>
 				
 				<form id="boardForm" name="boardForm">		
 					<table width="100%" class="table01">
@@ -166,8 +163,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
         </tr>
 					    </tbody>
 					</table>		
-				<!-- 	<input type="hidden" id="board_seq"		name="board_seq"	value="${QN}"/> <!-- 게시글 번호 -->
-				<!--	<input type="hidden" id="search_type"	name="search_type" 	value="S"/> <!-- 조회 타입 - 상세(S)/수정(U) -->
+			
 				</form>
 				<div class="btn_right mt15">
 					<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?${board.qna_no}'">답글쓰기</button>
