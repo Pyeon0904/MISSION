@@ -271,6 +271,23 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectSearchList(key, word, rowBounds);
 	}
 
+	//============ 마이페이지 관련 ==============
+	// 참여중인 챌린지 수 조회
+	@Override
+	public int getJoinCount(String id) {
+		
+		return mapper.selectJoinCount(id);
+	}
+
+	// 참여중인 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getJoinList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectJoinList(rowBounds, id);
+	}
+
 
 
 	

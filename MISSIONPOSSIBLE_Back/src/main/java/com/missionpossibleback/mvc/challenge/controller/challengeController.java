@@ -530,4 +530,63 @@ public class challengeController {
 		return model;	
 	}
 	
+	/*
+	 * 마이 페이지 - 챌린지 관련 메소드
+	 * 
+	 * */
+	
+	// 마이페이지에 삽입될 참여중인 챌린지 목록
+	@GetMapping("/member/objectJoinList")
+	public ModelAndView myPageJoinList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+		
+		
+		String id = loginMember.getId();
+		
+		log.info("로그인한 ID : " + id);
+		
+		int listCount = service.getJoinCount(id);
+		
+		log.info("찜한 챌린지 수 : " + listCount);
+		
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
+		
+		list = service.getJoinList(pageInfo, id);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("member/objectJoinList");
+		
+		return model;
+	}
+	
+	// 마이페이지에 삽입될 참여중인 챌린지 목록
+		@GetMapping("/member/objectZzimList")
+		public ModelAndView myPageZzimList(ModelAndView model,
+				@RequestParam(value="page", required = false, defaultValue = "1") int page,
+				@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+			
+			
+			String id = loginMember.getId();
+			
+			log.info("로그인한 ID : " + id);
+			
+			int listCount = service.getZzimCount(id);
+			
+			log.info("찜한 챌린지 수 : " + listCount);
+			
+			List<Challenge> list = null;
+			PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
+			
+			list = service.getZzimList(pageInfo, id);
+			
+			model.addObject("list", list);
+			model.addObject("pageInfo", pageInfo);
+			model.setViewName("member/objectZzimList");
+			
+			return model;
+		}
+	
 }

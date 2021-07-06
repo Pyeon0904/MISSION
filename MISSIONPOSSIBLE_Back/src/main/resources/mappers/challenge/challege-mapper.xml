@@ -151,8 +151,47 @@
 		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
 		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
 		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
-		WHERE ((CLG.STATUS = 'Y') AND (MCL.MY_STATUS = 'ZZIM') AND (MCL.ID = #{id}))
+		WHERE ((CLG.STATUS = 'Y') AND (MCL.MY_STATUS = 'ZZIM') AND (MCL.ID = #{id})
+		<![CDATA[
+				AND(SYSDATE < START_DATE AND SYSDATE < DEADLINE))
+			]]>
 	
+	</select>
+	
+	<!-- 참여중인 챌린지 리스트 조회 -->
+	<select id="selectJoinList" parameterType="string" resultMap="challengeResultMap">
+		SELECT
+		    CLG.CHALLENGE_NO,
+		    CLG.ID,
+		    CLG.CATEGORY_NO,
+		    CLG.CATEGORY_NAME,
+		    CLG.THUMBNAIL_FILE,
+		    CLG.CHALLENGE_STATUS,
+		    CLG.ATTEND_STATUS,
+		    CLG.STATUS,
+		    CLG.TITLE,
+		    CLG.CONTENT,
+		    CLG.DEADLINE,
+		    CLG.MAX_COUNT,
+		    CLG.CURRENT_COUNT,
+		    CLG.ORIGINAL_FILENAME,
+		    CLG.RENAMED_FILENAME,
+		    CLG.CREATE_DATE,
+		    CLG.MODIFY_DATE,
+		    CLG.START_DATE,
+		    CLG.OPENTALK_LINK,
+		    CLG.MINUS_POINT
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		WHERE 
+			((CLG.STATUS = 'Y') 
+			AND (MCL.MY_STATUS = 'JOIN') 
+			AND (MCL.ID = #{id})
+			<![CDATA[
+				AND(SYSDATE >= START_DATE AND SYSDATE < DEADLINE))
+			]]>
 	</select>
 	
 	<!-- 챌린지 인증 리스트 조회 -->
@@ -215,9 +254,36 @@
 	
 	<!-- 찜한 챌린지 수 확인 -->
 	<select id="selectZzimCount" parameterType="String" resultType="_int">
-		SELECT COUNT(*)
-		FROM MY_CHALLENGE_LIST
-		WHERE ((ID = #{id}) AND (MY_STATUS = 'ZZIM'))
+		SELECT
+		    COUNT(*)
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		WHERE 
+			((CLG.STATUS = 'Y') 
+			AND (MCL.MY_STATUS = 'ZZIM') 
+			AND (MCL.ID = #{id})
+			<![CDATA[
+				AND(SYSDATE < START_DATE AND SYSDATE < DEADLINE))
+			]]>
+	</select>	
+
+	<!-- 참여중인 챌린지 수 확인 -->
+	<select id="selectJoinCount" parameterType="String" resultType="_int">
+		SELECT
+		    COUNT(*)
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		WHERE 
+			((CLG.STATUS = 'Y') 
+			AND (MCL.MY_STATUS = 'JOIN') 
+			AND (MCL.ID = #{id})
+			<![CDATA[
+				AND(SYSDATE >= START_DATE AND SYSDATE < DEADLINE))
+			]]>
 	</select>	
 	
 	<!-- 
@@ -267,6 +333,71 @@
 	<select id="selectCertIdList" parameterType="_int" resultType="String">
 		SELECT ID FROM MY_CHALLENGE_LIST WHERE MY_CHALLENGE_NO = #{no} AND MY_STATUS = 'JOIN'
 	</select>
+	
+	<!-- 
+	========================= 챌린지 검색 기능 시작 =========================
+	-->
+	
+	<!-- 
+		챌린지 검색한 리스트 조회
+	 -->
+	<select id="selectSearchList" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS='Y'
+		<if test="key == '1'.toString()">
+		AND CLG.TITLE LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '2'.toString()">
+        AND CLG.ID like '%'||#{word}||'%' 
+        </if> 
+		<if test="key == '3'.toString()">
+		AND CLG.CONTENT like '%'||#{word}||'%'
+		</if>
+		<if test="key == '4'.toString()">
+		AND CLG.CATEGORY_NAME LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '5'.toString()">
+		AND CLG.TITLE LIKE '%'||#{word}||'%'
+		OR CLG.ID like '%'||#{word}||'%' 
+		OR CLG.CONTENT like '%'||#{word}||'%'
+		OR CLG.CATEGORY_NAME LIKE '%'||#{word}||'%'
+		</if>
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 
+		챌린지 리스트수 조회 개수
+	 -->
+	<select id="selectSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE STATUS='Y'
+		<if test="key == '1'.toString()">
+		AND TITLE LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '2'.toString()">
+        AND ID like '%'||#{word}||'%' 
+        </if> 
+		<if test="key == '3'.toString()">
+		AND CONTENT like '%'||#{word}||'%'
+		</if>
+		<if test="key == '4'.toString()">
+		AND CATEGORY_NAME LIKE '%'||#{word}||'%'
+		</if>
+		<if test="key == '5'.toString()">
+		AND TITLE LIKE '%'||#{word}||'%'
+		OR ID like '%'||#{word}||'%' 
+		OR CONTENT like '%'||#{word}||'%'
+		OR CATEGORY_NAME LIKE '%'||#{word}||'%'
+		</if>
+		ORDER BY CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 
+	========================= 챌린지 검색 기능 끄읕 =========================
+	-->
+	
+	
 	
 	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">

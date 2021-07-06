@@ -58,5 +58,9 @@ public interface ChallengeMapper {
 	int selectSearchCount(@Param("key") String key, @Param("word") String word);
 
 	List<Challenge> selectSearchList(@Param("key") String key, @Param("word") String word, RowBounds rowBounds);
+
+	int selectJoinCount(@Param("id") String id);
+
+	List<Challenge> selectJoinList(RowBounds rowBounds, @Param("id") String id);
 	
 }

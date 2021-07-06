@@ -32,6 +32,8 @@ public interface ChallengeService {
 	
 	int getZzimCount(String id);	
 	
+	int getJoinCount(String id);
+	
 	int getJoinListCount(int no, String id);
 	
 	int getCurrentCount(int myChallengeNo);
@@ -49,6 +51,8 @@ public interface ChallengeService {
 	List<Challenge> getEndList(PageInfo pageInfo);
 	
 	List<Challenge> getZzimList(PageInfo pageInfo, String id);
+	
+	List<Challenge> getJoinList(PageInfo pageInfo, String id);
 	
 	List<ChallengeCertify> getCertList(PageInfo pageInfo, int no);
 	
