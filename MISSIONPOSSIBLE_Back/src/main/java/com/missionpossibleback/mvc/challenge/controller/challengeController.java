@@ -539,30 +539,44 @@ public class challengeController {
 	@GetMapping("/member/objectJoinList")
 	public ModelAndView myPageJoinList(ModelAndView model,
 			@RequestParam(value="page", required = false, defaultValue = "1") int page,
-			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@ModelAttribute Challenge challege) {
 		
 		
 		String id = loginMember.getId();
 		
-		log.info("로그인한 ID : " + id);
-		
 		int listCount = service.getJoinCount(id);
 		
-		log.info("찜한 챌린지 수 : " + listCount);
 		
 		List<Challenge> list = null;
 		PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
 		
 		list = service.getJoinList(pageInfo, id);
 		
+		ArrayList<Integer> cNoList = new ArrayList<>();
+		
+		for(Challenge challenge : list) {
+			cNoList.add(challenge.getChallengeNo());
+		}
+		
+		ArrayList<Integer> successCount = new ArrayList<>();
+		
+		for(Integer i : cNoList) {
+			successCount.add(service.getCertCountById(i, id));
+		}
+		
+		System.out.println("보여지는 챌린지의 NO값 LIST : " + cNoList);
+		System.out.println("로그인한 유저가 해당 챌린지 달성한 횟수 : " + successCount);
+		
 		model.addObject("list", list);
 		model.addObject("pageInfo", pageInfo);
+		model.addObject("successCount", successCount);
 		model.setViewName("member/objectJoinList");
 		
 		return model;
 	}
 	
-	// 마이페이지에 삽입될 참여중인 챌린지 목록
+	// 마이페이지에 삽입될 찜 챌린지 목록
 		@GetMapping("/member/objectZzimList")
 		public ModelAndView myPageZzimList(ModelAndView model,
 				@RequestParam(value="page", required = false, defaultValue = "1") int page,
