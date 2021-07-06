@@ -1,3 +1,4 @@
+<%@page import="com.missionpossibleback.mvc.challenge.model.service.ChallengeService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -11,6 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 </head>
 <body>
 											<%@ include file="date.jsp" %>
@@ -47,6 +49,23 @@
 																D-<c:out value="${ endNum - todayNum }"></c:out>
 															</span>
 														</p>
+														 
+														<div id="barContainer">
+															<p>나의 진행도</p>
+															<c:set var="totalDay" value="${ endNum - startNum }"/>
+															
+															<c:set var="successDay" value="${ successCount[tempNum] }"/>
+															
+															<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>
+																
+															<div class="barEmpty">
+																<div class="barGreen" style="width:${progPercent}%"></div>
+															</div>
+															<div class="progStatus" style="float:right">
+																<p>${successDay} / ${totalDay}</p>
+															</div>
+														</div>
+														
 													</div>
 												</div>
 											</li>

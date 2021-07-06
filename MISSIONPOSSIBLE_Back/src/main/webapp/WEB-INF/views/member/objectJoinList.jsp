@@ -45,6 +45,15 @@
 		width:30px; height:30px; border:none; background-color:#61380B;
 		border-radius:50%; margin:10px; float:left;
 	}
+	#barContainer{ width:150px; height:50px;}
+	.barEmpty{
+    	width:150px; height:10px; 
+    	border:1px solid gray; border-radius:5px;
+    	margin:0 auto; background-color:#f0f0f0;
+    }
+    .barGreen{
+    	height:100%; background-color:lime; border-radius:5px;
+    }
 </style>
 </head>
 <body>
@@ -75,10 +84,12 @@
 										</script>
 									</c:if>
 									<c:if test="${ list != null }">
+										<c:set var="tempNum" value="0"/>
 										<c:forEach var="challenge" items="${ list }" >
 											<!-- D-Day 로직 구현한 파일 include -->
 											<%@ include file="../challenge/date.jsp" %>
 											<%@ include file="../challenge/objectOngoingMyPage.jsp" %>
+											<c:set var="tempNum" value="${ tempNum + 1}"/>
 										</c:forEach>
 									</c:if>
 									<script>
@@ -95,13 +106,13 @@
 											);
 											
 											$("#categoryBar ul li").hover(
-													function(){
-														$(this).css("background", "#FFF000");
-													}, 
-													function(){
-														$(this).css("background", "none");
-													}
-												);
+												function(){
+													$(this).css("background", "#FFF000");
+												}, 
+												function(){
+													$(this).css("background", "none");
+												}
+											);
 										});
 									</script>
 									</ul>
