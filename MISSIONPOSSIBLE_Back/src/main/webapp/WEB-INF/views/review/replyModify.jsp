@@ -224,12 +224,9 @@ table.type04 td {
 										<col width="14%">
 								</colgroup>
 								<tbody>
-								<form action="${ path }/review/reviewReply" method="POST">
 								<tr>
 									<th style="vertical-align: middle;">${ loginMember.id }</th>
 									<td>
-										<input type="hidden" name="reviewNo" value="${ review.no }">
-										<input type="hidden" name="writerId" value="${loginMember.id}">
 										<textarea rows="2" cols="55" class="boxTA" style="width: 500px; height: 50px" id="replyContent"
 											name="content" placeholder="댓글을 작성하려면 로그인이 필요합니다." required></textarea>
 									</td>
@@ -241,20 +238,40 @@ table.type04 td {
 										</c:if>
 									</td>
 								</tr>
-								</form>	
 								<!-- 댓글 테이블 : 등록된 댓글 불러오기----------------------->
 								<c:forEach var="reply" items="${ list }">
-									<tr>
-										<th id="replyWriterId" scope="row">${ reply.writerId }</th>
-										<td id="replyContent">${ reply.content }</td>
-										<td id="replyCreateDate"><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" /></td>
-										<td>
-											<c:if test="${ !empty loginMember && (loginMember.id == reply.writerId )}">
-												<button id="replyModify" data-no="${ reply.no }">수정</button>
-												<button id="replyDelete" data-no="${ reply.no }">삭제</button>
-											</c:if>
-										</td>
-									</tr>
+									<c:choose>
+										<c:when test="${ reply.no ==  test }">
+											<form action="${ path }/review/replyModify" method="POST">
+												<input type="hidden" name="reviewNo" value="${ review.no }">
+												<input type="hidden" name="no" value="${ reply.no }">
+												<input type="hidden" name="writerId" value="${ reply.writerId }">
+												<tr>
+													<th scope="row"><p>${ reply.writerId }</p></th>
+													<td colspan="2"><textarea name="content" style="width: 500px; height: 50px"><c:out value="${ reply.content }"></c:out></textarea></td>
+													<td>
+														<c:if test="${ !empty loginMember && (loginMember.id == reply.writerId )}">
+															<button type="submit">완료</button>
+											</form>
+															<button onclick="location.href='${ path }/review/reviewView?no=${ review.no }'">취소</button>
+														</c:if>
+													</td>
+												</tr>
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<th id="replyWriterId" scope="row">${ reply.writerId }</th>
+												<td id="replyContent">${ reply.content }</td>
+												<td id="replyCreateDate"><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" /></td>
+												<td>
+													<c:if test="${ !empty loginMember && (loginMember.id == reply.writerId )}">
+														<button id="replyModify" data-no="${ reply.no }">수정</button>
+														<button id="replyDelete" data-no="${ reply.no }">삭제</button>
+													</c:if>
+												</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 								</tbody>									
 							</table>

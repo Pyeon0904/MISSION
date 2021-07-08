@@ -62,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	// 리뷰 번호로 리뷰 찾아오기
 	@Override
-	public Review findByNo(int reviewNo, boolean hasRead) {
+	public Review findReviewByNo(int reviewNo, boolean hasRead) {
 		if(!hasRead) {
 		mapper.plusCnt(reviewNo);
 		}
@@ -145,8 +145,17 @@ public class ReviewServiceImpl implements ReviewService {
 	// 리뷰 게시글 댓글 등록
 	@Override
 	public int reply(Reply reply) {
-		return mapper.insertRely(reply);
+		int result = 0;
+		
+		if(reply.getNo() != 0) {
+			result = mapper.updateReply(reply);
+		} else {
+			result = mapper.insertReply(reply);
+		}
+		
+		return result;
 	}
+
 
 	// 리뷰 게시글 댓글 불러오기
 	@Override
@@ -171,4 +180,10 @@ public class ReviewServiceImpl implements ReviewService {
 	public int plusCnt(int reviewNo) {
 		return mapper.plusCnt(reviewNo);
 	}
+
+	@Override
+	public Reply findReplyByNo(int replyNo) {
+		return mapper.selectReplyByNo(replyNo);
+	}
+
 }

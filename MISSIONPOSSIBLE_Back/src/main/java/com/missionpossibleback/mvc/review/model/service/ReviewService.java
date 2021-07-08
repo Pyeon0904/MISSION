@@ -16,7 +16,7 @@ public interface ReviewService {
 	
 	List<Review> getReviewList(PageInfo pageInfo);
 
-	Review findByNo(int reviewNo, boolean hasRead);
+	Review findReviewByNo(int reviewNo, boolean hasRead);
 	
 	int getReviewCount();
 
@@ -43,5 +43,7 @@ public interface ReviewService {
 	int getReplyCount(int reviewNo);
 
 	int plusCnt(int reviewNo);
+
+	Reply findReplyByNo(int replyNo);
 
 }

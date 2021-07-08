@@ -169,7 +169,7 @@ public class ReviewController {
     		
     	}
     	
-			Review review = service.findByNo(reviewNo, hasRead);
+			Review review = service.findReviewByNo(reviewNo, hasRead);
 			List<Reply> list = service.getReplyList(reviewNo);
 		
     		model.addObject("hasRead",hasRead);
@@ -212,15 +212,14 @@ public class ReviewController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-
-
+ 
     // 리뷰 게시글 신고
     @GetMapping("/review/reviewReport")
     public ModelAndView reviewReportView (ModelAndView model,
 			HttpServletRequest request,
 			@RequestParam("reviewNo") int reviewNo) {
     	
-    		Review review = service.findByNo(reviewNo, true); 
+    		Review review = service.findReviewByNo(reviewNo, true); 
         
 			model.addObject("review", review);
 			model.setViewName("/review/reviewReport");
@@ -234,7 +233,7 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Report report) {
     	
-    		Review review = service.findByNo(reviewNo, true); 
+    		Review review = service.findReviewByNo(reviewNo, true); 
     		
     		int result = 0;
     		
@@ -267,7 +266,7 @@ public class ReviewController {
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestParam("no") int reviewNo) {
 		
-		Review review = service.findByNo(reviewNo, true); 
+		Review review = service.findReviewByNo(reviewNo, true); 
 		
 		if(loginMember.getId().equals(review.getWriterId())) {
 			model.addObject("review", review);
@@ -335,7 +334,7 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Reply reply) {
     		
-    		Review review = service.findByNo(reviewNo, true);
+    		Review review = service.findReviewByNo(reviewNo, true);
     		
     		int result = 0;
     		
@@ -362,7 +361,7 @@ public class ReviewController {
     		@RequestParam("reviewNo") int reviewNo,
     		@RequestParam("replyNo")int replyNo) {
     	
-    	Review review = service.findByNo(reviewNo, true); 
+    	Review review = service.findReviewByNo(reviewNo, true); 
     	service.deleteReply(replyNo);
     	service.getReplyCount(reviewNo);
     	
@@ -370,6 +369,55 @@ public class ReviewController {
     	model.addObject("location", "/review/reviewView?no=" +review.getNo());
     	model.setViewName("common/msg");
     	
+    	return model;
+    }
+    
+    // 댓글 수정하기
+    @GetMapping("/review/replyModify")
+    public ModelAndView replyModifyView (ModelAndView model,
+			HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestParam("reviewNo") int reviewNo,
+			@RequestParam("replyNo") int replyNo) {
+    		
+    		boolean hasRead = true;
+    		Reply reply = service.findReplyByNo(replyNo);
+    		Review review = service.findReviewByNo(reviewNo, hasRead);
+			List<Reply> list = service.getReplyList(reviewNo);
+			int test = replyNo;
+			
+			model.addObject("test",test);
+    		model.addObject("review",review);
+    		model.addObject("reply", reply);
+    		model.addObject("list",list);
+    		model.setViewName("/review/replyModify");
+    	return model;
+    }
+    
+    @PostMapping("/review/replyModify")
+    public ModelAndView replyModify (ModelAndView model,
+			HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestParam("reviewNo") int reviewNo,
+			@RequestParam("no") int replyNo,
+			@ModelAttribute Reply reply) {
+
+    		int result = 0;
+			result = service.reply(reply);
+			
+    		boolean hasRead = true;
+    		Review review = service.findReviewByNo(reviewNo, hasRead);
+
+			if(result > 0) {
+				model.addObject("msg", "댓글이 수정되었습니다.");
+				model.addObject("location", "/review/reviewView?no=" +review.getNo());
+			} else {
+				model.addObject("msg", "댓글 수정에 실패하였습니다.");
+				model.addObject("location", "/review/reviewView?no=" +review.getNo());
+			}
+		
+		model.setViewName("common/msg");
+
     	return model;
     }
     

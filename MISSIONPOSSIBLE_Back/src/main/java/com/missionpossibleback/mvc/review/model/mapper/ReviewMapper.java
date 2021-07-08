@@ -36,10 +36,14 @@ public interface ReviewMapper {
 
 	int insertReport(Report report);
 
-	int insertRely(Reply reply);
+	int insertReply(Reply reply);
+	
+	int updateReply(Reply reply);
 
 	List<Reply> selectReplyList(int reviewNo);
 
 	boolean deleteReply(int replyNo);
+
+	Reply selectReplyByNo(int replyNo);
 
 }

@@ -243,7 +243,15 @@
 		)
 	</insert>
 	
-	<insert id="insertRely" parameterType="map"
+
+	<select id="selectReplyByNo" parameterType="_int" resultMap="reviewReplyResultMap">
+ 		SELECT *
+		FROM REPLY
+		WHERE NO = #{replyNo}
+		AND STATUS = 'Y'
+	</select>
+	
+	<insert id="insertReply" parameterType="map"
 			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
 		INSERT INTO REPLY (
 			NO,
@@ -263,6 +271,15 @@
 			DEFAULT
 		)
 	</insert>
+	
+	<update id="updateReply" parameterType="map">
+		UPDATE REPLY
+			SET 
+				CONTENT=#{content},
+				MODIFY_DATE=SYSDATE 
+			WHERE 
+				NO=#{no}
+	</update>
 	
 	<update id="updateReplyCount" parameterType="int">
 		UPDATE REVIEW SET REPLY_COUNT = (SELECT COUNT(*) FROM REPLY WHERE REVIEW_NO = #{reviewNo} AND STATUS = 'Y')
