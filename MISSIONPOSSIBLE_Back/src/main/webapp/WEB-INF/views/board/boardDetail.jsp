@@ -152,12 +152,6 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
         </tr>
         
         <tr>
-            <th class="success">첨부파일</th>
-            <td colspan="3"></td>
-        </tr>
-        
-         
-        <tr>
             <th class="success">글 내용</th>
             <td colspan="3">${ board.content }</td>
         </tr>

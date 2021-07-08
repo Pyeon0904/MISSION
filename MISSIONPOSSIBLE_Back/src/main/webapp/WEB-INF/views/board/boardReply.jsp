@@ -204,7 +204,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 $('.summernote').summernote({
 	  height: 410,                 // 에디터 높이
 	  minHeight: null,             // 최소 높이
-	  maxHeight: null,             // 최대 높이
+	  maxHeight: 400,             // 최대 높이
 	  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 	  lang: "ko-KR",					// 한글 설정
 	  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
@@ -223,14 +223,32 @@ $('.summernote').summernote({
 			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
 			
-			callbacks: {	//여기 부분이 이미지를 첨부하는 부분
-				onImageUpload: function(files, editor, welEditable) { 
-					for (var i = files.length - 1; i >= 0; i--) { 
-						sendFile(files[i], this); 
-					} 
-				},	
-			}
+			onImageUpload : function(files, editor, welEditable) {
+		    		  sendFile(files[i], editor, welEditable);
+		    },
 });
+
+/* summernote에서 이미지 업로드시 실행할 함수 */
+function sendFile(file, el) {
+	// 파일 전송을 위한 폼생성
+    var form_data = new FormData();
+    form_data.append('file', file);
+    
+    $.ajax({ // ajax를 통해 파일 업로드 처리
+    	data: form_data,
+        type: "POST",
+        url: '/image',
+        cache : false,
+        enctype: 'multipart/form-data',
+        contentType : false,
+        processData : false,
+        success: function(data) { // 처리가 성공할 경우
+        	 // 에디터에 이미지 출력
+            editor.insertImage(welEditable, data.url)
+          }
+    });
+}
+
 
 </script>
 

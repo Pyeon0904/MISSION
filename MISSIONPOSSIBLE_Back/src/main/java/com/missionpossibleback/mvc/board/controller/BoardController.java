@@ -1,6 +1,8 @@
 package com.missionpossibleback.mvc.board.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,10 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +35,7 @@ import com.missionpossibleback.mvc.board.model.service.BoardService;
 import com.missionpossibleback.mvc.board.model.vo.Board;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.review.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,13 +46,14 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
+	@Autowired
+	private ResourceLoader resourceLoader;
+	
 	// 글목록 보기
 	@GetMapping("/boardList")
 	public ModelAndView list(ModelAndView model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-		
-		System.out.println("Page 번호 : " + page);
-		
+
 		// 전체 리스트 조회해오고 페이징
 		List<Board> list = null;
 		PageInfo pageInfo = new PageInfo(page, 10, service.getBoardCount(), 10); // (현재 페이지,한 페이지에 보여질 페이지의 수,전체 게시글,하나의 페이지에서 보여줄 리스트 개수)
@@ -118,8 +129,22 @@ public class BoardController {
 		log.info("게시글 작성 요청");
 	
 		if(loginMember.getId().equals(board.getWriter())) { 
-			board.setWriter(loginMember.getId()); // writerno에 로그인멤버의 no 저장
+			board.setWriter(loginMember.getId());
 			
+			/*
+			// 1. 파일을 업로드 했는지 확인 후 파일 업로드
+			if(upfile != null && !upfile.isEmpty()) {
+				// 파일을 저장하는 로직 작성
+				String rootPath = request.getSession().getServletContext().getRealPath("resources");
+				String savePath = rootPath + "/upload/review";				
+				String renamedFileName = service.saveFile(upfile, savePath);
+				
+				if(renamedFileName != null) {
+					board.setOriginalFileName(upfile.getOriginalFilename());
+					board.setRenamedFileName(renamedFileName);
+				}
+			}
+			*/
 			
 			System.out.println(board);
 			
@@ -142,6 +167,40 @@ public class BoardController {
 		model.setViewName("common/msg");
 		
 		return model;
+	}
+	
+	// 리뷰 게시글 파일 다운로드
+    @GetMapping("/fileDown")
+	public ResponseEntity<Resource> fileDown(
+			@RequestParam("oriname")String oriname, @RequestParam("rename")String rename,
+			@RequestHeader(name = "user-agent")String header) {
+		
+		try {
+			Resource resource = resourceLoader.getResource("resources/upload/review/" + rename);
+			
+			System.out.println(resource.getFilename());
+			System.out.println(resource.contentLength());
+			
+	    	String downName = null;
+	    	boolean isMSIE = header.indexOf("MSIE") != -1 || header.indexOf("Trident") != -1;
+	
+	    	if (isMSIE) {
+	    		downName = URLEncoder.encode(oriname, "UTF-8").replaceAll("\\+", "%20");
+	    	} else {    		
+	    		downName = new String(oriname.getBytes("UTF-8"), "ISO-8859-1");
+	    	}
+	    	
+	    	return ResponseEntity.ok()
+	    			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\""+downName+"\"")
+	    			.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(resource.contentLength()))
+	    			.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString())
+	    			.body(resource);
+	    	
+		}catch(IOException e) {
+			e.printStackTrace();
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 	
 	// 게시글 수정
@@ -169,12 +228,12 @@ public class BoardController {
 	public ModelAndView update(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			HttpServletRequest request,
-			@ModelAttribute Board board) {
+			@ModelAttribute Board board, @RequestParam("reloadFile") MultipartFile reloadFile) {
 		
 		int result = 0;
 		
 		if(loginMember.getId().equals(board.getWriter())) {
-			/*
+		
 			if(reloadFile != null && !reloadFile.isEmpty()) { // 업로드한 파일이 있을 때
 				String rootPath = request.getSession().getServletContext().getRealPath("resources");
 				String savePath = rootPath + "/upload/board";
@@ -192,9 +251,9 @@ public class BoardController {
 					board.setOriginalFileName(reloadFile.getOriginalFilename());
 					board.setRenamedFileName(renameFileName);
 				}
-				*/
-			
-		
+			}
+				
+
 			result = service.save(board);
 			
 			if(result > 0) {
@@ -332,6 +391,28 @@ public class BoardController {
 			model.setViewName("common/msg");
 			
 			return model;
+		}
+		
+		// 검색
+		@RequestMapping(value="/boardSearch" , method={RequestMethod.GET,RequestMethod.POST})
+		public ModelAndView search(ModelAndView model, 
+				@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+				@RequestParam("type") String type,
+				@RequestParam("keyword") String keyword
+				) {
+			List<Board> list = null;
+			PageInfo pageInfo = new PageInfo(page, 10, service.getSerchBoardCount(type, keyword), 10); 
+			int count = 0;
+
+			list = service.getSearchBoardList(type, keyword, pageInfo);
+			
+			model.addObject("list", list);
+			model.addObject("type", type);
+			model.addObject("keyword", keyword);
+			model.addObject("pageInfo", pageInfo);
+			model.setViewName("board/boardSearch");
+			
+			return model;		
 		}
 		
 		
