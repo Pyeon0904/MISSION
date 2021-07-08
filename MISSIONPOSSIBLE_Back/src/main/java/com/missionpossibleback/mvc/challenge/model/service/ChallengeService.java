@@ -1,6 +1,5 @@
 package com.missionpossibleback.mvc.challenge.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -63,5 +62,7 @@ public interface ChallengeService {
 	int getSearchCount(String key, String word);
 
 	List<Challenge> getSearchList(String key, String word, PageInfo pageInfo);
+
+	List<String> getCertDateById(int challengeNo, String id);
 	
 }

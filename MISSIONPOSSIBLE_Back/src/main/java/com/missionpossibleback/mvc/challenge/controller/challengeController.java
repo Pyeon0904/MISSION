@@ -1,10 +1,10 @@
 package com.missionpossibleback.mvc.challenge.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -216,7 +216,8 @@ public class challengeController {
 	@GetMapping("/challenge/participate")
 	public ModelAndView participate(ModelAndView model,
 			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("no") int challengeNo) {
+			@RequestParam("no") int challengeNo,
+			HttpServletRequest request) {
 		
 		log.info("참여중인 챌린지뷰 요청");
 		
@@ -228,6 +229,11 @@ public class challengeController {
 			
 			int successCount = service.getCertCountById(challengeNo, id);
 			
+			// 세션에 리스트 저장해서 보내기
+			HttpSession session = request.getSession();
+			List<String> certDateList = service.getCertDateById(challengeNo, id);
+			
+			session.setAttribute("certDateList", certDateList);
 			
 			model.addObject("loginMember", loginMember);
 			model.addObject("challenge", challenge);
@@ -235,6 +241,7 @@ public class challengeController {
 			model.setViewName("challenge/participate");
 			
 			return model;
+			
 		} else {
 			model.addObject("msg", "로그인이 필요한 서비스입니다. 로그인 후 다시 시도하여 주십시오.");
 			model.addObject("location", "/member/login");
@@ -243,6 +250,8 @@ public class challengeController {
 		}
 		
 	}
+	
+
 	
 	// 참여중인 챌린지 VIEW 페이지에 INCLUDE될 챌린지 인증 페이지!
 	// 		챌린지 인증 리스트

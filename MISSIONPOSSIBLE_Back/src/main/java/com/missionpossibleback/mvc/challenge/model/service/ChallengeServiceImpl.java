@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -250,6 +252,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public List<String> findCertIdList(int no) {
 		
 		return mapper.selectCertIdList(no);
+	}
+	
+	// 참여중인 챌린지뷰에서 인증 날짜 리스트 조회
+	@Override
+	public List<String> getCertDateById(int no, String id) {
+		
+		return mapper.selectCertDateById(no, id);
 	}
 
 	/*

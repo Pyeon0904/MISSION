@@ -62,5 +62,7 @@ public interface ChallengeMapper {
 	int selectJoinCount(@Param("id") String id);
 
 	List<Challenge> selectJoinList(RowBounds rowBounds, @Param("id") String id);
+
+	List<String> selectCertDateById(@Param("no") int no, @Param("id") String id);
 	
 }

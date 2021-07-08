@@ -211,6 +211,33 @@
 			CHALLENGE_CERTIFY
 		WHERE
 			CHALLENGE_NO = #{no}
+		ORDER BY
+		 	CREATE_DATE DESC
+	</select>
+	
+	<!-- 챌린지 인증 날짜 조회 (By no, id) - 인증날짜를 구하기 위해! -->
+	<!-- 
+		(참고) ASC 오름차순으로 정렬(가장 오래된 날짜부터 정렬) 
+		(예시)
+			21/06/30
+			21/07/01
+			21/07/02
+			21/07/03
+			21/07/04
+			21/07/04
+			21/07/05
+			21/07/07
+	-->
+	<select id="selectCertDateById" parameterType="map" resultType="string">
+		SELECT
+			CREATE_DATE
+		FROM
+			CHALLENGE_CERTIFY
+		WHERE
+			CHALLENGE_NO = #{no} 
+			AND ID = #{id}
+		ORDER BY
+		 	CREATE_DATE ASC
 	</select>
 	
 	<!-- 전체 챌린지 수 확인 -->
