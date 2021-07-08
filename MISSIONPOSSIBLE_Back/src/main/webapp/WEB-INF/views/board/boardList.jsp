@@ -151,14 +151,16 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
          
             <table width="100%" class="table01">
                <colgroup>
+               	  <!--<col width="10%" />-->
                   <col width="10%" />
                   <col width="30%" />
                   <col width="15%" />
                   <col width="20%" />
-                  <col width="10%" />
+                  <col width="8%" />
                </colgroup>
                <thead>      
                   <tr>
+                  	 <!-- <th>분류</th> -->
                      <th>글번호</th>
                      <th>제목</th>
                      <th>작성자</th>
@@ -175,18 +177,28 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                   <c:if test="${ list != null }">
                          <c:forEach var="board" items="${ list }">
                             <tr>
-                               <td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
+                               <!-- <td>질문</td> -->
+                               <c:if test="${ board.sort == 1 }">
+                               		<td><c:out value="공지"/></td>
+                               </c:if>
+                               <c:if test="${ board.sort == 0 }">
+                               		<td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
+                               </c:if>
+               
                                <td style="text-align:left; padding-left:30px;">
-                                  <c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
-                                 <a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
-                                        <c:if test="${ board.groupord > 0 }">
-                                           <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
-                                        </c:if>
-                                        <c:if test="${ board.groupord == 0 }">
-                                           <c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
-                                        </c:if>
-                                     </a>
-                              </c:if>
+                                	<c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
+                                 		<a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                        
+                                        	<%-- 답글이면 --%>
+                                        	<c:if test="${ board.groupord > 0 }">
+                                           		<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                        	</c:if>
+                                        	<%-- 원글이면 --%>
+                                        	<c:if test="${ board.groupord == 0 }">
+                                           		<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                        	</c:if>
+                                     	</a>
+                             		 </c:if>
                               <c:if test="${ board.pass == null }"> <!-- 비밀글이 아니면 -->
                                      <a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
                                         <c:if test="${ board.groupord > 0 }">

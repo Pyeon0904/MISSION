@@ -13,7 +13,6 @@
 <meta charset="UTF-8">
 <title>게시판 글쓰기</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
-<!-- <script type="text/javascript" src="${ path }/resources/se2/se2/js/HuskyEZCreator.js" charset=" -->
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -194,15 +193,15 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 							<td><input type="password" class="tbox01" name="pass"></td>
 						</tr>
 						
-						<!-- 
-						<tr class="form-inline">
-							<th scope="row">비밀글</th>
-						    <td style="vertical-align : middle;">
-						    <input type="radio" name="cs_open" id="cs_open" value="Y" class="radio" /><span class="ml_10">공개</span>
-						    <input type="radio" name="cs_open" id="cs_open" value="N" class="radio" checked="checked" /><span class="ml_10" >비공개</span>
-						    </td>
-						</tr>
-						-->
+						<c:if test="${ loginMember.id.equals(\"admin\") }">
+							<tr class="form-inline">
+								<th scope="row">공지글</th>
+						    	<td style="vertical-align : middle;">
+						    	<input type="checkbox" name="sort" id="notice" value="1" class="" checked/><span class="ml_10">공지글</span>
+						    	</td>
+							</tr>
+						</c:if>
+					
 						
 				    </tbody>
 				</table>
@@ -269,29 +268,6 @@ function sendFile(file, el) {
 
 
 </script>
-
-
-
-<!-- 
-<script type="text/javascript">
-    //전역변수
-    var obj = [];
-    //스마트에디터 프레임생성
-    nhn.husky.EZCreator.createInIFrame({
-        oAppRef: obj,
-        elPlaceHolder: "editor",
-        sSkinURI: "${ path }/resources/se2/se2/SmartEditor2Skin.html",
-        htParams : {
-            // 툴바 사용 여부
-            bUseToolbar : true,
-            // 입력창 크기 조절바 사용 여부
-            bUseVerticalResizer : true,
-            // 모드 탭(Editor | HTML | TEXT) 사용 여부
-            bUseModeChanger : true,
-        }
-    });
-</script>
--->
 </body>
 </html>
 <%@ include file="../common/footer.jsp"%>

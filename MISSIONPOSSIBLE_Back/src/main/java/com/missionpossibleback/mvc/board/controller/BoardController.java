@@ -49,7 +49,7 @@ public class BoardController {
 	@Autowired
 	private ResourceLoader resourceLoader;
 	
-	// 글목록 보기
+// 글목록 보기
 	@GetMapping("/boardList")
 	public ModelAndView list(ModelAndView model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
@@ -67,7 +67,7 @@ public class BoardController {
 		return model;
 	}
 	
-	// 글 상세보기
+// 글 상세보기
 	@GetMapping("/boardDetail")
 	public ModelAndView view(ModelAndView model,
 			@RequestParam("qna_no") int qna_no) {
@@ -83,8 +83,8 @@ public class BoardController {
 	}
 
 	
-	// 게시글 작성 페이지
-	// 뷰를 찾아주는 로직
+// 게시글 작성 페이지
+// 뷰를 찾아주는 로직
 	@GetMapping("/boardWrite")
 	public String writeView() {
 		log.info("게시글 작성 페이지 요청");
@@ -93,33 +93,7 @@ public class BoardController {
 	}
 	
 	
-	// 실제 등록하는 로직
-////	@RequestMapping(value="/boardWrite", method = {RequestMethod.POST})
-//////	public String boardWrite(ModelAndView model,@ModelAttribute Board board,
-//////			@SessionAttribute(name = "loginMember", required = false) Member loginMember){
-//	@PostMapping("/boardWrite")
-//	public ModelAndView boardWrite(ModelAndView model, HttpServletRequest request,
-//			@ModelAttribute Board board,
-//			@SessionAttribute(name = "loginMember", required = false) Member loginMember) { // requestparam 대신 넘어오는 값 board 객체에 자동으로 매핑
-//		log.info("게시글 작성 요청");
-//		
-//		System.out.println(board);
-//		System.out.println(loginMember);
-//		
-//		if(loginMember.getId().equals(board.getWriter())) {
-//			
-//		} else {
-//			model.addObject("msg", "잘못된 접근입니다.");
-//			model.addObject("location", "/boardList");
-//		}
-//		
-//		model.setViewName("/boardWrite");
-//				
-//		return model;
-//				 
-//	} 
-	
-	// 게시글 등록
+// 게시글 등록
 	@PostMapping("/boardWrite") 
 	public ModelAndView write(ModelAndView model, HttpServletRequest request,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
@@ -130,6 +104,7 @@ public class BoardController {
 	
 		if(loginMember.getId().equals(board.getWriter())) { 
 			board.setWriter(loginMember.getId());
+			System.out.println(board);
 			
 			/*
 			// 1. 파일을 업로드 했는지 확인 후 파일 업로드
@@ -169,7 +144,7 @@ public class BoardController {
 		return model;
 	}
 	
-	// 리뷰 게시글 파일 다운로드
+// 리뷰 게시글 파일 다운로드
     @GetMapping("/fileDown")
 	public ResponseEntity<Resource> fileDown(
 			@RequestParam("oriname")String oriname, @RequestParam("rename")String rename,
@@ -203,7 +178,7 @@ public class BoardController {
 		}
 	}
 	
-	// 게시글 수정
+// 게시글 수정
 	@GetMapping("/boardModify")
 	public ModelAndView updateView(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
@@ -223,7 +198,7 @@ public class BoardController {
 			return model;
 		}
 	
-	// 게시글 수정
+
 	@PostMapping("/boardModify")
 	public ModelAndView update(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
@@ -269,44 +244,39 @@ public class BoardController {
 			model.addObject("location", "/board/boardList");
 		}
 		
-//		System.out.println(board);
-//		System.out.println(reloadFile.getOriginalFilename());
 		
 		model.setViewName("common/msg");
 		
 		return model;
 	}
 	
-
-	// 게시글 삭제
-		@GetMapping("/delete")
-		public ModelAndView delete(ModelAndView model,
-				@RequestParam("qna_no") int qna_no,
-				@ModelAttribute Board board){
+// 게시글 삭제
+	@GetMapping("/delete")
+	public ModelAndView delete(ModelAndView model,
+			@RequestParam("qna_no") int qna_no,
+			@ModelAttribute Board board){
 			
-			log.info("게시글 삭제 요청");
+		int result = 0;
+		result = service.delete(qna_no);
 			
-			int result = 0;
-			result = service.delete(qna_no);
-			
-				if(result > 0) {
-					model.addObject("msg", "게시글이 정상적으로 삭제되었습니다.");
-					model.addObject("location", "/board/boardList");
-				} else {
-					model.addObject("msg", "게시글 삭제를 실패하였습니다.");
-					model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
-				}
+			if(result > 0) {
+				model.addObject("msg", "게시글이 정상적으로 삭제되었습니다.");
+				model.addObject("location", "/board/boardList");
+			} else {
+				model.addObject("msg", "게시글 삭제를 실패하였습니다.");
+				model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
+			}
 				
-			model.setViewName("common/msg");
+		model.setViewName("common/msg");
 			
-			return model;
-		}
+		return model;
+	}
 		
 	
-		// 비밀글
-		@GetMapping("/password")
-		public ModelAndView checkPwView(ModelAndView model,
-				@RequestParam("qna_no") int qna_no) {
+// 비밀글
+	@GetMapping("/password")
+	public ModelAndView checkPwView(ModelAndView model,
+			@RequestParam("qna_no") int qna_no) {
 			
 			Board board = service.findByNo(qna_no);
 			
@@ -316,104 +286,99 @@ public class BoardController {
 			return model;
 		}
 
-		// 게시글 비밀번호 확인
-		@PostMapping("/password") 
-		public ModelAndView checkPw(ModelAndView model,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-				@RequestParam("pass") String pass,
-				@RequestParam("qna_no") int qna_no){
+// 게시글 비밀번호 확인
+	@PostMapping("/password") 
+	public ModelAndView checkPw(ModelAndView model,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestParam("pass") String pass,
+			@RequestParam("qna_no") int qna_no){
 
-			log.info("비밀번호 확인");
+		log.info("비밀번호 확인");
 			
-			Board board = service.checkPw(qna_no);
+		Board board = service.checkPw(qna_no);
 			
-//			System.out.println(board);
-//			System.out.println(pass);
-			
-
-				if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
-					model.addObject("board", board);
-					model.addObject("msg", "비밀번호가 일치합니다.");
-					model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
+			if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
+				model.addObject("board", board);
+				model.addObject("msg", "비밀번호가 일치합니다.");
+				model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
 					
-				} else {
-					model.addObject("msg", "비밀번호가 일치하지 않습니다.");
-					model.addObject("location", "/board/boardList");
-					
-				}
-			
-			model.setViewName("common/msg");
-			return model;
-		}
-		
-		// 답글쓰기
-		@GetMapping("/boardReply")
-		public ModelAndView replyView(ModelAndView model,
-				@RequestParam("qna_no") int qna_no) {
-			
-			Board board = service.findByNo(qna_no);
-			
-			model.addObject("board", board); // view한테 전달해줄 데이터
-			model.setViewName("board/boardReply");
-			
-			return model;
-		}
-		
-
-		@PostMapping("/boardReply")
-		public ModelAndView reply(ModelAndView model, HttpServletRequest request,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-				@ModelAttribute Board board) {
-			
-			log.info("답글 쓰기");
-		
-			if(loginMember.getId().equals(board.getWriter())) { 
-				board.setWriter(loginMember.getId()); // writerno에 로그인멤버의 no 저장
-			
-				int result = service.replyInsert(board);
-				
-				System.out.println(result);
-		
-				if(result > 0) {
-					model.addObject("msg", "게시글 등록 성공!");
-					model.addObject("location", "/board/boardList");
-				
-				} else {
-				model.addObject("msg", "게시글이 등록을 실패하였습니다.");
+			} else {
+				model.addObject("msg", "비밀번호가 일치하지 않습니다.");
 				model.addObject("location", "/board/boardList");
-				}
+					
+			}
+			
+		model.setViewName("common/msg");
+		return model;
+	}
+		
+// 답글쓰기
+	@GetMapping("/boardReply")
+	public ModelAndView replyView(ModelAndView model,
+			@RequestParam("qna_no") int qna_no) {
+			
+		Board board = service.findByNo(qna_no);
+			
+		model.addObject("board", board); // view한테 전달해줄 데이터
+		model.setViewName("board/boardReply");
+		
+		return model;
+	}
+		
+
+	@PostMapping("/boardReply")
+	public ModelAndView reply(ModelAndView model, HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@ModelAttribute Board board) {
+			
+		log.info("답글 쓰기");
+		
+		if(loginMember.getId().equals(board.getWriter())) { 
+			board.setWriter(loginMember.getId()); // writerno에 로그인멤버의 no 저장
+			
+			int result = service.replyInsert(board);
+				
+			System.out.println(result);
+		
+			if(result > 0) {
+				model.addObject("msg", "게시글 등록 성공!");
+				model.addObject("location", "/board/boardList");
 				
 			} else {
-				model.addObject("msg", "잘못된 접근입니다.");
-				model.addObject("location", "/");
+				model.addObject("msg", "게시글이 등록을 실패하였습니다.");
+				model.addObject("location", "/board/boardList");
 			}
-
-			model.setViewName("common/msg");
-			
-			return model;
+				
+		} else {
+			model.addObject("msg", "잘못된 접근입니다.");
+			model.addObject("location", "/");
 		}
+
+		model.setViewName("common/msg");
+			
+		return model;
+	}
 		
-		// 검색
-		@RequestMapping(value="/boardSearch" , method={RequestMethod.GET,RequestMethod.POST})
-		public ModelAndView search(ModelAndView model, 
-				@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-				@RequestParam("type") String type,
-				@RequestParam("keyword") String keyword
-				) {
-			List<Board> list = null;
-			PageInfo pageInfo = new PageInfo(page, 10, service.getSerchBoardCount(type, keyword), 10); 
-			int count = 0;
+// 검색
+	@RequestMapping(value="/boardSearch" ,method={RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView search(ModelAndView model, 
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam("type") String type,
+			@RequestParam("keyword") String keyword) {
+			
+		List<Board> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchBoardCount(type, keyword), 10); 
 
-			list = service.getSearchBoardList(type, keyword, pageInfo);
+		list = service.getSearchBoardList(type, keyword, pageInfo);
 			
-			model.addObject("list", list);
-			model.addObject("type", type);
-			model.addObject("keyword", keyword);
-			model.addObject("pageInfo", pageInfo);
-			model.setViewName("board/boardSearch");
+		model.addObject("list", list);
+		model.addObject("type", type);
+		model.addObject("keyword", keyword);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("board/boardSearch");
 			
-			return model;		
-		}
+		return model;		
+	}
 		
 		
 		

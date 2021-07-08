@@ -38,5 +38,6 @@ public class Board {
 	
 	private String renamedFileName;
 	
+	private int sort;
 }
 

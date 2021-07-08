@@ -22,6 +22,7 @@
       <result property="groupno" column="GROUPNO"/>
       <result property="groupord" column="GROUPORD"/>
       <result property="dept" column="DEPT"/>
+      <result property="sort" column="SORT"/>
    </resultMap>
 	
 	<select id="selectAll" resultMap="boardListResultMap">
@@ -37,10 +38,11 @@
 				Q.MODIFY_DATE,
 				Q.GROUPNO,
 				Q.GROUPORD,
-				Q.DEPT
+				Q.DEPT,
+				Q.SORT
 		FROM QNA Q
 		WHERE Q.STATUS = 'Y'
-		ORDER BY Q.GROUPNO DESC, Q.GROUPORD ASC
+		ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
 	</select>
 	
 	<!-- 파라미터는 #{변수 이름}으로 사용함 -->
@@ -58,7 +60,8 @@
 				Q.MODIFY_DATE,
 				Q.GROUPNO,
 				Q.GROUPORD,
-				Q.DEPT
+				Q.DEPT,
+				Q.SORT
 		FROM QNA Q, MEMBER M
 		WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
 	</select>
@@ -110,7 +113,8 @@
 			GROUPORD,
 			DEPT,
 			ORIGINAL_FILENAME,
-            RENAMED_FILENAME
+            RENAMED_FILENAME,
+            SORT
          ) VALUES(
          	SEQ_QNA_NO.NEXTVAL,
          	#{title},
@@ -125,7 +129,8 @@
          	0,
          	0,
 			#{originalFileName},
-            #{renamedFileName}
+            #{renamedFileName},
+            #{sort}
          )
 	</insert>
 	
@@ -235,7 +240,8 @@
 				Q.MODIFY_DATE,
 				Q.GROUPNO,
 				Q.GROUPORD,
-				Q.DEPT
+				Q.DEPT,
+				Q.SORT
 		FROM QNA Q
 		WHERE Q.STATUS = 'Y'
 		<choose>
@@ -254,7 +260,7 @@
 				OR CONTENT LIKE '%'||#{keyword}||'%'
 			</when>
 		</choose>
-		ORDER BY Q.GROUPNO DESC, Q.GROUPORD ASC
+		ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
 	</select>
 	
 	
