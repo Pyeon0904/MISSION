@@ -70,27 +70,6 @@ font-weight: bold;
   color:#368AFF;
 }
 
-.JSPARK{
-position:absolute;
-top:10px;
-left:350px;
-color:white;
-font-size: 23px;
-line-height:1.5em;
-}
-
-.temaevent2{
-position:absolute;
-color:white;
-top:200px;
-left:300px;
-font-size:18px;
-}
-
-.temaevent2 span{
-  color:#FF1212;
-  font-weight: bold;
-}
 
 .JORDANleft{
 position:absolute;
@@ -109,13 +88,34 @@ font-size: 20px;
 line-height:1.5em;
 font-weight: bold;
 }
-.temaevent3{
+.temaevent2{
 position:absolute;
 color:white;
 top:200px;
 left:780px;
 font-size:19px;
 }
+.temaevent2 span{
+  color:#FF1212;
+  font-weight: bold;
+}
+.JSPARK{
+position:absolute;
+top:10px;
+left:350px;
+color:white;
+font-size: 23px;
+line-height:1.5em;
+}
+
+.temaevent3{
+position:absolute;
+color:white;
+top:200px;
+left:300px;
+font-size:18px;
+}
+
 .temaevent3 span{
   color:#FF1212;
   font-weight: bold;
@@ -260,10 +260,10 @@ function animateCSS(element, animationName, callback) {
     const node = document.querySelector(element)
     node.classList.add('animated', animationName)
 
-    function handleAnimationEnd() {
+     function handleAnimationEnd() {
         node.classList.remove('animated', animationName)
         node.removeEventListener('animationend', handleAnimationEnd)
-
+  
         if (typeof callback === 'function') callback()
     }
 
@@ -292,24 +292,24 @@ animateCSS('.my-element','slideOutLeft',function() {
 			    <div id="plan">
 				    <div id="show">
 					    <div class="fotorama" data-width="1200px" 
-					      data-height="400px"data-autoplay="900000" data-loop="true">
+					      data-height="400px"data-autoplay="2000" data-loop="true">
 						   <div data-img="${path}/resources/images/Runing.png">
 						     <p class=Runing><span>오늘 하루</span>는 얼마나달려볼까?</p>
-							   <div class="animated infinite slideOutLeft faster-50000ms">
+							   <div class="animated fast bounceInUp -1ms delay-1s">
 							    <p class="teamevent1"><span>Time </span>to&nbsp;<span>Run</span></p>
 							</div>
-						</div>
-						<div data-img="${path}/resources/images/JSPark.jpg">
-						<p class=JSPARK><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							&nbsp;&nbsp;-박지성-</p>
-							<div class="animated infinite fadeInRight delay-3s">
-							<p class="temaevent2">Don't rest + <span>Just do it</span></p></div>
 						</div>
 						<div data-img="${path}/resources/images/JORDAN.jpg">
 						<p class=JORDANleft>한 번 포기하면 습관이된다. </p>
 						<p class=JORDANright>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
-							<div class="animated infinite fadeInRight delay-5s">
-							<p class="temaevent3">Do <span>not give</span> up</p></div>
+							<div class="animated  fadeInRight delay-3s">
+							<p class="temaevent2">Do <span>not give</span> up</p></div>
+						</div>
+						<div data-img="${path}/resources/images/JSPark.jpg">
+						<p class=JSPARK><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;-박지성-</p>
+							<div class="animated  fadeInLeft delay-5s">
+							<p class="temaevent3">Don't rest + <span>Just do it</span></p></div>
 						</div>
 					</div>
 				</div>
