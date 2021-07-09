@@ -318,7 +318,7 @@
 			- 참여하고 있으면 1 리턴 : 참여중인 챌린지 View
 			- 참여하지 않으면 0 리턴 : 진행중인 챌린지 View
 	-->
-	<select id="selelctJoinListCount" parameterType="map" resultType="_int">
+	<select id="selectJoinListCount" parameterType="map" resultType="_int">
 		SELECT COUNT(*) 
     	FROM 
     		MY_CHALLENGE_LIST MCL 
@@ -532,5 +532,14 @@
 		WHERE
 			CHALLENGE_NO = #{challengeNo}
 	</update>
+	
+	<!-- MyChallengeList 로그인한 아이디가 챌린지 포기 요청을 하면 지우기 -->
+	<delete id="deleteMyChallengeList" parameterType="map">
+		DELETE FROM MY_CHALLENGE_LIST
+    	WHERE
+    		(ID = #{id}) AND
+        	(MY_CHALLENGE_NO = #{myChallengeNo}) AND
+        	(MY_STATUS = #{myStatus})
+	</delete>
 
 </mapper>

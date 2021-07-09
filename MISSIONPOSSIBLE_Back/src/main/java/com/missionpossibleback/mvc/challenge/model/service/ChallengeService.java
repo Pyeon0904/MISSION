@@ -64,5 +64,7 @@ public interface ChallengeService {
 	List<Challenge> getSearchList(String key, String word, PageInfo pageInfo);
 
 	List<String> getCertDateById(int challengeNo, String id);
+
+	int deleteMyChallengeList(String id, int cNo, String string);
 	
 }

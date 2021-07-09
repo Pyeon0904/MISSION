@@ -99,9 +99,14 @@
 	.itemCont .itemInfoCont .itemTitle{ font-weight:bold;}
 	.itemCont .itemInfoCont .itemSubCont{margin-top:10px;}
 	.itemShowMenu{
-		width:50px; height:50px; background:rgba(0,0,0,0.5); border-radius:50%;
-		position:relative; top:-180px; left:130px; 
-		font-size:2.5em; color:white; font-weight:bold; text-align:center;
+		width:180px; height:180px; background:rgba(0,0,0,0.5);
+		position:relative; top:-180px; left:0px; 
+		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5;
+	}
+	.itemDelete{
+		width:30px; height:30px; background:rgba(255,0,0,0.5);
+		position:relative; top:-242px; left:150px;
+		font-size:1.5em; color:white; font-weight:bold; text-align:center;
 	}
 	#pageBarContainer{width:950px; height:60px; text-align:center; float:right; margin-right:30px;}
 	#pageBar{
@@ -125,31 +130,11 @@
 		
 				<div id="subHeaderContainer">
 					<h2>찜한 챌린지 목록</h2>
-					<div class="searchArea">
-						<form action="#" method="GET" class="" id="challengeSearchForm">
-							<input type="hidden" name="" value="" />
-							<div class="inputGroup">
-								<input type="text" class="searchBox" name="term" placeholder="챌린지 검색" />
-								<span class="inputGroupBtn">
-									<button class="btn btnSearch" type="submit">
-										<i class="fa fa-search"></i>
-									</button>
-								</span>
-							</div>
-						</form>
-					</div>
 				</div><!-- #subHeaderContainer -->
 				
 				<div id="productContainer">
 					<!-- 카테고리 바 -->
 					<div id="categoryBar">
-						<!--  
-						<ul id="categoryList">
-						    <li onclick="location.href='${recruitListViewPath}'">모집중인 챌린지</li>
-						    <li onclick="location.href='${ongoingListViewPath}'">진행중인 챌린지</li>
-						    <li onclick="location.href='${endListViewPath}'">종료된 챌린지</li>
-						</ul>
-						-->
 					</div><!-- categoryBar -->
 					
 					<!-- 챌린지 진열 구역 -->
@@ -184,22 +169,8 @@
 									</c:if>
 									<c:if test="${ list != null }">
 										<c:forEach var="challenge" items="${ list }">
-											
-											<!-- D-Day 로직 구현한 파일 include -->
-											<%@ include file="date.jsp" %>
-											
 											<li style="width:25%;">
-												
-												<!-- 모집중인 챌린지(오늘이 챌린지 시작일보다 작은 경우) -->
-												<c:if test="${ todayNum < startNum }">
-													<div class="itemCont" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
-												</c:if>
-												
-												<!-- 진행중/참여중인 챌린지(오늘이 챌린지 시작일보다 큰 경우) -->
-												<c:if test="${ todayNum >= startNum }">
-													<div class="itemCont" onclick="location.href='${ path }/challenge/setViewIO.do?no=${ challenge.challengeNo }'">
-												</c:if>
-												
+												<div class="itemCont">
 													<div class="itemPhotoBox">
 														<c:if test="${ challenge.thumbnailFile == null }">
 															<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
@@ -208,8 +179,8 @@
 															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
 																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
 														</c:if>
-														<div class="itemShowMenu" onclick="location.href=''">
-															<span class="details">X</span>
+														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
+															<p class="details">상세보기</p>
 														</div>
 													</div>
 													<div class="itemInfoCont">
@@ -220,9 +191,8 @@
 															<br>
 															<span class="itemSubCont">챌린지 모집기간</span>
 															<br>
-															
-																														
-																										
+															<!-- D-Day 로직 구현한 파일 include -->
+															<%@ include file="date.jsp" %>										
 															<!-- 
 																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
 															-->
@@ -230,6 +200,9 @@
 																D-<c:out value="${ startNum - todayNum }"></c:out>
 															</span>
 														</p>
+														<div class="itemDelete" onclick="zzimDelete(${ challenge.challengeNo });">
+															<p class="details">X</p>
+														</div>
 													</div>
 												</div>
 											</li>
@@ -238,6 +211,7 @@
 									<script>
 										$(document).ready(()=>{
 											$("div.itemShowMenu").hide();
+											$("div.itemDelete").hide();
 											
 											$(".itemPhotoBox").hover(
 												function(){
@@ -247,14 +221,17 @@
 													$(this).find(".itemShowMenu").fadeOut(200);
 												}
 											);
+											$(".itemCont").hover(
+												function(){
+													$(this).find(".itemDelete").fadeIn(200);
+												}, 
+												function(){
+													$(this).find(".itemDelete").fadeOut(200);
+												}
+											);
 											
 											$(".itemShowMenu").on("click",function(event){
-												if(confirm("해당 챌린지를 찜 목록에서 삭제하시겠습니까?")){
-													alert("삭제 완료되었습니다.");
-													location.replace('#');
-												} else {
-													alert("요청이 취소되었습니다.");
-												}
+												alert("상세 페이지로 이동합니다.");
 											});
 											
 											$("#categoryBar ul li").hover(
@@ -266,6 +243,14 @@
 													}
 												);
 										});
+										
+										function zzimDelete(no){
+											if(confirm("해당 챌린지를 찜 목록에서 삭제하시겠습니까?")){
+												location.href="${path}/challenge/zzimDelete.do?cNo="+no;
+											} else {
+												alert("사용자에 의해 찜 목록 삭제 요청이 취소되었습니다.");
+											}
+										}
 									</script>
 									</ul>
 								</div>

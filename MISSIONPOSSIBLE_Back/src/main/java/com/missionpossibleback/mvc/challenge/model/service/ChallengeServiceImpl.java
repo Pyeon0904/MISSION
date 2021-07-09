@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -67,7 +65,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		int result = 0;
 		
 		if(myChallengeList.getNo() != 0) {
-//			result = mapper.updateMyChallengeList(myChallengeList);
+			
 		} else {
 			result = mapper.insertMyChallengeList(myChallengeList);
 		}
@@ -215,7 +213,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		log.info("getJoinListCount 요청 - 챌린지NO : " + no + ", 요청한 ID : " + id);
 		
-		return mapper.selelctJoinListCount(no, id);
+		return mapper.selectJoinListCount(no, id);
 	}	
 	
 	// 참여하고 있는 챌린지에서 현재 참여하고 있는 참가자 수를 리턴하는 메소드
@@ -295,6 +293,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
 		
 		return mapper.selectJoinList(rowBounds, id);
+	}
+
+	// MyChallengeList 삭제 (찜 삭제 or 챌린지 참여 포기)
+	@Override
+	public int deleteMyChallengeList(String id, int cNo, String myStatus) {
+		
+		return mapper.deleteMyChallengeList(id, cNo, myStatus);
 	}
 
 

@@ -125,7 +125,8 @@
 						<h2>참여중인 챌린지 정보</h2>
 						<div class="funcArea">
 							<form action="${path}/challenge/giveup" method="GET" class="" id="challengeGiveupForm">
-								<input type="hidden" name="" value="" />
+								<input type="hidden" name="cNo" value="${ challenge.challengeNo }" />
+								<input type="hidden" name="cTitle" value="${ challenge.title }"/>
 								<button class="btn btnGiveup" type="submit">포기하기</button>
 							</form>
 							<button type="button" class="btn btnCertify" 

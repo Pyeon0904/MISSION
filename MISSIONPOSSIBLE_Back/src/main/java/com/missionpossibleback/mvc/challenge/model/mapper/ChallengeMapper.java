@@ -23,7 +23,7 @@ public interface ChallengeMapper {
 	
 	int selectZzimCount(String id);
 	
-	int selelctJoinListCount(@Param("no") int no, @Param("id") String id);
+	int selectJoinListCount(@Param("no") int no, @Param("id") String id);
 	
 	int selectCurrentCount(int no);
 	
@@ -64,5 +64,7 @@ public interface ChallengeMapper {
 	List<Challenge> selectJoinList(RowBounds rowBounds, @Param("id") String id);
 
 	List<String> selectCertDateById(@Param("no") int no, @Param("id") String id);
+
+	int deleteMyChallengeList(@Param("id") String id, @Param("myChallengeNo") int cNo, @Param("myStatus") String myStatus);
 	
 }

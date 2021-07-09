@@ -215,7 +215,7 @@ public class challengeController {
 	//참여중인 챌린지 VIEW GET
 	@GetMapping("/challenge/participate")
 	public ModelAndView participate(ModelAndView model,
-			@SessionAttribute("loginMember") Member loginMember,
+			@SessionAttribute(name="loginMember", required = false) Member loginMember,
 			@RequestParam("no") int challengeNo,
 			HttpServletRequest request) {
 		
@@ -472,29 +472,92 @@ public class challengeController {
 		return model;
 	}
 	
+	// 찜한 챌린지 목록 삭제 
+	@GetMapping("/challenge/zzimDelete.do")
+	public ModelAndView zzimDelete(ModelAndView model,
+			@SessionAttribute(name="loginMember", required=false) Member loginMember,
+			@RequestParam("cNo") int cNo, 
+			@RequestParam(name = "isMyPage", required = false, defaultValue = "false") String isMyPage) {
+		
+		log.info("찜한 챌린지 목록 삭제 요청");
+		
+		if(loginMember != null) {
+			
+			String id = loginMember.getId();
+			
+			//참여하고 있는 챌린지 인지 확인하는 메소드, 찜만한 챌린지라면 0리턴
+			int isJoin = service.getJoinListCount(cNo, id);
+			
+			//참여하고 있는 챌린지가 아니라면?
+			if(isJoin == 0) {
+				
+				int result = 0;
+				
+				result = service.deleteMyChallengeList(id, cNo, "ZZIM");
+				
+				if(result > 0) {
+					model.addObject("msg", "해당하는 찜한 챌린지가 삭제되었습니다.");
+				} else {
+					model.addObject("msg", "찜한 챌린지 삭제 요청이 실패했습니다.");
+				}
+			} else {// 참여하고 있는 챌린지가 찜 목록에 있을 경우?
+				
+				int result1 = 0;
+				
+				result1 = service.deleteMyChallengeList(id, cNo, "ZZIM");
+				
+				if(result1 > 0) {
+					model.addObject("msg", "참여중인 챌린지이므로 자동으로 찜 목록에서 삭제합니다.");
+				} else {
+					model.addObject("msg", "알 수 없는 오류입니다. 관리자에게 문의하여 주십시오.");
+				}
+			}
+			
+			if(isMyPage.equals("true")) {
+				model.addObject("location", "/member/objectZzimList");
+			} else {
+				model.addObject("location", "/challenge/zzimList");
+			}
+			
+		} else {
+			model.addObject("msg", "로그인이 필요한 페이지입니다. 로그인 후 다시 시도하여 주십시오.");
+			model.addObject("location", "/member/login");
+		}
+		
+		model.setViewName("common/msg");
+		return model;
+	}
+	
 	//찜한 챌린지 LIST
 	@GetMapping("/challenge/zzimList")
 	public ModelAndView zzimListView(ModelAndView model,
 			@RequestParam(value="page", required = false, defaultValue = "1") int page,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 		
-		
-		String id = loginMember.getId();
-		
-		log.info("로그인한 ID : " + id);
-		
-		int listCount = service.getZzimCount(id);
-		
-		log.info("찜한 챌린지 수 : " + listCount);
-		
-		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
-		
-		list = service.getZzimList(pageInfo, id);
-		
-		model.addObject("list", list);
-		model.addObject("pageInfo", pageInfo);
-		model.setViewName("challenge/zzimList");
+		if(loginMember != null) {
+			
+			String id = loginMember.getId();
+			
+			log.info("로그인한 ID : " + id);
+			
+			int listCount = service.getZzimCount(id);
+			
+			log.info("찜한 챌린지 수 : " + listCount);
+			
+			List<Challenge> list = null;
+			PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+			
+			list = service.getZzimList(pageInfo, id);
+			
+			model.addObject("list", list);
+			model.addObject("pageInfo", pageInfo);
+			model.setViewName("challenge/zzimList");
+			
+		} else {
+			model.addObject("msg", "로그인이 필요한 페이지입니다. 로그인 후 다시 요청하십시오.");
+			model.addObject("location", "/member/login");
+			model.setViewName("common/msg");
+		}
 		
 		return model;
 	}
@@ -509,13 +572,92 @@ public class challengeController {
 		return "challenge/recruit";
 	}
 	
-	//챌린지 포기 신청 VIEW 
+	//챌린지 포기 신청 GET
 	@GetMapping("/challenge/giveup")
-	public String giveup() {
+	public ModelAndView giveupView(ModelAndView model,
+			@SessionAttribute(name="loginMember", required = false) Member loginMember,
+			@RequestParam("cNo") int cNo, @RequestParam("cTitle") String title) {
 		
 		log.info("챌린지 포기 신청뷰 요청");
 		
-		return "challenge/giveup";
+		if(loginMember != null) {
+			
+			model.addObject("loginMember", loginMember);
+			model.addObject("cNo", cNo);
+			model.addObject("cTitle", title);
+			model.setViewName("challenge/giveup");
+		
+		} else {// 로그인 정보를 받아 올 수 없다면
+			model.addObject("msg", "로그인이 필요한 항목입니다. 로그인 페이지로 이동합니다.");
+			model.addObject("location", "/member/login");
+			model.setViewName("common/msg");
+		}
+		
+		return model;
+	}
+	
+	//챌린지 포기 신청 POST
+	@PostMapping("/challenge/giveup")
+	public ModelAndView giveup(ModelAndView model,
+			@SessionAttribute(name="loginMember", required = false) Member loginMember,
+			@RequestParam("cNo") int cNo, 
+			@RequestParam("cTitle") String title,
+			@RequestParam("giveupReason") String reason,
+			@RequestParam("inputTitle") String inputTitle,
+			@RequestParam("id") String id) {
+		
+		log.info("챌린지 포기 신청 POST 요청");
+			
+			// 확인 차 입력 받은 챌린지 제목이 일치한다면
+			if(title.equals(inputTitle)) {
+				
+				//참여하고 있는 챌린지 인지 확인하는 메소드, 참여하고 있으면 0보다 큰 수 리턴
+				int isJoin = service.getJoinListCount(cNo, id);
+				
+				//참여하고 있는 챌린지라면?
+				if(isJoin > 0) {
+					
+					int result = 0;
+					
+					result = service.deleteMyChallengeList(id, cNo, "JOIN");
+					
+					if(result > 0) {
+						
+						// 현재 참여자 불러오는 메소드
+						int participantsCount = service.getCurrentCount(cNo); 
+						
+						// 챌린지NO값으로 챌린지 불러오기 
+						Challenge challenge = service.findByNo(cNo);
+						
+						// 불러온 현재 참여자 수를 불러온 챌린지에 저장
+						challenge.setCurrentCount(participantsCount);
+						
+						// 변경된 챌린지 정보를 업데이트하는 메소드
+						int updateCurrCount = service.saveCurrentCount(challenge);
+						
+						if(updateCurrCount > 0) {
+							log.info("현재 인원수 업데이트 완료");
+						} else {
+							log.info("현재 인원수 업데이트 실패");
+						}
+						
+						model.addObject("msg", id + "님의 의견을 반영하여 챌린지 포기가 완료되었습니다. 홈으로 이동합니다.");
+						model.addObject("location", "/");
+					} else {
+						model.addObject("msg", "챌린지 포기 요청이 실패하였습니다.");
+						model.addObject("location", "/challenge/giveup?cNo="+cNo+"&cTitle="+title);
+					}
+				}
+			} else {// 확인 차 입력 받은 챌린지 제목이 일치하지 않는다면
+				model.addObject("msg", "챌린지 제목을 정확하게 입력하지 않았습니다. 다시 시도하세요.");
+				model.addObject("location", "/challenge/giveup?cNo="+cNo+"&cTitle="+title);
+			}
+		
+		
+		
+		model.setViewName("common/msg");
+		
+		return model;
 	}
     
 	// 챌린지 검색
