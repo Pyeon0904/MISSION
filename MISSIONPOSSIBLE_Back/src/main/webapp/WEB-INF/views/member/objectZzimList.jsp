@@ -32,6 +32,11 @@
 		position:relative; top:-180px; left:0px; 
 		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5.75;
 	}
+	.itemDelete{
+		width:30px; height:30px; background:rgba(255,0,0,0.5);
+		position:relative; top:-242px; left:150px;
+		font-size:1.5em; color:white; font-weight:bold; text-align:center;
+	}
 	#pageBarContainer{width:950px; height:60px; text-align:center;  }
 	#pageBar{
 		width:49%; height:50px; margin:0 auto;  
@@ -84,6 +89,7 @@
 									<script>
 										$(document).ready(()=>{
 											$("div.itemShowMenu").hide();
+											$("div.itemDelete").hide();
 											
 											$(".itemPhotoBox").hover(
 												function(){
@@ -93,16 +99,32 @@
 													$(this).find(".itemShowMenu").fadeOut(200);
 												}
 											);
+											$(".itemCont").hover(
+												function(){
+													$(this).find(".itemDelete").fadeIn(200);
+												}, 
+												function(){
+													$(this).find(".itemDelete").fadeOut(200);
+												}
+											);
 											
 											$("#categoryBar ul li").hover(
-													function(){
-														$(this).css("background", "#FFF000");
-													}, 
-													function(){
-														$(this).css("background", "none");
-													}
-												);
+												function(){
+													$(this).css("background", "#FFF000");
+												}, 
+												function(){
+													$(this).css("background", "none");
+												}
+											);
 										});
+										
+										function zzimDelete(no){
+											if(confirm("해당 챌린지를 찜 목록에서 삭제하시겠습니까?")){
+												location.href="${path}/challenge/zzimDelete.do?cNo="+no+"&isMyPage=true";
+											} else {
+												alert("사용자에 의해 찜 목록 삭제 요청이 취소되었습니다.");
+											}
+										}
 									</script>
 									</ul>
 								</div>
