@@ -25,7 +25,7 @@
 															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
 																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
 														</c:if>
-														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
+														<div class="itemShowMenu" onclick="window.parent.location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
 															<span class="details">상세보기</span>
 														</div>
 													</div>
@@ -45,6 +45,9 @@
 																D-<c:out value="${ startNum - todayNum }"></c:out>
 															</span>
 														</p>
+														<div class="itemDelete" onclick="zzimDelete(${ challenge.challengeNo });">
+															<p class="details">X</p>
+														</div>
 													</div>
 												</div>
 											</li>
