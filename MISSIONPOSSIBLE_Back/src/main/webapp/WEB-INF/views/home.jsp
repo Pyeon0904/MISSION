@@ -20,7 +20,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
 <!-- Animate.CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <style>
@@ -46,37 +46,79 @@
 
 /*-----------------------------------------------------------------------------------*/
 /*----------------------기획 의도-----------------------------------*/
+/* 사진 안에 글 */
 .Runing{
 position:absolute;
-left:330px;
+top:15px;
+left:250px;
 font-size: 25px;
 font-weight: bold;
 }
-.JSPARK{
-position:absolute;
-left:30%;
-color:white;
-font-size: 20px;
-}
-.JORDAN{
-position:absolute;
-color:white;
-left:300px;
-}
-.JORDAN2{
-position:absolute;
-color:white;
-left:665px;
-font-size: 20px;
+.Runing span{
+color:green;
 }
 .teamevent1{
+position:absolute;
+right:250px;
+top:20px;
+color:black;
+font-size:20px;
+font-weight: bold;
 
 }
+.teamevent1 span{
+  color:#368AFF;
+}
+
+.JSPARK{
+position:absolute;
+top:10px;
+left:350px;
+color:white;
+font-size: 23px;
+line-height:1.5em;
+}
+
 .temaevent2{
-
+position:absolute;
+color:white;
+top:200px;
+left:300px;
+font-size:18px;
 }
-.teamevent3{
 
+.temaevent2 span{
+  color:#FF1212;
+  font-weight: bold;
+}
+
+.JORDANleft{
+position:absolute;
+color:black;
+left:285px;
+font-size:20px;
+top:60px;
+font-weight: bold;
+}
+.JORDANright{
+position:absolute;
+color:white;
+left:700px;
+top:55px;
+font-size: 20px;
+line-height:1.5em;
+font-weight: bold;
+}
+.temaevent3{
+position:absolute;
+color:white;
+top:200px;
+left:780px;
+font-size:19px;
+}
+.temaevent3 span{
+  color:#FF1212;
+  font-weight: bold;
 }
 /* --------------------- 간단히 홈페이지소개 ---------------------- */
 
@@ -227,12 +269,10 @@ function animateCSS(element, animationName, callback) {
 
     node.addEventListener('animationend', handleAnimationEnd)
 }
-    
-animateCSS('.my-element', 'fadeInLeft	','fadeInLeft')
+animateCSS('.my-element','slideOutLeft')    
 
-//or
-animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
-// Do something after animation
+animateCSS('.my-element','slideOutLeft',function() {
+	/*슬라이드 바*/
 })
 	$(document).on('mouseover', '.list8', function() {
 		$('.hlist8wd').show();
@@ -252,24 +292,24 @@ animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
 			    <div id="plan">
 				    <div id="show">
 					    <div class="fotorama" data-width="1200px" 
-					      data-height="400px"data-autoplay="9000" data-loop="true">
+					      data-height="400px"data-autoplay="900000" data-loop="true">
 						   <div data-img="${path}/resources/images/Runing.png">
-						     <p class=Runing>오늘 하루는 얼마나달려볼까?</p>
-							   <div class="animated fast fadeInLeft delay-1s">
-							    <p class="temaevent1">서브</p>
+						     <p class=Runing><span>오늘 하루</span>는 얼마나달려볼까?</p>
+							   <div class="animated infinite slideOutLeft faster-50000ms">
+							    <p class="teamevent1"><span>Time </span>to&nbsp;<span>Run</span></p>
 							</div>
 						</div>
 						<div data-img="${path}/resources/images/JSPark.jpg">
-						<p class=JSPARK><br><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							-박지성-</p>
-							<div class="animated slow fadeInLeft delay-3s">
-							<p class="temaevent2">서브</p></div>
+						<p class=JSPARK><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;-박지성-</p>
+							<div class="animated infinite fadeInRight delay-3s">
+							<p class="temaevent2">Don't rest + <span>Just do it</span></p></div>
 						</div>
 						<div data-img="${path}/resources/images/JORDAN.jpg">
-						<p class=JORDAN><br><br><br>한 번 포기하면 습관이된다. </p>
-						<p class=JORDAN2><br><br>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
-							<div class="animated slow fadeInLeft delay-5s">
-							<p class="temaevent3">서브</p></div>
+						<p class=JORDANleft>한 번 포기하면 습관이된다. </p>
+						<p class=JORDANright>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
+							<div class="animated infinite fadeInRight delay-5s">
+							<p class="temaevent3">Do <span>not give</span> up</p></div>
 						</div>
 					</div>
 				</div>
@@ -296,7 +336,7 @@ animateCSS('.my-element', 'fadeInLeft	','fadeInLeft',' ',function() {
 									<span>지극히 평범한 일상을 벗어나고 싶으신가요?</span><br>
                                          절망의 끝자락에서 마음이 낙심될 때,<br>
                                          우리가 손잡고 함께하겠습니다.<br>
-                                         '작전' 챌린지와 지금 당장 시작해봅시다!<br>
+                                         <span>'작전'</span> 챌린지와 지금 당장 시작해봅시다!<br>
 									         
 								    </div>
 							     </td>
