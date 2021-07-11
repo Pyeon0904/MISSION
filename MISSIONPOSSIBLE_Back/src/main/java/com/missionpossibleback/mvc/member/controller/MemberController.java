@@ -123,20 +123,23 @@ public class MemberController {
 	}
 //팔로우 페이지 
 	@GetMapping(value = "/member/followPage")
-	public ModelAndView followPage(ModelAndView model, @RequestParam("ID")String followName, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+	public ModelAndView followPage(ModelAndView model, @RequestParam("ID")String followID, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 		
-		int isfollow = 0;
+		Member followMember = service.findById(followID);
 		
-		Member followMember = service.findById(followName);
-		
-		isfollow = service.isfollow(loginMember.getId(), followMember.getId());
-		
-		model.addObject("isfollow", isfollow);	//팔로우가 되어있으면 isfollow 세션에 갯수 저장(0 or 1)
-		model.setViewName("member/followPage");
-		System.out.println(followMember.getId() + " " + isfollow);
-		
-		model.addObject("followMember", followMember);
-		model.setViewName("member/followPage");
+		if(followMember != null) {
+			model.addObject("followMember", followMember);
+			model.setViewName("member/followPage");
+			
+			int isfollow = service.isfollow(loginMember.getId(), followMember.getId());
+			
+			model.addObject("isfollow", isfollow);	//팔로우가 되어있으면 isfollow 세션에 갯수 저장(0 or 1)
+			model.setViewName("member/followPage");
+		}else {
+			model.addObject("msg", "ID가 존재하지 않습니다");
+			model.addObject("location", "/member/followList");
+			model.setViewName("common/msg");
+		}
 		
 		return model;
 	}

@@ -42,6 +42,7 @@
 	}
      .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
 </style>
+
 <div id="box">
       <section id="section">
          <div id="conbox">
@@ -49,7 +50,7 @@
 			<h4>팔로우 리스트</h4>
 			   <form id="followSearch" name="followSearch" method="GET" action="followPage">
 		            <div align="right" class="row m-4">
-		               <input type="text" name="ID" class="form-control" style="padding: 3px 20px 6px 20px" value="" placeholder="아이디 검색" >
+		               <input type="text" name="ID" id="searchID" class="form-control" style="padding: 3px 20px 6px 20px" value="" placeholder="아이디 검색" >
 		               <button type="submit" class="btn btn-warning" >검색</button>
 		            </div>
 		            <table width="100%" class="table01">
@@ -89,7 +90,7 @@
 												</c:if>
 											</td>
 											<td style="text-align: center; font-size: 25px">
-			<!-- get -->						<a href="${path}/member/followPage?ID=${ follow.followId }" >${ follow.followId }</a>
+									<a href="${path}/member/followPage?ID=${ follow.followId }" >${ follow.followId }</a>
 											</td>
 											<td><button class="btn btn-warning" id="btDelete">팔로우 취소</button></td>
 										</tr>		
