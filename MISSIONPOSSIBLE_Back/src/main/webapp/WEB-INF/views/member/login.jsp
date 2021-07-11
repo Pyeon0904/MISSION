@@ -3,13 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 	String saveId = null;
 	Cookie[] cookies = request.getCookies();
 
-	// 쿠키값 받아오기
 	if(cookies != null) {
 		for(Cookie c : cookies) {
 			if(c.getName().equals("saveId")) {
@@ -20,6 +17,9 @@
 		}
 	}
 %>
+
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <style>
 	section #login-container {
 		text-align:center;
@@ -118,7 +118,7 @@
 					</tr>
 					<tr>
 						<td>
-							<label><input type="checkbox" name="saveId"<%= saveId != null? "checked" : "" %>/>아이디 저장</label>
+							<label><input type="checkbox" name="saveId" <%= saveId != null? "checked" : "" %>/>아이디 저장</label>
 						</td>
 					</tr>
 				</table>

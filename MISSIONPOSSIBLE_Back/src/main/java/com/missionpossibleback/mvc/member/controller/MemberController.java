@@ -2,6 +2,7 @@ package com.missionpossibleback.mvc.member.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,6 +19,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -36,14 +38,16 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
+import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes("loginMember")
+@SessionAttributes({"loginMember", "followMember", "isfollow"})
 public class MemberController {
 	
 	@Autowired
@@ -52,16 +56,6 @@ public class MemberController {
 	@GetMapping(value = "/member/myPage")
 	public String myPage() {
 		return "member/myPage";
-	}
-	
-	@GetMapping(value = "/member/followPage")
-	public String followPage() {
-		return "member/followPage";
-	}
-	
-	@GetMapping(value = "/member/followList")
-	public String followList() {
-		return "member/followList";
 	}
 	
 	@GetMapping(value = "/member/findPassword")
@@ -98,18 +92,112 @@ public class MemberController {
 	      
 	      return "member/checkNickname"; 
 	}
-	
-	@GetMapping("/member/report")
+//신고하기	
+	@GetMapping("/member/reportMember")
 	   public String report() {
 	      
-	      return "member/report"; 
+	      return "member/reportMember"; 
 	}
+	@RequestMapping(value = "/member/reportMember", method = {RequestMethod.POST})
+	public ModelAndView report(ModelAndView model,
+			@RequestParam("reportId") String reportId,
+			@RequestParam("reportType")String reportType,
+			@RequestParam("reportContent")String reportContent,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			SessionStatus status ) {
+		
+		int result = 0;
+		
+		result = service.reportMember(loginMember.getId(), reportId, reportType, reportContent);
+		
+		if(result > 0) {
+			model.addObject("msg", "신고가 접수되었습니다");
+		}else {
+			model.addObject("msg", "신고가 정상적으로 접수되지 않았습니다");
+		}
+		model.setViewName("common/msg_popup");
+		
+		return model;
+	}
+//팔로우 페이지 
+	@GetMapping(value = "/member/followPage")
+	public ModelAndView followPage(ModelAndView model, @RequestParam("ID")String followName, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+		
+		int isfollow = 0;
+		
+		Member followMember = service.findById(followName);
+		
+		isfollow = service.isfollow(loginMember.getId(), followMember.getId());
+		
+		model.addObject("isfollow", isfollow);	//팔로우가 되어있으면 isfollow 세션에 갯수 저장(0 or 1)
+		model.setViewName("member/followPage");
+		System.out.println(followMember.getId() + " " + isfollow);
+		
+		model.addObject("followMember", followMember);
+		model.setViewName("member/followPage");
+		
+		return model;
+	}
+	@RequestMapping(value = "/member/followPage", method = {RequestMethod.POST})
+	public ModelAndView followPage(ModelAndView model,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@SessionAttribute(name = "followMember", required = false) Member followMember ) {
+		
+		int result = 0;
+		
+		result = service.follow(loginMember.getId(), followMember.getId());
+
+		if(result > 0) {
+			model.addObject("msg", "팔로우 되었습니다");
+		}else {
+			model.addObject("msg", "팔로우가 정상적으로 접수되지 않았습니다");
+		}
+		model.addObject("location", "/member/followPage?ID="+followMember.getId());
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+//팔로우 리스트
+	@GetMapping(value = "/member/followList")
+	public ModelAndView followList(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+		
+		List<Follow> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, service.getListCount(), 10); 
+		
+		list = service.getFollowList(pageInfo, loginMember.getId());
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("member/followList");
+	
+		return model;
+	}
+	@RequestMapping(value = "/member/followList", method = {RequestMethod.POST})
+	public ModelAndView followList(ModelAndView model, @RequestParam("deleteFollow")String deleteFollow, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+		
+		int result = 0;
+	
+		result = service.deleteFollow(deleteFollow, loginMember.getId());
+			
+		if(result > 0) {
+			model.addObject("msg", "팔로우 취소되었습니다");
+				
+		}else {
+			model.addObject("msg", "팔로우 취소를 실패하였습니다");
+		}
+		model.addObject("location", "/member/followList");
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+	
 //탈퇴	
 	@GetMapping("/member/withdrawal")
 	   public String withdrawal() {
 	      
 	      return "member/withdrawal"; 
 	}
+	
 	@RequestMapping(value = "/member/withdrawal", method = {RequestMethod.POST})
 	public ModelAndView withdrawal(ModelAndView model,
 			@RequestParam("reasonWithdrawal") String reasonWithdrawal,
@@ -150,10 +238,10 @@ public class MemberController {
 		return model;
 	}
 	
-	
 //회원가입
 	@GetMapping("/member/enroll")
-	   public String enroll() {
+	   public String enroll(@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+	      if(loginMember != null) return "redirect:/";
 	      
 	      return "member/enroll";
 	}
@@ -351,7 +439,7 @@ public class MemberController {
 		
 		Member loginMember = service.validateNickEm(userNickname, userEmail);
 		
-		if(loginMember != null) {
+		if(loginMember!= null) {
 			model.addObject("loginMember", loginMember);
 			model.addObject("msg", "인증 성공했습니다.");
 			model.addObject("location", "/member/findId");
@@ -365,29 +453,30 @@ public class MemberController {
 	}
 //로그인
 	@GetMapping(value = "/member/login")
-	public String login() {
-		return "member/login";
+	public String login(@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+		if(loginMember != null) 
+			return "redirect:/";
+		else
+			return "member/login";
 	}
 	
 	@RequestMapping(value = "/member/login", method = {RequestMethod.POST})
 	public ModelAndView login(ModelAndView model,
-			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd) {
+			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd, @RequestParam(value="saveId", required=false) String saveId) {
 		
 		log.info("{}, {}", userId, userPwd);
 		
 		Member loginMember =  service.login(userId, userPwd);
 		
-//		if(saveId != null) {
-//			Cookie cookie = new Cookie("saveId", userId);
-//			
-//			cookie.setMaxAge(259200);
-//			model.addObject(cookie);
-//		}else {
-//			Cookie cookie = new Cookie("saveId","");
-//			
-//			cookie.setMaxAge(0);
-//			model.addObject(cookie);
-//		}
+		if(saveId != null) {
+			Cookie cookie = new Cookie("saveId", userId);
+			cookie.setMaxAge(259200);
+			model.addObject(cookie);
+		}else {
+			Cookie cookie = new Cookie("saveId","");
+			cookie.setMaxAge(0);
+			model.addObject(cookie);
+		}
 		
 		if(loginMember != null) {
 			model.addObject("loginMember", loginMember);
@@ -423,6 +512,7 @@ public class MemberController {
 	    		+ "<h3>임시로 비밀번호를 재발급해드렸습니다</h3>"
 	    		+ "<h3>로그인 후 반드시 비밀번호를 재설정 해주세요</h3><br><br>");    
 	    sb.append("<h3> 임시 비밀번호 : " + tempPassword + "</h3>");	//재설정되는 비밀번호(랜덤한 값)
+	    sb.append("<h3> 재설정 방법 : 로그인 -> 마이페이지 -> 회원정보 수정 -> 비밀번호 변경</h3>");
 	    String html = sb.toString();
 	    
 	    // 메일 옵션 설정
