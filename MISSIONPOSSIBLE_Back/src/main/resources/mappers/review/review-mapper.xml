@@ -61,6 +61,30 @@
 		<result property="statue" column="STATUS"/>
 	</resultMap>
 	
+	<resultMap id="challengeResultMap" type="Challenge">
+		<id property="challengeNo" column="CHALLENGE_NO" /><!-- PK -->
+		<result property="id" column="ID" />
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="categoryName" column="CATEGORY_NAME"/>
+		<result property="thumbnailFile" column="THUMBNAIL_FILE"/>
+		<result property="challengeStatus" column="CHALLENGE_STATUS"/>
+		<result property="attendStatus" column="ATTEND_STATUS"/>
+		<result property="status" column="STATUS"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="deadline" column="DEADLINE"/>
+		<result property="maxCount" column="MAX_COUNT"/>
+		<result property="currentCount" column="CURRENT_COUNT"/>
+		<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+		<result property="renamedFilename" column="RENAMED_FILENAME"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<!-- new insert vo -->
+		<result property="startDate" column="START_DATE"/>
+		<result property="opentalkLink" column="OPENTALK_LINK"/>
+		<result property="minusPoint" column="MINUS_POINT"/>
+	</resultMap>
+	
 	<select id="selectReviewList" resultMap="reviewListResultMap">
 		<include refid="reviewListSql"/>
 		ORDER BY R.NO DESC
@@ -242,7 +266,6 @@
 			DEFAULT
 		)
 	</insert>
-	
 
 	<select id="selectReplyByNo" parameterType="_int" resultMap="reviewReplyResultMap">
  		SELECT *
@@ -299,5 +322,19 @@
 			WHERE 
 				NO=#{reply.no}
 	</update>
+	
+	<select id="selectAllChallengeList" resultMap="challengeResultMap">
+		SELECT TITLE FROM CHALLENGE C
+		JOIN MY_CHALLENGE_LIST MCL
+		ON C.CHALLENGE_NO = MCL.MY_CHALLENGE_NO
+		JOIN MEMBER M
+		ON MCL.ID = M.ID
+		WHERE M.ID = #{id}
+		AND C.STATUS = 'Y'
+		<![CDATA[
+			AND C.DEADLINE <= SYSDATE
+		]]>
+	</select>
+
 </mapper>
 

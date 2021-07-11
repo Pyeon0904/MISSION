@@ -46,4 +46,6 @@ public interface ReviewService {
 
 	Reply findReplyByNo(int replyNo);
 
+	List<Challenge> getSearchAllChallengeList(@Param("id") String id);
+
 }

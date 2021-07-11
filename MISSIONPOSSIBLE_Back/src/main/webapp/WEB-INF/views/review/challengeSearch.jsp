@@ -10,21 +10,72 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>챌린지 검색</title>
+<title>챌린지 조회</title>
+<script src="${ path }/js/jquery-3.6.0.min.js"></script>
+<style>
+table.type04 {
+  border-collapse: separate;
+  border-spacing: 1px;
+  text-align: left;
+  line-height: 1.5;
+  border-top: 1px solid #ccc;
+  margin : 20px 10px;
+}
+table.type04 th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+}
+table.type04 td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #white;
+}
+</style>
 </head>
 <body>
+	 				<table class="type04">
+	 					<colgroup>
+							<col width="30%">
+							<col width="50%">
+							<col width="20%">
+						</colgroup>
+						<c:if test="${ list != null }">
+								<tr>
+									<th></th>
+									<th>나의 챌린지 조회</th>
+									<th></th>
+								</tr>	
+							<c:forEach var="challenge" items="${ list }" varStatus="status">
+								<tr>
+									<td>${status.count}</td>
+									<td><input type="text" name="add${status.count}" class="challengeSelect${status.count}" style="border:none" value="${ challenge.title }"/></td>
+									<td></td>
+								</tr>							
 
- <form id="reviewSearch" name="form1" method="POST" action="${path}/review/challengeSearch">
- <input type="text" name="word" class="form-control" placeholder="검색하고 싶은 챌린지를 입력하세요" style="width: 300px;height:30px" value=${ challenge }>
-<button type="submit" class="btn btn-warning" style="height:30px" >검색</button>
- </form>
-	 				<table width="100%" class="table01">
-						<c:if test="${ list == null }">
-							<tr>
-		                  		<td colspan="6"></td>
+								<script type="text/javascript">
+									$(document).ready(function () {
+									  $(document).on("click", "input[name='add${status.count}']", function () {
+									    opener.document.getElementById("challangeSearch").value = document.getElementsByClassName("challengeSelect${status.count}")[0].value;
+									        	close();
+									  });
+									});	
+								</script>
+							</c:forEach>
+						<c:if test="${ empty list }">
+							<tr>&emsp;</tr>
+		                  		<td colspan="6">&emsp;&emsp;&emsp;&emsp;&emsp;진행 완료된 참가 챌린지가 없습니다.</td>
 		               		</tr>
+						</c:if>
+							<tr>
+								<td></td>
+								<td></td>
+	    						<td><input type="button" value="창닫기" onclick="window.close()"></td>
+							</tr>
 						</c:if>
 					</table>
 
 </body>
-</html>

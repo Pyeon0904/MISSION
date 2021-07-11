@@ -45,5 +45,7 @@ public interface ReviewMapper {
 	boolean deleteReply(int replyNo);
 
 	Reply selectReplyByNo(int replyNo);
+	
+	List<Challenge> selectAllChallengeList(@Param("id") String id);
 
 }

@@ -186,4 +186,9 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectReplyByNo(replyNo);
 	}
 
+	@Override
+	public List<Challenge> getSearchAllChallengeList(@Param("id") String id) {
+		return mapper.selectAllChallengeList(id);
+	}
+
 }

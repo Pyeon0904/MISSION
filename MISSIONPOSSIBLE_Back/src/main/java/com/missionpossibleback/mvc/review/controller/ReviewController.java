@@ -424,9 +424,15 @@ public class ReviewController {
     
     // 리뷰 게시글 챌린지 검색
     @GetMapping("/review/challengeSearch")
-    public String challangeSearch() {
-          
-       return "review/challengeSearch";
+    public ModelAndView challangeSearchView (ModelAndView model, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+    	List<Challenge> list = null;
+    	list = service.getSearchAllChallengeList(loginMember.getId());
+    	System.out.println(loginMember.getId());
+    	System.out.println(list);
+    	model.addObject("list", list);
+    	model.setViewName("/review/challengeSearch");
+    		
+    	return model;
     }
     
 	// 리뷰 게시판 검색
