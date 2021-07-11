@@ -21,6 +21,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.sun.mail.iap.Response;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -461,7 +463,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/member/login", method = {RequestMethod.POST})
-	public ModelAndView login(ModelAndView model,
+	public ModelAndView login(ModelAndView model, HttpServletResponse response,
 			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd, @RequestParam(value="saveId", required=false) String saveId) {
 		
 		log.info("{}, {}", userId, userPwd);
@@ -471,11 +473,11 @@ public class MemberController {
 		if(saveId != null) {
 			Cookie cookie = new Cookie("saveId", userId);
 			cookie.setMaxAge(259200);
-			model.addObject(cookie);
+			response.addCookie(cookie);
 		}else {
 			Cookie cookie = new Cookie("saveId","");
 			cookie.setMaxAge(0);
-			model.addObject(cookie);
+			response.addCookie(cookie);
 		}
 		
 		if(loginMember != null) {
