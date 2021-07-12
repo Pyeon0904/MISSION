@@ -231,7 +231,7 @@ table.type04 td {
 										<input type="hidden" name="reviewNo" value="${ review.no }">
 										<input type="hidden" name="writerId" value="${loginMember.id}">
 										<textarea rows="2" cols="55" class="boxTA" style="width: 500px; height: 50px" id="replyContent"
-											name="content" placeholder="댓글을 작성하려면 로그인이 필요합니다." required></textarea>
+											name="content" <c:if test="${ empty loginMember}">placeholder="댓글을 작성하려면 로그인이 필요합니다."</c:if> required ></textarea>
 									</td>
 									<td>&emsp;</td>
 									<td style="vertical-align: middle;">
@@ -247,7 +247,14 @@ table.type04 td {
 									<tr>
 										<th id="replyWriterId" scope="row">${ reply.writerId }</th>
 										<td id="replyContent">${ reply.content }</td>
-										<td id="replyCreateDate"><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" /></td>
+										<td id="replyCreateDate">
+										<c:if test="${ reply.modifyDate != null}">
+											<fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.modifyDate }" />
+										</c:if>
+										<c:if test="${ reply.modifyDate == null}">
+											<fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" />
+										</c:if>
+										</td>
 										<td>
 											<c:if test="${ !empty loginMember && (loginMember.id == reply.writerId )}">
 												<button id="replyModify" data-no="${ reply.no }">수정</button>
