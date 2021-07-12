@@ -122,6 +122,13 @@
 						<input type="hidden" name="" value="" />
 						<input class="btn btnList" type="submit" value="목록으로"/>
 					</form>
+					
+					<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
+						<form action="${ path }/challenge/update" method="GET" id="challengeUpdateForm">
+							<input type="hidden" name="challengeNo" value="${ challenge.challengeNo }"/>
+							<input class="btn btnList" type="submit" value="챌린지 수정"/>
+						</form>
+					</c:if>
 				</div>
 				
 			</c:if>

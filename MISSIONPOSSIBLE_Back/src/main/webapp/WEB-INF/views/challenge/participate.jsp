@@ -137,6 +137,12 @@
 								<input type="hidden" name="" value="" />
 								<button class="btn btnChat" type="submit">채팅방 입장</button>
 							</form>
+							<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
+								<form action="${ path }/challenge/update" method="GET" id="challengeUpdateForm">
+									<input type="hidden" name="challengeNo" value="${ challenge.challengeNo }"/>
+									<input class="btn btnList" type="submit" value="챌린지 수정"/>
+								</form>
+							</c:if>
 						</div>
 					</div>
 
@@ -219,7 +225,6 @@
 							<td id="certCalendarArea">
 								<div id="calContainer">
 									<h4>나의 발자취</h4>
-									
 									<div class="calTable">
 										<%
 											// list - 챌린지 인증 날짜 리스트

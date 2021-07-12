@@ -533,6 +533,33 @@
 			CHALLENGE_NO = #{challengeNo}
 	</update>
 	
+	<update id="updateChallenge" parameterType="map">
+		UPDATE CHALLENGE
+		SET
+			TITLE = #{title},
+			CONTENT = #{content},
+			ATTEND_STATUS = #{attendStatus},
+			CATEGORY_NO = #{categoryNo},
+			CATEGORY_NAME = #{categoryName},
+			MAX_COUNT = #{maxCount},
+			START_DATE = #{startDate},
+			DEADLINE = #{deadline},
+			MINUS_POINT = #{minusPoint},
+			OPENTALK_LINK = #{opentalkLink},
+			<if test="originalFilename != null">
+				ORIGINAL_FILENAME = #{originalFilename},
+			</if>
+			<if test="renamedFilename != null">
+				RENAMED_FILENAME = #{renamedFilename},
+			</if>
+			<if test="thumbnailFile != null">
+				THUMBNAIL_FILE = #{thumbnailFile},
+			</if>
+			MODIFY_DATE = SYSDATE
+		WHERE
+			CHALLENGE_NO = #{challengeNo}
+	</update>
+	
 	<!-- MyChallengeList 로그인한 아이디가 챌린지 포기 요청을 하면 지우기 -->
 	<delete id="deleteMyChallengeList" parameterType="map">
 		DELETE FROM MY_CHALLENGE_LIST

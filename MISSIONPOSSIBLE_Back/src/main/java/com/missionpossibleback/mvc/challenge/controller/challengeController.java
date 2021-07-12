@@ -1,6 +1,7 @@
 package com.missionpossibleback.mvc.challenge.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,6 +108,94 @@ public class challengeController {
 		} else {
 			model.addObject("msg", "잘못된 접근입니다.");
 			model.addObject("location", "/");
+		}
+		
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+	
+	// 챌린지 수정 GET
+	@GetMapping("/challenge/update")
+	public ModelAndView updateView(ModelAndView model, @RequestParam("challengeNo") int cNo,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+		
+		Challenge challenge = service.findByNo(cNo);
+		
+		if(loginMember.getId().equals(challenge.getId())) {
+			model.addObject("challenge", challenge);
+			model.setViewName("challenge/update");
+		} else {
+			model.addObject("msg", "잘못된 접근입니다. 홈으로 돌아갑니다.");
+			model.addObject("location", "/");
+			model.setViewName("common/msg");
+		}
+		
+		return model;
+	}
+	
+	// 챌린지 수정 POST
+	@PostMapping("/challenge/update")
+	public ModelAndView update(ModelAndView model, HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@ModelAttribute Challenge challenge,
+			@RequestParam("reloadFile") MultipartFile reloadFile,
+			@ModelAttribute MyChallengeList myChallengeList) {
+		int result = 0;
+		
+		log.info("챌린지 등록 요청");
+		
+		// 업로드 X -> ""
+		// 업로드 O -> "파일명"
+		System.out.println("업로드한 원본파일명 : " + reloadFile.getOriginalFilename());
+		// 업로드 X -> true
+		// 업로드 O -> false
+		System.out.println(reloadFile.isEmpty());
+		
+		if(loginMember.getId().equals(challenge.getId())) {
+			
+			// 1. 파일업로드 했는지 확인 후 파일 업로드
+			if(reloadFile != null && !reloadFile.isEmpty()) {
+				// 파일저장로직 구현
+				String rootPath = request.getSession().getServletContext().getRealPath("resources");
+				String savePath = rootPath + "\\upload\\challenge";	
+				
+				if(challenge.getRenamedFilename() != null) {
+					// 이전에 업로드된 첨부파일 삭제
+					service.deleteFile(savePath + "/" + challenge.getRenamedFilename());
+				}
+				String renameFileName = service.saveFile(reloadFile, savePath);
+				
+				if(renameFileName != null) {
+					challenge.setOriginalFilename(reloadFile.getOriginalFilename());
+					challenge.setRenamedFilename(renameFileName);
+					challenge.setThumbnailFile(renameFileName);
+				}
+			}
+			
+			System.out.println(challenge);
+				
+			result = service.save(challenge);
+				
+			if(result > 0) {
+				model.addObject("msg", "챌린지가 정상적으로 수정되었습니다.");
+				
+				// (챌린지 시작일 > 오늘) => 아직 시작을 안함(모집중)
+				if(challenge.getStartDate().getTime() > new Date().getTime()) {
+					model.addObject("location", "/challenge/recruit?no="+challenge.getChallengeNo());
+				} else {
+					// (챌린지 시작일 <= 오늘) => 당일이거나 기간이 지남(참여중)
+					model.addObject("location", "/challenge/participate?no="+challenge.getChallengeNo());
+				}
+				
+			} else {
+				model.addObject("msg", "챌린지 수정을 실패하였습니다.");
+				model.addObject("location", "/challenge/recruit?no="+challenge.getChallengeNo());
+				model.addObject("location", "/challenge/participate?no="+challenge.getChallengeNo());
+			}
+		} else {
+			model.addObject("msg", "잘못된 접근입니다.");
+			model.addObject("location", "/challenge/recruitList");
 		}
 		
 		model.setViewName("common/msg");
@@ -298,15 +387,19 @@ public class challengeController {
 	
 	//모집중인 챌린지 VIEW
 	@GetMapping("/challenge/recruit")
-	public ModelAndView recruitView(ModelAndView model, @RequestParam("no") int challengeNo) {
+	public ModelAndView recruitView(ModelAndView model, @RequestParam("no") int challengeNo,
+			@SessionAttribute(name="loginMember", required=false) Member loginMember) {
 		
 		log.info("모집중인 챌린지 View 요청");
 		
 		Challenge challenge = service.findByNo(challengeNo);
 		
+		if(loginMember != null) {
+			model.addObject("loginMember", loginMember);
+		}
+		
 		model.addObject("challenge", challenge);
 		model.setViewName("challenge/recruit");
-		
 		return model;
 	}
 	

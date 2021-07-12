@@ -66,5 +66,7 @@ public interface ChallengeMapper {
 	List<String> selectCertDateById(@Param("no") int no, @Param("id") String id);
 
 	int deleteMyChallengeList(@Param("id") String id, @Param("myChallengeNo") int cNo, @Param("myStatus") String myStatus);
+
+	int updateChallenge(Challenge challenge);
 	
 }

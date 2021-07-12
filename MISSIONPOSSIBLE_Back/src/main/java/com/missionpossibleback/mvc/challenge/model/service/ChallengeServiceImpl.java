@@ -35,7 +35,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		int result = 0;
 		
 		if(challenge.getChallengeNo() != 0) {
-//			result = mapper.updateChallenge(challenge);
+			result = mapper.updateChallenge(challenge);
 		} else {
 			result = mapper.insertChallenge(challenge);
 		}
@@ -108,6 +108,17 @@ public class ChallengeServiceImpl implements ChallengeService {
 		}
 		
 		return renameFileName;
+	}
+	
+	// 파일 삭제 로직
+	@Override
+	public void deleteFile(String filePath) {
+		
+		log.info("FILE PATH : {}", filePath );
+		
+		File file = new File(filePath);
+		
+		if(file.exists()) file.delete();
 	}
 	
 	// 전체 챌린지 조회

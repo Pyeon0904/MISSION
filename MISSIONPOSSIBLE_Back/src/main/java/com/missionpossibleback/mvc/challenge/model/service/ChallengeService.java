@@ -66,5 +66,7 @@ public interface ChallengeService {
 	List<String> getCertDateById(int challengeNo, String id);
 
 	int deleteMyChallengeList(String id, int cNo, String string);
+
+	void deleteFile(String string);
 	
 }
