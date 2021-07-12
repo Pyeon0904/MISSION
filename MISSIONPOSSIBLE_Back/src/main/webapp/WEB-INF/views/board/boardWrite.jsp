@@ -13,7 +13,6 @@
 <meta charset="UTF-8">
 <title>게시판 글쓰기</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
-<!-- <script type="text/javascript" src="${ path }/resources/se2/se2/js/HuskyEZCreator.js" charset=" -->
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -122,6 +121,32 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 </style>
 
 </head>
+
+<script type="text/javascript">
+	$(function() {
+		$('#btnWrite').click(function() {
+			if (!$('#board_subject').val()) {
+				alert('글제목을 입력하세요');
+				$('#sboard_subject').focus();
+				return false;
+			}
+			if (!$('#board_content').val()) {
+				alert('내용을 입력하세요');
+				$('#name').focus();
+				return false;
+			}
+
+			<%--if (!$('#bpwd').val()) {
+				alert('비밀번호를 입력하세요');
+				$('#bpwd').focus();
+				return;
+			} --%>
+
+			$('#boardForm').submit();
+		});
+	});
+</script>
+
 <body>
 <div id="box">
       <section id="section">
@@ -148,15 +173,15 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
-							<td><textarea class="summernote" name="content" style=""></textarea></td>
+							<td><textarea class="summernote" name="content" style="" id="board_content"></textarea></td>
 							<!-- <td><textarea name="editor" id="editor" rows="10" cols="100" style="width:700px; height:412px;"></textarea></td> -->
 						</tr>
-						
-						<!-- 
+						<!--
 						<tr>
-							<th scope="row">첨부파일1</th>
+							<th scope="row">첨부파일</th>
 							<td><input type="file" name="upfile" value=""></td>
 						</tr>
+					 
 						<tr>
 							<th scope="row">첨부파일2</th>
 							<td><input type="file" name="upfile" value=""></td>
@@ -168,21 +193,21 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 							<td><input type="password" class="tbox01" name="pass"></td>
 						</tr>
 						
-						<!-- 
-						<tr class="form-inline">
-							<th scope="row">비밀글</th>
-						    <td style="vertical-align : middle;">
-						    <input type="radio" name="cs_open" id="cs_open" value="Y" class="radio" /><span class="ml_10">공개</span>
-						    <input type="radio" name="cs_open" id="cs_open" value="N" class="radio" checked="checked" /><span class="ml_10" >비공개</span>
-						    </td>
-						</tr>
-						-->
+						<c:if test="${ loginMember.id.equals(\"admin\") }">
+							<tr class="form-inline">
+								<th scope="row">공지글</th>
+						    	<td style="vertical-align : middle;">
+						    	<input type="checkbox" name="sort" id="notice" value="1" class="" checked/><span class="ml_10">공지글</span>
+						    	</td>
+							</tr>
+						</c:if>
+					
 						
 				    </tbody>
 				</table>
 				<div class="btn_right mt15">
 				<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
-				<input type="submit" class="btn black" value="등록하기">
+				<input type="submit" class="btn black" id="btnWrite" value="등록하기">
 				</div>
 			</form>
 		</div>
@@ -196,7 +221,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 $('.summernote').summernote({
 	  height: 410,                 // 에디터 높이
 	  minHeight: null,             // 최소 높이
-	  maxHeight: null,             // 최대 높이
+	  maxHeight: 400,             // 최대 높이
 	  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 	  lang: "ko-KR",					// 한글 설정
 	  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
@@ -215,39 +240,34 @@ $('.summernote').summernote({
 			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
 			
-			callbacks: {	//여기 부분이 이미지를 첨부하는 부분
-				onImageUpload: function(files, editor, welEditable) { 
-					for (var i = files.length - 1; i >= 0; i--) { 
-						sendFile(files[i], this); 
-					} 
-				},	
-			}
+			onImageUpload : function(files, editor, welEditable) {
+		    		  sendFile(files[i], editor, welEditable);
+		    },
 });
 
-</script>
-
-
-
-<!-- 
-<script type="text/javascript">
-    //전역변수
-    var obj = [];
-    //스마트에디터 프레임생성
-    nhn.husky.EZCreator.createInIFrame({
-        oAppRef: obj,
-        elPlaceHolder: "editor",
-        sSkinURI: "${ path }/resources/se2/se2/SmartEditor2Skin.html",
-        htParams : {
-            // 툴바 사용 여부
-            bUseToolbar : true,
-            // 입력창 크기 조절바 사용 여부
-            bUseVerticalResizer : true,
-            // 모드 탭(Editor | HTML | TEXT) 사용 여부
-            bUseModeChanger : true,
-        }
+/* summernote에서 이미지 업로드시 실행할 함수 */
+function sendFile(file, el) {
+	// 파일 전송을 위한 폼생성
+    var form_data = new FormData();
+    form_data.append('file', file);
+    
+    $.ajax({ // ajax를 통해 파일 업로드 처리
+    	data: form_data,
+        type: "POST",
+        url: '/image',
+        cache : false,
+        enctype: 'multipart/form-data',
+        contentType : false,
+        processData : false,
+        success: function(data) { // 처리가 성공할 경우
+        	 // 에디터에 이미지 출력
+            editor.insertImage(welEditable, data.url)
+          }
     });
+}
+
+
 </script>
--->
 </body>
 </html>
 <%@ include file="../common/footer.jsp"%>

@@ -86,7 +86,7 @@ a:hover{color:#0076c8} */
 .selbox{*margin-top:2px;height:28px;*height:18px;padding:3px 4px 4px 3px;border:solid 1px #abadb3;vertical-align:middle}
 
 /* textbox_style */
-input.tbox01{width:200px;height:26px;line-height:26px}
+input.tbox01{width:350px;height:26px;line-height:26px}
 
 /* textarea */
 textarea.textarea01{width:410px;height:95px;margin:10px 0}
@@ -152,7 +152,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
                   <tr>
                      <th>챌린지</th>
                      <td>         
-                        <input type="text" name="challangeSearch" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
+                        <input type="text" name="challengeTitle" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
                   </tr>
                   <tr>
                   <tr>

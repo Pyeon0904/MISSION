@@ -3,20 +3,38 @@ package com.missionpossibleback.mvc.board.model.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.missionpossibleback.mvc.board.model.vo.Board;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 public interface BoardService {
 
-	int save(Board board);
+	List<Board> getBoardList(PageInfo pageInfo); // 목록 조회
 	
-	int getBoardCount();
+	Board findByNo(int qna_no); // 게시글 조회
+	
+	int getBoardCount(); // 게시글 수
+	
+	int save(Board board); // 글쓰기, 글수정
+	
+	String saveFile(MultipartFile upfile, String savePath);
+	
+	void deleteFile(String string);
+	
+	int replyInsert(Board board); // 답글 쓰기
 
-	List<Board> getBoardList(PageInfo pageInfo);
+	Board checkPw(int qna_no); // 비밀번호 체크
 
-	Board findByNo(int qna_no);
+	int delete(int qna_no); // 삭제
+	
+	List<Board> getSearchBoardList(String type, String keyword, PageInfo pageInfo); // 검색 목록 조회
+	
+	int getSerchBoardCount(String type, String keyword); // 검색 게시글 수
+
 	
 //	public BoardDetail selectOne(int board_id);
+
 
 
 }

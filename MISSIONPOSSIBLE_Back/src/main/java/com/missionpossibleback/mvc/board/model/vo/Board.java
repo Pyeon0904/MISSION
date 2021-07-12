@@ -28,15 +28,16 @@ public class Board {
 	
 	private Date modifyDate;
 	
-	private String groupno; // 그룹번호
+	private int groupno; // 그룹번호
 	
-	private String groupord; // 그룹내의 순서
+	private int groupord; // 그룹내의 순서
 	
-	private String dept; // 깊이
+	private int dept; // 깊이
 	
 	private String originalFileName;
 	
 	private String renamedFileName;
 	
+	private int sort;
 }
 

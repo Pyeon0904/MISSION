@@ -61,6 +61,30 @@
 		<result property="statue" column="STATUS"/>
 	</resultMap>
 	
+	<resultMap id="challengeResultMap" type="Challenge">
+		<id property="challengeNo" column="CHALLENGE_NO" /><!-- PK -->
+		<result property="id" column="ID" />
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="categoryName" column="CATEGORY_NAME"/>
+		<result property="thumbnailFile" column="THUMBNAIL_FILE"/>
+		<result property="challengeStatus" column="CHALLENGE_STATUS"/>
+		<result property="attendStatus" column="ATTEND_STATUS"/>
+		<result property="status" column="STATUS"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="deadline" column="DEADLINE"/>
+		<result property="maxCount" column="MAX_COUNT"/>
+		<result property="currentCount" column="CURRENT_COUNT"/>
+		<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+		<result property="renamedFilename" column="RENAMED_FILENAME"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<!-- new insert vo -->
+		<result property="startDate" column="START_DATE"/>
+		<result property="opentalkLink" column="OPENTALK_LINK"/>
+		<result property="minusPoint" column="MINUS_POINT"/>
+	</resultMap>
+	
 	<select id="selectReviewList" resultMap="reviewListResultMap">
 		<include refid="reviewListSql"/>
 		ORDER BY R.NO DESC
@@ -80,50 +104,52 @@
 				R.REPLY_COUNT
 		FROM REVIEW R
 		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
-		WHERE R.STATUS = 'Y'
+		WHERE
 		<if test="key == '1'.toString()">
-		AND TITLE LIKE '%'||#{word}||'%'
+		TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '2'.toString()">
-        AND WRITER_ID like '%'||#{word}||'%' 
+        WRITER_ID like '%'||#{word}||'%' 
         </if> 
 		<if test="key == '3'.toString()">
-		AND CONTENT like '%'||#{word}||'%'
+		CONTENT like '%'||#{word}||'%'
 		</if>
 		<if test="key == '4'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '5'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		OR TITLE LIKE '%'||#{word}||'%'
 		OR WRITER_ID like '%'||#{word}||'%' 
 		OR CONTENT like '%'||#{word}||'%'
 		</if>
+		AND R.STATUS = 'Y'
 		ORDER BY NO DESC
 	</select>
 	
 	<select id="selectSerchReviewCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM REVIEW
-		WHERE STATUS='Y'
+		WHERE
 		<if test="key == '1'.toString()">
-		AND TITLE LIKE '%'||#{word}||'%'
+		TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '2'.toString()">
-        AND WRITER_ID like '%'||#{word}||'%' 
+        WRITER_ID like '%'||#{word}||'%' 
         </if> 
 		<if test="key == '3'.toString()">
-		AND CONTENT like '%'||#{word}||'%'
+		CONTENT like '%'||#{word}||'%'
 		</if>
 		<if test="key == '4'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		</if>
 		<if test="key == '5'.toString()">
-		AND C_TITLE LIKE '%'||#{word}||'%'
+		C_TITLE LIKE '%'||#{word}||'%'
 		OR TITLE LIKE '%'||#{word}||'%'
 		OR WRITER_ID like '%'||#{word}||'%' 
 		OR CONTENT like '%'||#{word}||'%'
 		</if>
+		AND STATUS='Y'
 		ORDER BY NO DESC
 	</select>
 
@@ -192,6 +218,7 @@
 		UPDATE REVIEW
 			SET 
 				TITLE=#{title},
+				C_TITLE=#{challengeTitle},
 				CONTENT=#{content},
 				<if test="originalFileName != null">
 					ORIGINAL_FILENAME=#{originalFileName},
@@ -240,8 +267,15 @@
 			DEFAULT
 		)
 	</insert>
+
+	<select id="selectReplyByNo" parameterType="_int" resultMap="reviewReplyResultMap">
+ 		SELECT *
+		FROM REPLY
+		WHERE NO = #{replyNo}
+		AND STATUS = 'Y'
+	</select>
 	
-	<insert id="insertRely" parameterType="map"
+	<insert id="insertReply" parameterType="map"
 			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
 		INSERT INTO REPLY (
 			NO,
@@ -262,6 +296,15 @@
 		)
 	</insert>
 	
+	<update id="updateReply" parameterType="map">
+		UPDATE REPLY
+			SET 
+				CONTENT=#{content},
+				MODIFY_DATE=SYSDATE 
+			WHERE 
+				NO=#{no}
+	</update>
+	
 	<update id="updateReplyCount" parameterType="int">
 		UPDATE REVIEW SET REPLY_COUNT = (SELECT COUNT(*) FROM REPLY WHERE REVIEW_NO = #{reviewNo} AND STATUS = 'Y')
 		WHERE NO = #{reviewNo}
@@ -280,5 +323,19 @@
 			WHERE 
 				NO=#{reply.no}
 	</update>
+	
+	<select id="selectAllChallengeList" resultMap="challengeResultMap">
+		SELECT TITLE FROM CHALLENGE C
+		JOIN MY_CHALLENGE_LIST MCL
+		ON C.CHALLENGE_NO = MCL.MY_CHALLENGE_NO
+		JOIN MEMBER M
+		ON MCL.ID = M.ID
+		WHERE M.ID = #{id}
+		AND C.STATUS = 'Y'
+		<![CDATA[
+			AND C.DEADLINE <= SYSDATE
+		]]>
+	</select>
+
 </mapper>
 
