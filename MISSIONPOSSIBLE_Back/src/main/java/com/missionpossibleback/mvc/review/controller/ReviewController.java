@@ -1,11 +1,19 @@
 package com.missionpossibleback.mvc.review.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -21,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +38,7 @@ import com.missionpossibleback.mvc.review.model.service.ReviewService;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 
@@ -114,22 +124,63 @@ public class ReviewController {
 		
 	// 리뷰 게시글 상세보기
     @GetMapping("/review/reviewView")
-    public ModelAndView view(ModelAndView model,
+    public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+    		ModelAndView model,
 			@RequestParam("no") int reviewNo,
 			@ModelAttribute Reply reply) {
 		
-		Review review = service.findByNo(reviewNo);
-		List<Reply> list = service.getReplyList(reviewNo);
+    	// 새로고침시 조회수가 증가하는 것을 방지하는 로직
+    	// 쿠키에 조회한 내용을 기록하여 한 번 조회하면 그 뒤에는 조회수가 올라가지 않도록 설정
+    	// reviewHistory라는 쿠키에 내가 읽은 게시물이 저장되고 있다! (ex. |1| |2| |13|...)
+    	// reviewHistory에 내가 지금 보고 있는 페이지가 있는지? (=이미 한번 본 게시글인지)
+    	// 1. 쿠키에 조회한 이력이 있는지 확인		
+		Cookie[] cookies = request.getCookies();
+		String reviewHistory = "";	// 쿠키에서 게시글 조회 이력을 읽어오는 변수
+		boolean hasRead = false;	// 읽은 글이면 true, 읽지 않은 글이면 false
 		
-		model.addObject("review",review);
-		model.addObject("list",list);
-		model.setViewName("review/reviewView");
+    	if(cookies != null) {
+    		String name = null;
+    		String value = null;
+    		
+    		for(Cookie cookie : cookies) {
+    			name = cookie.getName();
+    			value = cookie.getValue();
+    			
+    			// reviewHistory인 쿠키값을 찾기
+    			if("reviewHistory".equals(name)) {
+    				reviewHistory = value;
+    				
+    				if(reviewHistory.contains("|" + reviewNo + "|")) {
+    					// 읽은 게시글
+    					hasRead = true;
+    					
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	
+    	// 2. 읽지 않은 게시글이면 cookie에 기록
+    	if(!hasRead) {
+    		Cookie cookie = new Cookie("reviewHistory", reviewHistory + "|" + reviewNo + "|");
+    		
+    		cookie.setMaxAge(-1);	// 브라우저 종료시 삭제
+    		response.addCookie(cookie);
+    		
+    	}
+    	
+			Review review = service.findReviewByNo(reviewNo, hasRead);
+			List<Reply> list = service.getReplyList(reviewNo);
 		
-		return model;
+    		model.addObject("hasRead",hasRead);
+    		model.addObject("review",review);
+    		model.addObject("list",list);
+            model.setViewName("review/reviewView");
+            return model;
     }
     
 	// 리뷰 게시글 파일 다운로드
-    @GetMapping("/fileDown")
+    @GetMapping("/review/fileDown")
 	public ResponseEntity<Resource> fileDown(
 			@RequestParam("oriname")String oriname, @RequestParam("rename")String rename,
 			@RequestHeader(name = "user-agent")String header) {
@@ -161,15 +212,14 @@ public class ReviewController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-
-
+ 
     // 리뷰 게시글 신고
     @GetMapping("/review/reviewReport")
     public ModelAndView reviewReportView (ModelAndView model,
 			HttpServletRequest request,
 			@RequestParam("reviewNo") int reviewNo) {
     	
-    		Review review = service.findByNo(reviewNo); 
+    		Review review = service.findReviewByNo(reviewNo, true); 
         
 			model.addObject("review", review);
 			model.setViewName("/review/reviewReport");
@@ -183,7 +233,7 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Report report) {
     	
-    		Review review = service.findByNo(reviewNo); 
+    		Review review = service.findReviewByNo(reviewNo, true); 
     		
     		int result = 0;
     		
@@ -216,7 +266,7 @@ public class ReviewController {
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestParam("no") int reviewNo) {
 		
-		Review review = service.findByNo(reviewNo); 
+		Review review = service.findReviewByNo(reviewNo, true); 
 		
 		if(loginMember.getId().equals(review.getWriterId())) {
 			model.addObject("review", review);
@@ -284,7 +334,7 @@ public class ReviewController {
 			@RequestParam("reviewNo") int reviewNo,
 			@ModelAttribute Reply reply) {
     		
-    		Review review = service.findByNo(reviewNo);
+    		Review review = service.findReviewByNo(reviewNo, true);
     		
     		int result = 0;
     		
@@ -311,7 +361,7 @@ public class ReviewController {
     		@RequestParam("reviewNo") int reviewNo,
     		@RequestParam("replyNo")int replyNo) {
     	
-    	Review review = service.findByNo(reviewNo); 
+    	Review review = service.findReviewByNo(reviewNo, true); 
     	service.deleteReply(replyNo);
     	service.getReplyCount(reviewNo);
     	
@@ -322,12 +372,67 @@ public class ReviewController {
     	return model;
     }
     
+    // 댓글 수정하기
+    @GetMapping("/review/replyModify")
+    public ModelAndView replyModifyView (ModelAndView model,
+			HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestParam("reviewNo") int reviewNo,
+			@RequestParam("replyNo") int replyNo) {
+    		
+    		boolean hasRead = true;
+    		Reply reply = service.findReplyByNo(replyNo);
+    		Review review = service.findReviewByNo(reviewNo, hasRead);
+			List<Reply> list = service.getReplyList(reviewNo);
+			int test = replyNo;
+			
+			model.addObject("test",test);
+    		model.addObject("review",review);
+    		model.addObject("reply", reply);
+    		model.addObject("list",list);
+    		model.setViewName("/review/replyModify");
+    	return model;
+    }
+    
+    @PostMapping("/review/replyModify")
+    public ModelAndView replyModify (ModelAndView model,
+			HttpServletRequest request,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestParam("reviewNo") int reviewNo,
+			@RequestParam("no") int replyNo,
+			@ModelAttribute Reply reply) {
+
+    		int result = 0;
+			result = service.reply(reply);
+			
+    		boolean hasRead = true;
+    		Review review = service.findReviewByNo(reviewNo, hasRead);
+
+			if(result > 0) {
+				model.addObject("msg", "댓글이 수정되었습니다.");
+				model.addObject("location", "/review/reviewView?no=" +review.getNo());
+			} else {
+				model.addObject("msg", "댓글 수정에 실패하였습니다.");
+				model.addObject("location", "/review/reviewView?no=" +review.getNo());
+			}
+		
+		model.setViewName("common/msg");
+
+    	return model;
+    }
+    
     
     // 리뷰 게시글 챌린지 검색
     @GetMapping("/review/challengeSearch")
-    public String challangeSearch() {
-          
-       return "review/challengeSearch";
+    public ModelAndView challangeSearchView (ModelAndView model, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+    	List<Challenge> list = null;
+    	list = service.getSearchAllChallengeList(loginMember.getId());
+    	System.out.println(loginMember.getId());
+    	System.out.println(list);
+    	model.addObject("list", list);
+    	model.setViewName("/review/challengeSearch");
+    		
+    	return model;
     }
     
 	// 리뷰 게시판 검색
@@ -351,5 +456,4 @@ public class ReviewController {
 		
 		return model;		
 	}
-
 }

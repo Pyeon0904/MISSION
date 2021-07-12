@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -35,10 +36,16 @@ public interface ReviewMapper {
 
 	int insertReport(Report report);
 
-	int insertRely(Reply reply);
+	int insertReply(Reply reply);
+	
+	int updateReply(Reply reply);
 
 	List<Reply> selectReplyList(int reviewNo);
 
 	boolean deleteReply(int replyNo);
+
+	Reply selectReplyByNo(int replyNo);
+	
+	List<Challenge> selectAllChallengeList(@Param("id") String id);
 
 }
