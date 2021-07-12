@@ -29,7 +29,7 @@
 	$(document).ready(()=>{
 		$("#btnBan").on("click", (e)=>{
 			
-			const url = "${path}/member/report";
+			const url = "${path}/member/reportMember";
 			const status="left=500px, top=200px, width=450px; height=300px";
 			
 			open(url, "", status);
@@ -41,42 +41,56 @@
          <div id="conbox">
 			<br><br><br><br><br><br>
 			<h4>팔로우 페이지</h4>
+			<br><br>
 			<hr>
-			<div style="margin-left: 730px">
-				<input type="button" value="팔로우" id="btnFollow" class="btn btn-default" onclick=""/>
-				<input type="button" value="신고하기" id="btnBan" class="btn btn-default"/>
-			</div>
-			<div id="myPage-container">
-				<table class="table table-bordered table-hover" border="1" style="width:900px; height:200px; margin:auto; background-color: white;">
-					<tr>
-						<td rowspan="3" style="width:250px; height:200px;">
-							<!-- 사용자 프로필 사진  --> 
-						</td>
-						<td>
-							<h4><b>닉네임</b></h4>
-						</td>
-						<td>
-							<h4>${ loginMember.nickname }</h4>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h4><b>등급</b></h4>
-						</td>
-						<td>
-							<h4>${ loginMember.gradeName }</h4>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h4><b>보유 포인트</b></h4>
-						</td>
-						<td>
-							<h4>${ loginMember.point }</h4>
-						</td>
-					</tr>
-				</table>
-			</div>
+			<br><br>
+			<form name="followPage" action="followPage" method="post" >
+				<div style="margin-left: 730px">
+					<c:if test="${ isfollow > 0}">
+						<input type="submit" value="팔로우" id="btnFollow" class="btn btn-default"  disabled />
+					</c:if>
+					<c:if test="${ isfollow == 0}">
+						<input type="submit" value="팔로우" id="btnFollow" class="btn btn-default" />
+					</c:if>
+					<input type="button" value="신고하기" id="btnBan" class="btn btn-default"/>
+				</div>
+				<div id="myPage-container">
+					<table class="table table-bordered table-hover" border="1" style="width:900px; height:200px; margin:auto; background-color: white;">
+						<tr>
+							<td rowspan="3" style="width:250px; height:200px;">
+								<c:if test="${ followMember.renamedFileName == null }">
+									<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+								</c:if>
+								<c:if test="${ followMember.renamedFileName != null }">
+									<img src="${path}/resources/upload/profile/${ followMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+								</c:if>
+							</td>
+							<td>
+								<h4><b>닉네임</b></h4>
+							</td>
+							<td>
+								<h4>${ followMember.id }</h4>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4><b>등급</b></h4>
+							</td>
+							<td>
+								<h4>${ followMember.gradeName }</h4>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4><b>보유 포인트</b></h4>
+							</td>
+							<td>
+								<h4>${ followMember.point }</h4>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</form>
 		</div>
 	</section>
 </div>

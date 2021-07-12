@@ -19,6 +19,14 @@
 			    RENAMED_FILENAME
 		FROM MEMBER
  	</sql>
+ 	
+ 	<sql id="followListSql">
+		SELECT  F.NO,
+				F.FOLLOWER_ID,
+				M.RENAMED_FILENAME
+		FROM FOLLOWER F
+		JOIN MEMBER M ON(F.FOLLOWER_ID = M.ID)
+	</sql>
 
  	<resultMap type="Member" id="memberResultMap">
  		<id property="memberNo" column="MEMBER_NO"/>
@@ -32,6 +40,13 @@
  		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
  		<result property="renamedFileName" column="RENAMED_FILENAME"/>
  	</resultMap>
+ 	
+ 	<resultMap type="Follow" id="followListResultMap">
+		<id property="followNo" column="NO"/>
+		<result property="id" column="ID"/>
+		<result property="followId" column="FOLLOWER_ID"/>
+		<result property="profile" column="RENAMED_FILENAME"/>
+	</resultMap>
  	
  	<select id="selectMember" parameterType="string" resultMap="memberResultMap">
  		<include refid="selectMemberSql" />
@@ -109,4 +124,61 @@
 			#{reasonWithdrawal}
 		)
  	</insert>
+ 	
+ 	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+	</select>
+	
+	<select id="selectFollowList" resultMap="followListResultMap">
+		<include refid="followListSql"/>
+		WHERE F.ID = #{id}
+		ORDER BY F.NO DESC
+	</select>
+	
+	<delete id="deleteFollow">
+		DELETE FROM FOLLOWER
+		WHERE ID = #{id} AND FOLLOWER_ID = #{deleteFollow}
+	</delete>
+	
+	<insert id="reportMember">
+	 	INSERT INTO REPORT_MEMBER ( 
+		    ID,  
+		    REPORT_ID,
+		    REPORT_TYPE,
+		    REPORT_CONTENT,
+		    CREATE_DATE
+		    
+		) VALUES(
+			#{id},
+			#{reportId},
+			#{reportType},
+			#{reportContent},
+			DEFAULT
+		)
+ 	</insert>
+ 	
+ 	<insert id="insertFollower">
+	 	INSERT INTO FOLLOWER ( 
+		    NO,  
+		    ID,
+		    FOLLOWER_ID
+		    
+		) VALUES(
+			SEQ_FOLLOWER_NO.NEXTVAL,
+			#{id},
+			#{followId}
+		)
+ 	</insert>
+ 	
+ 	<select id="isFollower" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE ID = #{id} AND FOLLOWER_ID = #{followId}
+	</select>
+	
+	<select id="selectMemberIdList" resultType="String">
+		SELECT ID
+		FROM MEMBER
+	</select>
  </mapper>

@@ -1,4 +1,4 @@
-package com.kh.mvc.common.interceptor;
+package com.missionpossibleback.mvc.common.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,7 +7,8 @@ import org.aspectj.weaver.ast.Call;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.kh.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.member.model.vo.Member;
+
 
 /*
  인터셉터(Interceptor)
