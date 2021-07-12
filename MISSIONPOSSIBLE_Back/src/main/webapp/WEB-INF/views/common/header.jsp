@@ -212,9 +212,11 @@
 							<th class="success">완료</th>
 							<th class="success">개설</th>
 							<tr class="success">
-								<td>0</td>
-								<td>0</td>
-								<td>0</td>
+								<!-- 로그인 POST 요청에서 구한 유저의 업적을 출력 -->
+								<c:forEach var="achieveCount" items="${ achievements }">
+									<td><c:out value="${ achieveCount }"/></td>
+								</c:forEach>
+								
 							</tr>
 						</table>
 						<br><br>

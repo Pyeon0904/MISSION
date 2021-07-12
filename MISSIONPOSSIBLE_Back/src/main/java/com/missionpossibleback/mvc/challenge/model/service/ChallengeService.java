@@ -20,6 +20,8 @@ public interface ChallengeService {
 	String saveFile(MultipartFile upfile, String savePath);
 
 	int saveCurrentCount(Challenge challenge);
+	
+	int getChallengeCountById(String id);
 
 	int getChallengeCount();
 
@@ -40,6 +42,8 @@ public interface ChallengeService {
 	int getCertCount(int no);
 	
 	int getCertCountById(int no, String id);
+	
+	int getEndJoinCount(String id);
 	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	

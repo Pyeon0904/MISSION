@@ -187,6 +187,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 			
 		return mapper.selectChallengeCount();
 	}	
+	
+	// 챌린지 전체 개수 출력
+	@Override
+	public int getChallengeCountById(String id) {
+			
+		return mapper.selectChallengeCountById(id);
+	}
 
 	// 모집중인 챌린지 개수 출력 
 	@Override
@@ -295,6 +302,11 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int getJoinCount(String id) {
 		
 		return mapper.selectJoinCount(id);
+	}
+	
+	@Override
+	public int getEndJoinCount(String id) {
+		return mapper.selectEndJoinCount(id);
 	}
 
 	// 참여중인 챌린지 리스트 조회

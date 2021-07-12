@@ -86,7 +86,7 @@
 		WHERE CLG.STATUS='Y'
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
-	
+
 	<!-- 챌린지NO로 챌린지 찾기 -->
 	<select id="selectChallengeByNo" parameterType="_int" resultMap="challengeResultMap">
 		<include refid="selectChallengeSql"/>
@@ -247,6 +247,13 @@
 		WHERE STATUS = 'Y'
 	</select>
 	
+	<!-- 로그인한 유저의 ID로 개설한 챌린지 개수 구하기 -->
+	<select id="selectChallengeCountById" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHALLENGE
+		WHERE ID = #{id}
+	</select>
+	
 	<!-- 모집중인 챌린지 수 확인 -->
 	<select id="selectRecruitCount" resultType="_int">
 		SELECT COUNT(*)
@@ -310,6 +317,23 @@
 			AND (MCL.ID = #{id})
 			<![CDATA[
 				AND(SYSDATE >= START_DATE AND SYSDATE < DEADLINE))
+			]]>
+	</select>	
+	
+	<!-- 종료된 챌린지 중 참여했던 챌린지 개수 확인 -->
+	<select id="selectEndJoinCount" parameterType="String" resultType="_int">
+		SELECT
+		    COUNT(*)
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		WHERE 
+			(CLG.STATUS = 'Y') 
+			AND (MCL.MY_STATUS = 'JOIN') 
+			AND (MCL.ID = #{id})
+			<![CDATA[
+				AND ((CLG.START_DATE < SYSDATE) AND (CLG.DEADLINE < SYSDATE))
 			]]>
 	</select>	
 	

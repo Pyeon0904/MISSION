@@ -15,6 +15,8 @@ public interface ChallengeMapper {
 
 	int selectChallengeCount();
 	
+	int selectChallengeCountById(String id);
+	
 	int selectRecruitCount();
 
 	int selectOngoingCount();
@@ -60,6 +62,8 @@ public interface ChallengeMapper {
 	List<Challenge> selectSearchList(@Param("key") String key, @Param("word") String word, RowBounds rowBounds);
 
 	int selectJoinCount(@Param("id") String id);
+	
+	int selectEndJoinCount(String id);
 
 	List<Challenge> selectJoinList(RowBounds rowBounds, @Param("id") String id);
 
