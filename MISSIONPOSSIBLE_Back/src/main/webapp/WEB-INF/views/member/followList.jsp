@@ -1,3 +1,4 @@
+<%@page import="oracle.security.crypto.util.StreamableOutputException"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="org.springframework.http.StreamingHttpOutputMessage"%>
 <%@page import="java.util.List"%>
@@ -50,43 +51,41 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
-<script type="text/javascript">
-	$(function () {	//화면 로딩후 시작 
-		var searchSource = [];
-		
-		<%
-			List<String> list = (List) session.getAttribute("listMemberId");
-		     System.out.println(list);
-			int arrsize = list.size();
-			String arr[] = list.toArray(new String[arrsize]);
-			int loop = 0;
-		%>
-		for(var i=0; i<<%=arr.length%>; i++){
-			searchSource[i] = <%=arr[loop]%>;
-			 System.out.println("searchSource" + searchSource[i]);
-			<% loop++;%>
+<style>
+		.ui-autocomplete {
+			max-height: 200px;
+			overflow-y: auto;
+			/* prevent horizontal scrollbar */
+			overflow-x: hidden;
 		}
+</style>
+<script type="text/javascript">
+	$(function () {		
+		var searchSource = [];
+	
+		<c:forEach var="memberId" items="${listMemberId}">
+			searchSource.push("${memberId}");
+		</c:forEach>
 		
-		$("#searchID").autocomplete({  //오토 컴플릿트 시작
-			source :searchSource
-			},	// source 는 자동 완성 대상
-			select : function(event, ui) {	//아이템 선택시
+		$("#searchID").autocomplete({  
+			source :searchSource,	
+			select : function(event, ui) {	
 				console.log(ui.item);
 			},
-			focus : function(event, ui) {	//포커스 가면
-				return false;//한글 에러 잡기용도로 사용됨
+			focus : function(event, ui) {	
+				return false;
 			},
 			minLength: 1,// 최소 글자수
 			autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
-			classes: {	//잘 모르겠음
+			classes: {	
 			    "ui-autocomplete": "highlight"
 			},
 			delay: 500,	//검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
 //			disabled: true, //자동완성 기능 끄기
-			position: { my : "right top", at: "right bottom" },	//잘 모르겠음
-			close : function(event){	//자동완성창 닫아질때 호출
+			position: { my : "right top", at: "right bottom" },	
+			close : function(event){	
 				console.log(event);
-			}
+			},
 		});
 	});
 </script>
