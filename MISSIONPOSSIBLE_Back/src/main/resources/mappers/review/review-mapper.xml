@@ -218,6 +218,7 @@
 		UPDATE REVIEW
 			SET 
 				TITLE=#{title},
+				C_TITLE=#{challengeTitle},
 				CONTENT=#{content},
 				<if test="originalFileName != null">
 					ORIGINAL_FILENAME=#{originalFileName},

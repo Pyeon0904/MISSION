@@ -152,7 +152,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
                   <tr>
                      <th>챌린지</th>
                      <td>         
-                        <input type="text" name="challangeSearch" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
+                        <input type="text" name="challengeTitle" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
                   </tr>
                   <tr>
                   <tr>
