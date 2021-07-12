@@ -182,4 +182,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.isFollower(id, followId);
 	}
+//아이디 검색 자동완성
+	@Override
+	public List<String> getMemberIdList() {
+		
+		return mapper.selectMemberIdList();
+	}
 }

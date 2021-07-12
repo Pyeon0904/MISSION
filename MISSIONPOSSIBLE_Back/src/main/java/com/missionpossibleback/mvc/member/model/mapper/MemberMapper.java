@@ -38,4 +38,6 @@ public interface MemberMapper {
 
 	int isFollower(@Param("id")String id, @Param("followId")String followId);
 
+	List<String> selectMemberIdList();
+
 }

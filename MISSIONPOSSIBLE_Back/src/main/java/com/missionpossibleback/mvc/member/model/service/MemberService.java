@@ -43,5 +43,7 @@ public interface MemberService {
 
 	int isfollow(String id, String followId);
 
+	List<String> getMemberIdList();
+
 
 }

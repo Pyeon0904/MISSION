@@ -45,11 +45,12 @@ import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 import com.sun.mail.iap.Response;
 
+import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({"loginMember", "followMember", "isfollow"})
+@SessionAttributes({"loginMember", "followMember", "isfollow","listMemberId"})
 public class MemberController {
 	
 	@Autowired
@@ -174,7 +175,14 @@ public class MemberController {
 		model.addObject("list", list);
 		model.addObject("pageInfo", pageInfo);
 		model.setViewName("member/followList");
-	
+		
+		//아이디 자동완성
+		List<String> listMemberId = service.getMemberIdList();
+		
+		System.out.println(listMemberId);
+		model.addObject("listMemberId", listMemberId);
+		model.setViewName("member/followList");
+		
 		return model;
 	}
 	@RequestMapping(value = "/member/followList", method = {RequestMethod.POST})

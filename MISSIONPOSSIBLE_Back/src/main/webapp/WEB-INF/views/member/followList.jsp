@@ -1,3 +1,6 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="org.springframework.http.StreamingHttpOutputMessage"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -42,7 +45,51 @@
 	}
      .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
 </style>
-
+<head>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<script type="text/javascript">
+	$(function () {	//화면 로딩후 시작 
+		var searchSource = [];
+		
+		<%
+			List<String> list = (List) session.getAttribute("listMemberId");
+		     System.out.println(list);
+			int arrsize = list.size();
+			String arr[] = list.toArray(new String[arrsize]);
+			int loop = 0;
+		%>
+		for(var i=0; i<<%=arr.length%>; i++){
+			searchSource[i] = <%=arr[loop]%>;
+			 System.out.println("searchSource" + searchSource[i]);
+			<% loop++;%>
+		}
+		
+		$("#searchID").autocomplete({  //오토 컴플릿트 시작
+			source :searchSource
+			},	// source 는 자동 완성 대상
+			select : function(event, ui) {	//아이템 선택시
+				console.log(ui.item);
+			},
+			focus : function(event, ui) {	//포커스 가면
+				return false;//한글 에러 잡기용도로 사용됨
+			},
+			minLength: 1,// 최소 글자수
+			autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+			classes: {	//잘 모르겠음
+			    "ui-autocomplete": "highlight"
+			},
+			delay: 500,	//검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//			disabled: true, //자동완성 기능 끄기
+			position: { my : "right top", at: "right bottom" },	//잘 모르겠음
+			close : function(event){	//자동완성창 닫아질때 호출
+				console.log(event);
+			}
+		});
+	});
+</script>
 <div id="box">
       <section id="section">
          <div id="conbox">
@@ -50,7 +97,7 @@
 			<h4>팔로우 리스트</h4>
 			   <form id="followSearch" name="followSearch" method="GET" action="followPage">
 		            <div align="right" class="row m-4">
-		               <input type="text" name="ID" id="searchID" class="form-control" style="padding: 3px 20px 6px 20px" value="" placeholder="아이디 검색" >
+		               <input type="text" name="ID" id="searchID" class="form-control" style="padding: 3px 20px 6px 20px" value="" placeholder="검색할 아이디를 입력하세요" >
 		               <button type="submit" class="btn btn-warning" >검색</button>
 		            </div>
 		            <table width="100%" class="table01">

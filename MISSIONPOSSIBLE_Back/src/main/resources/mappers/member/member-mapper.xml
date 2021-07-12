@@ -176,4 +176,9 @@
 		FROM FOLLOWER
 		WHERE ID = #{id} AND FOLLOWER_ID = #{followId}
 	</select>
+	
+	<select id="selectMemberIdList" resultType="String">
+		SELECT ID
+		FROM MEMBER
+	</select>
  </mapper>
