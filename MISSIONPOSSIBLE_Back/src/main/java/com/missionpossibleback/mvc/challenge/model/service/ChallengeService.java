@@ -31,11 +31,15 @@ public interface ChallengeService {
 	
 	int getZzimCount(String id);	
 	
+	int getJoinCount(String id);
+	
 	int getJoinListCount(int no, String id);
 	
 	int getCurrentCount(int myChallengeNo);
 	
 	int getCertCount(int no);
+	
+	int getCertCountById(int no, String id);
 	
 	List<Challenge> getChallengeList(PageInfo pageInfo);
 	
@@ -47,11 +51,20 @@ public interface ChallengeService {
 	
 	List<Challenge> getZzimList(PageInfo pageInfo, String id);
 	
+	List<Challenge> getJoinList(PageInfo pageInfo, String id);
+	
 	List<ChallengeCertify> getCertList(PageInfo pageInfo, int no);
 	
 	Challenge findByNo(int challengeNo);
 
+	List<String> findCertIdList(int challengeNo);
 
-	
+	int getSearchCount(String key, String word);
+
+	List<Challenge> getSearchList(String key, String word, PageInfo pageInfo);
+
+	List<String> getCertDateById(int challengeNo, String id);
+
+	int deleteMyChallengeList(String id, int cNo, String string);
 	
 }

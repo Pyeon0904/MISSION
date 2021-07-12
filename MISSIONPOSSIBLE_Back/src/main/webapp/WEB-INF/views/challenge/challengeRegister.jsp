@@ -10,6 +10,13 @@
 	<meta charset="UTF-8">
 	<title>챌린지 등록</title>
 	<script src="${ path }/resources/js/jquery-3.6.0.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	<script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+	
+	<script src="${path}/resources/summernote/summernote-lite.js"></script>
+	<script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 	
 	<style>
 	/* 전체 영역--------------------------------------------------------------------------*/
@@ -232,7 +239,7 @@
 					<tr>
 						<th>챌린지에 대한 부가설명</th>
 						<td>
-							<textarea name="content" rows="15" cols="60" style="resize:none" required
+							<textarea id="summernote" name="content" style="width:700" required
 							placeholder=" 챌린지에 대한 상세한 설명을 작성해주세요.&#13;&#10;&#13;&#10;  
 											&#13;&#10 작성시 아래와 같은 사항을 주의해 주세요!
 											&#13;&#10; 1. 작성 에티켓 문화를 실천해주세요.
@@ -240,6 +247,55 @@
 											&#13;&#10; 3. 광고성, 상업성 내용이 포함되면 예고 없이 삭제됩니다.
 											&#13;&#10; 4. 궁금한 사항은 '고객센터'를 이용해 주시기 바랍니다. "></textarea><br>
 						</td>
+						<script>
+						$(document).ready(function() {
+							$('#summernote').summernote({
+								  height: 300,                 	// 에디터 높이
+								  minHeight: null,             	// 최소 높이
+								  maxHeight: 400,             	// 최대 높이
+								  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+								  lang: "ko-KR",				// 한글 설정
+								  placeholder: '',				//placeholder 설정
+							      onImageUpload : function(files, editor, welEditable) {
+							    	  for (var i = files.length - 1; i >= 0; i--) {
+							    		  sendFile(files[i], this);
+							    	  }
+							      },
+								  toolbar: [
+									    // [groupName, [list of button]]
+									    ['fontname', ['fontname']],
+									    ['fontsize', ['fontsize']],
+									    ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+									    ['color', ['forecolor','color']],
+									    ['table', ['table']],
+									    ['para', ['ul', 'ol', 'paragraph']],
+									    ['height', ['height']],
+									    ['insert',['picture','link','video']],
+									    ['view', ['fullscreen', 'help']]
+									  ],
+									fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
+									fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
+							});
+						});
+
+						function sendFile(file, el) {
+						    var form_data = new FormData();
+						    form_data.append('file', file);
+						    $.ajax({
+						    	data: form_data,
+						        type: "POST",
+						        url: '/image',
+						        cache : false,
+						        enctype: 'multipart/form-data',
+						        contentType : false,
+						        processData : false,
+						        success: function(url) {
+						            $(el).summernote('editor.insertImage', url);
+						            $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
+						          }
+						    });
+						}
+						</script>
 					</tr>
 					<tr>
 						<th colspan="2">

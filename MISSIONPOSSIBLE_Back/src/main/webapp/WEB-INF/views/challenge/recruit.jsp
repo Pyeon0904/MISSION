@@ -127,7 +127,7 @@
 			</c:if>
 			
 			<!-- 종료된 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
-			<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
+			<c:if test="${ (todayNum >= startNum) and (todayNum >= endNum) }">
 			
 				<h2>종료된 챌린지 정보</h2>
 				<div class="funcArea">

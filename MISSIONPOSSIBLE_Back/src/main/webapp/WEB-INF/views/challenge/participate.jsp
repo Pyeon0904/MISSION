@@ -1,3 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.sun.xml.internal.ws.client.RequestContext"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -62,7 +66,7 @@
     		width:400px; height:300px; margin:0 auto;
     	}
     	#challengeContTable table tr:nth-child(1) #certCalendarArea #calContainer .calTable #yyyymmArea {
-    		width:120px; height:20px; margin: 0 auto;
+    		width:150px; height:20px; margin: 0 auto;
     	}
     	#challengeContTable table tr:nth-child(2) #progressBarArea{
     		width:450px; height:150px;
@@ -121,7 +125,8 @@
 						<h2>참여중인 챌린지 정보</h2>
 						<div class="funcArea">
 							<form action="${path}/challenge/giveup" method="GET" class="" id="challengeGiveupForm">
-								<input type="hidden" name="" value="" />
+								<input type="hidden" name="cNo" value="${ challenge.challengeNo }" />
+								<input type="hidden" name="cTitle" value="${ challenge.title }"/>
 								<button class="btn btnGiveup" type="submit">포기하기</button>
 							</form>
 							<button type="button" class="btn btnCertify" 
@@ -205,7 +210,7 @@
 									</tr>
 									<tr>
 										<td colspan="2">
-											<c:out value="${ challenge.content }"/>
+											<c:out value="${ challenge.content }"/><br>
 										</td>
 									</tr>
 								</table>
@@ -217,11 +222,23 @@
 									
 									<div class="calTable">
 										<%
+											// list - 챌린지 인증 날짜 리스트
+											List<String> list = (List)session.getAttribute("certDateList");
+										
 											Calendar cal = Calendar.getInstance();
 											int year = request.getParameter("y") == null ? cal.get(Calendar.YEAR) : Integer.parseInt(request.getParameter("y"));
 											int month = request.getParameter("m") == null ? cal.get(Calendar.MONTH) : (Integer.parseInt(request.getParameter("m")) - 1);
 											int date = cal.get(Calendar.DATE);
-											String today = year + ":" +(month+1)+ ":"+date; // 오늘 날짜
+											String today = ""; // 오늘 날짜
+											
+											//오늘날짜 저장하는 로직 0포함
+											if(date < 10 && month < 10){
+												today = cal.get(Calendar.YEAR)+"-0"+(cal.get(Calendar.MONTH) + 1)+"-0"+date; // 오늘 날짜
+											} else if (date >= 10 && month < 10){
+												today = cal.get(Calendar.YEAR)+"-0"+(cal.get(Calendar.MONTH) + 1)+"-"+date; // 오늘 날짜
+											} else if (date >= 10 && month >= 10) {
+												today = cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH) + 1)+"-"+date; // 오늘 날짜
+											}
 											
 											// 시작요일 확인
 											// - Calendar MONTH는 0-11까지임
@@ -256,11 +273,21 @@
 												nextYear++;
 												nextMonth = 1;
 											}
+											
+											pageContext.setAttribute("year", year);
+											pageContext.setAttribute("month", month);
+											pageContext.setAttribute("date", date);
+											pageContext.setAttribute("today", today);
+											pageContext.setAttribute("startDate", startDate);
+											pageContext.setAttribute("endDate", endDate);
+											pageContext.setAttribute("startDay", startDay);
+											pageContext.setAttribute("count", count);
 										%>
+										<!-- 달력 위에 버튼 부분 -->
 										<div id="yyyymmArea">
-											<a href="?y=<%=prevYear%>&m=<%=prevMonth%>">◁</a>
+											<a href="?no=${ challenge.challengeNo }&y=<%=prevYear%>&m=<%=prevMonth%>">◁</a>
 												<%=year%>년 <%=month+1%>월
-											<a href="?y=<%=nextYear%>&m=<%=nextMonth%>">▷</a>
+											<a href="?no=${ challenge.challengeNo }&y=<%=nextYear%>&m=<%=nextMonth%>">▷</a>
 										</div>
 										
 										
@@ -284,6 +311,8 @@
 											<%
 												}//for
 												// 1일부터 마지막 날까지 날짜 삽입
+												
+												
 												for (int i=startDate;i<=endDate;i++){
 													//오늘의 날짜에 배경을 적용하기 위한 변수(bgcolor) 
 													//	- 삼항연산자 통해 해당 날짜가 오늘의 날짜면 배경에 "CCCCCC" 그 외엔 "FFFFFF" 적용
@@ -295,11 +324,96 @@
 																대충 위와 같이 비슷한 느낌으로 구현하면 될 듯?
 														---------------------------------------------------------------------
 													*/
-										 			String bgcolor = (today.equals(year+":"+(month+1)+":"+i))? "#CCCCCC" : "#FFFFFF";
-										 			String color = (count%7 == 0 || count%7 == 6)? "red" : "black";
+													
+													String compareDate = "";
+													
+													//2021-7-7 다음과 같이 월과 일 숫자가 2자리가 안되는 경우 값이 넘어올 때,
+													//한 자리로만 넘어오기에 2021-07-07처럼 자리수를 맞춰주는 로직
+													//오늘날짜 저장하는 로직 (0포함)
+													if(i < 10 && month < 10){
+														compareDate = year+"-0"+(month+1)+"-0"+i;
+													} else if (i >= 10 && month < 10){
+														compareDate = year+"-0"+(month+1)+"-"+i;
+													} else if (i >= 10 && month >= 10) {
+														compareDate = year+"-"+(month+1)+"-"+i;
+													}
+													
+													
+										 			String bgcolor = "";
+										 			String selectBgcolor = "";
+										 			int tempO = 0;
+										 			
+										 			for(String dateArr : list){
+														// 날짜 String 형태는 현재 "yyyy-MM-dd HH:mm:ss.SSS"형태인데
+														// "yyyy-MM-dd"만 받아오게끔 구현
+														String certDateArr = dateArr.substring(0, 10);
+														
+														selectBgcolor = "";
+														
+														// 콘솔 모니터링 위함
+														System.out.println("비교 : " + compareDate + " / " + certDateArr);
+														
+														//=================인증 따라 색 지정 하는 곳 =================
+														
+														//------비교할 날짜를 INT형태로 변환 시작-------
+														SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
+														
+														Date compareDateArg = in.parse(compareDate);
+														int compareDateNum = Integer.parseInt(String.valueOf((compareDateArg.getTime()/(1000*60*60*24))+""));
+														//------비교할 날짜를 INT형태로 변환 끝-------
+														
+														//------EL 형태로 받아온 todayNum과 startNum을 int형태로 변환
+														int todayNum = Integer.parseInt(String.valueOf(request.getAttribute("todayNum")+""));
+														int startNum = Integer.parseInt(String.valueOf(request.getAttribute("startNum")+""));
+														
+														//------색지정 로직------
+														if(certDateArr.equals(compareDate)){//-----비교할 날짜가 인증 게시물에 저장된 날짜와 동일하면 작동
+															selectBgcolor = "#CECEF6";//파란색(O)
+															tempO++;
+														} else if((todayNum > compareDateNum) && (startNum <= compareDateNum) 
+																&& (!certDateArr.equals(compareDate))){
+															//-----비교할 날짜가 인증 게시물에 없고, 오늘의 날짜보다 작고, 챌린지 시작일보다 크면 작동
+															if(tempO > 0){
+																selectBgcolor = "#CECEF6";//파란색(O)
+															} else {
+																selectBgcolor = "#F6CED8";//빨간색(X)
+															}
+										 				} else {
+															if((tempO > 0)){
+																//반복되는 과정에서 위에서 지정했던 컬러값이 사라지게 되므로 다음과 같이 조건문을 한 번 더 실행해서 값 저장
+																selectBgcolor = "#CECEF6";//파란색(O)
+															} else {
+																// 모든 것에 해당하지 않으면 빈 문자열 리턴
+																selectBgcolor = "";
+															}
+														}
+														// 콘솔 모니터링 위함
+														System.out.println("O : " + tempO + " | bg : " + selectBgcolor);
+														System.out.print("startNum : " + startNum);
+														System.out.print(" | todayNum : " + todayNum);
+														System.out.println(" | compareDateNum : " + compareDateNum);
+										 			}
+										 			// 위에 로직에서 받아온 selectBgcolor값을 저장
+										 			bgcolor = selectBgcolor;
+										 			System.out.println("=========="+i+"========");
+										 			
+													String color = "";
+													
+													if(count%7 == 0){//일요일
+														color = "red";
+													} else if(count%7 == 6){//토요일
+														color = "blue";
+													} else {//나머지 평일
+														color = "black";
+													}
+													//String color = (count%7 == 0 || count%7 == 6)? "red" : "black";
+													
 										 			count++;
-											%>
-										  		<td bgcolor="<%=bgcolor %>"><font size="2" color=<%=color %>><%=i %></font></td>
+										 			
+										 			pageContext.setAttribute("bgcolor", bgcolor);
+										 			pageContext.setAttribute("color", color);
+											%>												
+										  		<td style="background : ${ pageScope.bgcolor }"><font size="2" color=${ pageScope.color }><%= i %></font></td>
 											<%
 													// count값을 7로 나눈 나머지 값이 0일 경우
 													// (한 줄이 채워졌다면) 
@@ -312,6 +426,7 @@
 										  			}//if - 줄바꿈
 												}//for - 한달의 날짜 채우기 끝
 												
+												
 												// count값을 7로 나눈 나머지 값이 0이 아닌 경우(달력에 날짜 다채웠지만 마지막 줄이 한 줄을 다 못 채웠을 경우)
 												// 한 주의 끝까지 빈 칸 삽입
 												while(count%7 != 0){
@@ -322,8 +437,7 @@
 										 		}//while
 											%>
 											</tr> 
-										</table>
-																					
+										</table>																					
 									</div>
 								</div>
 							</td>
@@ -334,8 +448,8 @@
 									<h4>나의 진행도</h4>
 									
 									<!-- 챌린지 총 일수와 내가 인증한 일수 값 받아오게끔 하기 -->
-									<c:set var="totalDay" value="100"/>
-									<c:set var="successDay" value="50"/>
+									<c:set var="totalDay" value="${ endNum - startNum }"/>
+									<c:set var="successDay" value="${ successCount }"/>
 									
 									<!-- 챌린지 달성률 계산식 -->
 									<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>

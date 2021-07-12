@@ -65,7 +65,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		int result = 0;
 		
 		if(myChallengeList.getNo() != 0) {
-//			result = mapper.updateMyChallengeList(myChallengeList);
+			
 		} else {
 			result = mapper.insertMyChallengeList(myChallengeList);
 		}
@@ -213,7 +213,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		log.info("getJoinListCount 요청 - 챌린지NO : " + no + ", 요청한 ID : " + id);
 		
-		return mapper.selelctJoinListCount(no, id);
+		return mapper.selectJoinListCount(no, id);
 	}	
 	
 	// 참여하고 있는 챌린지에서 현재 참여하고 있는 참가자 수를 리턴하는 메소드
@@ -230,11 +230,76 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectCertCount(no);
 	}	
 	
+	// 챌린지 인증 개수 출력 (ID값을 통해 로그인한 유저의 진행도 파악 가능)
+	@Override
+	public int getCertCountById(int no, String id) {
+		
+		return mapper.selectCertCountById(no, id);
+	}
+	
+	
 	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)
 	@Override
 	public Challenge findByNo(int challengeNo) {
 		
 		return mapper.selectChallengeByNo(challengeNo);
+	}
+	
+	// 챌린지 NO를 이용해 인증게시물등록한 ID리스트 출력
+	@Override
+	public List<String> findCertIdList(int no) {
+		
+		return mapper.selectCertIdList(no);
+	}
+	
+	// 참여중인 챌린지뷰에서 인증 날짜 리스트 조회
+	@Override
+	public List<String> getCertDateById(int no, String id) {
+		
+		return mapper.selectCertDateById(no, id);
+	}
+
+	/*
+	 ============= 검색 기능 =============
+	 */ 
+	// 챌린지 검색 페이징 처리를 위한 개수 세기
+	@Override
+	public int getSearchCount(String key, String word) {
+		
+		return mapper.selectSearchCount(key, word);
+	}
+
+	// 키워드 통해 챌린지 검색 및 페이징
+	@Override
+	public List<Challenge> getSearchList(String key, String word, PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());	
+		
+		return mapper.selectSearchList(key, word, rowBounds);
+	}
+
+	//============ 마이페이지 관련 ==============
+	// 참여중인 챌린지 수 조회
+	@Override
+	public int getJoinCount(String id) {
+		
+		return mapper.selectJoinCount(id);
+	}
+
+	// 참여중인 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getJoinList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectJoinList(rowBounds, id);
+	}
+
+	// MyChallengeList 삭제 (찜 삭제 or 챌린지 참여 포기)
+	@Override
+	public int deleteMyChallengeList(String id, int cNo, String myStatus) {
+		
+		return mapper.deleteMyChallengeList(id, cNo, myStatus);
 	}
 
 
