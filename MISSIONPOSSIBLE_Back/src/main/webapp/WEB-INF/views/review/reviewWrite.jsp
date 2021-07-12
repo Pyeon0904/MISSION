@@ -85,7 +85,7 @@ a:hover{color:#0076c8} */
 .selbox{*margin-top:2px;height:28px;*height:18px;padding:3px 4px 4px 3px;border:solid 1px #abadb3;vertical-align:middle}
 
 /* textbox_style */
-input.tbox01{width:200px;height:26px;line-height:26px}
+input.tbox01{width:350px;height:26px;line-height:26px}
 
 /* textarea */
 textarea.textarea01{width:410px;height:95px;margin:10px 0}
@@ -141,12 +141,12 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 						</tr>
 						<tr>
 							<th>작성자</th>
-							<td><input type="text" name="writerId" value="${ loginMember.id }" readonly></td>
+							<td><input type="text" name="writerId" class="tbox01" value="${ loginMember.id }" readonly></td>
 						</tr>
 						<tr>
 							<th>챌린지</th>
 							<td>			
-								<input type="text" name="c_title" class="tbox01" id="challangeSearch" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
+								<input type="text" name="challengeTitle" class="tbox01" id="challangeSearch" placeholder="내가 참여한&완료된 챌린지에만 후기를 작성할 수 있습니다." readonly/>
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
@@ -174,7 +174,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 
 $("#challangeSearch").on("click", (e)=>{
 	// 챌린지 검색 창 띄우기
-	const url = "${path}/review/challengeSearch";
+	const url = "${path}/review/challengeSearch?id=${loginMember.getId()}";
 	const status="left=500px, top=200px, width=500px; height=400px";
 	
 	open(url, "", status);
@@ -189,9 +189,7 @@ $(document).ready(function() {
 		  lang: "ko-KR",				// 한글 설정
 		  placeholder: '',				//placeholder 설정
 	      onImageUpload : function(files, editor, welEditable) {
-	    	  for (var i = files.length - 1; i >= 0; i--) {
-	    		  sendFile(files[i], this);
-	    	  }
+	    		  sendFile(files[i], editor, welEditable);
 	      },
 		  toolbar: [
 			    // [groupName, [list of button]]
@@ -210,9 +208,9 @@ $(document).ready(function() {
 	});
 });
 
-function sendFile(file, el) {
-    var form_data = new FormData();
-    form_data.append('file', file);
+function sendFile(file, editor, welEditable) {
+    var data = new FormData();
+    data.append('file', file);
     $.ajax({
     	data: form_data,
         type: "POST",
@@ -221,9 +219,8 @@ function sendFile(file, el) {
         enctype: 'multipart/form-data',
         contentType : false,
         processData : false,
-        success: function(url) {
-            $(el).summernote('editor.insertImage', url);
-            $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
+        success: function(data) {
+        	editor.insertImage(welEditable, data.url);
           }
     });
 }

@@ -22,6 +22,7 @@
       <result property="groupno" column="GROUPNO"/>
       <result property="groupord" column="GROUPORD"/>
       <result property="dept" column="DEPT"/>
+      <result property="sort" column="SORT"/>
    </resultMap>
 	
 	<select id="selectAll" resultMap="boardListResultMap">
@@ -37,10 +38,11 @@
 				Q.MODIFY_DATE,
 				Q.GROUPNO,
 				Q.GROUPORD,
-				Q.DEPT
+				Q.DEPT,
+				Q.SORT
 		FROM QNA Q
 		WHERE Q.STATUS = 'Y'
-		ORDER BY Q.QNA_NO DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+		ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
 	</select>
 	
 	<!-- 파라미터는 #{변수 이름}으로 사용함 -->
@@ -58,7 +60,8 @@
 				Q.MODIFY_DATE,
 				Q.GROUPNO,
 				Q.GROUPORD,
-				Q.DEPT
+				Q.DEPT,
+				Q.SORT
 		FROM QNA Q, MEMBER M
 		WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
 	</select>
@@ -110,7 +113,8 @@
 			GROUPORD,
 			DEPT,
 			ORIGINAL_FILENAME,
-            RENAMED_FILENAME
+            RENAMED_FILENAME,
+            SORT
          ) VALUES(
          	SEQ_QNA_NO.NEXTVAL,
          	#{title},
@@ -125,16 +129,19 @@
          	0,
          	0,
 			#{originalFileName},
-            #{renamedFileName}
+            #{renamedFileName},
+            #{sort}
          )
 	</insert>
 	
+	<!-- 게시글 개수 가져오기 -->
 	<select id="selectBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
 		SELECT COUNT(*)
 		FROM QNA
 		WHERE STATUS='Y' 
 	</select>
 	
+	<!-- 게시글 업데이트 -->
 	<update id="update" parameterType="map">
    		UPDATE QNA
    		SET
@@ -148,13 +155,146 @@
    			</if>
    			MODIFY_DATE=SYSDATE
    		WHERE
-   			QNA_NO=#{qna_no}
+   			QNA_NO=#{qna_no} AND STATUS='Y'
    </update>
 
+	<!-- 게시글 삭제 -->
+	<update id="delete" parameterType="_int" > 
+		UPDATE QNA SET STATUS='N' WHERE QNA_NO=#{qna_no}
+	</update>
 
-
-
-
+	<!-- 비밀번호 확인 -->
+	<select id="pass"  parameterType="_int" resultType="Board">
+		SELECT * FROM QNA
+		WHERE QNA_NO=#{qna_no}
+	</select>
+	
+	<!-- 답글 관련 -->
+	<!-- 답글 등록 -->
+	<insert id="replyInsert" parameterType="Board" useGeneratedKeys="true" keyProperty="qna_no" keyColumn="QNA_NO">
+		INSERT INTO QNA(
+			QNA_NO,
+			TITLE,
+			WRITER,
+			CONTENT,
+			READCOUNT,
+			PASS,
+			STATUS,
+			CREATE_DATE,
+			MODIFY_DATE,
+			GROUPNO,
+			GROUPORD,
+			DEPT,
+			ORIGINAL_FILENAME,
+            RENAMED_FILENAME
+         ) VALUES(
+         	SEQ_QNA_NO.NEXTVAL,
+         	#{title},
+         	#{writer},
+         	#{content},
+         	DEFAULT,
+         	#{pass},
+         	DEFAULT,
+         	DEFAULT,
+         	DEFAULT,
+         	#{groupno},
+         	#{groupord}+1,
+         	#{dept}+1,
+			#{originalFileName},
+            #{renamedFileName}
+         )
+	</insert>
+	
+	<!-- 답변일 경우 groupord 변경 -->
+	<!-- groupord는 원글의 순번 -->
+	<update id="groupordUpdate" parameterType="Board">
+		UPDATE QNA SET GROUPORD=GROUPORD+1
+		WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord}
+	</update>
+	
+	<!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
+	<select id="countDept" parameterType="Board" resultType="_int"><!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
+		SELECT COUNT(GROUPNO) FROM BOARD WHERE GROUPNO=#{groupno} AND DEPT = #{dept}
+	</select>
+	
+	<select id="minGroupord" parameterType="Board" resultType="int">
+		SELECT NVL(MIN(GROUPORD),0) FROM QNA
+		WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord} AND DEPT &lt;=#{dept}
+	</select>
+	
+	<select id="maxDept" parameterType="Board" resultType="int">
+		SELECT NVL(MAX(GROUPORD),0)+1 FROM QNA
+		WHERE GROUPNO=#{groupno}
+	</select>
+	
+	<select id="searchBoardList" resultMap="boardListResultMap">
+		SELECT  Q.QNA_NO,
+				Q.TITLE, 
+				Q.WRITER, 
+				Q.CONTENT,
+				Q.READCOUNT, 
+				Q.PASS,
+				Q.ORIGINAL_FILENAME, 
+				Q.RENAMED_FILENAME, 
+				Q.CREATE_DATE, 
+				Q.MODIFY_DATE,
+				Q.GROUPNO,
+				Q.GROUPORD,
+				Q.DEPT,
+				Q.SORT
+		FROM QNA Q
+		WHERE Q.STATUS = 'Y'
+		<choose>
+			<when test="type == '1'.toString()">
+				AND TITLE LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="type == '2'.toString()">
+				AND WRITER LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="type == '3'.toString()">
+				AND CONTENT LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="type == '4'.toString()">
+				AND TITLE LIKE '%'||#{keyword}||'%'
+				OR WRITER LIKE '%'||#{keyword}||'%'
+				OR CONTENT LIKE '%'||#{keyword}||'%'
+			</when>
+		</choose>
+		ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+	</select>
+	
+	
+	<select id="searchBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
+		SELECT COUNT(*)
+		FROM QNA
+		WHERE STATUS='Y' 
+		<choose>
+			<when test="type == '1'.toString()">
+				AND TITLE LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="type == '2'.toString()">
+				AND WRITER LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="type == '3'.toString()">
+				AND CONTENT LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="type == '4'.toString()">
+				AND TITLE LIKE '%'||#{keyword}||'%'
+				OR WRITER LIKE '%'||#{keyword}||'%'
+				OR CONTENT LIKE '%'||#{keyword}||'%'
+			</when>
+		</choose>
+		ORDER BY QNA_NO DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
    
 
 </mapper>

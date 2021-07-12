@@ -17,6 +17,7 @@ import com.missionpossibleback.mvc.review.model.mapper.ReviewMapper;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 
@@ -61,8 +62,10 @@ public class ReviewServiceImpl implements ReviewService {
 
 	// 리뷰 번호로 리뷰 찾아오기
 	@Override
-	public Review findByNo(int reviewNo) {
+	public Review findReviewByNo(int reviewNo, boolean hasRead) {
+		if(!hasRead) {
 		mapper.plusCnt(reviewNo);
+		}
 		return mapper.selectReviewByNo(reviewNo);
 	}
 	
@@ -142,8 +145,17 @@ public class ReviewServiceImpl implements ReviewService {
 	// 리뷰 게시글 댓글 등록
 	@Override
 	public int reply(Reply reply) {
-		return mapper.insertRely(reply);
+		int result = 0;
+		
+		if(reply.getNo() != 0) {
+			result = mapper.updateReply(reply);
+		} else {
+			result = mapper.insertReply(reply);
+		}
+		
+		return result;
 	}
+
 
 	// 리뷰 게시글 댓글 불러오기
 	@Override
@@ -162,6 +174,21 @@ public class ReviewServiceImpl implements ReviewService {
 	public int getReplyCount(int reviewNo) {
 		
 		return mapper.updateReplyCount(reviewNo);
+	}
+
+	@Override
+	public int plusCnt(int reviewNo) {
+		return mapper.plusCnt(reviewNo);
+	}
+
+	@Override
+	public Reply findReplyByNo(int replyNo) {
+		return mapper.selectReplyByNo(replyNo);
+	}
+
+	@Override
+	public List<Challenge> getSearchAllChallengeList(@Param("id") String id) {
+		return mapper.selectAllChallengeList(id);
 	}
 
 }

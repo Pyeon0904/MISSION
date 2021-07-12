@@ -113,6 +113,24 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
 </style>
 
+
+<script type="text/javascript">
+	$(function() {
+		$('#search').click(function() {
+	      if (!$('#type').val()) {
+	         alert('검색 유형을 선택하세요');
+	         $('#type').focus();
+	         return false;
+	      }
+	
+	      if (!$('#keyword').val()) { {
+	         alert('검색어를 입력하세요');
+	         $('#keyword').focus();
+	         return false;
+	      }
+	      $('#searchForm').submit();
+	   }
+</script>
 </head>
 <body>
 <div id="box">
@@ -124,7 +142,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
       <div class="inner">      
          <h2>고객센터</h2>   
          
-       <!-- 검색 폼 시작--------------------- -->
+      <!-- 검색 폼 시작--------------------- -->
          <form id="searchForm" name="form1" method="GET" action="${path}/board/boardSearch">
             <div align="right" class="row m-4">
 
@@ -136,8 +154,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                   <option value="4">전체</option>
                </select> 
                
-               <input type="text" name="keyword" class="form-control" id="keyword"
-                  placeholder="검색어를 입력하세요" style="padding: 3px 20px 6px 20px" value=${ keyword }>
+               <input type="text" name="keyword" class="form-control" id="keyword" placeholder="검색어를 입력하세요" style="padding: 3px 20px 6px 20px" value=${ keyword } />
                <button type="submit" class="btn btn-warning" id="search">검색</button>
 
             </div>
@@ -151,16 +168,14 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
          
             <table width="100%" class="table01">
                <colgroup>
-               	  <!--<col width="10%" />-->
                   <col width="10%" />
                   <col width="30%" />
                   <col width="15%" />
                   <col width="20%" />
-                  <col width="8%" />
+                  <col width="10%" />
                </colgroup>
                <thead>      
                   <tr>
-                  	 <!-- <th>분류</th> -->
                      <th>글번호</th>
                      <th>제목</th>
                      <th>작성자</th>
@@ -177,28 +192,18 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                   <c:if test="${ list != null }">
                          <c:forEach var="board" items="${ list }">
                             <tr>
-                               <!-- <td>질문</td> -->
-                               <c:if test="${ board.sort == 1 }">
-                               		<td><c:out value="공지"/></td>
-                               </c:if>
-                               <c:if test="${ board.sort == 0 }">
-                               		<td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
-                               </c:if>
-               
+                               <td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
                                <td style="text-align:left; padding-left:30px;">
-                                	<c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
-                                 		<a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
-                                        
-                                        	<%-- 답글이면 --%>
-                                        	<c:if test="${ board.groupord > 0 }">
-                                           		<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
-                                        	</c:if>
-                                        	<%-- 원글이면 --%>
-                                        	<c:if test="${ board.groupord == 0 }">
-                                           		<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
-                                        	</c:if>
-                                     	</a>
-                             		 </c:if>
+                                  <c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
+                                 <a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                        <c:if test="${ board.groupord > 0 }">
+                                           <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                        </c:if>
+                                        <c:if test="${ board.groupord == 0 }">
+                                           <c:out value="${ board.title }"/>
+                                        </c:if>
+                                     </a>
+                              </c:if>
                               <c:if test="${ board.pass == null }"> <!-- 비밀글이 아니면 -->
                                      <a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
                                         <c:if test="${ board.groupord > 0 }">
@@ -229,10 +234,10 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
       
       <div id="pageBar" style="align:center;">
          <!-- 맨 처음으로 -->
-         <button onclick="location.href='${ path }/board/boardList?page=1'">&lt;&lt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=1'">&lt;&lt;</button>
          
          <!-- 이전 페이지로 -->
-         <button onclick="location.href='${ path }/board/boardList?page=${ pageInfo.prvePage }'">&lt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.prvePage }&type=${type}&keyword=${keyword}'">&lt;</button>
 
          <!--  10개 페이지 목록 -->
          <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status"> <!-- status는 반복될 때 해당하는 페이지 -->
@@ -240,15 +245,15 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                 <button disabled><c:out value="${ status.current }" /></button>
              </c:if>
              <c:if test="${ pageInfo.currentPage != status.current }">
-                <button onclick="location.href='${ path }/board/boardList?page=${ status.current }'"><c:out value="${ status.current }" /></button>
+                <button onclick="location.href='${ path }/board/boardSearch?page=${ status.current }&type=${type}&keyword=${keyword}'"><c:out value="${ status.current }" /></button>
              </c:if>
          </c:forEach>
          
          <!-- 다음 페이지로 -->
-         <button onclick="location.href='${ path }/board/boardList?page=${ pageInfo.nextPage }'">&gt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.nextPage }&type=${type}&keyword=${keyword}'">&gt;</button>
          
          <!-- 맨 끝으로 -->
-         <button onclick="location.href='${ path }/board/boardList?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.maxPage }&type=${type}&keyword=${keyword}'">&gt;&gt;</button>
       </div>
          
    </div>

@@ -120,9 +120,6 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 		<div id="container">
 			<div class="inner">	
 				<h2 style="padding-bottom:20px;">고객센터</h2>
-				<c:if test="${ board.pass != null }">
-					<form action="${ path }/board/password }" method="POST"></form>
-				</c:if>
 				
 				<form id="boardForm" name="boardForm">		
 					<table width="100%" class="table01">
@@ -155,24 +152,17 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
         </tr>
         
         <tr>
-            <th class="success">첨부파일</th>
-            <td colspan="3"></td>
-        </tr>
-        
-         
-        <tr>
             <th class="success">글 내용</th>
             <td colspan="3">${ board.content }</td>
         </tr>
 					    </tbody>
 					</table>		
-				<!-- 	<input type="hidden" id="board_seq"		name="board_seq"	value="${QN}"/> <!-- 게시글 번호 -->
-				<!--	<input type="hidden" id="search_type"	name="search_type" 	value="S"/> <!-- 조회 타입 - 상세(S)/수정(U) -->
+			
 				</form>
 				<div class="btn_right mt15">
-					<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?${board.qna_no}'">답글쓰기</button>
 					<%--글작성자/관리자인경우 수정삭제 가능 --%>
 					<c:if test="${ !empty loginMember && (loginMember.id == board.writer || loginMember.id == '관리자') }">
+					<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?qna_no=${board.qna_no}'">답글쓰기</button>
 					<button type="button" class="btn black mr5" id="btnUpdate">수정하기</button>
 					<button type="button" class="btn black" id="btnDelete">삭제하기</button>
 					</c:if>
