@@ -59,11 +59,21 @@ public class ReviewController {
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 
 		List<Review> list = null;
+		List title = null;
+		List c_title = null;
+		List writer = null;
+		List<Review> all = null;
 		PageInfo pageInfo = new PageInfo(page, 10, service.getReviewCount(), 10); 
 		
 		list = service.getReviewList(pageInfo);
+		title = service.getTitleList();
+		c_title = service.getCTitleList();
+		writer = service.getWriterIdList();
 		
 		model.addObject("list", list);
+		model.addObject("title", title);
+		model.addObject("c_title", c_title);
+		model.addObject("writer", writer);
 		model.addObject("pageInfo", pageInfo);
 		model.setViewName("review/reviewList");
 		
@@ -426,9 +436,9 @@ public class ReviewController {
     @GetMapping("/review/challengeSearch")
     public ModelAndView challangeSearchView (ModelAndView model, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
     	List<Challenge> list = null;
+    	
     	list = service.getSearchAllChallengeList(loginMember.getId());
-    	System.out.println(loginMember.getId());
-    	System.out.println(list);
+    	
     	model.addObject("list", list);
     	model.setViewName("/review/challengeSearch");
     		
@@ -443,11 +453,21 @@ public class ReviewController {
 			@RequestParam("word") String word
     		) {
 		List<Review> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchReviewCount(key, word), 10); 
+		List title = null;
+		List c_title = null;
+		List writer = null;
 		int count = 0;
+		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchReviewCount(key, word), 10); 
+
 
 		list = service.getSearchReviewList(key, word, pageInfo);
-		
+		title = service.getTitleList();
+		c_title = service.getCTitleList();
+		writer = service.getWriterIdList();
+
+		model.addObject("title", title);
+		model.addObject("c_title", c_title);
+		model.addObject("writer", writer);
 		model.addObject("list", list);
 		model.addObject("key", key);
 		model.addObject("word", word);

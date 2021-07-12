@@ -336,6 +336,21 @@
 			AND C.DEADLINE <= SYSDATE
 		]]>
 	</select>
+	
+	<select id="selectAllWriterId" resultMap="reviewListResultMap">
+		SELECT DISTINCT WRITER_ID FROM REVIEW
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="selectAllTitle" resultMap="reviewListResultMap">
+		SELECT DISTINCT TITLE FROM REVIEW
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="selectAllCTitle" resultMap="reviewListResultMap">
+		SELECT DISTINCT C_TITLE FROM REVIEW
+		WHERE STATUS = 'Y'
+	</select>
 
 </mapper>
 

@@ -116,28 +116,49 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
 div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
+
+
+.ui-autocomplete {
+	max-height: 120px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+	}
 </style>
 </head>
 <script>
     $(function() {
-        var searchSource = ["편준장", "손현종", "최혜정", "조민형", "박진영","이지은"]; // 배열 형태 
-        $("#searchInput").autocomplete({  // 오토 컴플릿트 시작
-            source : searchSource,    // source 는 자동 완성 대상
+    	
+        var searchSource = new Array(); // 배열 형태 
+
+	        <c:forEach var="review" items="${ title }">        
+	        	searchSource.push("${review.title}");
+	        </c:forEach>
+	        <c:forEach var="review" items="${ c_title }">        
+        		searchSource.push("${review.challengeTitle }");
+	        </c:forEach>
+	        <c:forEach var="review" items="${ writer }">        
+	    		searchSource.push("${review.writerId }");
+	    	</c:forEach>
+	        
+        $("#searchInput").autocomplete({      // 오토 컴플릿트 시작
+            source : searchSource,    		  // source 는 자동 완성 대상
             select : function(event, ui) {    // 아이템 선택시
                 console.log(ui.item);
             },
             focus : function(event, ui) {    // 포커스 가면
-                return false;	// 한글 에러 잡기 용도로 사용됨
+                return false;				 // 한글 에러 잡기 용도로 사용됨
             },
-            minLength: 1,		// 최소 글자수
-            autoFocus: true, 	// 첫번째 항목 자동 포커스 기본값 false
+            minLength: 1,					// 최소 글자수
+            autoFocus: true, 				// 첫번째 항목 자동 포커스 기본값 false
             classes: {    
                 "ui-autocomplete": "highlight"
             },
-            delay: 500,    		// 검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
-//          disabled: true,   	   자동완성 기능 끄기
+            delay: 500,    					// 검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//          disabled: true,   	   			   자동완성 기능 끄기
+            scroll:true,
             position: { my : "right top", at: "right bottom" }, 
-            close : function(event){    // 자동완성창 닫아질 때 호출
+            close : function(event){    	// 자동완성창 닫아질 때 호출
                 console.log(event);
             }
         });
@@ -161,7 +182,8 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 									<option value="3">글내용</option>
 									<option value="4">챌린지이름</option>
 									<option value="5">전체</option>
-								</select> <input type="text" id="searchInput" name="word" class="form-control"
+								</select> 
+								<input type="text" id="searchInput" name="word" class="form-control"
 									style="padding: 3px 20px 6px 20px" value=${ word }>
 								<button type="submit" class="btn btn-warning">검색</button>
 							</div>
@@ -176,8 +198,9 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 								<col width="10%" />
 								<col width="25%" />
 								<col width="15%" />
-								<col width="20%" />
 								<col width="10%" />
+								<col width="10%" />
+								<col width="8%" />
 							</colgroup>
 							<thead>
 								<tr id="titleTd">

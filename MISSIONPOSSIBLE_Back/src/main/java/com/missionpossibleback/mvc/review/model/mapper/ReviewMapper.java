@@ -48,4 +48,10 @@ public interface ReviewMapper {
 	
 	List<Challenge> selectAllChallengeList(@Param("id") String id);
 
+	List selectAllTitle();
+
+	List selectAllCTitle();
+
+	List selectAllWriterId();
+
 }

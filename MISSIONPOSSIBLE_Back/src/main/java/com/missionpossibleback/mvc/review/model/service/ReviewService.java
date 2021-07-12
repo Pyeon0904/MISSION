@@ -48,4 +48,10 @@ public interface ReviewService {
 
 	List<Challenge> getSearchAllChallengeList(@Param("id") String id);
 
+	List getTitleList();
+
+	List getCTitleList();
+
+	List getWriterIdList();
+
 }

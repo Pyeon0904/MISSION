@@ -191,4 +191,19 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectAllChallengeList(id);
 	}
 
+	@Override
+	public List getTitleList() {
+		return mapper.selectAllTitle();
+	}
+
+	@Override
+	public List getCTitleList() {
+		return mapper.selectAllCTitle();
+	}
+
+	@Override
+	public List getWriterIdList() {
+		return mapper.selectAllWriterId();
+	}
+
 }
