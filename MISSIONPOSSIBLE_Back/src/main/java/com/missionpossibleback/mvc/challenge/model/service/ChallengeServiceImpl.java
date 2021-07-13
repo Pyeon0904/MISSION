@@ -35,7 +35,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		int result = 0;
 		
 		if(challenge.getChallengeNo() != 0) {
-//			result = mapper.updateChallenge(challenge);
+			result = mapper.updateChallenge(challenge);
 		} else {
 			result = mapper.insertChallenge(challenge);
 		}
@@ -110,6 +110,17 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return renameFileName;
 	}
 	
+	// 파일 삭제 로직
+	@Override
+	public void deleteFile(String filePath) {
+		
+		log.info("FILE PATH : {}", filePath );
+		
+		File file = new File(filePath);
+		
+		if(file.exists()) file.delete();
+	}
+	
 	// 전체 챌린지 조회
 	@Override
 	public List<Challenge> getChallengeList(PageInfo pageInfo) {
@@ -176,6 +187,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 			
 		return mapper.selectChallengeCount();
 	}	
+	
+	// 챌린지 전체 개수 출력
+	@Override
+	public int getChallengeCountById(String id) {
+			
+		return mapper.selectChallengeCountById(id);
+	}
 
 	// 모집중인 챌린지 개수 출력 
 	@Override
@@ -284,6 +302,11 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int getJoinCount(String id) {
 		
 		return mapper.selectJoinCount(id);
+	}
+	
+	@Override
+	public int getEndJoinCount(String id) {
+		return mapper.selectEndJoinCount(id);
 	}
 
 	// 참여중인 챌린지 리스트 조회

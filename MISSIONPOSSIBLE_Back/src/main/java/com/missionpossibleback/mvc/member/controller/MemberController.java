@@ -39,6 +39,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
@@ -50,11 +51,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({"loginMember", "followMember", "isfollow","listMemberId"})
+@SessionAttributes({"loginMember", "followMember", "isfollow","listMemberId", "achievements"})
 public class MemberController {
 	
 	@Autowired
 	private  MemberService service;
+	
+	@Autowired
+	private ChallengeService cService;
 	
 	@GetMapping(value = "/member/myPage")
 	public String myPage() {
@@ -492,6 +496,13 @@ public class MemberController {
 		}
 		
 		if(loginMember != null) {
+			
+			int joinCount = cService.getJoinCount(loginMember.getId());// 로그인한 유저가 참여중인 챌린지 개수 출력
+			int finishCount = cService.getEndJoinCount(loginMember.getId());// 로그인한 유저가 완수한 챌린지 개수 출력
+			int createCount = cService.getChallengeCountById(loginMember.getId());// 로그인한 유저가 개설한 챌린지 개수 출력
+			int[] achievements = {joinCount, finishCount, createCount};// 배열로 한 번에 담아서 보내기 위함
+			model.addObject("achievements", achievements);// 위에서 구한 값들 보내기
+			
 			model.addObject("loginMember", loginMember);
 			model.addObject("msg", "로그인 성공!");
 			model.setViewName("redirect:/");
