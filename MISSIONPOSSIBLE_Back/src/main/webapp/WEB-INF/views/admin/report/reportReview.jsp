@@ -49,18 +49,24 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link current">
-									<a href="${ path }/admin/review/viewReview">게시된 후기글</a>
+									<a href="${ path }/admin/report/reportReview">신고된 후기 게시글</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/admin/review/viewDeleteReview">삭제된 후기글</a>
+									<a href="approve">신고된 회원</a>
+								</li>
+								<li class="tab-link">
+									<a href="delete">신고된 챌린지</a>
+								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/report/warnMember">경고 회원 관리</a>
 								</li>
 							</ul>
 						</div>
-						<h2>후기 게시판 관리</h2>
+						<h2>신고 관리</h2>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
+								<button class="enroll-bt1" id="allWarnBtn">경고</button>
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>
@@ -68,12 +74,14 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>글번호</th>
-									<th>제목</th>
-									<th>챌린지</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>조회수</th>
+									<th>신고번호</th>
+									<th>신고자ID</th>
+									<th>게시자ID</th>
+									<th>게시글번호</th>
+									<th>신고유형</th>
+									<th>신고내용</th>
+									<th>신고날짜</th>
+									<th>상태</th>
 									<th>처리</th>
 								</tr>
 								<c:if test="${ list.isEmpty() }">
@@ -82,19 +90,27 @@ $(function () {
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">
-									<c:forEach var="review" items="${ list }">
+									<c:forEach var="report" items="${ list }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td class="noTd">${ review.no }</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
-												<c:out value="${ review.title } " /> </a>
-											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
-											<td><c:out value="${ review.writerId }" /></td>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
-											<td><c:out value="${ review.viewCount }" /></td>
+											<td class="report">${ report.no }</td>
 											<td>
-												<button type="button" id="selectRemoveBtn" class="stat-bt1 removeBtn">삭제</button>
+												<c:out value="${ report.sendId } " />
+											</td>
+											<td class="view-click td-3 noTd"><c:out value="${ report.reportedId }" /></td>
+											<td><a class="getURL" href="${ path }/review/reviewView?no=${report.r_No}" target="viewF">
+											<c:out value="${ report.r_No }" /></a></td>
+											<td><c:out value="${ report.category }" /></td>
+											<td><c:out value="${ report.content }" /></td>
+											<td><fmt:formatDate type="date" value="${ report.createDate }" /></td>
+											<td>
+												<c:if test="${ report.status == 'N' }">대기</c:if>
+												<c:if test="${ report.status == 'Y' }">완료</c:if>
+											</td>
+											<td>
+												<c:if test="${ report.status == 'N' }">
+												<button type="button" id="selectWarnBtn" class="stat-bt1 WarnBtn">경고</button>
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>
@@ -118,17 +134,18 @@ $(function () {
 	                        });
 						});					
 					</script>
-					<!-- 후기 게시글 삭제 모달 -->
+					<!-- 신고 게시글 작성자 경고 모달 -->
 					<div class="cateUpdArea" id="cateDelArea">
 						<div class="newWrapper">
 							<div class="titleArea">
-								<h2>후기 게시글 삭제</h2>
+								<h2>신고된 게시글 작성자 경고</h2>
 							</div>
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="<%= request.getContextPath() %>/admin/review/oneDelete" method="POST">
-									<input type="hidden" name="reviewNo" id="reviewNo">
+								<form id=delForm" action="<%= request.getContextPath() %>/admin/report/warnReview" method="POST">
+									<input type="hidden" name="reportedNo" id="reportedNo">
+									<input type="hidden" name="reportedId" id="reportedId">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
 										<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -137,21 +154,23 @@ $(function () {
 							</div>
 						</div>
 					</div>
-					<!-- 후기 게시글 삭제 모달 기능 -->
+					<!-- 신고 게시글 작성자 경고 모달 기능 -->
 					<script>
 						$(function(){
 							// 게시글 삭제
-							$('button.removeBtn').click(function(){
+							$('button.WarnBtn').click(function(){
 								$("div#cateDelArea").css("display", "block");
 								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 								
-								// 게시글 제목 알려주기
-								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
+								// 신고된 회원 아이디 알려주기
+								var reportedId = $(this).parent('td').siblings('.td-3').html();
+								$('div#individual').html("<h2>"+reportedId+" 회원을<br>정말로 경고 처리하겠습니까?</h2>");
+								$("input#reportedId").val(reportedId);
 								
-								// 게시글 번호 폼으로 가져오기
-								var updno = $(this).parent('td').siblings('.noTd').html();
-								$("input#reviewNo").val(updno);
+								// 신고 번호 폼으로 가져오기
+								var updno = $(this).parent('td').siblings('.report').html();
+								$("input#reportedNo").val(updno);
+
 							});
 							$('button.closeDelBtn').click(function(){
 								$('div.cateUpdArea').css("display", "none");
@@ -159,18 +178,19 @@ $(function () {
 							});
 						});
 					</script>
-					<!-- 후기 게시글 선택 삭제 모달 -->	
-					<div class="cateUpdArea" id="selectRemoveArea">
+					<!-- 신고 게시글 작성자 선택 경고 모달 -->	
+					<div class="cateUpdArea" id="selectWarnArea">
 					<div class="newWrapper">
 						<div class="titleArea">
 							<h2>후기 게시글 삭제</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
-								<h2>정말로 삭제하시겠습니까?</h2>
+								<h2>정말로 경고 처리하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/review/selectDelete" method="POST">
-								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
+							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/report/selectWarn" method="POST">
+								<input type="hidden" name="cateSelWarnNo" id="cateSelWarnNo">
+								<input type="hidden" name="cateSelWarnReportNo" id="cateSelWarnReportNo">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
 									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -179,25 +199,37 @@ $(function () {
 						</div>
 					</div>
 					</div>
-					<!-- 후기 게시글 선택 삭제 모달 기능 -->
+					<!-- 신고 게시글 작성자 선택 경고 모달 기능 -->
 					<script>
 						$(function(){
-							// 게시글 삭제
-							$('#allRemoveBtn').click(function(){
+							// 경고
+							$('#allWarnBtn').click(function(){
 								// 모달 창 띄우기
-								$("#selectRemoveArea").css("display", "block");
+								$("#selectWarnArea").css("display", "block");
 								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 								
-								// 체크된 번호 배열로 묶어서 전달
+								// 체크된 아이디 배열로 묶어서 전달
+								var arrId = [];
+								var $objects = $('.tdCheck');
+								
+								$.each($objects,function(index,item){
+									if($(item).prop('checked')){
+										// 선택된 값 삭제 창에 전달
+										var selId = $(item).parent('td').siblings('.noTd').html();
+										arrId.push(selId);
+										$("#cateSelWarnNo").val(arrId);
+									}
+								});
+								// 체크된 신고 번호 배열로 묶어서 전달
 								var arrNo = [];
 								var $objects = $('.tdCheck');
 								
 								$.each($objects,function(index,item){
 									if($(item).prop('checked')){
 										// 선택된 값 삭제 창에 전달
-										var selno = $(item).parent('td').siblings('.noTd').html();
+										var selno = $(item).parent('td').siblings('.report').html();
 										arrNo.push(selno);
-										$("#cateSelDelNo").val(arrNo);
+										$("#cateSelWarnReportNo").val(arrNo);
 									}
 								});
 							});

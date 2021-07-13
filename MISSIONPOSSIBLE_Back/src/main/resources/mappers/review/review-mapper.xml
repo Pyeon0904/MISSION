@@ -53,12 +53,12 @@
 		<id property="no" column="NO"/>
 		<result property="sendId" column="SEND_ID"/>
 		<result property="reportedId" column="REPORTED_ID"/>
-		<result property="C_No" column="REPORTED_C_NO"/>
-		<result property="R_No" column="REPORTED_R_NO"/>
+		<result property="c_No" column="REPORTED_C_NO"/>
+		<result property="r_No" column="REPORTED_R_NO"/>
 		<result property="category" column="CATEGORY"/>
 		<result property="content" column="CONTENT"/>
 		<result property="createDate" column="CREATE_DATE"/>
-		<result property="statue" column="STATUS"/>
+		<result property="status" column="STATUS"/>
 	</resultMap>
 	
 	<resultMap id="challengeResultMap" type="Challenge">
@@ -85,11 +85,27 @@
 		<result property="minusPoint" column="MINUS_POINT"/>
 	</resultMap>
 	
+	<resultMap type="Member" id="memberResultMap">
+ 		<id property="memberNo" column="MEMBER_NO"/>
+ 		<result property="id" column="ID" />
+ 		<result property="password" column="PASSWORD"/>
+ 		<result property="gradeName" column="GRADE_NAME"/>
+ 		<result property="nickname" column="NICKNAME"/>
+ 		<result property="email" column="EMAIL"/>
+ 		<result property="point" column="POINT"/>
+ 		<result property="status" column="STATUS"/>
+ 		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
+ 		<result property="renamedFileName" column="RENAMED_FILENAME"/>
+ 		<result property="report_count" column="REPORT_COUNT"/>
+ 	</resultMap>
+	
+	<!-- 게시판 목록 리스트 불러오기 -->
 	<select id="selectReviewList" resultMap="reviewListResultMap">
 		<include refid="reviewListSql"/>
 		ORDER BY R.NO DESC
 	</select>
 	
+	<!-- 검색어가 포함된 게시글 불러오기 -->
 	<select id="selectSearchReviewList" resultMap="reviewListResultMap">
 		SELECT  R.NO,
 				R.WRITER_ID,
@@ -127,6 +143,7 @@
 		ORDER BY NO DESC
 	</select>
 	
+	<!-- 검색어가 포함된 게시글 수 불러오기  -->
 	<select id="selectSerchReviewCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM REVIEW
@@ -153,13 +170,14 @@
 		ORDER BY NO DESC
 	</select>
 
-	
+	<!-- 페이징 처리를 위한 게시물 수 불러오기 -->
 	<select id="selectReviewCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM REVIEW
 		WHERE STATUS='Y'
 	</select>
 	
+	<!-- 게시글 번호로 게시글 정보 불러오기 -->
 	<select id="selectReviewByNo" parameterType="_int" resultMap="reviewDetailResultMap">
  		SELECT R.NO,
  			   R.WRITER_ID,
@@ -186,6 +204,7 @@
 		WHERE R.STATUS='Y' AND R.NO=#{reviewNo}
 	</select>
 	
+	<!-- 게시글 작성시 삽입 -->
 	<insert id="insertReview" parameterType="map"
 			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
 		INSERT INTO REVIEW (
@@ -214,6 +233,8 @@
 			DEFAULT
 		)
 	</insert>
+	
+	<!-- 게시글 수정시 업데이트 -->
 	<update id="updateReview" parameterType="map">
 		UPDATE REVIEW
 			SET 
@@ -231,6 +252,7 @@
 				NO=#{no}
 	</update>
 	
+	<!-- 게시글 삭제시 STATUS 수정 -->
 	<update id="deleteReview" parameterType="int">
 		UPDATE REVIEW
 			SET 
@@ -239,10 +261,12 @@
 				NO=#{reviewNo}
 	</update>
 	
+	<!-- 게시글 조회수 올리기 -->
 	<update id="plusCnt" parameterType="int">
   		UPDATE REVIEW SET VIEW_COUNT = VIEW_COUNT + 1 WHERE NO = #{reviewNo}
 	</update>
 	
+	<!-- 게시글 신고하기 -->
 	<insert id="insertReport" parameterType="map"
 			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
 		INSERT INTO REPORT (
@@ -268,6 +292,7 @@
 		)
 	</insert>
 
+	<!-- 댓글 번호로 댓글 정보 불러오기 -->
 	<select id="selectReplyByNo" parameterType="_int" resultMap="reviewReplyResultMap">
  		SELECT *
 		FROM REPLY
@@ -275,6 +300,7 @@
 		AND STATUS = 'Y'
 	</select>
 	
+	<!-- 댓글 작성시 삽입 -->
 	<insert id="insertReply" parameterType="map"
 			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
 		INSERT INTO REPLY (
@@ -296,6 +322,7 @@
 		)
 	</insert>
 	
+	<!-- 댓글 수정시 업데이트 -->
 	<update id="updateReply" parameterType="map">
 		UPDATE REPLY
 			SET 
@@ -305,17 +332,20 @@
 				NO=#{no}
 	</update>
 	
+	<!-- 댓글 작성시 게시판 목록에 보이는 댓글수 업데이트 -->
 	<update id="updateReplyCount" parameterType="int">
 		UPDATE REVIEW SET REPLY_COUNT = (SELECT COUNT(*) FROM REPLY WHERE REVIEW_NO = #{reviewNo} AND STATUS = 'Y')
 		WHERE NO = #{reviewNo}
 	</update>
 
+	<!-- 게시글 번호로 해당 게시글에 작성된 댓글 불러오기 -->
 	<select id="selectReplyList" resultMap="reviewReplyResultMap">
 		SELECT * FROM REPLY
 		WHERE REVIEW_NO = #{review.no}
 		AND STATUS = 'Y'
 	</select>
-
+	
+	<!-- 댓글 삭제시 STATUS 업데이트 -->
 	<update id="deleteReply" parameterType="map">
 		UPDATE REPLY
 			SET 
@@ -324,6 +354,7 @@
 				NO=#{reply.no}
 	</update>
 	
+	<!-- 사용자 ID를 통해 해당 사용자가 참가하고 종료된 챌린지 불러오기 -->
 	<select id="selectAllChallengeList" resultMap="challengeResultMap">
 		SELECT TITLE FROM CHALLENGE C
 		JOIN MY_CHALLENGE_LIST MCL
@@ -337,21 +368,25 @@
 		]]>
 	</select>
 	
+	<!-- 후기 게시글 작성자 중복없이 불러오기 -->
 	<select id="selectAllWriterId" resultMap="reviewListResultMap">
 		SELECT DISTINCT WRITER_ID FROM REVIEW
 		WHERE STATUS = 'Y'
 	</select>
 	
+	<!-- 후기 게시글 제목 중복없이 불러오기 -->
 	<select id="selectAllTitle" resultMap="reviewListResultMap">
 		SELECT DISTINCT TITLE FROM REVIEW
 		WHERE STATUS = 'Y'
 	</select>
 	
+	<!-- 후기 게시글 챌린지명 중복없이 불러오기 -->
 	<select id="selectAllCTitle" resultMap="reviewListResultMap">
 		SELECT DISTINCT C_TITLE FROM REVIEW
 		WHERE STATUS = 'Y'
 	</select>
 
+	<!-- 관리자 페이지에서 STATUS가 N인 게시글 불러오기 -->
 	<select id="selectDeleteReviewList" resultMap="reviewListResultMap">
 				SELECT  R.NO,
 				R.WRITER_ID,
@@ -370,6 +405,7 @@
 		ORDER BY R.NO DESC
 	</select>
 
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 N으로 업데이트 -->
 	<update id="selectDelete" parameterType="map">
 		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 		UPDATE REVIEW
@@ -380,6 +416,7 @@
 		</foreach>
 	</update>
 	
+	<!-- 게시글 번호로 해당 게시글 STATUS를 N으로 업데이트 -->
 	<update id="selectOneDelete" parameterType="map">
 		UPDATE REVIEW
 			SET 
@@ -388,6 +425,7 @@
 				NO=#{str}
 	</update>
 	
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 Y로 업데이트 -->
 	<update id="selectRestore" parameterType="map">
 		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 		UPDATE REVIEW
@@ -398,6 +436,7 @@
 		</foreach>
 	</update>
 	
+	<!-- 게시글 번호로 해당 게시글 STATUS를 Y로 업데이트 -->
 	<update id="selectOneRestore" parameterType="map">
 		UPDATE REVIEW
 			SET 
@@ -405,6 +444,78 @@
 			WHERE 
 				NO=#{str}
 	</update>
+	
+	<!-- 신고 테이블에서 후기 게시글 신고만 불러오기 -->
+	<select id="selectReportList" resultMap="reviewReportResultMap">
+		SELECT NO, SEND_ID, REPORTED_ID, REPORTED_C_NO, REPORTED_R_NO, CATEGORY, CONTENT, CREATE_DATE, STATUS
+		FROM REPORT
+		WHERE REPORTED_R_NO != 0
+	</select>
+	
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 N으로 업데이트 -->
+	<update id="selectWarn" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE MEMBER
+			SET 
+				REPORT_COUNT = REPORT_COUNT + 1
+			WHERE 
+				ID=#{item}
+		</foreach>
+	</update>
 
+	<!-- 신고 번호 배열로 해당 신고들 STATUS를 Y로 업데이트 -->
+	<update id="updateWarnReport" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE REPORT
+			SET 
+				STATUS = 'Y'
+			WHERE 
+				NO=#{item}
+		</foreach>
+	</update>
+	
+	<!-- 신고 번호로 해당 신고 STATUS를 Y로 업데이트 -->
+	<update id="updateOneReport" parameterType="map">
+		UPDATE REPORT
+			SET 
+				STATUS = 'Y'
+			WHERE 
+				NO=#{reportNo}
+	</update>
+	
+	<!-- 신고 당한 회원 ID로 해당 회원 신고횟수 +1 -->
+	<update id="OneWarn" parameterType="map">
+		UPDATE MEMBER
+			SET 
+				REPORT_COUNT = REPORT_COUNT + 1
+			WHERE 
+				ID=#{reportedId}
+	</update>
+	
+	<!-- 경고 회원 관리에 모든 회원 리스트 불러오기 -->
+	<select id="selectAllMember" parameterType="_int" resultMap="memberResultMap">
+ 		SELECT *
+		FROM MEMBER
+	</select>
+	
+	<!-- 경고 받은 회원 ID로 해당 회원 탈퇴시키기-->
+	<update id="OneDel" parameterType="map">
+		UPDATE MEMBER
+			SET 
+				STATUS = 'N'
+			WHERE 
+				ID=#{warnId}
+	</update>
+	
+	<!-- 경고 받은 회원 ID 배열로 해당 회원들 탈퇴시키기 -->
+	<update id="selectDel" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE MEMBER
+			SET 
+				STATUS = 'N'
+			WHERE 
+				ID=#{item}
+		</foreach>
+	</update>
 </mapper>
 

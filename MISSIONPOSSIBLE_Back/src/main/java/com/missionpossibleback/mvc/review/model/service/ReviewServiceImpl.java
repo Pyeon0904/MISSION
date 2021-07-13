@@ -19,7 +19,7 @@ import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
-
+import com.missionpossibleback.mvc.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -234,6 +234,51 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int selectOneRestore(String str) {
 		return mapper.selectOneRestore(str);
+	}
+
+	@Override
+	public List<Report> getReportList() {
+		return mapper.selectReportList();
+	}
+
+	@Override
+	public List<Review> getReportedReviewList(Report report) {
+		return mapper.selectReportedReviewList();
+	}
+
+	@Override
+	public int selectWarn(String[] stringMemberId) {
+		return mapper.selectWarn(stringMemberId);
+	}
+
+	@Override
+	public int updateWarnReport(int[] intReportNo) {
+		return mapper.updateWarnReport(intReportNo);
+	}
+
+	@Override
+	public int updateOneReport(int reportNo) {
+		return mapper.updateOneReport(reportNo);
+	}
+
+	@Override
+	public int OneWarn(String reportedId) {
+		return mapper.OneWarn(reportedId);
+	}
+
+	@Override
+	public List<Member> getMemberAllList() {
+		return mapper.selectAllMember();
+	}
+
+	@Override
+	public int OneDel(String warnId) {
+		return mapper.OneDel(warnId);
+	}
+
+	@Override
+	public int selectDel(String[] stringMemberId) {
+		return mapper.selectDel(stringMemberId);
 	}
 
 }

@@ -48,19 +48,25 @@ $(function () {
 						<!-- 탭 -->
 						<div class="tabs">
 							<ul class="tabs">
-								<li class="tab-link current">
-									<a href="${ path }/admin/review/viewReview">게시된 후기글</a>
+								<li class="tab-link">
+									<a href="${ path }/admin/report/reportReview">신고된 후기 게시글</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/admin/review/viewDeleteReview">삭제된 후기글</a>
+									<a href="approve">신고된 회원</a>
+								</li>
+								<li class="tab-link">
+									<a href="delete">신고된 챌린지</a>
+								</li>
+								<li class="tab-link current">
+									<a href="${ path }/admin/report/warnMember">경고 회원 관리</a>
 								</li>
 							</ul>
 						</div>
-						<h2>후기 게시판 관리</h2>
+						<h2>신고 관리</h2>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
+								<button class="enroll-bt1" id="allWarnBtn">탈퇴</button>
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>
@@ -68,12 +74,10 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>글번호</th>
-									<th>제목</th>
-									<th>챌린지</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>조회수</th>
+									<th>회원번호</th>
+									<th>회원ID</th>
+									<th>경고횟수</th>
+									<th>상태</th>
 									<th>처리</th>
 								</tr>
 								<c:if test="${ list.isEmpty() }">
@@ -82,19 +86,20 @@ $(function () {
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">
-									<c:forEach var="review" items="${ list }">
+									<c:forEach var="member" items="${ list }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td class="noTd">${ review.no }</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
-												<c:out value="${ review.title } " /> </a>
-											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
-											<td><c:out value="${ review.writerId }" /></td>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
-											<td><c:out value="${ review.viewCount }" /></td>
+											<td>${ member.memberNo }</td>
+											<td class="view-click td-3 noTd"><c:out value="${ member.id }"/></td>
+											<td><c:out value="${ member.report_count }" /></td>
 											<td>
-												<button type="button" id="selectRemoveBtn" class="stat-bt1 removeBtn">삭제</button>
+											<c:if test="${ member.status == 'N' }">탈퇴처리</c:if>
+											<c:if test="${ member.status == 'Y' }">활동중</c:if>
+											</td>
+											<td>
+												<c:if test="${ member.status == 'Y' }">
+												<button type="button" id="selectWarnBtn" class="stat-bt1 WarnBtn">탈퇴</button>
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>
@@ -118,17 +123,17 @@ $(function () {
 	                        });
 						});					
 					</script>
-					<!-- 후기 게시글 삭제 모달 -->
+					<!-- 경고 회원 탈퇴 모달 -->
 					<div class="cateUpdArea" id="cateDelArea">
 						<div class="newWrapper">
 							<div class="titleArea">
-								<h2>후기 게시글 삭제</h2>
+								<h2>경고 받은 회원 탈퇴</h2>
 							</div>
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="<%= request.getContextPath() %>/admin/review/oneDelete" method="POST">
-									<input type="hidden" name="reviewNo" id="reviewNo">
+								<form id=delForm" action="<%= request.getContextPath() %>/admin/report/delMember" method="POST">
+									<input type="hidden" name="warnId" id="warnId">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
 										<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -137,21 +142,19 @@ $(function () {
 							</div>
 						</div>
 					</div>
-					<!-- 후기 게시글 삭제 모달 기능 -->
+					<!-- 경고 회원 탈퇴 모달 기능 -->
 					<script>
 						$(function(){
 							// 게시글 삭제
-							$('button.removeBtn').click(function(){
+							$('button.WarnBtn').click(function(){
 								$("div#cateDelArea").css("display", "block");
 								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 								
-								// 게시글 제목 알려주기
-								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
-								
-								// 게시글 번호 폼으로 가져오기
-								var updno = $(this).parent('td').siblings('.noTd').html();
-								$("input#reviewNo").val(updno);
+								// 탈퇴 시킬 아이디 알려주기
+								var warnId = $(this).parent('td').siblings('.td-3').html();
+								$('div#individual').html("<h2>"+warnId+" 회원을<br>정말로 탈퇴 처리하겠습니까?</h2>");
+								$("input#warnId").val(warnId);
+
 							});
 							$('button.closeDelBtn').click(function(){
 								$('div.cateUpdArea').css("display", "none");
@@ -159,18 +162,18 @@ $(function () {
 							});
 						});
 					</script>
-					<!-- 후기 게시글 선택 삭제 모달 -->	
-					<div class="cateUpdArea" id="selectRemoveArea">
+					<!-- 경고 회원 선택 탈퇴 모달 -->	
+					<div class="cateUpdArea" id="selectWarnArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>후기 게시글 삭제</h2>
+							<h2>경고 받은 회원 탈퇴</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
-								<h2>정말로 삭제하시겠습니까?</h2>
+								<h2>정말로 탈퇴 처리하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/review/selectDelete" method="POST">
-								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
+							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/report/selectDelMember" method="POST">
+								<input type="hidden" name="cateSelWarnId" id="cateSelWarnId">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
 									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -179,25 +182,25 @@ $(function () {
 						</div>
 					</div>
 					</div>
-					<!-- 후기 게시글 선택 삭제 모달 기능 -->
+					<!-- 경고 회원 선택 탈퇴 모달 기능 -->
 					<script>
 						$(function(){
-							// 게시글 삭제
-							$('#allRemoveBtn').click(function(){
+							// 경고
+							$('#allWarnBtn').click(function(){
 								// 모달 창 띄우기
-								$("#selectRemoveArea").css("display", "block");
+								$("#selectWarnArea").css("display", "block");
 								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 								
-								// 체크된 번호 배열로 묶어서 전달
-								var arrNo = [];
+								// 체크된 아이디 배열로 묶어서 전달
+								var arrId = [];
 								var $objects = $('.tdCheck');
 								
 								$.each($objects,function(index,item){
 									if($(item).prop('checked')){
 										// 선택된 값 삭제 창에 전달
-										var selno = $(item).parent('td').siblings('.noTd').html();
-										arrNo.push(selno);
-										$("#cateSelDelNo").val(arrNo);
+										var selId = $(item).parent('td').siblings('.noTd').html();
+										arrId.push(selId);
+										$("#cateSelWarnId").val(arrId);
 									}
 								});
 							});

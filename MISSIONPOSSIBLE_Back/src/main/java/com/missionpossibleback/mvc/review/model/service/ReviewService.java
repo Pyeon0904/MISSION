@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
+import com.missionpossibleback.mvc.member.model.vo.Member;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -65,5 +66,23 @@ public interface ReviewService {
 	int selectRestore(int[] intNo);
 
 	int selectOneRestore(String str);
+
+	List<Report> getReportList();
+
+	List<Review> getReportedReviewList(Report report);
+
+	int selectWarn(String[] stringMemberId);
+
+	int updateWarnReport(int[] intReportNo);
+
+	int updateOneReport(int reportNo);
+
+	int OneWarn(String reportedId);
+
+	List<Member> getMemberAllList();
+
+	int OneDel(String warnId);
+
+	int selectDel(String[] stringMemberId);
 
 }
