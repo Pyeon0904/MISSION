@@ -296,18 +296,24 @@ public class BoardController {
 		log.info("비밀번호 확인");
 			
 		Board board = service.checkPw(qna_no);
-			
-			if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
-				model.addObject("board", board);
-				model.addObject("msg", "비밀번호가 일치합니다.");
-				model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
-					
+		
+			if(loginMember == null) {
+				model.addObject("msg", "로그인 후 이용해주세요");
+				model.addObject("location", "/board/password?qna_no="+ board.getQna_no());
 			} else {
-				model.addObject("msg", "비밀번호가 일치하지 않습니다.");
-				model.addObject("location", "/board/boardList");
-					
+				if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
+					model.addObject("board", board);
+					model.addObject("msg", "비밀번호가 일치합니다.");
+					model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
+						
+				} else {
+					model.addObject("msg", "비밀번호가 일치하지 않습니다.");
+					model.addObject("location", "/board/boardList");
+						
+				}
 			}
-			
+		
+
 		model.setViewName("common/msg");
 		return model;
 	}
