@@ -54,4 +54,16 @@ public interface ReviewMapper {
 
 	List selectAllWriterId();
 
+	List<Review> selectReviewList();
+
+	List<Review> selectDeleteReviewList();
+
+	int selectDelete(int[] cateSelDelNo);
+
+	int selectRestore(int[] cateSelDelNo);
+
+	int selectOneDelete(String str);
+
+	int selectOneRestore(String str);
+
 }

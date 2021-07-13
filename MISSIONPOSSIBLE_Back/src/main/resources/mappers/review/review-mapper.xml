@@ -352,5 +352,59 @@
 		WHERE STATUS = 'Y'
 	</select>
 
+	<select id="selectDeleteReviewList" resultMap="reviewListResultMap">
+				SELECT  R.NO,
+				R.WRITER_ID,
+				R.TITLE, 
+				R.C_TITLE,
+				R.CONTENT,
+				R.VIEW_COUNT, 
+				R.ORIGINAL_FILENAME, 
+				R.RENAMED_FILENAME, 
+				R.CREATE_DATE, 
+				R.MODIFY_DATE,
+				R.REPLY_COUNT
+		FROM REVIEW R
+		JOIN MEMBER M ON(R.WRITER_ID = M.ID)
+		WHERE R.STATUS = 'N'
+		ORDER BY R.NO DESC
+	</select>
+
+	<update id="selectDelete" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE REVIEW
+			SET 
+				STATUS = 'N'
+			WHERE 
+				NO=#{item}
+		</foreach>
+	</update>
+	
+	<update id="selectOneDelete" parameterType="map">
+		UPDATE REVIEW
+			SET 
+				STATUS = 'N'
+			WHERE 
+				NO=#{str}
+	</update>
+	
+	<update id="selectRestore" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE REVIEW
+			SET 
+				STATUS = 'Y'
+			WHERE 
+				NO=#{item}
+		</foreach>
+	</update>
+	
+	<update id="selectOneRestore" parameterType="map">
+		UPDATE REVIEW
+			SET 
+				STATUS = 'Y'
+			WHERE 
+				NO=#{str}
+	</update>
+
 </mapper>
 

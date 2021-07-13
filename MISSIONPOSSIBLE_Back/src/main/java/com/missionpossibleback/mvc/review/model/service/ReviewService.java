@@ -54,4 +54,16 @@ public interface ReviewService {
 
 	List getWriterIdList();
 
+	List<Review> getReviewAllList();
+
+	List<Review> getDeleteReviewAllList();
+
+	int selectDelete(int[] intNo);
+
+	int selectOneDelete(String str);
+	
+	int selectRestore(int[] intNo);
+
+	int selectOneRestore(String str);
+
 }

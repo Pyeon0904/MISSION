@@ -206,4 +206,34 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectAllWriterId();
 	}
 
+	@Override
+	public List<Review> getReviewAllList() {
+		return mapper.selectReviewList();
+	}
+
+	@Override
+	public List<Review> getDeleteReviewAllList() {
+		return mapper.selectDeleteReviewList();
+	}
+
+	@Override
+	public int selectDelete(int[] cateSelDelNo) {
+		return mapper.selectDelete(cateSelDelNo);
+	}
+
+	@Override
+	public int selectOneDelete(String str) {
+		return mapper.selectOneDelete(str);
+	}
+
+	@Override
+	public int selectRestore(int[] cateSelDelNo) {
+		return mapper.selectRestore(cateSelDelNo);
+	}
+
+	@Override
+	public int selectOneRestore(String str) {
+		return mapper.selectOneRestore(str);
+	}
+
 }

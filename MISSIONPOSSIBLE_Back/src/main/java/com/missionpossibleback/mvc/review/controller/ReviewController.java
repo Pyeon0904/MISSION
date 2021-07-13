@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -227,7 +228,7 @@ public class ReviewController {
     @GetMapping("/review/reviewReport")
     public ModelAndView reviewReportView (ModelAndView model,
 			HttpServletRequest request,
-			@RequestParam("reviewNo") int reviewNo) {
+			@RequestParam("R_No") int reviewNo) {
     	
     		Review review = service.findReviewByNo(reviewNo, true); 
         
@@ -240,7 +241,7 @@ public class ReviewController {
     public ModelAndView reviewReport (ModelAndView model,
 			@SessionAttribute(name = "id", required = false) Member loginMember,
 			HttpServletRequest request,
-			@RequestParam("reviewNo") int reviewNo,
+			@RequestParam("R_No") int reviewNo,
 			@ModelAttribute Report report) {
     	
     		Review review = service.findReviewByNo(reviewNo, true); 
@@ -475,5 +476,90 @@ public class ReviewController {
 		model.setViewName("review/reviewSearch");
 		
 		return model;		
+	}
+	
+	// 관리자 페이지 - 게시된 후기글
+	@GetMapping("/admin/review/viewReview")
+	public ModelAndView ReviewView(ModelAndView model) {
+
+		List<Review> list = null;
+		
+		list = service.getReviewAllList();
+		
+		model.addObject("list", list);
+		model.setViewName("admin/review/viewReview");
+		
+		return model;		
+	}
+	
+	// 관리자 페이지 - 삭제된 후기글
+	@GetMapping("/admin/review/viewDeleteReview")
+	public ModelAndView DeleteReviewView(ModelAndView model) {
+
+		List<Review> list = null;
+		
+		list = service.getDeleteReviewAllList();
+		model.addObject("list", list);
+		model.setViewName("admin/review/viewDeleteReview");
+		
+		return model;		
+	}
+	
+	// 관리자 페이지 - 선택 삭제
+	@PostMapping("/admin/review/selectDelete")
+	public String selectDeleteReview(HttpServletRequest request) {
+
+		String[] str = request.getParameterValues("cateSelDelNo");
+		String[] strNo = str[0].split(",");
+		
+		int[] intNo = new int[strNo.length];
+		
+		for(int i=0; i<strNo.length; i++) {
+			intNo[i] = Integer.parseInt(strNo[i]);
+		}
+
+		service.selectDelete(intNo);
+
+		return "redirect: viewReview";		
+	}
+	
+	// 관리자 페이지 - 하나만 삭제
+	@PostMapping("/admin/review/oneDelete")
+	public String selectOneDeleteReview(HttpServletRequest request) {
+
+		String str = request.getParameter("reviewNo");
+
+		service.selectOneDelete(str);
+
+		return "redirect: viewReview";		
+	}
+	
+	// 관리자 페이지 - 선택 복구
+	@PostMapping("/admin/review/selectRestore")
+	public String selectRestoreReview(HttpServletRequest request) {
+
+		String[] str = request.getParameterValues("cateSelResNo");
+		String[] strNo = str[0].split(",");
+		
+		int[] intNo = new int[strNo.length];
+		
+		for(int i=0; i<strNo.length; i++) {
+			intNo[i] = Integer.parseInt(strNo[i]);
+		}
+
+		service.selectRestore(intNo);
+
+		return "redirect: viewDeleteReview";		
+	}
+	
+	// 관리자 페이지 - 하나만 복구
+	@PostMapping("/admin/review/oneRestore")
+	public String selectOneRestoreReview(HttpServletRequest request) {
+
+		String str = request.getParameter("reviewNo");
+
+		service.selectOneRestore(str);
+
+		return "redirect: viewDeleteReview";		
 	}
 }
