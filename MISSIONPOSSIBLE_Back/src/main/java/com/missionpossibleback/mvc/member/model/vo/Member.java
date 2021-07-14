@@ -20,7 +20,7 @@ public class Member {
 	
 	private String email;
 	
-	private String point;
+	private int point;
 	
 	private String status;
 	
