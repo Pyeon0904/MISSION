@@ -12,8 +12,10 @@ public interface BoardService {
 
 	List<Board> getBoardList(PageInfo pageInfo); // 목록 조회
 	
-	Board findByNo(int qna_no); // 게시글 조회
+	Board findByNo(int qna_no, boolean hasRead); // 게시글 조회
 	
+	int readCount(int qna_no); // 조회수
+
 	int getBoardCount(); // 게시글 수
 	
 	int save(Board board); // 글쓰기, 글수정

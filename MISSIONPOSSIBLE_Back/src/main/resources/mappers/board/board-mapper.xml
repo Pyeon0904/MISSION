@@ -213,7 +213,6 @@
       WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord}
    </update>
    
-   <!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
    <select id="countDept" parameterType="Board" resultType="_int"><!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
       SELECT COUNT(GROUPNO) FROM BOARD WHERE GROUPNO=#{groupno} AND DEPT = #{dept}
    </select>
