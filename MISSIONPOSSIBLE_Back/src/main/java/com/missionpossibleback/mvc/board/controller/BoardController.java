@@ -6,11 +6,9 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,50 +69,13 @@ public class BoardController {
 	
 // 글 상세보기
 	@GetMapping("/boardDetail")
-	public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			ModelAndView model, @RequestParam("qna_no") int qna_no) {
-		
-		// 저장된 쿠키 불러오기
-		Cookie cookies[] = request.getCookies();
-		String cookieValue = "";
-		boolean hasRead = false;
-		
-		if(cookies!=null) {
-			String name = null;
-    		String value = null;
-    		
-    		for(Cookie c : cookies) {
-    			name = c.getName();
-    			value = c.getValue();
-    			   			
-    			if("cookieValue".equals(name)) {
-    				cookieValue = value;
-    				
-    				if(cookieValue.contains("|" + qna_no + "|")) {
-    					// 읽은 게시글
-    					hasRead = true;
-    					
-    					break;
-    				}
-    			}
-    		}
-    	}
-    	
-    	// 2. 읽지 않은 게시글이면 cookie에 기록
-    	if(!hasRead) {
-    		Cookie cookie = new Cookie("cookieValue", cookieValue + "|" + qna_no + "|");
-    		
-    		cookie.setMaxAge(-1);	// 브라우저 종료시 삭제
-    		response.addCookie(cookie);
-    		
-    	}
-		
+	public ModelAndView view(ModelAndView model,
+			@RequestParam("qna_no") int qna_no) {
 		
 		System.out.println(qna_no);
 	
-		Board board = service.findByNo(qna_no, hasRead);
-
-		model.addObject("hasRead",hasRead);
+		Board board = service.findByNo(qna_no);
+		
 		model.addObject("board", board); // view한테 전달해줄 데이터
 		model.setViewName("board/boardDetail");
 		
@@ -223,7 +184,7 @@ public class BoardController {
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestParam("qna_no") int qna_no) {
 			
-			Board board = service.findByNo(qna_no,true);
+			Board board = service.findByNo(qna_no);
 			
 			if(loginMember.getId().equals(board.getWriter())) {
 				model.addObject("board", board);
@@ -317,7 +278,7 @@ public class BoardController {
 	public ModelAndView checkPwView(ModelAndView model,
 			@RequestParam("qna_no") int qna_no) {
 			
-			Board board = service.findByNo(qna_no,true);
+			Board board = service.findByNo(qna_no);
 			
 			model.addObject("board", board); // view한테 전달해줄 데이터
 			model.setViewName("board/password");
@@ -335,24 +296,18 @@ public class BoardController {
 		log.info("비밀번호 확인");
 			
 		Board board = service.checkPw(qna_no);
-		
-			if(loginMember == null) {
-				model.addObject("msg", "로그인 후 이용해주세요");
-				model.addObject("location", "/board/password?qna_no="+ board.getQna_no());
+			
+			if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
+				model.addObject("board", board);
+				model.addObject("msg", "비밀번호가 일치합니다.");
+				model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
+					
 			} else {
-				if(board.getPass().equals(pass) && loginMember.getId().equals(board.getWriter())) {
-					model.addObject("board", board);
-					model.addObject("msg", "비밀번호가 일치합니다.");
-					model.addObject("location", "/board/boardDetail?qna_no=" + board.getQna_no());
-						
-				} else {
-					model.addObject("msg", "비밀번호가 일치하지 않습니다.");
-					model.addObject("location", "/board/boardList");
-						
-				}
+				model.addObject("msg", "비밀번호가 일치하지 않습니다.");
+				model.addObject("location", "/board/boardList");
+					
 			}
-		
-
+			
 		model.setViewName("common/msg");
 		return model;
 	}
@@ -362,7 +317,7 @@ public class BoardController {
 	public ModelAndView replyView(ModelAndView model,
 			@RequestParam("qna_no") int qna_no) {
 			
-		Board board = service.findByNo(qna_no,true);
+		Board board = service.findByNo(qna_no);
 			
 		model.addObject("board", board); // view한테 전달해줄 데이터
 		model.setViewName("board/boardReply");

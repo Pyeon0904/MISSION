@@ -61,11 +61,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board findByNo(int qna_no, boolean hasRead) {
-		
-		if(!hasRead) {
-			mapper.readCount(qna_no);
-		}
+	public Board findByNo(int qna_no) {
+		mapper.readCount(qna_no);
 		
 		return mapper.selectBoardByNo(qna_no);
 	}
@@ -194,14 +191,6 @@ public class BoardServiceImpl implements BoardService {
 		if(file.exists()) {			
 			file.delete();
 		}
-	}
-
-	
-
-	@Override
-	public int readCount(int qna_no) {
-		
-		return mapper.readCount(qna_no);
 	}
 
 	
