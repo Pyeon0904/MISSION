@@ -133,10 +133,15 @@
 								onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=400,scrollbars= 0, toolbar=0, menubar=no')">
 								인증하기
 							</button>
-							<form action="#" method="GET" class="" id="challengeChatForm">
-								<input type="hidden" name="" value="" />
-								<button class="btn btnChat" type="submit">채팅방 입장</button>
+							<!--  
+							<form action="${ path }/chat/chatRoom" method="GET" class="" id="challengeChatForm">
+								<input type="hidden" name="bang_id" value="${ challenge.challengeNo }" />
+								<input type="hidden" name="user_id" value="${ loginMember.id }"/>
+							-->
+ 								<button class="btn btnChat">채팅방 열기</button>
+ 							<!-- 
 							</form>
+							-->
 							<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
 								<form action="${ path }/challenge/update" method="GET" id="challengeUpdateForm">
 									<input type="hidden" name="challengeNo" value="${ challenge.challengeNo }"/>
@@ -488,11 +493,15 @@
 			</div>
 		</section>
 	</div>
+
 	<c:if test="${ loginMember != null }">
-    <jsp:include page="../chat/chatRoom.jsp">
-       <jsp:param name="loginMember" value="${ loginMember }"/>
+    <jsp:include page="/chat/chatRoom">
+       <jsp:param name="bang_id" value="${ challenge.challengeNo }"/>
+       <jsp:param name="user_id" value="${ loginMember.id }"/>
+       <jsp:param name="cTitle" value="${ challenge.title }"/>
     </jsp:include>
-	</c:if>   
+	</c:if>
+
 </body>
 </html>
 	
