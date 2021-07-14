@@ -10,28 +10,30 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>작전_MISSIONPOSSIBLE</title>
-
-<!-- 아이콘 라이브러리 link -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<!-- 제이쿼리 import -->
-<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
-
-<!-- 부트 스트랩
-<script src="${path}/resources/js/bootstrap.min.js"></script>
-<link href="${path}/resources/css/bootstrap.min.css" rel="stylesheet">
--->
-
+<title>headerTest</title>
 <style>
-/* --- 헤더 위쪽 관리자 권한 부분 ------------------------------------------------------------------------- */
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansLight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+	/* --- 헤더 위쪽 관리자 권한 부분 ------------------------------------------------------------------------- */
 	/* 메뉴바 위치 */
 	.menu {
 		z-index:17;
 		text-align:center;
 		position: absolute;
 		left:0%;
-		top: 150px;
+		top: 20px;
 		margin:auto;
 		width: 100%;
 		height:45px;
@@ -51,7 +53,7 @@
 	/*메인 탭*/	
 	.maintab {
 		position:relative;
-		left: 49%;
+		left:60%;
 		list-style-type: none;		
 		padding: 0;
 		margin: 0;
@@ -89,18 +91,20 @@
 	}
 	/* ---------------------------------------------------------------------------- */
 	
-	/* 공통 헤더 부분 ---------------------------------------------------------------------------- */
+	/* 헤더 부분---------------------------------------------------------------------------- */
+	
 	*{margin:0; padding:0;}
 	.headerArea{
-		width:1200px;
+		width:2000px;
 		height:82px;
 		margin:0 auto;
 	}
 	ul.headerMenu, ul.introMenu, ul{
 		list-style-type:none;
 	}
+	
 	ul.headerMenu li.header_li {
-		width:150px;
+		width:200px; 
 		height:80px;
 		float:left;
 		font-size:1.4em;
@@ -108,10 +112,12 @@
 		text-align:center;
 		line-height:3.5;
 		margin-left:60px;
+		list-style-type: none;
 	}
 	ul.headerMenu li.header_li:nth-child(6){
-		width:50px;
+		width:100px;
 		height:80px;
+		
 	}
 	ul.headerMenu>li.introduce>ul.introMenu{
 		width:250px;
@@ -129,17 +135,19 @@
 		display:none;
 		float:left;
 	}
+	
 	#hamburger{
 		width:450px;
 		height:800px;
 		background-color:#F7F8E0;
 		left:100%;
-		top:82px;
+		top:100px;
 		transform:translateX(-100%);
 		box-shadow: -20px 20px 20px grey;
 		position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 		z-index: 999;
 	}
+	
 	#login{
 		width:450px;
 		height:600px;
@@ -151,6 +159,7 @@
 		position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 		z-index: 999;
 	}
+	
 	#loginSubmit, #afterLoginList{
 		width:300px;
 		height:50px;
@@ -158,6 +167,7 @@
 		margin:0 auto;
 		background-color:#8FBC8F;
 	}
+	
 	#loginList{
 		font-size:20px;
 		width:300px;
@@ -168,12 +178,25 @@
 		position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 		z-index: 999;
 	}
+	
 	#hamburgerText{
 		font-size:25px;
 		font-weight:bold;
-		color: #FF6347;
+		color: #FF6347
 	}
+	/* ---------------------------------------------------------------------------- */
 </style>
+
+<script>
+        $(document).on('mouseover', '.menu a', function () {
+        	$('.detailtab').slideDown(0);
+        });
+        
+        $(document).on('mouseleave', 'div', function () {
+                 $('.detailtab').slideUp(0);
+            
+        });
+</script>
 <script type="text/javascript">
 	$(document).ready(()=>{
 		$(".introduce").on("mouseenter", () => {
@@ -188,11 +211,10 @@
 	    });
 	});
 </script>
-</head>
-<body>
 
-	<!-- 헤더 위 관리자권한 부분------------------------------------------------------------ -->
-<c:if test="${ loginMember.id eq 'admin' }">
+</head>
+
+<body>
 	<div class="menu">
 			<div class="col">
 			<ul class="maintab">
@@ -204,9 +226,6 @@
 			</ul>
 			</div>
 	</div>
-</c:if>
-	<!-- ----------------------------------------------------------------------------- -->
-	
 	<header>
 		<div class="headerArea">
 			<nav>
@@ -217,16 +236,31 @@
 							<img src="${path}/resources/images/logofirst.png" width="150px" height="150px"/>
 						</a>
 					</li>
+					
+					<!-- 메뉴바 : 소개 --------------------------------------------------- -->
 					<li class="header_li introduce">
 						<a href="${ path }/introduce/introduce">소개</a>
 						<ul class="introMenu">
 							<li><a href="${ path }/introduce/introduce">홈페이지 소개</a></li>
-							<li><a href="${ path }/introduce/developer">개발자 소개</a></li>
+							<li><a href="${ path }/introduce/developer">개발자 소개</a></li>			
 						</ul>
 					</li>
-					<li class="header_li"><a href="${ path }/challenge/recruitList">챌린지</a></li>
-					<li class="header_li"><a href="${ path }/board/boardList">고객센터</a></li>
-					<li class="header_li"><a href="${ path }/review/reviewList">후기게시판</a></li>
+					
+					<!-- 메뉴바 : 회원관리 --------------------------------------------------- -->
+					<li class="header_li user"><a href="${ path }/admin/viewUser">회원관리</a></li>
+					
+					<!-- 메뉴바 : 챌린지관리 --------------------------------------------------- -->
+					<li class="header_li"><a href="${ path }/admin/viewChallenge">챌린지관리</a></li>
+					
+					<!-- 메뉴바 : 신고접수 관리 --------------------------------------------------- -->
+					<li class="header_li"><a href="${ path }/admin/viewRecruit">신고접수</a></li>
+					
+					<!-- 메뉴바 : 고객센터 관리 --------------------------------------------------- -->
+					<li class="header_li"><a href="${ path }/admin/viewBoard">고객센터</a></li>
+					
+					<!-- 메뉴바 : 후기게시판 관리 --------------------------------------------------- -->
+					<li class="header_li"><a href="${ path }/admin/viewReview">후기게시판</a></li>
+					
 					<li class="btnHBG header_li"><a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a></li>
 				</ul>
 			</nav>
@@ -284,7 +318,5 @@
 			</div>
 		</div>
 	</header>
- <!--  
 </body>
 </html>
- -->
