@@ -5,21 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<%
-	String saveId = null;
-	Cookie[] cookies = request.getCookies();
 
-	// 쿠키값 받아오기
-	if(cookies != null) {
-		for(Cookie c : cookies) {
-			if(c.getName().equals("saveId")) {
-				saveId = c.getValue();
-
-				break;
-			}
-		}
-	}
-%>
 <style>
 	section #login-container {
 		text-align:center;
@@ -103,7 +89,7 @@
 					<tr>
 						<td>
 							<div class="input-group">
-							  <input type="text" class="form-control" id="inputId" name="userId" placeholder="아이디" aria-describedby="basic-addon1" value="<%= saveId != null ? saveId : "" %>" required>
+							  <input type="text" class="form-control" id="inputId" name="userId" placeholder="아이디" aria-describedby="basic-addon1" value="${cookie.saveId.value}" required>
 							</div>
 						</td>
 					</tr>
@@ -118,7 +104,7 @@
 					</tr>
 					<tr>
 						<td>
-							<label><input type="checkbox" name="saveId"<%= saveId != null? "checked" : "" %>/>아이디 저장</label>
+							<label><input type="checkbox" name="saveId" ${ cookie.saveId.value != null ? "checked" : ""}  />아이디 저장</label>
 						</td>
 					</tr>
 				</table>

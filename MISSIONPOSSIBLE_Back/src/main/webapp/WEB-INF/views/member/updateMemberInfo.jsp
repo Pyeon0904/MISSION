@@ -352,6 +352,14 @@ ul {
         top:20px;
         margin:auto;
 }
+.input-file-button{
+
+	  padding: 10px 20px;
+	  background-color:black;
+	  border-radius: 4px;
+	  color: white;
+	  cursor: pointer;
+}
 
 </style>
 <script type="text/javascript">
@@ -428,39 +436,9 @@ ul {
             $(".email.regex").html("올바른 이메일이 아닙니다");
         }
     });
-	 
-	    
- // 아이디 중복을 확인 처리 콜백함수
-	   $("#checkDuplicate").on("click",function(){
-	      // 중복확인전에 아이디 값이 4글자 이상인지 확인
-	      var id = $("#member_id").val().trim();
-	      
-	      if (id.length < 4) {
-	         alert("아이디는 최소 4글자 이상 입력하세요.")
-	         return;
-	      }
-
-		      // 중복 확인할 새창 띄우기
-		      const url = "<%= request.getContextPath()%>/member/checkId";
-		      const title = "duplicate";
-		      const status = "left=500px,top=100px,width=500px,height=300px";
-		      
-		      open("", title, status);
-		      
-		      // form에 데이터들을 채우고 open된 윈도우에서 결과를 받는 로직을 구성한다.
-		      // 자바스크립트에서 form은 name 속성으로 요소를 가져올 수 있다.
-		      checkIdForm.target = title; // form 전송하는 윈도우를 설정한다.
-		      checkIdForm.action = url;
-		      checkIdForm.method = "get";
-		      checkIdForm.userId.value = id;
-		      
-		      // form 전송하기
-		      checkIdForm.submit();
-
-	   });
  
 	// 닉네임 중복을 확인 처리 콜백함수
-	   $("#checkNickName").on("click",function(){
+	   $("#checkNicknameDuplicate").on("click",function(){
 	      // 중복확인전에 닉네임 값이 2글자 이상인지 확인
 	      var nickname = $("#member_nickname").val().trim();
 	      
@@ -469,68 +447,68 @@ ul {
 	         return;
 	      }
 
-		      // 중복 확인할 새창 띄우기
-		      const url = "<%= request.getContextPath()%>/member/checkNickname";
-		      const title = "duplicate";
-		      const status = "left=500px,top=100px,width=500px,height=300px";
-		      
-		      open("", title, status);
-		      
-		      // form에 데이터들을 채우고 open된 윈도우에서 결과를 받는 로직을 구성한다.
-		      // 자바스크립트에서 form은 name 속성으로 요소를 가져올 수 있다.
-		      checkNicknameForm.target = title; // form 전송하는 윈도우를 설정한다.
-		      checkNicknameForm.action = url;
-		      checkNicknameForm.method = "get";
-		      checkNicknameForm.userNickname.value = nickname;
-		      
-		      // form 전송하기
-		      checkNicknameForm.submit();
+	      $.ajax({
+				type: "get",
+				url: "${path}/member/nicknameCheck",
+				dataType: "json",
+				data: {
+					nickname // 속성의 키값과 변수명이 동일할 경우
+				},
+				success: function(data) {
+					console.log(data);
+					
+					if(data.validate === true) {
+						alert("이미 사용중인 닉네임 입니다.");
+						$("#member_nickname").val('');
+					} else {
+						alert("사용 가능한 닉네임 입니다.");
+						$("#checkNickname").val('통과');
+					}
+				},
+				error: function(e) {
+					console.log(e);
+				}
+			});
 
 	   });
 	
-	   //회원가입 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행     
-	   $("#enrollSubmit").on("click",function(){
- 	   var id = $("#member_id").val();
- 	   var pw = $("#member_pw").val();
- 	   var name = $("#member_nickname").val();
- 	   var email = $("#member_email").val();
- 	   
- 	   var idregex = /^[a-zA-Z0-9]{4,12}$/;
- 	   var pwregex = /^[A-Za-z\d]{8,12}$/;
- 	   var nameregex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
- 	   var emailregex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
- 	   
- 	   var idregex = idregex.exec(id);
- 	   if(idregex == null){
- 		   alert("아이디 양식을 다시 확인해주세요");
- 		   return;
- 	   }
- 	   var pwregex = pwregex.exec(pw);
- 	   if(pwregex == null){
- 		   alert("비밀번호 양식을 다시 확인해주세요");
- 		   retrun;
- 	   }
- 	   var nameregex = nameregex.exec(name);
- 	   if(nameregex == null){
- 		   alert("이름 양식을 다시 확인해주세요");
- 		   retrun;
- 	   }
- 	   
- 	 //아이디 중복체크를 하지 않았으면 전송되지 않도록
- 	   if($("#checkid").val()==""){
- 	        alert('아이디중복 확인을 해주세요.');
- 	        return;
- 	    }
- 	 
- 	   if($("#checkname").val()==""){
-	   	        alert('닉네임중복 확인을 해주세요.');
-	   	        return;
-	    	}
- 	 
- 	 // 빈칸 없을 때 제출.
- 	 ${"join_content"}.submit();
-
-    })
+	   //수정하기 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행     
+	   $("#updateSubmit").on("click",function(){
+	 	   var id = $("#member_id").val();
+	 	   var pw = $("#member_pw").val();
+	 	   var name = $("#member_nickname").val();
+	 	   var email = $("#member_email").val();
+	 	   
+	 	   var idregex = /^[a-zA-Z0-9]{4,12}$/;
+	 	   var pwregex = /^[A-Za-z\d]{8,12}$/;
+	 	   var nameregex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
+	 	   var emailregex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	 	   
+	 	   var idregex = idregex.exec(id);
+	 	   if(idregex == null){
+	 		   alert("아이디 양식을 다시 확인해주세요");
+	 		   return;
+	 	   }
+	 	   var pwregex = pwregex.exec(pw);
+	 	   if(pwregex == null){
+	 		   alert("비밀번호 양식을 다시 확인해주세요");
+	 		   retrun;
+	 	   }
+	 	   var nameregex = nameregex.exec(name);
+	 	   if(nameregex == null){
+	 		   alert("이름 양식을 다시 확인해주세요");
+	 		   retrun;
+	 	   }
+	 	   
+	 	   if($("#checkname").val()==""){
+		   	        alert('닉네임중복 확인을 해주세요.');
+		   	        return;
+		    	}
+	 	 
+	 	 // 빈칸 없을 때 제출.
+	 	 ${"join_content"}.submit();
+	
+	    })
 	});
 	
 	// 이메일 선택부분
@@ -543,6 +521,16 @@ ul {
 	     }
 	 }
 	
+	//프로필 썸네일 띄우기
+	    function setThumbnail(event) { 
+	    	var reader = new FileReader(); 
+	    	reader.onload = function(event) { 
+	    		var img = document.getElementById("profile");
+	    		img.setAttribute("src", event.target.result);
+	    };
+	    	reader.readAsDataURL(event.target.files[0]); 	
+	   }
+	
 </script>
 
 <div id="box">
@@ -550,13 +538,20 @@ ul {
          <div id="conbox">
 		<br><br><br><br><br><br>
 		<h4 style="text-align: center;">회원정보 수정</h4>
+		<br><br>
 		<hr>
+		<br><br>
 		<div id="myPage-container">
-			<form name ="memberUpdateFrm" action="updateMemberInfo" method="get">
+			<form name ="memberUpdateFrm" action="updateMemberInfo" id="join_content" method="post" enctype="multipart/form-data">
 				<table  border="1" style="margin:0 auto;">
 					<tr>
 						<td style="width:300px; height:200px;">
-							<!-- 사용자 프로필 사진  --> 
+							<c:if test="${ loginMember.renamedFileName == null }">
+								<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+							</c:if>
+							<c:if test="${ loginMember.renamedFileName != null }">
+								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+							</c:if>
 						</td>
 						<td>
 							<ul class="join_ulcss">
@@ -567,9 +562,7 @@ ul {
 					            <li>
 					                <span class="join_li_title"><b style="color:red;">·</b>아이디</span>
 					                <div class="join_li_input">
-					                    <input type="text" class="member_id" name="member_id" id="member_id"
-					                        style="width: 280px; margin-right: 10px;" value="${ loginMember.id }">
-					                    <button type="button" class="addr_btn" onclick="" id="checkDuplicate">중복확인</button>
+					                    <input type="text" class="member_id" name="id" id="member_id" value="${ loginMember.id }" readonly> 
 					                    <div class="id regex"></div>
 					                </div>
 					            </li>
@@ -578,7 +571,7 @@ ul {
 					                <span class="join_li_title">
 					                    <b style="color:red;">·</b>비밀번호</span>
 					                <div class="join_li_input">
-					                    <input type="password" class="member_pw" id="member_pw" name="member_pw"
+					                    <input type="password" class="member_pw" id="member_pw" name="password"
 					                        placeholder="영문대/소문자, 숫자 4-12자리">
 					                    <div class="pw regex"></div>
 					                       
@@ -596,9 +589,9 @@ ul {
 					            <li>
 					                <span class="join_li_title"><b style="color:red;">·</b>닉네임</span>
 					                <div class="join_li_input">
-					                <input type="text" class="member_nickname" id="member_nickname" name="member_nickname"
+					                <input type="text" class="member_nickname" id="member_nickname" name="nickname"
 					                	style="width: 280px; margin-right: 10px;" value="${ loginMember.nickname }">
-					                <button type="button" class="addr_btn" onclick="" id="checkNickName">중복확인</button>
+					                <button type="button" class="addr_btn" onclick="" id="checkNicknameDuplicate">중복확인</button>
 					                <div class="name regex"></div>
 					                </div>
 					            </li>
@@ -608,7 +601,7 @@ ul {
 					                <div class="join_li_input2">
 					                    <div class="join_li_input_out">
 				
-					                        <input type="text" class="member_email" id="member_email" name="member_email" value="${ email[0] }">
+					                        <input type="text" class="member_email" id="member_email" name="email" value="${ email[0] }">
 					                        <select class="member_email_select" id="member_email_select" onchange="email_select();">
 					                            <option value="" selected>${ email[1] }</option>
 					                            <option value="@naver.com">naver.com</option>
@@ -630,7 +623,10 @@ ul {
 					</tr>
 					<tr>
 						<td style="text-align: center">
-							<button class="btn btn-primary" id="profile">프로필 사진 수정</button>
+							<label class="input-file-button" for="input-file">
+						  		프로필 사진 수정
+							</label>
+							<input type="file" id="input-file"  name="upfile" style="display:none" accept="image/*" onchange="setThumbnail(event);"/> 
 							<br>
 						</td>
 					</tr>
@@ -638,8 +634,8 @@ ul {
 				<br>
 			</form>
 			<div id="bottomButton">
-				<input type="submit" class="btn btn-primary" value="수정하기" />
 				<button class="btn btn-primary" onclick="location.replace('${path}/member/withdrawal')">회원탈퇴</button>
+				<input type="submit" class="btn btn-primary" id="updateSubmit" value="수정하기" />
 			</div>
 		 </div>
 		</div>

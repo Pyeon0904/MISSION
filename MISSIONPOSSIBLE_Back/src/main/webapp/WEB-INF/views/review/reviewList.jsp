@@ -12,9 +12,14 @@
 <head>
 <meta charset="UTF-8">
 <title>후기 게시판</title>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-         #box{ 
+	#box{ 
             background-color:rgb(224, 239, 132);
             width:100%;
             height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
@@ -30,13 +35,13 @@
             top:20px;
             margin:auto;
          }
-         
-         .form-control{
-         	width: 100px;
-         }
+
+h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
 
 input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
-input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
+input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
 input[type="checkbox"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
 input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
 input[type="password"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
@@ -49,7 +54,6 @@ em, address{font-style:normal}
 html, body{padding:0;margin:0;width:100%;height:100%;}
 
 #wrap{position:relative;width:100%;height:100%}
-#container{position:relative;top:10px;right:0;bottom:38px;left:0;overflow-x:hidden;overflow-y:auto}
 #container .inner{width:1000px; margin:0 auto; padding:10px 0}
  
 /* table */
@@ -57,10 +61,14 @@ table.table01 {border-collapse:separate;border-spacing:0;text-align:center;line-
 table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
 table.table01 td {padding:10px;vertical-align:middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 
-table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:1px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 caption.center{padding-top:6px;height:39px;line-height:130%;text-align:center;color:#333;padding-left:0;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody th{padding:10px;vertical-align:middle;font-family:'malgunbd';color:#333;border-right:1px solid #c9c9c9;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody td{padding:10px;vertical-align:middle;padding-left:15px;background:#fafafa;border-bottom:1px solid #c9c9c9}
+
+/* link_style 
+a:link, a:visited, a:hover, a:active{color:#666;text-decoration:underline}
+a:hover{color:#0076c8} */
 
 /* button */
 .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
@@ -95,122 +103,161 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .mb10{margin-bottom:10px}
 .mb25{margin-bottom:25px}
 
-#pageBar{margin-left:45%}
+/* page_option */
+.page_info{margin-bottom:10px;text-align:right}
+.page_info span.total_count{font-size:12px;color:#333}
+
+/* pagination */
+.pagination{display:block;margin-top:15px;text-align:center;line-height:normal;color:#666}
+.pagination *{display:inline-block;text-decoration:none;vertical-align:top}
+.pagination a{text-decoration:none;padding:0 5px;line-height:20px}
+.pagination a.onpage{font-family:'malgunbd';color:#0460a5}
+.pagination .direction_left01{margin:0 6px 0 3px}
+.pagination .direction_right01{margin:0 3px 0 6px}
+
+div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
 </style>
-<script type="text/javascript">
-	var check = function() {
-		if (!sf.findType.value) {
-			alert('검색 유형을 선택하세요');
-			sf.findType.focus();
-			return false;
-		}
-
-		if (!sf.findKeyword.value) {
-			alert('검색어를 입력하세요');
-			sf.findKeyword.focus();
-			return false;
-		}
-		sf.submit();
-	}
-</script>
 </head>
-<body>
-
+<script>
+    $(function() {
+        var searchSource = ["편준장", "손현종", "최혜정", "조민형", "박진영","이지은"]; // 배열 형태 
+        $("#searchInput").autocomplete({  // 오토 컴플릿트 시작
+            source : searchSource,    // source 는 자동 완성 대상
+            select : function(event, ui) {    // 아이템 선택시
+                console.log(ui.item);
+            },
+            focus : function(event, ui) {    // 포커스 가면
+                return false;	// 한글 에러 잡기 용도로 사용됨
+            },
+            minLength: 1,		// 최소 글자수
+            autoFocus: true, 	// 첫번째 항목 자동 포커스 기본값 false
+            classes: {    
+                "ui-autocomplete": "highlight"
+            },
+            delay: 500,    		// 검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//          disabled: true,   	   자동완성 기능 끄기
+            position: { my : "right top", at: "right bottom" }, 
+            close : function(event){    // 자동완성창 닫아질 때 호출
+                console.log(event);
+            }
+        });
+        
+    });
+</script>
 <div id="box">
-      <section id="section">
-         <div id="conbox">
-<div id="wrap">
-	<div id="container">
-		<div class="inner">		
-			<h2>후기 게시판</h2>			
-			
-			<!-- 검색 폼 시작--------------------- -->
-         <form name="sf" action="find" onsubmit="return check()">
-            <div align="right" class="row m-4">
+	<section id="section">
+		<div id="conbox">
+			<div id="wrap">
+				<div id="container">
+					<div class="inner">
+						<h2>후기 게시판</h2>
+						<!-- 검색 폼 시작--------------------- -->
+						<form id="reviewSearch" name="form1" method="GET" action="${path}/review/reviewSearch">
+							<div align="right" class="row m-4">
+								<select name="key" class="form-control" required>
+									<option value="" selected disabled hidden>::검색 유형::</option>
+									<option value="1">글제목</option>
+									<option value="2">작성자</option>
+									<option value="3">글내용</option>
+									<option value="4">챌린지이름</option>
+									<option value="5">전체</option>
+								</select> <input type="text" id="searchInput" name="word" class="form-control"
+									style="padding: 3px 20px 6px 20px" value=${ word }>
+								<button type="submit" class="btn btn-warning">검색</button>
+							</div>
+						</form>
+						<!-- 검색 폼 끝------------------------>
 
-               <select name="findType" class="form-control">
-                  <option value="">::검색 유형::</option>
-                  <option value="0">챌린지이름</option>
-                  <option value="1">글제목</option>
-                  <option value="2">작성자</option>
-                  <option value="3">글내용</option>
-               </select> 
-               <input type="text" name="findKeyword" class="form-control"
-                  placeholder="검색어를 입력하세요" style="padding: 3px 20px 6px 20px">
+						<!-- 게시글 리스트 테이블 ------------------------>
+						<br>
+						<br>
+						<table width="100%" class="table01">
+							<colgroup>
+								<col width="10%" />
+								<col width="25%" />
+								<col width="15%" />
+								<col width="20%" />
+								<col width="10%" />
+							</colgroup>
+							<thead>
+								<tr id="titleTd">
+									<th>글번호</th>
+									<th>제목</th>
+									<th>챌린지</th>
+									<th>작성자</th>
+									<th>작성일</th>
+									<th>조회수</th>
+								</tr>
+								<c:if test="${ list == null }">
+									<tr>
+										<td colspan="6">조회된 게시글이 없습니다.</td>
+									</tr>
+								</c:if>
+							</thead>
+							<tbody id="tbody">
+								<c:if test="${ list != null }">
+									<c:forEach var="review" items="${ list }">
+										<tr>
+											<td><c:out value="${ review.no }" /></td>
+											<td><a href="${ path }/review/reviewView?no=${review.no}">
+												<c:out value="${ review.title } " /> 
+													<c:if test="${ review.replyCount != 0 }">
+														[${ review.replyCount }]
+													</c:if>
+												</a>
+											</td>
+											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td><c:out value="${ review.writerId }" /></td>
+											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
+											<td><c:out value="${ review.viewCount }" /></td>
+										</tr>
+									</c:forEach>
+								</c:if>
+							</tbody>
+						</table>
+						<!-- 게시글 리스트 테이블 끝 ------------------------>
 
+						<!-- 로그인 된 회원에게만 글쓰기 버튼 보이기 ------------>
+						<div class="btn_right mt15">
+							<c:if test="${ loginMember != null }">
+								<button type="button" class="btn black mr5"
+									onclick="location.href='${path}/review/reviewWrite'">글쓰기</button>
+							</c:if>
+						</div>
+					</div>
 
-               <button type="button" onclick="check()" class="btn btn-warning" >검색</button>
+					<!-- 페이징 처리 ------------>
+					<div id="pageBar" style="align: center;">
+						<!-- 맨 처음으로 -->
+						<button onclick="location.href='${ path }/review/reviewList?page=1'">&lt;&lt;</button>
 
-            </div>
-            <!--  row end -->
-         </form>
-         <!-- 검색 폼 끝---------------------- -->
-         <br><br>
-			<form id="boardForm" name="boardForm">
-				<input type="hidden" id="function_name" name="function_name" value="getBoardList" />
-				<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
-				
-			
-				<table width="100%" class="table01">
-					<colgroup>
-						<col width="10%" />
-						<col width="25%" />
-						<col width="15%" />
-						<col width="20%" />
-						<col width="10%" />
-					</colgroup>
-					<thead>		
-						<tr>
-							<th>글번호</th>
-							<th>제목</th>
-							<th>챌린지이름</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>조회수</th>
-						</tr>
-						
-						<tr>
-                  			<td colspan="6">조회된 게시글이 없습니다.</td>
-               			</tr>
-						
-					</thead>
-					<tbody id="tbody">
-					
-					</tbody>	
-				</table>
-			</form>			
-			<div class="btn_right mt15">
-				<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewWrite'">글쓰기</button>
+						<!-- 이전 페이지로 -->
+						<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.prvePage }'">&lt;</button>
+
+						<!--  10개 페이지 목록 -->
+						<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
+							<c:if test="${ pageInfo.currentPage == status.current }">
+								<button disabled>
+									<c:out value="${ status.current }" />
+								</button>
+							</c:if>
+							<c:if test="${ pageInfo.currentPage != status.current }">
+								<button onclick="location.href='${ path }/review/reviewList?page=${ status.current }'">
+									<c:out value="${ status.current }" />
+								</button>
+							</c:if>
+						</c:forEach>
+
+						<!-- 다음 페이지로 -->
+						<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.nextPage }'">&gt;</button>
+
+						<!-- 맨 끝으로 -->
+						<button onclick="location.href='${ path }/review/reviewList?page=${  pageInfo.maxPage }'">&gt;&gt;</button>
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<div id="pageBar" style="align:center;">
-			<!-- 맨 처음으로 -->
-			<button onclick="location.href='${ path }/board/list?page=1'">&lt;&lt;</button>
-			
-			<!-- 이전 페이지로 -->
-			<button onclick="location.href='${ path }/board/list?page=${  pageInfo.prvePage }'">&lt;</button>
-
-			<!--  10개 페이지 목록 -->
-			<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-				<c:if test="${ pageInfo.currentPage == status.current }">
-					<button disabled><c:out value="${ status.current }" /></button>
-				</c:if>
-				<c:if test="${ pageInfo.currentPage != status.current }">
-					<button onclick="location.href='${ path }/board/list?page=${ status.current }'"><c:out value="${ status.current }" /></button>
-				</c:if>
-			</c:forEach>
-			
-			<!-- 다음 페이지로 -->
-			<button onclick="location.href='${ path }/board/list?page=${  pageInfo.nextPage }'">&gt;</button>
-			
-			<!-- 맨 끝으로 -->
-			<button onclick="location.href='${ path }/board/list?page=${  pageInfo.maxPage }'">&gt;&gt;</button>
-		</div>
-	</div>
-</div>
-</div>
-</section>
+	</section>
 </div>
 </body>
 </html>

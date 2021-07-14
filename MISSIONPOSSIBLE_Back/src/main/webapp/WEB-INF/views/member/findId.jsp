@@ -23,7 +23,7 @@
 </head>
 <body>
 <div>
-	id : <br><br><br>
+	id : <b>${ loginMember.id }</b><br><br><br>
 	<input type='BUTTON' value=" 창닫기" style="width: 380px; height: 30px;" onClick='self.close()'>
 </div>
 </body>

@@ -14,8 +14,15 @@
 <title>Insert title here</title>
 
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="${ path }/resources/se2/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+<!-- <script type="text/javascript" src="${ path }/resources/se2/se2/js/HuskyEZCreator.js" charset=" -->
 
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+
+<script src="${path}/resources/summernote/summernote-lite.js"></script>
+<script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
 	#box{ 
             background-color:rgb(224, 239, 132);
@@ -33,9 +40,13 @@
             top:20px;
             margin:auto;
          }
-         
+
+h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+
 input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
-input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
+input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
 input[type="checkbox"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
 input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
 input[type="password"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
@@ -55,11 +66,14 @@ table.table01 {border-collapse:separate;border-spacing:0;text-align:center;line-
 table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
 table.table01 td {padding:10px;vertical-align:middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 
-table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:1px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 caption.center{padding-top:6px;height:39px;line-height:130%;text-align:center;color:#333;padding-left:0;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody th{padding:10px;vertical-align:middle;font-family:'malgunbd';color:#333;border-right:1px solid #c9c9c9;border-bottom:1px solid #c9c9c9;background:#ececec}
 table.table02 tbody td{padding:10px;vertical-align:middle;padding-left:15px;background:#fafafa;border-bottom:1px solid #c9c9c9}
 
+/* link_style 
+a:link, a:visited, a:hover, a:active{color:#666;text-decoration:underline}
+a:hover{color:#0076c8} */
 
 /* button */
 .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
@@ -106,7 +120,6 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
 </style>
-
 </head>
 <body>
 <div id="box">
@@ -115,8 +128,9 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 <div id="wrap">
 	<div id="container">
 		<div class="inner">	
-			<h2>게시글 수정</h2>
-			<form id="boardForm" name="boardForm" action="/board/updateBoard" enctype="multipart/form-data" method="post" onsubmit="return false;">	
+			<h2 style="padding-bottom:20px;">게시글 수정</h2>
+			<form id="boardForm" name="boardForm" action="${ path }/board/boardModify" method="POST" enctype="multipart/form-data">	
+				<input type="hidden" name="qna_no" value="${ board.qna_no }" />
 				<table width="100%" class="table02">
 				<caption><strong><span class="t_red">*</span> 표시는 필수입력 항목입니다.</strong></caption>
 				    <colgroup>
@@ -126,16 +140,17 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 				    <tbody id="tbody">
 				       <tr>
 							<th>제목<span class="t_red">*</span></th>
-							<td><input id="board_subject" name="board_subject" value="" class="tbox01"/></td>
+							<td><input id="board_subject" name="title" value="${ board.title }" class="tbox01"/></td>
 						</tr>
 						 <tr>
 							<th>작성자</th>
-							<td id="board_writer"></td>
+							<td><input id="board_writer" name="writer" value="${ board.writer }" readonly></td>
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
-							<td><textarea name="editor" id="editor" rows="10" cols="100" style="width:700px; height:412px;"></textarea></td>
+							<td><textarea class="summernote" name="content" style=""><c:out value="${ board.content }"></c:out></textarea></td>
 						</tr>
+						<!-- 
 						<tr>
 							<th>첨부파일</th>
 							<td colspan="3" id="file_td">
@@ -143,14 +158,15 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
                                     <a href="#this" name="name_${row.index }" id="name_${row.index }">${var.ORIGINAL_FILE_NAME }</a>
 							<input type="file" id="files[0]" name="files[0]" value=""></td>
 						</tr>
+						-->
 				    </tbody>
 				</table>	
-				
+				<div class="btn_right mt15">
+					<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
+					<input type="submit" class="btn black" value="수정하기">
+				</div>
 			</form>
-			<div class="btn_right mt15">
-				<button type="button" class="btn black mr5" onclick="javascript:goBoardList();">목록으로</button>
-				<button type="button" class="btn black" onclick="javascript:updateBoard();">수정하기</button>
-			</div>
+			
 		</div>
 	</div>
 </div>
@@ -158,28 +174,57 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 </section>
 </div>
 
-<script type="text/javascript">
-    //전역변수
-    var obj = [];
-    //스마트에디터 프레임생성
-    nhn.husky.EZCreator.createInIFrame({
-        oAppRef: obj,
-        elPlaceHolder: "editor",
-        sSkinURI: "${ path }/resources/se2/se2/SmartEditor2Skin.html",
-        htParams : {
-            // 툴바 사용 여부
-            bUseToolbar : true,
-            // 입력창 크기 조절바 사용 여부
-            bUseVerticalResizer : true,
-            // 모드 탭(Editor | HTML | TEXT) 사용 여부
-            bUseModeChanger : true,
-        }
+<script>
+$('.summernote').summernote({
+	  height: 410,                 // 에디터 높이
+	  minHeight: null,             // 최소 높이
+	  maxHeight: 400,             // 최대 높이
+	  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+	  lang: "ko-KR",					// 한글 설정
+	  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+		  toolbar: [
+			    // [groupName, [list of button]]
+			    ['fontname', ['fontname']],
+			    ['fontsize', ['fontsize']],
+			    ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+			    ['color', ['forecolor','color']],
+			    ['table', ['table']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['insert',['picture','link','video']],
+			    ['view', ['fullscreen', 'help']]
+			  ],
+			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
+			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+			
+			onImageUpload : function(files, editor, welEditable) {
+		    		  sendFile(files[i], editor, welEditable);
+		    },
+});
+
+/* summernote에서 이미지 업로드시 실행할 함수 */
+function sendFile(file, el) {
+	// 파일 전송을 위한 폼생성
+    var form_data = new FormData();
+    form_data.append('file', file);
+    
+    $.ajax({ // ajax를 통해 파일 업로드 처리
+    	data: form_data,
+        type: "POST",
+        url: '/image',
+        cache : false,
+        enctype: 'multipart/form-data',
+        contentType : false,
+        processData : false,
+        success: function(data) { // 처리가 성공할 경우
+        	 // 에디터에 이미지 출력
+            editor.insertImage(welEditable, data.url)
+          }
     });
+}
+
+
 </script>
-</body>
-</html>
-
-
 </body>
 </html>
 <%@ include file="../common/footer.jsp"%> 

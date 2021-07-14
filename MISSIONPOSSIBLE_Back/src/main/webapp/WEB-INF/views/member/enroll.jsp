@@ -383,6 +383,14 @@ ul {
 	     top:20px;
 	     margin:auto;
 }
+.input-file-button{
+
+	  padding: 10px 20px;
+	  background-color:black;
+	  border-radius: 4px;
+	  color: white;
+	  cursor: pointer;
+}
 
 </style>
 <script type="text/javascript">
@@ -410,59 +418,30 @@ ul {
 	   
 	 //아이디 유효성검사
        $("#member_id").on("input",function(){
-           var regex = /^[a-zA-Z0-9]{4,12}$/;
-           var result = regex.exec($("#member_id").val())
-           
-           if(result != null){
-               $(".id.regex").html("");
-           }else{
-               $(".id.regex").html("영어 대소문자,숫자 4-12자리");
-               $(".id.regex").css("color","red")
-           }
+    	   let id = $("#member_id").val().trim();
+    	   valiId(id);
        });
-	 
 	 
 	 //비밀번호 유효성검사
        $("#member_pw").on("input",function(){
-           var regex = /^[A-Za-z\d]{8,12}$/;
-           var result = regex.exec($("#member_pw").val())
-           
-           if(result != null){
-               $(".pw.regex").html("");
-           }else{
-               $(".pw.regex").html("영어 대소문자,숫자 8-12자리");
-               
-           }
+    	   let pw = $("#member_pw").val().trim();
+    	   valiPw(pw);
        });
 	   
 	   // 닉네임 유효성 검사
 	   $("#member_nickname").on("input",function(){
-           var regex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
-           var result = regex.exec($("#member_nickname").val());
-           
-           if(result != null){
-              $(".name.regex").html("");  
-           }else{
-               $(".name.regex").html("특수문자 제외 2-10자리");
-           }
-           
+		  let nickname = $("#member_nickname").val().trim();
+		  valiNick(nickname);
        });
 	 
      //email유효성 검사
        $("#member_email").on("input",function(){
-            var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-            var result = regex.exec($("#member_email").val());
-           
-           if(result != null){
-              $(".email.regex").html("");  
-           }else{
-               $(".email.regex").html("올바른 이메일이 아닙니다");
-           }
+    	  valiEmail();
        });
 	 
 	    
     // 아이디 중복을 확인 처리 콜백함수
-	   $("#checkDuplicate").on("click",function(){
+	   $("#checkIdDuplicate").on("click",function(){
 	      // 중복확인전에 아이디 값이 4글자 이상인지 확인
 	      var id = $("#member_id").val().trim();
 	      
@@ -470,28 +449,33 @@ ul {
 	         alert("아이디는 최소 4글자 이상 입력하세요.")
 	         return;
 	      }
-
-		      // 중복 확인할 새창 띄우기
-		      const url = "<%= request.getContextPath()%>/member/checkId";
-		      const title = "duplicate";
-		      const status = "left=500px,top=100px,width=500px,height=300px";
-		      
-		      open("", title, status);
-		      
-		      // form에 데이터들을 채우고 open된 윈도우에서 결과를 받는 로직을 구성한다.
-		      // 자바스크립트에서 form은 name 속성으로 요소를 가져올 수 있다.
-		      checkIdForm.target = title; // form 전송하는 윈도우를 설정한다.
-		      checkIdForm.action = url;
-		      checkIdForm.method = "get";
-		      checkIdForm.userId.value = id;
-		      
-		      // form 전송하기
-		      checkIdForm.submit();
-
+  
+	      $.ajax({
+				type: "get",
+				url: "${path}/member/idCheck",
+				dataType: "json",
+				data: {
+					id // 속성의 키값과 변수명이 동일할 경우
+				},
+				success: function(data) {
+					console.log(data);
+					
+					if(data.validate === true) {
+						alert("이미 사용중인 아이디 입니다.");
+						$("#member_id").val('');
+					} else {
+						alert("사용 가능한 아이디 입니다.");		
+						$("#checkid").val('통과');
+					}
+				},
+				error: function(e) {
+					console.log(e);
+				}
+			});
 	   });
     
 	// 닉네임 중복을 확인 처리 콜백함수
-	   $("#checkNickName").on("click",function(){
+	   $("#checkNicknameDuplicate").on("click",function(){
 	      // 중복확인전에 닉네임 값이 2글자 이상인지 확인
 	      var nickname = $("#member_nickname").val().trim();
 	      
@@ -500,50 +484,54 @@ ul {
 	         return;
 	      }
 
-		      // 중복 확인할 새창 띄우기
-		      const url = "<%= request.getContextPath()%>/member/checkNickname";
-		      const title = "duplicate";
-		      const status = "left=500px,top=100px,width=500px,height=300px";
-		      
-		      open("", title, status);
-		      
-		      // form에 데이터들을 채우고 open된 윈도우에서 결과를 받는 로직을 구성한다.
-		      // 자바스크립트에서 form은 name 속성으로 요소를 가져올 수 있다.
-		      checkNicknameForm.target = title; // form 전송하는 윈도우를 설정한다.
-		      checkNicknameForm.action = url;
-		      checkNicknameForm.method = "get";
-		      checkNicknameForm.userNickname.value = nickname;
-		      
-		      // form 전송하기
-		      checkNicknameForm.submit();
-
+	      $.ajax({
+				type: "get",
+				url: "${path}/member/nicknameCheck",
+				dataType: "json",
+				data: {
+					nickname // 속성의 키값과 변수명이 동일할 경우
+				},
+				success: function(data) {
+					console.log(data);
+					
+					if(data.validate === true) {
+						alert("이미 사용중인 닉네임 입니다.");
+						$("#member_nickname").val('');
+					} else {
+						alert("사용 가능한 닉네임 입니다.");
+						$("#checkNickname").val('통과');
+					}
+				},
+				error: function(e) {
+					console.log(e);
+				}
+			});
 	   });
 	
 	   //회원가입 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행     
 	   $("#enrollSubmit").on("click",function(){
-    	   var id = $("#member_id").val();
-    	   var pw = $("#member_pw").val();
-    	   var name = $("#member_nickname").val();
-    	   var email = $("#member_email").val();
+    	   var id = $("#member_id").val().trim();
+    	   var pw = $("#member_pw").val().trim();
+    	   var nickname = $("#member_nickname").val().trim();
+    	   var email = $("#member_email").val().trim();
     	   
-    	   var idregex = /^[a-zA-Z0-9]{4,12}$/;
-    	   var pwregex = /^[A-Za-z\d]{8,12}$/;
-    	   var nameregex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
-    	   var emailregex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    	   
-    	   var idregex = idregex.exec(id);
-    	   if(idregex == null){
+    	   if(!valiId(id)){
     		   alert("아이디 양식을 다시 확인해주세요");
     		   return;
     	   }
-    	   var pwregex = pwregex.exec(pw);
-    	   if(pwregex == null){
+    	   
+    	   if(!valiPw(pw)){
     		   alert("비밀번호 양식을 다시 확인해주세요");
     		   retrun;
     	   }
-    	   var nameregex = nameregex.exec(name);
-    	   if(nameregex == null){
-    		   alert("이름 양식을 다시 확인해주세요");
+    	  
+    	   if(!valiNick(nickname)){
+    		   alert("닉네임 양식을 다시 확인해주세요");
+    		   retrun;
+    	   }
+    	   
+    	   if(!valiEmail(email)){
+    		   alert("이메일 양식을 다시 확인해주세요");
     		   retrun;
     	   }
     	   
@@ -558,8 +546,8 @@ ul {
 	   	        return;
    	    	}
     	 
-    	 // 빈칸 없을 때 제출.
-    	 ${"join_content"}.submit();
+    	 // 빈칸 없을 때 제출
+    	   ${"join_content"}.submit();
 
        })
 	});
@@ -571,6 +559,12 @@ ul {
             m.value = m.value + document.getElementById("member_email_select").value;
             var n = m.value.split("@")[0];
             m.value = n + document.getElementById("member_email_select").value;
+            
+            if(document.getElementById("member_email_select").value != ""){
+            	$(".email.regex").html("");
+            }else{
+            	$(".email.regex").html("올바른 이메일이 아닙니다");
+            }
         }
     }
 	
@@ -578,7 +572,86 @@ ul {
     function join_cn() {
         location.href = "${ path }";
     }
- 
+ 	
+ 	//프로필 썸네일 띄우기
+    function setThumbnail(event) { 
+    	var reader = new FileReader(); 
+    	reader.onload = function(event) { 
+    		var img = document.getElementById("profile");
+    		img.setAttribute("src", event.target.result);
+    };
+    	reader.readAsDataURL(event.target.files[0]); 	
+   }
+ 	
+ 	function valiPw(pw){
+ 	   var checkNumber = /[^0-9]/;
+ 	   var checkEnglish =  /[^a-zA-Z]/;
+ 	   var checkBlank = /[\s]/;
+ 	   var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+ 	   var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+ 	   
+        if(pw.length < 8 || pw.length > 12){
+            $(".pw.regex").html("영문,숫자,특수문자 혼합 8-12자리");
+        }else if(checkKorean.test(pw)){
+     	   $(".pw.regex").html("한글을 포함할 수 없습니다.");
+        }else if(!checkEnglish.test(pw)||!checkNumber.test(pw)||!checkspe.test(pw)){
+     	   $(".pw.regex").html("영문,숫자,특수문자를 혼합하여 입력해주세요.");
+        }else if(checkBlank.test(pw)){
+            $(".pw.regex").html("공백을 포함할 수 없습니다.");
+        }else{
+     	   $(".pw.regex").html("");
+     	   return true;
+        }
+ 	}
+ 	
+ 	function valiId(id){
+ 	   var checkNumber = /[^0-9]/;
+ 	   var checkEnglish =  /[^a-zA-Z]/;
+ 	   var checkBlank = /[\s]/;
+ 	   var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+ 	   var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+ 	   
+        if(id.length < 4 || id.length > 12){
+            $(".id.regex").html("영문,숫자를 혼합 4-12자리");
+        }else if(checkKorean.test(id)){
+     	   $(".id.regex").html("한글을 포함할 수 없습니다.");
+        }else if(!checkEnglish.test(id)||!checkNumber.test(id)){
+     	   $(".id.regex").html("영문,숫자를 혼합하여 입력해주세요.");
+        }else if(checkBlank.test(id)){
+            $(".id.regex").html("공백을 포함할 수 없습니다.");
+        }else if(checkspe.test(id)){
+        	 $(".id.regex").html("특수문자를 포함할 수 없습니다.");
+        }else{
+     	   $(".id.regex").html("");
+     	  return true;
+        }
+ 	}
+ 	function valiNick(nickname){
+ 		var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+		var checkBlank = /[\s]/;
+		  
+		  if(nickname.length < 2 || nickname.length > 10){
+			  $(".name.regex").html("영문,숫자를 혼합 2-10자리");
+		  }else if(checkBlank.test(nickname)){
+			  $(".name.regex").html("공백을 포함할 수 없습니다.");
+		  }else if(checkspe.test(nickname)){
+			  $(".name.regex").html("특수문자를 포함할 수 없습니다.");
+		  }else{
+			  $(".name.regex").html("");
+			  return true;
+		  }
+ 	}
+ 	function valiEmail(){
+ 		var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        var result = regex.exec($("#member_email").val());
+       
+       if(result != null){
+          $(".email.regex").html("");  
+          return true;
+       }else{
+           $(".email.regex").html("올바른 이메일이 아닙니다");
+       }
+ 	}
 </script>
 
 </head>
@@ -590,13 +663,15 @@ ul {
          <div id="conbox">
 	<br><br><br><br><br><br>
 	<h4 style="text-align: center;">회원가입</h4>
+	<br><br>
 	<hr>
+	<br><br>
 	<div id="enroll-container">
-		<form name ="memberEnrollFrm" action="enroll" method="get">
+		<form name ="memberEnrollFrm" id="join_content" action="enroll" method="post" enctype="multipart/form-data">
 			<table  border="1" style="margin:0 auto;">
 				<tr>
-					<td style="width:300px; height:200px;">
-						<!-- 사용자 프로필 사진  --> 
+					<td style="width:300px; height:300px;">
+						<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
 					</td>
 					<td>
 						<ul class="join_ulcss">
@@ -607,9 +682,9 @@ ul {
 				            <li>
 				                <span class="join_li_title"><b style="color:red;">·</b>아이디</span>
 				                <div class="join_li_input">
-				                    <input type="text" class="member_id" name="member_id" id="member_id"
+				                    <input type="text" class="member_id" name="id" id="member_id"
 				                        style="width: 280px; margin-right: 10px;">
-				                    <button type="button" class="addr_btn" onclick="" id="checkDuplicate">중복확인</button>
+				                    <button type="button" class="addr_btn" onclick="" id="checkIdDuplicate">중복확인</button>
 				                    <div class="id regex"></div>
 				                </div>
 				            </li>
@@ -618,7 +693,7 @@ ul {
 				                <span class="join_li_title">
 				                    <b style="color:red;">·</b>비밀번호</span>
 				                <div class="join_li_input">
-				                    <input type="password" class="member_pw" id="member_pw" name="member_pw"
+				                    <input type="password" class="member_pw" id="member_pw" name="password"
 				                        placeholder="영문대/소문자, 숫자 4-12자리">
 				                    <div class="pw regex"></div>
 				                       
@@ -636,9 +711,9 @@ ul {
 				            <li>
 				                <span class="join_li_title"><b style="color:red;">·</b>닉네임</span>
 				                <div class="join_li_input">
-				                <input type="text" class="member_nickname" id="member_nickname" name="member_nickname"
+				                <input type="text" class="member_nickname" id="member_nickname" name="nickname"
 				                	style="width: 280px; margin-right: 10px;">
-				                <button type="button" class="addr_btn" onclick="" id="checkNickName">중복확인</button>
+				                <button type="button" class="addr_btn" onclick="" id="checkNicknameDuplicate">중복확인</button>
 				                <div class="name regex"></div>
 				                </div>
 				            </li>
@@ -647,7 +722,7 @@ ul {
 				                <span class="join_li_title2"><b style="color:red;">·</b>이메일</span>
 				                <div class="join_li_input2">
 				                    <div class="join_li_input_out">
-				                        <input type="text" class="member_email" id="member_email" name="member_email">
+				                        <input type="text" class="member_email" id="member_email" name="email">
 				                        <select class="member_email_select" id="member_email_select" onchange="email_select();">
 				                            <option value="" selected>직접입력</option>
 				                            <option value="@naver.com">naver.com</option>
@@ -669,7 +744,10 @@ ul {
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<button class="btn btn-primary" id="profile">프로필 사진 등록</button>
+						<label class="input-file-button" for="input-file">
+						  프로필 사진 등록
+						</label>
+						<input type="file" id="input-file"  name="upfile" style="display:none" accept="image/*" onchange="setThumbnail(event);"/> 
 						<br>
 					</td>
 				</tr>
@@ -678,7 +756,7 @@ ul {
 			<label class="join_btns">
             	<div class="join_btns_out">
                	 	<span class="cancel_btn" onclick="join_cn();">취소</span>
-                	<span class="join_all_btn" id="enrollSubmit" onclick="join_confirm();">회원가입</span>
+                	<span class="join_all_btn" id="enrollSubmit">회원가입</span>
             	</div>
         	</label>
 		</form>

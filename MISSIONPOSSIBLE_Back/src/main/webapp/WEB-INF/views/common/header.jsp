@@ -158,9 +158,9 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
+					    <input type="button" id="loginList"  onclick="#" value="후기>"/><hr>
+						<input type="button" id="loginList"  onclick="#" value="인증샷>"/><hr>
+						<input type="button" id="loginList"  onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->
 					<c:if test="${ loginMember != null }">
@@ -180,15 +180,13 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="찜>"/><hr>
-						<table style="width: 300px; margin:auto;">
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="찜>"/>
+						<br><br><br>
+						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
 								<td>보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
-						</table>
-						<hr>
-						<table style="width: 300px; margin:auto;">
 							<tr>
 								<td>등급</td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>

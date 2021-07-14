@@ -20,7 +20,7 @@
 	<script src="${path}/js/jquery-3.6.0.min.js"></script>
 
 	<style>
-		/* 전체 영역-------------------------------------------------------------------------*/
+		/* 전체 영역--------------------------------------------------------------------------*/
 				
 			/*---------------제일 바깥 영역 설정-----------------*/
 			#box{ 
@@ -69,13 +69,13 @@
 				<h2>챌린지 포기 신청</h2>
 			</div>
 			<div id="challengeGiveupCont">
-				<form action="#" method="POST" class="" id="giveupRequest">
+				<form action="${ path }/challenge/giveup" method="POST" class="" id="giveupRequest">
 					<table>
 						<tr>
 							<td colspan="2">
 								<p>
 									어떠한 사정이 있으신가요? 피드백을 남겨주시면 앞으로 더 좋은 서비스를 제공하기 위해 더 노력하겠습니다.<br>
-									탈퇴할 챌린지의 이름을 띄어쓰기, 기호 포함 <span id="strong">"완벽 일치"</span>하게 입력 후 포기 신청바랍니다.
+									탈퇴할 챌린지의 이름을 띄어쓰기, 기호 포함 <b>"완벽 일치"</b>하게 입력 후 포기 신청바랍니다.
 								</p>
 							</td>
 						</tr>
@@ -83,7 +83,7 @@
 							<td>포기 사유</td>
 							<td>
 								<c:set var="giveupArray" 
-									value="${ fn:split('챌린지에 대한 불만족/챌린지 수행 시간 부족/챌린지에 대한 동기부여 및 자존감 하락/건강상의 이유/기타', '/') }"
+									value="${ fn:split('챌린지에 대한 불만족/챌린지 수행 시간 부족/챌린지에 대한 동기부여 및 자존감 하락/건강상의 이유/더 이상 챌린지가 필요하지 않음/기타', '/') }"
 								/>
 								<select id="giveupReason" name="giveupReason">
 									<c:forEach var="item" items="${giveupArray}" varStatus="reason">
@@ -94,10 +94,18 @@
 						</tr>
 						<tr>
 							<td>
+								포기 신청 ID
+							</td>
+							<td>
+								"<c:out value="${ loginMember.id }"/>"
+							</td>
+						</tr>
+						<tr>
+							<td>
 								챌린지 이름
 							</td>
 							<td>
-								"[챌린지 이름]"
+								"<c:out value="${ cTitle }"/>"
 							</td>
 						</tr>
 						<tr>
@@ -105,6 +113,9 @@
 								챌린지 이름 입력
 							</td>
 							<td>
+								<input type="hidden" name="cNo" value="${ cNo }"/>
+								<input type="hidden" name="cTitle" value="${ cTitle }"/>
+								<input type="hidden" name="id" value="${ loginMember.id }"/>
 								<input type="text" name="inputTitle" placeholder="챌린지 이름을 입력하시오."/>
 							</td>
 						</tr>

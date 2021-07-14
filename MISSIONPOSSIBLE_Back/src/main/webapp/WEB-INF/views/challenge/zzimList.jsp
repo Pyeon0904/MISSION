@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- 제이쿼리 import -->
-<script src="${path}/js/jquery-3.6.0.min.js"></script>
+<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
 		/* 전체 영역--------------------------------------------------------------------------*/
@@ -99,9 +99,14 @@
 	.itemCont .itemInfoCont .itemTitle{ font-weight:bold;}
 	.itemCont .itemInfoCont .itemSubCont{margin-top:10px;}
 	.itemShowMenu{
-		width:50px; height:50px; background:rgba(0,0,0,0.5); border-radius:50%;
-		position:relative; top:-180px; left:130px; 
-		font-size:2.5em; color:white; font-weight:bold; text-align:center;
+		width:180px; height:180px; background:rgba(0,0,0,0.5);
+		position:relative; top:-180px; left:0px; 
+		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5;
+	}
+	.itemDelete{
+		width:30px; height:30px; background:rgba(255,0,0,0.5);
+		position:relative; top:-242px; left:150px;
+		font-size:1.5em; color:white; font-weight:bold; text-align:center;
 	}
 	#pageBarContainer{width:950px; height:60px; text-align:center; float:right; margin-right:30px;}
 	#pageBar{
@@ -125,94 +130,88 @@
 		
 				<div id="subHeaderContainer">
 					<h2>찜한 챌린지 목록</h2>
-					<div class="searchArea">
-						<form action="#" method="GET" class="" id="challengeSearchForm">
-							<input type="hidden" name="" value="" />
-							<div class="inputGroup">
-								<input type="text" class="searchBox" name="term" placeholder="챌린지 검색" />
-								<span class="inputGroupBtn">
-									<button class="btn btnSearch" type="submit">
-										<i class="fa fa-search"></i>
-									</button>
-								</span>
-							</div>
-						</form>
-					</div>
 				</div><!-- #subHeaderContainer -->
 				
 				<div id="productContainer">
 					<!-- 카테고리 바 -->
 					<div id="categoryBar">
-						<!--  
-						<ul id="categoryList">
-						    <li onclick="location.href='${recruitListViewPath}'">모집중인 챌린지</li>
-						    <li onclick="location.href='${ongoingListViewPath}'">진행중인 챌린지</li>
-						    <li onclick="location.href='${endListViewPath}'">종료된 챌린지</li>
-						</ul>
-						-->
 					</div><!-- categoryBar -->
 					
 					<!-- 챌린지 진열 구역 -->
 					<div id="challengeDisplay">
 						<div class="categoryArea">
 							<h3>찜한 챌린지</h3>
-							<p>총 00개</p>
+							<!-- 조회된 챌린지의 개수 -->
+							<p>총 <c:out value="${ pageInfo.listCount }"/>개</p>
 						</div>
 						<hr>
 						<div class="challengeList">
 						<!-- 상품 리스트 -->
 							<div class="challengeListCont">
 							<!-- 상품 리스트 내역 -->
+							
 								<div class="challengeListDisplay">
 									<ul>
-									<%-- if(list.isEmpty()) { --%>
-									<!-- <li style="width:25%;">
+									<c:if test="${ (list == null) or (pageInfo.listCount == 0) }">
+										<li style="width:25%;">
 											<div class="itemCont">
 												<div class="itemPhotoBox">
-													<img src="<%--request.getContextPath() --%>/resources/images/logo-orange.png" alt="desc" width="200px">
+													<img src="${path}/resources/images/file.png" alt="desc" width="200px">
 												</div>
 												<div class="itemInfoCont">
 													<p>
-														<span class="itemTitle">상품이 등록되지 않았습니다.</span><br>
+														<span class="itemTitle">찜한 챌린지를 찾을 수 없습니다.</span><br>
 														<span class="itemSubCont">NONE!</span>
 													</p>
 												</div>
 											</div>
 										</li>
-									-->	
-									<%--} else { 
-											for(Product product : list) {
-									--%>
-									<% 
-									for(int i = 0; i < 12; i++) {
-										%>	
-										<li style="width:25%;">
-											<div class="itemCont">
-												<div class="itemPhotoBox">
-													<img src="${path}/resources/images/file.png" alt="챌린지 썸네일" width="180px">
-													<div class="itemShowMenu">
-														<span class="details">X</span>
+									</c:if>
+									<c:if test="${ list != null }">
+										<c:forEach var="challenge" items="${ list }">
+											<li style="width:25%;">
+												<div class="itemCont">
+													<div class="itemPhotoBox">
+														<c:if test="${ challenge.thumbnailFile == null }">
+															<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
+														</c:if>
+														<c:if test="${ challenge.thumbnailFile != null }">
+															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
+																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
+														</c:if>
+														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
+															<p class="details">상세보기</p>
+														</div>
+													</div>
+													<div class="itemInfoCont">
+														<p>
+															<span class="itemTitle">
+																<c:out value="${ challenge.title }"/>
+															</span>
+															<br>
+															<span class="itemSubCont">챌린지 모집기간</span>
+															<br>
+															<!-- D-Day 로직 구현한 파일 include -->
+															<%@ include file="date.jsp" %>										
+															<!-- 
+																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
+															-->
+															<span class="itemProgressStatus">
+																D-<c:out value="${ startNum - todayNum }"></c:out>
+															</span>
+														</p>
+														<div class="itemDelete" onclick="zzimDelete(${ challenge.challengeNo });">
+															<p class="details">X</p>
+														</div>
 													</div>
 												</div>
-												<div class="itemInfoCont">
-													<p>
-														<span class="itemTitle"><%-- product.getProductName() --%>[개인]독서 챌린지</span><br>
-														<span class="itemSubCont"><%-- product.getPrice() --%>챌린지 모집기간</span><br>
-														<span class="itemProgressStatus"><%-- product.getPrice() --%>D-2</span>
-													</p>
-												</div>
-											</div>
-										</li>
-									<%--
-											}
-										}
-									--%>
-									<% 
-									}
-									%>
+											</li>
+										</c:forEach>
+									</c:if>
 									<script>
 										$(document).ready(()=>{
 											$("div.itemShowMenu").hide();
+											$("div.itemDelete").hide();
 											
 											$(".itemPhotoBox").hover(
 												function(){
@@ -222,14 +221,17 @@
 													$(this).find(".itemShowMenu").fadeOut(200);
 												}
 											);
+											$(".itemCont").hover(
+												function(){
+													$(this).find(".itemDelete").fadeIn(200);
+												}, 
+												function(){
+													$(this).find(".itemDelete").fadeOut(200);
+												}
+											);
 											
 											$(".itemShowMenu").on("click",function(event){
-												if(confirm("해당 챌린지를 찜 목록에서 삭제하시겠습니까?")){
-													alert("삭제 완료되었습니다.");
-													location.replace('#');
-												} else {
-													alert("요청이 취소되었습니다.");
-												}
+												alert("상세 페이지로 이동합니다.");
 											});
 											
 											$("#categoryBar ul li").hover(
@@ -241,6 +243,14 @@
 													}
 												);
 										});
+										
+										function zzimDelete(no){
+											if(confirm("해당 챌린지를 찜 목록에서 삭제하시겠습니까?")){
+												location.href="${path}/challenge/zzimDelete.do?cNo="+no;
+											} else {
+												alert("사용자에 의해 찜 목록 삭제 요청이 취소되었습니다.");
+											}
+										}
 									</script>
 									</ul>
 								</div>
@@ -255,22 +265,27 @@
 							-->
 							
 							<!-- 이전 페이지로 -->
-							<div class="pageArrow" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=페이지인포.getPrvePage()' --%>">
+							<div class="pageArrow" onclick="location.href='${ path }/challenge/zzimList?page=${ pageInfo.prvePage }'">
 								 <i class="fa fa-caret-left" aria-hidden="true"></i>
 							</div>			
 							<!--  10개 페이지 목록 -->
-							<% for (int p = 1; p <= 3; p++) { %>
-							<%-- if(p == pageInfo.getCurrentPage()) { 
-							<button disabled><%= p %></button>--%>
-							<%-- } else { --%>
-								<div class="pageCount" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=<%= p %>'--%>"></div>
-							<%-- } --%>
-							<% } %>
-											
-							<!-- 다음 페이지로 -->
-							<div class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<페이지인포Info.getNextPage()%>'--%>">
-								<i class="fa fa-caret-right" aria-hidden="true"></i>
-							</div>			
+							<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
+					        	<c:if test="${ pageInfo.currentPage == status.current}">
+									<div class="pageCount" style="background-color:yellow;">
+					              		<c:out value="${ status.current }"/>
+					               	</div>
+					            </c:if>
+					            <c:if test="${ pageInfo.currentPage != status.current}">
+					               	<div class="pageCount" onclick="location.href='${ path }/challenge/zzimList?page=${ status.current }'">
+					               		<c:out value="${ status.current }"/>
+					               	</div>
+					            </c:if>
+					        </c:forEach>
+					        <!-- 다음 페이지로 -->
+							<div class="pageArrow" onclick="location.href='${ path }/challenge/zzimList?page=${ pageInfo.nextPage }'">
+								 <i class="fa fa-caret-right" aria-hidden="true"></i>
+							</div>
+									
 							<!-- 맨 끝으로 
 							<button class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<%= pageInfo.getMaxPage() %>'--%>"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>'
 							-->
