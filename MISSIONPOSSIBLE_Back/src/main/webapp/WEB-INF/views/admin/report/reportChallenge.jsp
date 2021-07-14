@@ -104,8 +104,8 @@ $(function () {
 												<c:out value="${ report.sendId } " />
 											</td>
 											<td class="view-click td-3 noTd"><c:out value="${ report.reportedId }" /></td>
-											<td><a class="getURL" href="${ path }/challenge/participate?no=${report.c_No}" target="viewF">
-											<c:out value="${ report.c_No }" /></a></td>
+											<td><a class="getURL" href="${ path }/challenge/participate?no=${report.c_no}" target="viewF">
+											<c:out value="${ report.c_no }" /></a></td>
 											<td><c:out value="${ report.category }" /></td>
 											<td><c:out value="${ report.content }" /></td>
 											<td><fmt:formatDate type="date" value="${ report.createDate }" /></td>
