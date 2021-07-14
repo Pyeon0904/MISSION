@@ -121,18 +121,51 @@
 	<div id="box">
     	<section id="section">
         	<div id="conbox">
+        		<!-- D-Day 로직 구현한 파일 include -->
+				<%@ include file="date.jsp" %>
 					<div id="subHeaderContainer">
+						
+						<!-- 챌린지 총 일수와 내가 인증한 일수 값 받아오게끔 하기 -->
+						<c:set var="totalDay" value="${ endNum - startNum }"/>
+						<c:set var="successDay" value="${ successCount }"/>
+									
+						<!-- 챌린지 달성률 계산식 -->
+						<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>
+						
 						<h2>참여중인 챌린지 정보</h2>
 						<div class="funcArea">
-							<form action="${path}/challenge/giveup" method="GET" class="" id="challengeGiveupForm">
-								<input type="hidden" name="cNo" value="${ challenge.challengeNo }" />
-								<input type="hidden" name="cTitle" value="${ challenge.title }"/>
-								<button class="btn btnGiveup" type="submit">포기하기</button>
-							</form>
-							<button type="button" class="btn btnCertify" 
-								onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=400,scrollbars= 0, toolbar=0, menubar=no')">
-								인증하기
-							</button>
+							
+							<!-- 보상받기 버튼 활성화 -->
+							<c:choose>
+								<c:when test="${ (todayNum >= endNum) and (progPercent >= 80 and progPercent <= 100) }">
+									<button type="button" class="btn btnReward" 
+										onclick="location.href='${path}/challenge/reward.do?cNo=${ challenge.challengeNo }&rate=${ progPercent }'">
+										보상받기
+									</button>
+									<script>
+										alert("그 동안 고생 많으셨습니다! 오늘은 챌린지 종료일입니다! 보상 받기 버튼을 클릭하여 포인트를 획득하세요!");
+									</script>
+								</c:when>
+								<c:when test="${ (todayNum >= endNum) and (progPercent < 80) }">
+									<button type="button" class="btn btnReward" disabled="disabled">
+										챌린지 종료
+									</button>
+									<script>
+										alert("그 동안 고생 많으셨습니다. 오늘은 챌린지 종료일입니다. 아쉽게도 챌린지 보상 기준 미달로 인해 보상을 받을 수 없습니다.");
+									</script>
+								</c:when>
+								<c:otherwise>
+									<form action="${path}/challenge/giveup" method="GET" class="" id="challengeGiveupForm">
+										<input type="hidden" name="cNo" value="${ challenge.challengeNo }" />
+										<input type="hidden" name="cTitle" value="${ challenge.title }"/>
+										<button class="btn btnGiveup" type="submit">포기하기</button>
+									</form>
+									<button type="button" class="btn btnCertify" 
+										onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=400,scrollbars= 0, toolbar=0, menubar=no')">
+										인증하기
+									</button>
+								</c:otherwise>
+							</c:choose>
 							<!--  
 							<form action="${ path }/chat/chatRoom" method="GET" class="" id="challengeChatForm">
 								<input type="hidden" name="bang_id" value="${ challenge.challengeNo }" />
@@ -182,8 +215,6 @@
 											<span>진행 기간</span>
 										</td>
 										<td>
-											<!-- D-Day 로직 구현한 파일 include -->
-											<%@ include file="date.jsp" %>
 											<!-- 챌린지 수료까지의 D-Day -->
 											<span>
 												D-<c:out value="${ endNum - todayNum }"/>
@@ -360,9 +391,6 @@
 														
 														selectBgcolor = "";
 														
-														// 콘솔 모니터링 위함
-														System.out.println("비교 : " + compareDate + " / " + certDateArr);
-														
 														//=================인증 따라 색 지정 하는 곳 =================
 														
 														//------비교할 날짜를 INT형태로 변환 시작-------
@@ -397,15 +425,9 @@
 																selectBgcolor = "";
 															}
 														}
-														// 콘솔 모니터링 위함
-														System.out.println("O : " + tempO + " | bg : " + selectBgcolor);
-														System.out.print("startNum : " + startNum);
-														System.out.print(" | todayNum : " + todayNum);
-														System.out.println(" | compareDateNum : " + compareDateNum);
 										 			}
 										 			// 위에 로직에서 받아온 selectBgcolor값을 저장
 										 			bgcolor = selectBgcolor;
-										 			System.out.println("=========="+i+"========");
 										 			
 													String color = "";
 													
@@ -456,13 +478,6 @@
 							<td id="progressBarArea">
 								<div id="barContainer">
 									<h4>나의 진행도</h4>
-									
-									<!-- 챌린지 총 일수와 내가 인증한 일수 값 받아오게끔 하기 -->
-									<c:set var="totalDay" value="${ endNum - startNum }"/>
-									<c:set var="successDay" value="${ successCount }"/>
-									
-									<!-- 챌린지 달성률 계산식 -->
-									<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>
 									
 									<div class="barEmpty">
 										<div class="barGreen" style="width:${progPercent}%"></div>

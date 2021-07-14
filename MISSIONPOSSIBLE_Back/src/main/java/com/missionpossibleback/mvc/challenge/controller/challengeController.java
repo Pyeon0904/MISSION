@@ -1,5 +1,6 @@
 package com.missionpossibleback.mvc.challenge.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,9 @@ import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
+import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +38,9 @@ public class challengeController {
 	
 	@Autowired
 	private ChallengeService service; 
+	
+	@Autowired
+	private MemberService memberService;
 	
 	//첼린지 등록 GET
 	@GetMapping("/challenge/challengeRegister")
@@ -49,7 +55,8 @@ public class challengeController {
 			@ModelAttribute Challenge challenge,
 			@RequestParam("upfile") MultipartFile upfile,
 			@RequestParam("id") String id, 
-			@ModelAttribute MyChallengeList myChallengeList) {
+			@ModelAttribute MyChallengeList myChallengeList,
+			@ModelAttribute Pointlog pointlog) {
 		int result = 0;
 		
 		log.info("챌린지 등록 요청");
@@ -99,6 +106,28 @@ public class challengeController {
 					log.info("내 챌린지 리스트에 정상적으로 추가되지 않았습니다.");
 				}
 				
+				int resultPoint = loginMember.getPoint() - challenge.getMinusPoint();
+				
+				// 포인트를 차감하고 참가신청을 할 수 있는 상태이기 떄문에 포인트 차감한 것을 적용
+				int updatePoint = service.saveMemberPoint(id, resultPoint);
+				
+				if(updatePoint > 0) {
+					log.info("포인트 차감 성공");
+					
+					pointlog.setId(id);
+					pointlog.setCno(challenge.getChallengeNo());
+					pointlog.setValue(challenge.getMinusPoint());
+					pointlog.setHistory("MINUS_JOIN");
+					
+					int saveLog = service.savePointlog(pointlog);
+					if(saveLog > 0) {
+						log.info("포인트 증감 로그 저장 완료");
+					} else {
+						log.info("포인트 증감 로그 저장 실패");
+					}
+				} else {
+					log.info("포인트 차감 실패");
+				}
 				
 				
 			} else {
@@ -316,7 +345,17 @@ public class challengeController {
 			
 			String id = loginMember.getId();
 			
-			int successCount = service.getCertCountById(challengeNo, id);
+			int successCount = service.getCertCountById(challengeNo, id); // 챌린지 달성한 횟수
+			
+//			// 마지막날을 포함하지 않는 챌린지 진행일을 구하기
+//			long endNum = challenge.getDeadline().getTime() / ((1000*60*60*24));//챌린지 마지막날을 수로 변경
+//			long startNum = challenge.getStartDate().getTime() / ((1000*60*60*24));//챌린지 시작날을 수로 변경
+//			
+//			long totalPeriod = endNum - startNum; // 마지막날에서 시작날을 뺌
+//			
+//			int totPeriodInt = Math.toIntExact(totalPeriod); // 챌린지 진행일
+//			
+//			double achieveRate = (successCount / totPeriodInt) * 100; // 챌린지 달성률
 			
 			// 세션에 리스트 저장해서 보내기
 			HttpSession session = request.getSession();
@@ -340,8 +379,6 @@ public class challengeController {
 		
 	}
 	
-
-	
 	// 참여중인 챌린지 VIEW 페이지에 INCLUDE될 챌린지 인증 페이지!
 	// 		챌린지 인증 리스트
 	@GetMapping("/challenge/certList")
@@ -363,6 +400,118 @@ public class challengeController {
 		model.addObject("pageInfo", pageInfo);
 		model.setViewName("challenge/certList");
 		
+		return model;
+	}
+	
+	// 챌린지 보상 받기 GET 메소드
+	@GetMapping("/challenge/reward.do")
+	public ModelAndView reward(ModelAndView model, 
+			@RequestParam("rate") Double rate, @RequestParam("cNo") int cNo,
+			@SessionAttribute(name = "loginMember", required=false) Member loginMember,
+			@ModelAttribute Pointlog pointlog) {
+		
+		if(loginMember != null) {
+			
+			int resultPoint = 0;
+			
+			Challenge challenge = service.findByNo(cNo);
+			
+			Pointlog userPointlog = service.findPointlogByObject(loginMember.getId(), cNo, "PLUS_FINISH");
+			
+			if(!userPointlog.getHistory().equals("PLUS_FINISH")) {
+				
+				if(challenge.getMinusPoint() >= 100 && challenge.getMinusPoint() <= 500) {
+					if(rate >= 80) {
+						
+						resultPoint = (int) (loginMember.getPoint() + 1000);
+						int updatePoint = service.saveMemberPoint(loginMember.getId(), resultPoint);
+						
+						if(updatePoint > 0) {
+							
+							pointlog.setId(loginMember.getId());
+							pointlog.setCno(cNo);
+							pointlog.setValue(1000);
+							pointlog.setHistory("PLUS_FINISH");
+							
+							int saveLog = service.savePointlog(pointlog);
+							if(saveLog > 0) {
+								log.info("포인트 증감 로그 저장 완료");
+							} else {
+								log.info("포인트 증감 로그 저장 실패");
+							}
+							
+							model.addObject("msg", "축하드립니다! 챌린지 차감 포인트가 500포인트 이하인 챌린지는 80%이상 달성시 무조건 1000P를 적립해드리고 있습니다! 챌린지 달성 보상 포인트("+ 1000 +"P)가 적립되었습니다! 로그아웃 후 재접속시 포인트 적립 적용을 확인하실 수 있습니다.");
+							model.addObject("location", "/challenge/participate?no=" + cNo);
+						} else {
+							model.addObject("msg", "알 수 없는 오류입니다. 다시 요청하여 주십시오.");
+							model.addObject("location", "/challenge/participate?no=" + cNo);
+						}
+					}
+				} else if(challenge.getMinusPoint() > 500) {
+					if(rate >= 80 && rate < 100) {
+						
+						resultPoint = (int) (loginMember.getPoint() + (challenge.getMinusPoint() * 1.5));
+						int updatePoint = service.saveMemberPoint(loginMember.getId(), resultPoint);
+						
+						if(updatePoint > 0) {
+							
+							pointlog.setId(loginMember.getId());
+							pointlog.setCno(cNo);
+							pointlog.setValue((int)(challenge.getMinusPoint() * 1.5));
+							pointlog.setHistory("PLUS_FINISH");
+							
+							int saveLog = service.savePointlog(pointlog);
+							if(saveLog > 0) {
+								log.info("포인트 증감 로그 저장 완료");
+							} else {
+								log.info("포인트 증감 로그 저장 실패");
+							}
+							
+							model.addObject("msg", "축하드립니다! 챌린지 달성 보상 포인트("+ (int) (challenge.getMinusPoint() * 1.5) +"P)가 적립되었습니다! 로그아웃 후 재접속시 포인트 적립 적용을 확인하실 수 있습니다.");
+							model.addObject("location", "/challenge/participate?no=" + cNo);
+						} else {
+							model.addObject("msg", "알 수 없는 오류입니다. 다시 요청하여 주십시오.");
+							model.addObject("location", "/challenge/participate?no=" + cNo);
+						}
+						
+					} else if(rate >= 100) {
+						
+						resultPoint = (int) (loginMember.getPoint() + (challenge.getMinusPoint() * 2));
+						int updatePoint = service.saveMemberPoint(loginMember.getId(), resultPoint);
+						
+						if(updatePoint > 0) {
+							
+							pointlog.setId(loginMember.getId());
+							pointlog.setCno(cNo);
+							pointlog.setValue((int)(challenge.getMinusPoint() * 2));
+							pointlog.setHistory("PLUS_FINISH");
+							
+							int saveLog = service.savePointlog(pointlog);
+							if(saveLog > 0) {
+								log.info("포인트 증감 로그 저장 완료");
+							} else {
+								log.info("포인트 증감 로그 저장 실패");
+							}
+							
+							model.addObject("msg", "축하드립니다! 챌린지 달성 보상 포인트("+ (int) (challenge.getMinusPoint() * 2) +"P)가 적립되었습니다! 로그아웃 후 재접속시 포인트 적립 적용을 확인하실 수 있습니다.");
+							model.addObject("location", "/challenge/participate?no=" + cNo);
+						} else {
+							model.addObject("msg", "알 수 없는 오류입니다. 다시 요청하여 주십시오.");
+							model.addObject("location", "/challenge/participate?no=" + cNo);
+						}
+					}
+				}
+				
+			} else {
+				model.addObject("msg", "이미 챌린지를 완료하여 포인트를 적립한 이력이 있는 챌린지입니다. 홈으로 돌아갑니다.");
+				model.addObject("location", "/");
+			}
+			
+		} else {
+			model.addObject("msg", "로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+			model.addObject("location", "/member/login");
+		}
+		model.setViewName("common/msg");
 		return model;
 	}
 	
@@ -510,7 +659,8 @@ public class challengeController {
 			@SessionAttribute(name="loginMember", required = false) Member loginMember,//찜하고 or 참가신청 버튼 누른 Member의 ID값을 받아오기 위함
 			@RequestParam(value="myChallengeNo", required=false) int myChallengeNo,//clgNo="챌린지NO"값 받음
 			@RequestParam(value="myStatus", required=false) String myStatus,//myStatus="ZZIM" or "JOIN"값 받음
-			@ModelAttribute MyChallengeList myChallengeList) {
+			@ModelAttribute MyChallengeList myChallengeList,
+			@ModelAttribute Pointlog pointlog) {
 		int result = 0;
 		
 		String id = loginMember.getId();// 찜하기 버튼을 누른 Member의 ID값 선언
@@ -523,39 +673,81 @@ public class challengeController {
 		
 		System.out.println(myChallengeList);
 		
-		result = service.saveMyChallengeList(myChallengeList);
+		// 챌린지NO값으로 챌린지 불러오기 
+		Challenge challenge = service.findByNo(myChallengeNo);
 		
-		if(result > 0) {
-			if(myStatus.equals("ZZIM")) {
-				model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
-			} else if(myStatus.equals("JOIN")) {			
-				// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
-				// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
-				// 현재 참여자 불러오는 메소드
-				int participantsCount = service.getCurrentCount(myChallengeNo); 
-				
-				// 챌린지NO값으로 챌린지 불러오기 
-				Challenge challenge = service.findByNo(myChallengeNo);
-				
-				// 불러온 현재 참여자 수를 불러온 챌린지에 저장
-				challenge.setCurrentCount(participantsCount);
-				
-				// 변경된 챌린지 정보를 업데이트하는 메소드
-				int updateCurrCount = service.saveCurrentCount(challenge);
-				
-				if(updateCurrCount > 0) {
-					log.info("현재 인원수 업데이트 완료");
-				} else {
-					log.info("현재 인원수 업데이트 실패");
-				}	
-				model.addObject("msg", "챌린지 참가 신청이 정상적으로 완료되었습니다.");
-			}
+		// 유저가 챌린지 참가하면 포인트가 차감되기 때문에 
+		// 원활한 포인트 차감을 위해서 저장된 멤버 객체를 불러와야 한다.
+		
+		int resultPoint = loginMember.getPoint() - challenge.getMinusPoint();
+		
+		if(resultPoint >= 0) {
 			
+			result = service.saveMyChallengeList(myChallengeList);
+			
+			if(result > 0) {
+				if(myStatus.equals("ZZIM")) {
+					model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
+				} else if(myStatus.equals("JOIN")){
+					// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
+					// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
+					// 현재 참여자 불러오는 메소드
+					int participantsCount = service.getCurrentCount(myChallengeNo); 
+					
+					// 불러온 현재 참여자 수를 불러온 챌린지에 저장
+					challenge.setCurrentCount(participantsCount);
+					
+					// 변경된 챌린지 정보를 업데이트하는 메소드
+					int updateCurrCount = service.saveCurrentCount(challenge);
+					
+					if(updateCurrCount > 0) {
+						log.info("현재 인원수 업데이트 완료");
+					} else {
+						log.info("현재 인원수 업데이트 실패");
+					}
+					
+					// 포인트를 차감하고 참가신청을 할 수 있는 상태이기 떄문에 포인트 차감한 것을 적용
+					int updatePoint = service.saveMemberPoint(id, resultPoint);
+					
+					if(updatePoint > 0) {
+						log.info("포인트 차감 성공");
+						
+						pointlog.setId(id);
+						pointlog.setCno(myChallengeNo);
+						pointlog.setValue(challenge.getMinusPoint());
+						pointlog.setHistory("MINUS_JOIN");
+						
+						int saveLog = service.savePointlog(pointlog);
+						if(saveLog > 0) {
+							log.info("포인트 증감 로그 저장 완료");
+						} else {
+							log.info("포인트 증감 로그 저장 실패");
+						}
+					} else {
+						log.info("포인트 차감 실패");
+					}
+					
+					model.addObject("msg", "챌린지 참가신청이 정상적으로 완료되었습니다.");
+				}
+			} else {
+				if(myStatus.equals("ZZIM")) {
+					model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
+				} else if(myStatus.equals("JOIN")) {
+					model.addObject("msg", "이미 참가신청한 챌린지입니다.");
+				}
+			}
 		} else {
 			if(myStatus.equals("ZZIM")) {
-				model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
+				result = service.saveMyChallengeList(myChallengeList);
+				
+				if(result > 0) {
+					model.addObject("msg", "정상적으로 찜 목록에 추가 완료하였습니다.");
+				} else {
+					model.addObject("msg", "이미 찜 목록에 존재합니다.");
+				}
+				
 			} else if(myStatus.equals("JOIN")) {
-				model.addObject("msg", "이미 참가신청한 챌린지입니다.");
+				model.addObject("msg", "챌린지 참가 신청을 실패하였습니다. 챌린지 참가하기 위한 잔여 포인트가 부족합니다.");
 			}
 		}
 		

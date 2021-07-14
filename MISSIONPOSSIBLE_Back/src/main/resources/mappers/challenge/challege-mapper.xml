@@ -79,6 +79,20 @@
 		<result property="myChallengeNo" column="MY_CHALLENGE_NO"/>
 		<result property="myStatus" column="MY_STATUS"/>
 	</resultMap>
+	
+	<!-- Member 객체 매핑 -->
+	<resultMap type="Member" id="memberResultMap">
+ 		<id property="memberNo" column="MEMBER_NO"/>
+ 		<result property="id" column="ID" />
+ 		<result property="password" column="PASSWORD"/>
+ 		<result property="gradeName" column="GRADE_NAME"/>
+ 		<result property="nickname" column="NICKNAME"/>
+ 		<result property="email" column="EMAIL"/>
+ 		<result property="point" column="POINT"/>
+ 		<result property="status" column="STATUS"/>
+ 		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
+ 		<result property="renamedFileName" column="RENAMED_FILENAME"/>
+ 	</resultMap>
 
 	<!-- 챌린지 전체 조회 -->
 	<select id="selectChallengeList" resultMap="challengeResultMap">
@@ -448,7 +462,32 @@
 	========================= 챌린지 검색 기능 끄읕 =========================
 	-->
 	
+	<!-- 포인트 증감 로그(BY ID) 조회 -->
+	<select id="selectPointlogById" parameterType="string" resultType="map">
+		SELECT 
+			NO,
+			ID,
+			CNO,
+			VALUE,
+			HISTORY
+		FROM POINTLOG
+		WHERE ID = #{id}
+	</select>
 	
+	<!-- 포인트 증감 로그(BY Object) 조회 -->
+	<select id="selectPointlogByObject" parameterType="map" resultType="Pointlog">
+		SELECT 
+			NO,
+			ID,
+			CNO,
+			VALUE,
+			HISTORY
+		FROM POINTLOG
+		WHERE 
+			ID = #{id} AND
+			CNO = #{cno} AND
+			HISTORY = #{history}
+	</select>
 	
 	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
@@ -549,6 +588,23 @@
 		)
 	</insert>
 	
+	<!-- 포인트 증감 내역 삽입 -->
+	<insert id="insertPointlog" parameterType="map">
+		INSERT INTO POINTLOG (
+			NO,
+			ID,
+			CNO,
+			VALUE,
+			HISTORY
+		) VALUES (
+			SEQ_POINTLOG_NO.NEXTVAL,
+			#{id},
+			#{cno},
+			#{value},
+			#{history}
+		)
+	</insert>
+	
 	<update id="updateCurrentCount" parameterType="map">
 		UPDATE CHALLENGE
 		SET
@@ -583,6 +639,13 @@
 		WHERE
 			CHALLENGE_NO = #{challengeNo}
 	</update>
+	
+	<!-- 멤버의 포인트 증감에 따른 적용하기 위함 -->
+	<update id="updateMemberPoint" parameterType="map">
+ 		UPDATE MEMBER 
+ 		SET POINT = #{point}
+		WHERE ID = #{id}
+ 	</update>
 	
 	<!-- MyChallengeList 로그인한 아이디가 챌린지 포기 요청을 하면 지우기 -->
 	<delete id="deleteMyChallengeList" parameterType="map">

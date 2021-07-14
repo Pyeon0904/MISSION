@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 
 @Mapper
 public interface ChallengeMapper {
@@ -72,5 +73,13 @@ public interface ChallengeMapper {
 	int deleteMyChallengeList(@Param("id") String id, @Param("myChallengeNo") int cNo, @Param("myStatus") String myStatus);
 
 	int updateChallenge(Challenge challenge);
+
+	int updateMemberPoint(@Param("id") String id, @Param("point") int point);
+
+	int insertPointlog(Pointlog pointlog);
+
+	List<Pointlog> selectPointlogById(@Param("id") String id);
+
+	Pointlog selectPointlogByObject(@Param("id") String id, @Param("cno") int cno, @Param("history") String history);
 	
 }

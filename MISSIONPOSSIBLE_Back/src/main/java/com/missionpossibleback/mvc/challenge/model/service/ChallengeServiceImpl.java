@@ -16,6 +16,7 @@ import com.missionpossibleback.mvc.challenge.model.mapper.ChallengeMapper;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -323,6 +324,34 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int deleteMyChallengeList(String id, int cNo, String myStatus) {
 		
 		return mapper.deleteMyChallengeList(id, cNo, myStatus);
+	}
+
+	// 챌린지 참가 신청 시 포인트 차감하는 메소드
+	@Override
+	public int saveMemberPoint(String id, int resultPoint) {
+		
+		return mapper.updateMemberPoint(id, resultPoint);
+	}
+
+	// 포인트 증감 로그 저장하는 로직
+	@Override
+	public int savePointlog(Pointlog pointlog) {
+		
+		return mapper.insertPointlog(pointlog);
+	}
+
+	// 포인트 증감 로그 조회(BY ID)
+	@Override
+	public List<Pointlog> findPointlogById(String id) {
+		
+		return mapper.selectPointlogById(id);
+	}
+	
+	//
+	@Override
+	public Pointlog findPointlogByObject(String id, int cno, String history) {
+		
+		return mapper.selectPointlogByObject(id, cno, history);
 	}
 
 

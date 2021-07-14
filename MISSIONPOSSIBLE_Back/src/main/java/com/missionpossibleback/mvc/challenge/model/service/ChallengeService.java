@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 public interface ChallengeService {
@@ -72,5 +73,13 @@ public interface ChallengeService {
 	int deleteMyChallengeList(String id, int cNo, String string);
 
 	void deleteFile(String string);
+
+	int saveMemberPoint(String id, int resultPoint);
+
+	int savePointlog(Pointlog pointlog);
+
+	List<Pointlog> findPointlogById(String id);
+
+	Pointlog findPointlogByObject(String id, int cno, String history);
 	
 }
