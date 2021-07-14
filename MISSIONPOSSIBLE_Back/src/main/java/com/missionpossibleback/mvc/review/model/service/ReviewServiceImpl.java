@@ -281,4 +281,8 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectDel(stringMemberId);
 	}
 
+	@Override
+	public List<Report> getreportChallengeList() {
+		return mapper.selectReportChallenge();
+	}
 }

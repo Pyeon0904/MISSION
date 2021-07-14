@@ -85,4 +85,6 @@ public interface ReviewService {
 
 	int selectDel(String[] stringMemberId);
 
+	List<Report> getreportChallengeList();
+
 }

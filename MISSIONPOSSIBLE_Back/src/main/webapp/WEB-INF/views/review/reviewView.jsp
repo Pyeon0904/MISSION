@@ -94,7 +94,7 @@
 									</tbody>
 								</table>
 								<!-- 게시판 상세보기 테이블 끝 ----------------------->
-
+<a id="bGoodBtn" class="btn btn-success btn-md active mb-3">공감</a>
 							<!-- 댓글 테이블 : 작성 ----------------------->
 							<table class="type04">
 								<colgroup>

@@ -85,4 +85,6 @@ public interface ReviewMapper {
 
 	int selectDel(String[] stringMemberId);
 
+	List<Report> selectReportChallenge();
+
 }

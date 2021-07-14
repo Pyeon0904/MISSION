@@ -53,8 +53,8 @@
 		<id property="no" column="NO"/>
 		<result property="sendId" column="SEND_ID"/>
 		<result property="reportedId" column="REPORTED_ID"/>
-		<result property="c_No" column="REPORTED_C_NO"/>
-		<result property="r_No" column="REPORTED_R_NO"/>
+		<result property="c_no" column="REPORTED_C_NO"/>
+		<result property="r_no" column="REPORTED_R_NO"/>
 		<result property="category" column="CATEGORY"/>
 		<result property="content" column="CONTENT"/>
 		<result property="createDate" column="CREATE_DATE"/>
@@ -517,5 +517,13 @@
 				ID=#{item}
 		</foreach>
 	</update>
+
+	<!-- 신고 테이블에서 챌린지 신고만 불러오기 -->
+	<select id="selectReportChallenge" resultMap="reviewReportResultMap">
+		SELECT NO, SEND_ID, REPORTED_ID, REPORTED_C_NO, REPORTED_R_NO, CATEGORY, CONTENT, CREATE_DATE, STATUS
+		FROM REPORT
+		WHERE REPORTED_C_NO != 0
+	</select>
+
 </mapper>
 

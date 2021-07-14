@@ -16,9 +16,9 @@ public class Report {
 	
 	private String reportedId;
 	
-	private int c_No;
+	private int c_no;
 	
-	private int r_No;
+	private int r_no;
 		
 	private String category;
 		
