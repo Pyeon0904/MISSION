@@ -94,7 +94,7 @@
 									</tbody>
 								</table>
 								<!-- 게시판 상세보기 테이블 끝 ----------------------->
-<a id="bGoodBtn" class="btn btn-success btn-md active mb-3">공감</a>
+								
 							<!-- 댓글 테이블 : 작성 ----------------------->
 							<table class="type04">
 								<colgroup>
@@ -169,7 +169,7 @@
 								                    <td> <!-- 현재 페이지에 담긴 게시글 제목, 게시글 번호, 작성자ID, 신고자ID -->
 								                        신고 후기 게시글 : 
 								                        <input type="text" name="title" id="title" value=" ${ review.title }" readonly><br>
-								                        <input type="hidden" name="R_No" id="R_No" value="${ review.no }"readonly>
+								                        <input type="hidden" name="r_no" id="r_no" value="${ review.no }"readonly>
 								                        <input type="hidden" name="reportedId" id="reportedId" value="${ review.writerId }"readonly>
 								                        <input type="hidden" name="sendId" id="sendId" value="${ loginMember.id }"readonly>
 								                        <input type="hidden" name="a" id="a" value=""readonly>

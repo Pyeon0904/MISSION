@@ -221,7 +221,7 @@ public class ReviewController {
     @GetMapping("/review/reviewReport")
     public ModelAndView reviewReportView (ModelAndView model,
 			HttpServletRequest request,
-			@RequestParam("R_No") int reviewNo) {
+			@RequestParam("r_no") int reviewNo) {
     	
     		Review review = service.findReviewByNo(reviewNo, true); 
         
@@ -234,7 +234,7 @@ public class ReviewController {
     public ModelAndView reviewReport (ModelAndView model,
 			@SessionAttribute(name = "id", required = false) Member loginMember,
 			HttpServletRequest request,
-			@RequestParam("R_No") int reviewNo,
+			@RequestParam("r_no") int reviewNo,
 			@ModelAttribute Report report) {
     	
     		Review review = service.findReviewByNo(reviewNo, true); 
@@ -245,7 +245,7 @@ public class ReviewController {
     			
     			if(result > 0) {
     				model.addObject("msg", "신고가 정상적으로 접수되었습니다.");
-    				model.addObject("script","self.close()");
+    				model.addObject("location", "/review/reviewView?no="+reviewNo);
     			} else {
     				model.addObject("msg", "신고 접수에 실패하였습니다.");
     				model.addObject("location", "self.close()");
