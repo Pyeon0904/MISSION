@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.review.model.service.ReviewService;
+import com.missionpossibleback.mvc.review.model.vo.Heart;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -104,8 +105,6 @@ public class ReviewController {
 					}
 				}
 				
-				System.out.println(review);
-				
 				// 2. 데이터 베이스에 저장
 				result = service.save(review);
 				
@@ -127,8 +126,9 @@ public class ReviewController {
 		}
 		
 	// 리뷰 게시글 상세보기
-    @GetMapping("/review/reviewView")
+	@RequestMapping(value="/review/reviewView" , method={RequestMethod.GET,RequestMethod.POST})
     public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+    		@SessionAttribute(name = "loginMember", required = false) Member loginMember,
     		ModelAndView model,
 			@RequestParam("no") int reviewNo,
 			@ModelAttribute Reply reply) {
@@ -172,10 +172,17 @@ public class ReviewController {
     		response.addCookie(cookie);
     		
     	}
-    	
+    	    if(loginMember != null) {
+    		String id = loginMember.getId();
+			List<Heart> Heartlist = service.getHeartList(reviewNo,id);
+			int count = service.getHeartCount(reviewNo);
+			
+			model.addObject("count",count);
+			model.addObject("Heartlist", Heartlist);
+    	    }
+    	    
 			Review review = service.findReviewByNo(reviewNo, hasRead);
 			List<Reply> list = service.getReplyList(reviewNo);
-		
     		model.addObject("hasRead",hasRead);
     		model.addObject("review",review);
     		model.addObject("list",list);
@@ -192,8 +199,6 @@ public class ReviewController {
 		try {
 			Resource resource = resourceLoader.getResource("resources/upload/review/" + rename);
 			
-			System.out.println(resource.getFilename());
-			System.out.println(resource.contentLength());
 			
 	    	String downName = null;
 	    	boolean isMSIE = header.indexOf("MSIE") != -1 || header.indexOf("Trident") != -1;
@@ -251,7 +256,6 @@ public class ReviewController {
     				model.addObject("location", "self.close()");
     			}
     			
-    		
     		model.setViewName("common/msg");
     		
     		return model;
@@ -711,5 +715,32 @@ public class ReviewController {
 
 		return "redirect: reportChallenge";		
 	}
+
+	// 하얀 하트 클릭시 좋아요
+    @PostMapping("/review/reviewLike")
+    public String reviewLike (ModelAndView model,
+    		HttpServletRequest request,
+    		@RequestParam("r_no") int reviewNo,
+    		@ModelAttribute Heart heart) {
+    	
+			int result = 0;
+			result = service.insertHeart(heart);
+			
+			return "redirect: reviewView?no="+heart.getR_no();	
+
+    }
+    
+    // 빨간 하트 클릭시 좋아요 취소
+    @PostMapping("/review/reviewUnlike")
+    public String reviewUnlike (ModelAndView model,
+    		HttpServletRequest request,
+    		@RequestParam("r_no") int reviewNo,
+    		@ModelAttribute Heart heart) {
+    	
+			int result = 0;
+			result = service.deleteHeart(heart);
+			
+			return "redirect: reviewView?no="+heart.getR_no();
+    }
 
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.review.model.vo.Heart;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -86,5 +87,13 @@ public interface ReviewMapper {
 	int selectDel(String[] stringMemberId);
 
 	List<Report> selectReportChallenge();
+
+	int insertHeart(Heart heart);
+
+	List<Heart> selectHeart(@Param("reviewNo")int reviewNo, @Param("id")String id);
+
+	int deletetHeart(Heart heart);
+
+	int selectHeartCount(int reviewNo);
 
 }

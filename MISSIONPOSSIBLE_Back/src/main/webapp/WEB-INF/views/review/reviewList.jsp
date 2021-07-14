@@ -109,6 +109,7 @@
 									<th>작성자</th>
 									<th>작성일</th>
 									<th>조회수</th>
+									<th>추천수</th>
 								</tr>
 								<c:if test="${ list == null }">
 									<tr>
@@ -131,6 +132,7 @@
 											<td><c:out value="${ review.challengeTitle }" /></td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
+											<td><c:out value="${ review.viewCount }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>
 										</tr>
 									</c:forEach>
