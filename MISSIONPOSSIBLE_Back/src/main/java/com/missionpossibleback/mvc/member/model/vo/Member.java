@@ -20,12 +20,14 @@ public class Member {
 	
 	private String email;
 	
-	private String point;
+	private int point;
 	
 	private String status;
 	
 	private String originalFileName;	//프로필
 	
 	private String renamedFileName;
+	
+	private int report_count;
 	
 }

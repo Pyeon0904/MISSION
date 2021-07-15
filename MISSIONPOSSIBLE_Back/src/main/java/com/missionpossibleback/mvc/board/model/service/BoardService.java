@@ -10,10 +10,13 @@ import com.missionpossibleback.mvc.common.util.PageInfo;
 
 public interface BoardService {
 
+	// 사용자 페이지
 	List<Board> getBoardList(PageInfo pageInfo); // 목록 조회
 	
-	Board findByNo(int qna_no); // 게시글 조회
+	Board findByNo(int qna_no, boolean hasRead); // 게시글 조회
 	
+	int readCount(int qna_no); // 조회수
+
 	int getBoardCount(); // 게시글 수
 	
 	int save(Board board); // 글쓰기, 글수정
@@ -31,6 +34,15 @@ public interface BoardService {
 	List<Board> getSearchBoardList(String type, String keyword, PageInfo pageInfo); // 검색 목록 조회
 	
 	int getSerchBoardCount(String type, String keyword); // 검색 게시글 수
+	
+	// 관리자 페이지
+	List<Board> getBoardAllList(); // 관리자 페이지 게시된 글
+
+	List<Board> getDeleteBoardAllList(); // 관리자 페이지 삭제된 글
+
+	int selectDelete(int[] intNo);
+
+	int selectOneDelete(String str);
 
 	
 //	public BoardDetail selectOne(int board_id);

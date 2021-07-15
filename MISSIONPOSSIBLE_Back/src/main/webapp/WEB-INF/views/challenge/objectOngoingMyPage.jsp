@@ -37,17 +37,25 @@
 																<c:out value="${ challenge.title }"/>
 															</span>
 															<br>
-															<span class="itemSubCont">챌린지 종료까지</span>
-															<br>
-															<!-- D-Day 로직 구현한 파일 include -->
-															<%@ include file="date.jsp" %>
+															<c:choose>
+																<c:when test="${ (endNum - todayNum) > 0 }">
+																	<span class="itemSubCont">챌린지 종료까지</span>
+																	<br>
+																	
+																	<!-- 
+																		챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
+																	-->
+																	<span class="itemProgressStatus">
+																		D-<c:out value="${ endNum - todayNum }"></c:out>
+																	</span>
+																</c:when>
+																<c:otherwise>
+																	<span class="itemSubCont">챌린지 종료!</span><br>
+																	<span class="itemProgressStatus">보상 내역을 확인하세요!</span>
+																</c:otherwise>
+															</c:choose>
 															
-															<!-- 
-																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
-															-->
-															<span class="itemProgressStatus">
-																D-<c:out value="${ endNum - todayNum }"></c:out>
-															</span>
+															
 														</p>
 														 
 														<div id="barContainer">

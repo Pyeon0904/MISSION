@@ -17,6 +17,7 @@ import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.mapper.MemberMapper;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -187,5 +188,23 @@ public class MemberServiceImpl implements MemberService {
 	public List<String> getMemberIdList() {
 		
 		return mapper.selectMemberIdList();
+	}
+//admin_viewMember - 신고된 회원 조회
+	@Override
+	public List<memberReport> admin_reportMember() {
+		
+		return mapper.selectReportMemberList();
+	}
+	
+	@Override
+	public int getReportListCount() {
+		
+		return mapper.selectReportListCount();
+	}
+//admin- 신고 회원 경고 주기
+	@Override
+	public int admin_warnMember(String warnMemberId) {
+		
+		return mapper.addMemberReportCount(warnMemberId);
 	}
 }
