@@ -22,7 +22,7 @@
 <!-- Animate.CSS -->
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<%@ include file="/WEB-INF/views/common/header_h.jsp"%>
 <style>
 /* 전체 영역--------------------------------------------------------------------------*/
 
