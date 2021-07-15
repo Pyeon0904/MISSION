@@ -89,7 +89,7 @@ $(function () {
 								</tr>
 								<c:if test="${ list.isEmpty() }">
 									<tr>
-										<td colspan="8">조회된 게시글이 없습니다.</td>
+										<td colspan="6">조회된 경고 회원이 없습니다.</td>
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">

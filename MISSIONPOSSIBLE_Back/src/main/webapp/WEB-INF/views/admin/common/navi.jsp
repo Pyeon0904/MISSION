@@ -9,7 +9,7 @@
 		});
 	});
 </script>
-<link rel="stylesheet" href="${ path }/resources/css/admin.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
 <nav>
     <div class="blank"></div>
     <div class="navicon">
