@@ -1,9 +1,13 @@
 package com.missionpossibleback.mvc.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.missionpossibleback.mvc.review.controller.ReviewController;
+import com.missionpossibleback.mvc.board.model.service.BoardService;
+import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
+import com.missionpossibleback.mvc.member.model.service.MemberService;
+import com.missionpossibleback.mvc.review.model.service.ReviewService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,6 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminController {
 
+	 @Autowired
+	 private ReviewService R_service; 
+	 @Autowired
+	 private  MemberService M_service;
+	 @Autowired
+	 private ChallengeService C_Service;
+	 @Autowired
+	 private BoardService B_service;
+	
 	//헤더 테스트(관리자) 
 	@GetMapping("/admin/headerTest")
 	public void headerTest() {
