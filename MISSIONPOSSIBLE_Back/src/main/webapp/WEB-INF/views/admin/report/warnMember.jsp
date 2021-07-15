@@ -4,10 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%> 
+<%@ include file="/WEB-INF/views/admin/common/navi.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
-<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
+
 
 <!DOCTYPE html>
 <html>
@@ -27,7 +28,8 @@
 </head>
 <script>
 $(function () {
-    $(".memberA").css({ "background": "var(--black)", "color": "var(--white)" });
+	// 상단 신고 관리 메뉴 클릭시 black으로 바꾸기
+	$(".reportA").css({ "background" : "var(--black)", "color" : "var(--white)"});
 
 	// 검색
 	$("#searchTxt").keyup(function(){
@@ -55,17 +57,22 @@ $(function () {
 									<a href="approve">신고된 회원</a>
 								</li>
 								<li class="tab-link">
-									<a href="delete">신고된 챌린지</a>
+									<a href="${ path }/admin/report/reportChallenge">신고된 챌린지</a>
 								</li>
 								<li class="tab-link current">
 									<a href="${ path }/admin/report/warnMember">경고 회원 관리</a>
 								</li>
 							</ul>
 						</div>
-						<h2>신고 관리</h2>
+					<div class="cateList">
+						<div class="head">
+							<h2 id="title">신고 관리</h2>
+						</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+							</span>
+							<span class="enrollArea">
 								<button class="enroll-bt1" id="allWarnBtn">탈퇴</button>
 							</span>
 						</div>
@@ -82,7 +89,7 @@ $(function () {
 								</tr>
 								<c:if test="${ list.isEmpty() }">
 									<tr>
-										<td colspan="8">조회된 게시글이 없습니다.</td>
+										<td colspan="6">조회된 경고 회원이 없습니다.</td>
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">

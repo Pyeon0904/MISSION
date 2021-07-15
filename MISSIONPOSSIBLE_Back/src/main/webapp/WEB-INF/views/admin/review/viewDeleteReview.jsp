@@ -4,10 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%> 
+<%@ include file="/WEB-INF/views/admin/common/navi.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
-<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
+
 
 <!DOCTYPE html>
 <html>
@@ -26,7 +27,8 @@
 </head>
 <script>
 $(function () {
-    $(".memberA").css({ "background": "var(--black)", "color": "var(--white)" });
+	// 상단 후기 게시판 관리 메뉴 클릭시 black으로 바꾸기
+	$(".reviewA").css({ "background" : "var(--black)", "color" : "var(--white)"});
 
 	// 검색
 	$("#searchTxt").keyup(function(){
@@ -56,10 +58,15 @@ $(function () {
 								</li>
 							</ul>
 						</div>
-						<h2>후기 게시판 관리</h2>
+				<div class="cateList">
+					<div class="head">
+						<h2 id="title">후기 게시판 관리</h2>
+					</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+							</span>
+							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRestoreBtn">복구</button>
 							</span>
 						</div>
@@ -86,8 +93,7 @@ $(function () {
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
 											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
-												<c:out value="${ review.title } " /></a>
+											<td class="view-click td-3"><c:out value="${ review.title } " />
 											</td>
 											<td><c:out value="${ review.challengeTitle }" /></td>
 											<td><c:out value="${ review.writerId }" /></td>

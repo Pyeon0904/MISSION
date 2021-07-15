@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.missionpossibleback.mvc.review.model.mapper.ReviewMapper;
+import com.missionpossibleback.mvc.review.model.vo.Heart;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -279,6 +280,31 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int selectDel(String[] stringMemberId) {
 		return mapper.selectDel(stringMemberId);
+	}
+
+	@Override
+	public List<Report> getreportChallengeList() {
+		return mapper.selectReportChallenge();
+	}
+
+	@Override
+	public int insertHeart(Heart heart) {
+		return mapper.insertHeart(heart);
+	}
+
+	@Override
+	public List<Heart> getHeartList(@Param("reviewNo")int reviewNo, @Param("id")String id) {
+		return mapper.selectHeart(reviewNo, id);
+	}
+
+	@Override
+	public int deleteHeart(Heart heart) {
+		return mapper.deletetHeart(heart);
+	}
+
+	@Override
+	public int getHeartCount(int reviewNo) {
+		return mapper.selectHeartCount(reviewNo);
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.review.model.vo.Heart;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -84,5 +85,15 @@ public interface ReviewService {
 	int OneDel(String warnId);
 
 	int selectDel(String[] stringMemberId);
+
+	List<Report> getreportChallengeList();
+
+	int insertHeart(Heart heart);
+
+	List<Heart> getHeartList(@Param("reviewNo")int reviewNo, @Param("id") String id);
+
+	int deleteHeart(Heart heart);
+
+	int getHeartCount(int reviewNo);
 
 }

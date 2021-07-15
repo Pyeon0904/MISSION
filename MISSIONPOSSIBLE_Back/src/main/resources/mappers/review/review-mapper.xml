@@ -53,8 +53,8 @@
 		<id property="no" column="NO"/>
 		<result property="sendId" column="SEND_ID"/>
 		<result property="reportedId" column="REPORTED_ID"/>
-		<result property="c_No" column="REPORTED_C_NO"/>
-		<result property="r_No" column="REPORTED_R_NO"/>
+		<result property="c_no" column="REPORTED_C_NO"/>
+		<result property="r_no" column="REPORTED_R_NO"/>
 		<result property="category" column="CATEGORY"/>
 		<result property="content" column="CONTENT"/>
 		<result property="createDate" column="CREATE_DATE"/>
@@ -98,6 +98,12 @@
  		<result property="renamedFileName" column="RENAMED_FILENAME"/>
  		<result property="report_count" column="REPORT_COUNT"/>
  	</resultMap>
+	
+	<resultMap type="Heart" id="heartResultMap">
+		<id property="no" column="NO"/>
+		<result property="r_no" column="R_NO"/>
+		<result property="m_id" column="M_ID"/>
+	</resultMap>
 	
 	<!-- 게시판 목록 리스트 불러오기 -->
 	<select id="selectReviewList" resultMap="reviewListResultMap">
@@ -284,7 +290,7 @@
 			#{sendId},
 			#{reportedId},
 			NULL,
-			#{R_No},
+			#{r_no},
 			#{category},
 			#{content},
 			DEFAULT,
@@ -388,7 +394,7 @@
 
 	<!-- 관리자 페이지에서 STATUS가 N인 게시글 불러오기 -->
 	<select id="selectDeleteReviewList" resultMap="reviewListResultMap">
-				SELECT  R.NO,
+		SELECT  R.NO,
 				R.WRITER_ID,
 				R.TITLE, 
 				R.C_TITLE,
@@ -517,5 +523,48 @@
 				ID=#{item}
 		</foreach>
 	</update>
+
+	<!-- 신고 테이블에서 챌린지 신고만 불러오기 -->
+	<select id="selectReportChallenge" resultMap="reviewReportResultMap">
+		SELECT NO, SEND_ID, REPORTED_ID, REPORTED_C_NO, REPORTED_R_NO, CATEGORY, CONTENT, CREATE_DATE, STATUS
+		FROM REPORT
+		WHERE REPORTED_C_NO != 0
+	</select>
+	
+	<!-- 좋아요 클릭시 데이터 삽입 -->
+	<insert id="insertHeart" parameterType="map" useGeneratedKeys="true" keyProperty="no" keyColumn="NO" >
+		INSERT INTO HEART (
+			NO,
+			R_NO,
+			M_ID
+		) VALUES (
+			SEQ_HEART_NO.NEXTVAL,
+			#{r_no},
+			#{m_id}
+		)
+	</insert>
+
+	<!-- 게시글 번호와 로그인 아이디로 좋아요 내역 조회 -->
+	<select id="selectHeart" resultMap="heartResultMap">
+		SELECT *
+		FROM HEART
+		WHERE R_NO = #{reviewNo}
+		AND M_ID = #{id}
+	</select>
+	
+	<!-- 좋아요 취소시 데이터 삭제 -->
+	<delete id="deletetHeart" parameterType="map">
+		DELETE
+		FROM HEART
+		WHERE R_NO = #{r_no}
+		AND	M_ID = #{m_id}
+	</delete>
+
+	<!-- 게시글 번호로 해당 게시글을 좋아한 회원 수 조회 -->
+	<select id="selectHeartCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM HEART
+		WHERE R_NO = #{reviewNo}
+	</select>
 </mapper>
 

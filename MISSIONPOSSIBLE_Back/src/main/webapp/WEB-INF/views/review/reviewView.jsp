@@ -24,6 +24,7 @@
    #box{ background-color:rgb(224, 239, 132); width:100%; height:1500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
+   .imgButton { width : 35px; height : 35px; }
 </style>
 </head>
 <body>
@@ -93,8 +94,34 @@
 										</tr>
 									</tbody>
 								</table>
-								<!-- 게시판 상세보기 테이블 끝 ----------------------->
-
+								<!-- 게시판 상세보기 테이블 끝 ----------------------->		
+								<!-- 하트 버튼 클릭시 추천수 +1 ----------------------->
+								<c:if test="${ !empty loginMember}">
+									<div style="margin-left: 990px;">
+									<c:out value="${ count }"/>
+									</div>
+									<div style="margin-left: 960px;">
+										<c:if test="${ Heartlist.isEmpty() }">
+											<form action="${ path }/review/reviewLike" method="POST">
+												<c:if test="${ (heart.m_id != loginMember.id )}">
+													<input type="hidden" name="r_no" value="${ review.no }">
+													<input type="hidden" name="m_id" value="${loginMember.id}">
+													<button type="submit" style="border:0;"><img class="imgButton" src="${ path }/resources/images/unheart.png"></button>
+												</c:if>
+											</form>
+										</c:if>
+										<c:forEach var="heart" items="${ Heartlist }">
+										<form action="${ path }/review/reviewUnlike" method="POST">
+											<c:if test="${heart.m_id == loginMember.id}">
+												<input type="hidden" name="r_no" value="${ review.no }">
+												<input type="hidden" name="m_id" value="${loginMember.id}">
+												<button id="unlike" style="border:0;"><img class="imgButton" src="${ path }/resources/images/heart.png"></button>
+											</c:if>	
+										</form>	
+										</c:forEach>
+									</div>
+								</c:if>
+								<!-- 하트 버튼 끝 ----------------------->
 							<!-- 댓글 테이블 : 작성 ----------------------->
 							<table class="type04">
 								<colgroup>
@@ -169,7 +196,7 @@
 								                    <td> <!-- 현재 페이지에 담긴 게시글 제목, 게시글 번호, 작성자ID, 신고자ID -->
 								                        신고 후기 게시글 : 
 								                        <input type="text" name="title" id="title" value=" ${ review.title }" readonly><br>
-								                        <input type="hidden" name="R_No" id="R_No" value="${ review.no }"readonly>
+								                        <input type="hidden" name="r_no" id="r_no" value="${ review.no }"readonly>
 								                        <input type="hidden" name="reportedId" id="reportedId" value="${ review.writerId }"readonly>
 								                        <input type="hidden" name="sendId" id="sendId" value="${ loginMember.id }"readonly>
 								                        <input type="hidden" name="a" id="a" value=""readonly>
@@ -286,6 +313,7 @@
 		alert("로그인 후 사용하세요")
 	}
 	});
+	
 </script>
 </body>
 </html>

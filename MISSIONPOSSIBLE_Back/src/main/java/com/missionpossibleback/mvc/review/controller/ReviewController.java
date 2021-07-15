@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.review.model.service.ReviewService;
+import com.missionpossibleback.mvc.review.model.vo.Heart;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -104,8 +105,6 @@ public class ReviewController {
 					}
 				}
 				
-				System.out.println(review);
-				
 				// 2. 데이터 베이스에 저장
 				result = service.save(review);
 				
@@ -127,8 +126,9 @@ public class ReviewController {
 		}
 		
 	// 리뷰 게시글 상세보기
-    @GetMapping("/review/reviewView")
+	@RequestMapping(value="/review/reviewView" , method={RequestMethod.GET,RequestMethod.POST})
     public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+    		@SessionAttribute(name = "loginMember", required = false) Member loginMember,
     		ModelAndView model,
 			@RequestParam("no") int reviewNo,
 			@ModelAttribute Reply reply) {
@@ -172,10 +172,17 @@ public class ReviewController {
     		response.addCookie(cookie);
     		
     	}
-    	
+    	    if(loginMember != null) {
+    		String id = loginMember.getId();
+			List<Heart> Heartlist = service.getHeartList(reviewNo,id);
+			int count = service.getHeartCount(reviewNo);
+			
+			model.addObject("count",count);
+			model.addObject("Heartlist", Heartlist);
+    	    }
+    	    
 			Review review = service.findReviewByNo(reviewNo, hasRead);
 			List<Reply> list = service.getReplyList(reviewNo);
-		
     		model.addObject("hasRead",hasRead);
     		model.addObject("review",review);
     		model.addObject("list",list);
@@ -192,8 +199,6 @@ public class ReviewController {
 		try {
 			Resource resource = resourceLoader.getResource("resources/upload/review/" + rename);
 			
-			System.out.println(resource.getFilename());
-			System.out.println(resource.contentLength());
 			
 	    	String downName = null;
 	    	boolean isMSIE = header.indexOf("MSIE") != -1 || header.indexOf("Trident") != -1;
@@ -221,7 +226,7 @@ public class ReviewController {
     @GetMapping("/review/reviewReport")
     public ModelAndView reviewReportView (ModelAndView model,
 			HttpServletRequest request,
-			@RequestParam("R_No") int reviewNo) {
+			@RequestParam("r_no") int reviewNo) {
     	
     		Review review = service.findReviewByNo(reviewNo, true); 
         
@@ -234,7 +239,7 @@ public class ReviewController {
     public ModelAndView reviewReport (ModelAndView model,
 			@SessionAttribute(name = "id", required = false) Member loginMember,
 			HttpServletRequest request,
-			@RequestParam("R_No") int reviewNo,
+			@RequestParam("r_no") int reviewNo,
 			@ModelAttribute Report report) {
     	
     		Review review = service.findReviewByNo(reviewNo, true); 
@@ -245,13 +250,12 @@ public class ReviewController {
     			
     			if(result > 0) {
     				model.addObject("msg", "신고가 정상적으로 접수되었습니다.");
-    				model.addObject("script","self.close()");
+    				model.addObject("location", "/review/reviewView?no="+reviewNo);
     			} else {
     				model.addObject("msg", "신고 접수에 실패하였습니다.");
     				model.addObject("location", "self.close()");
     			}
     			
-    		
     		model.setViewName("common/msg");
     		
     		return model;
@@ -471,7 +475,7 @@ public class ReviewController {
 		return model;		
 	}
 	
-	// 관리자 페이지 - 게시된 후기글 페이지
+	// 관리자 페이지 - 후기 게시글 관리 - 게시된 후기글 목록
 	@GetMapping("/admin/review/viewReview")
 	public ModelAndView ReviewView(ModelAndView model) {
 
@@ -485,7 +489,7 @@ public class ReviewController {
 		return model;		
 	}
 	
-	// 관리자 페이지 - 삭제된 후기글 페이지
+	// 관리자 페이지 - 후기 게시글 관리 - 삭제된 후기글 목록
 	@GetMapping("/admin/review/viewDeleteReview")
 	public ModelAndView DeleteReviewView(ModelAndView model) {
 
@@ -498,7 +502,7 @@ public class ReviewController {
 		return model;		
 	}
 	
-	// 관리자 페이지 - 후기 게시글 선택 삭제
+	// 관리자 페이지 - 후기 게시글 관리 - 게시글 선택 삭제
 	@PostMapping("/admin/review/selectDelete")
 	public String selectDeleteReview(HttpServletRequest request) {
 
@@ -516,7 +520,7 @@ public class ReviewController {
 		return "redirect: viewReview";		
 	}
 	
-	// 관리자 페이지 - 후기 게시글 하나만 삭제
+	// 관리자 페이지 - 후기 게시글 관리 - 게시글 하나만 삭제
 	@PostMapping("/admin/review/oneDelete")
 	public String selectOneDeleteReview(HttpServletRequest request) {
 
@@ -527,7 +531,7 @@ public class ReviewController {
 		return "redirect: viewReview";		
 	}
 	
-	// 관리자 페이지 - 후기 게시글 선택 복구
+	// 관리자 페이지 - 후기 게시글 관리 - 게시글 선택 복구
 	@PostMapping("/admin/review/selectRestore")
 	public String selectRestoreReview(HttpServletRequest request) {
 
@@ -545,7 +549,7 @@ public class ReviewController {
 		return "redirect: viewDeleteReview";		
 	}
 	
-	// 관리자 페이지 - 후기 게시글 하나만 복구
+	// 관리자 페이지 - 후기 게시글 관리 - 게시글 하나만 복구
 	@PostMapping("/admin/review/oneRestore")
 	public String selectOneRestoreReview(HttpServletRequest request) {
 
@@ -556,11 +560,12 @@ public class ReviewController {
 		return "redirect: viewDeleteReview";		
 	}
 	
-	// 관리자 페이지 - 신고된 후기글
+	// 관리자 페이지 - 신고된 후기 게시글 관리 - 신고된 후기글 목록
 	@GetMapping("/admin/report/reportReview")
 	public ModelAndView reportReviewView(ModelAndView model) {
 
 		List<Report> list = null;
+		List<Review> reviewList = null;
 		
 		list = service.getReportList();
 		
@@ -570,9 +575,9 @@ public class ReviewController {
 		return model;		
 	}
 	
-	// 관리자 페이지 - 후기 게시글 선택 경고
-	@PostMapping("/admin/report/selectWarn")
-	public String selectWarn(HttpServletRequest request) {
+	// 관리자 페이지 - 신고된 후기 게시글 관리 - 회원 선택 경고
+	@PostMapping("/admin/report/selectWarnReview")
+	public String selectWarnReview(HttpServletRequest request) {
 
 		String[] member = request.getParameterValues("cateSelWarnNo");
 		String[] memberId = member[0].split(",");
@@ -599,9 +604,9 @@ public class ReviewController {
 		return "redirect: reportReview";		
 	}
 	
-	// 관리자 페이지 - 후기 게시글 하나만 경고
-	@PostMapping("/admin/report/warnReview")
-	public String selectOneWarn(HttpServletRequest request) {
+	// 관리자 페이지 - 신고된 후기 게시글 관리 - 회원 하나만 경고
+	@PostMapping("/admin/report/oneWarnReview")
+	public String selectOneWarnReview(HttpServletRequest request) {
 
 		int reportNo = Integer.parseInt(request.getParameter("reportedNo"));
 		String reportedId = request.getParameter("reportedId");
@@ -612,7 +617,7 @@ public class ReviewController {
 		return "redirect: reportReview";		
 	}
 	
-	// 관리자 페이지 - 경고 회원 페이지
+	// 관리자 페이지 - 경고 회원 관리 - 경고 회원 목록
 	@GetMapping("/admin/report/warnMember")
 	public ModelAndView MemberView(ModelAndView model) {
 
@@ -626,7 +631,7 @@ public class ReviewController {
 		return model;		
 	}
 	
-	// 관리자 페이지 - 경고 회원 하나만 탈퇴
+	// 관리자 페이지 - 경고 회원 관리 - 회원 하나만 탈퇴
 	@PostMapping("/admin/report/delMember")
 	public String selectOneDel(HttpServletRequest request) {
 
@@ -636,7 +641,8 @@ public class ReviewController {
 
 		return "redirect: warnMember";		
 	}
-	// 관리자 페이지 - 경고 회원 선택 탈퇴
+	
+	// 관리자 페이지 - 경고 회원 관리 - 회원 선택 탈퇴
 	@PostMapping("/admin/report/selectDelMember")
 	public String selectDel(HttpServletRequest request) {
 
@@ -653,4 +659,88 @@ public class ReviewController {
 
 		return "redirect: warnMember";		
 	}
+	
+	// 관리자 페이지 - 신고된 챌린지 관리 - 신고된 챌린지 목록
+	@GetMapping("/admin/report/reportChallenge")
+	public ModelAndView reportChallengeView(ModelAndView model) {
+
+		List<Report> list = null;
+		
+		list = service.getreportChallengeList();
+		
+		model.addObject("list", list);
+		model.setViewName("admin/report/reportChallenge");
+		
+		return model;		
+	}
+	
+	// 관리자 페이지 - 신고된 챌린지 관리 - 챌린지 선택 경고
+	@PostMapping("/admin/report/selectWarnChallenge")
+	public String selectWarnChallenge(HttpServletRequest request) {
+
+		String[] member = request.getParameterValues("cateSelWarnNo");
+		String[] memberId = member[0].split(",");
+		
+		String[] StringMemberId = new String[memberId.length];
+		
+		for(int i=0; i<memberId.length; i++) {
+			StringMemberId[i] = memberId[i];
+		}
+		
+		service.selectWarn(StringMemberId);
+		
+		String[] report = request.getParameterValues("cateSelWarnReportNo");
+		String[] reportNo = report[0].split(",");
+		
+		int[] intReportNo = new int[reportNo.length];
+		
+		for(int i=0; i<reportNo.length; i++) {
+			intReportNo[i] = Integer.parseInt(reportNo[i]);
+		}
+		
+		service.updateWarnReport(intReportNo);
+
+		return "redirect: reportChallenge";		
+	}
+	
+	// 관리자 페이지 - 신고된 챌린지 관리 - 챌린지 하나만 경고
+	@PostMapping("/admin/report/oneWarnChallenge")
+	public String selectOneWarnChallenge(HttpServletRequest request) {
+
+		int reportNo = Integer.parseInt(request.getParameter("reportedNo"));
+		String reportedId = request.getParameter("reportedId");
+
+		service.updateOneReport(reportNo);
+		service.OneWarn(reportedId);
+
+		return "redirect: reportChallenge";		
+	}
+
+	// 하얀 하트 클릭시 좋아요
+    @PostMapping("/review/reviewLike")
+    public String reviewLike (ModelAndView model,
+    		HttpServletRequest request,
+    		@RequestParam("r_no") int reviewNo,
+    		@ModelAttribute Heart heart) {
+    	
+			int result = 0;
+			result = service.insertHeart(heart);
+			
+			return "redirect: reviewView?no="+heart.getR_no();	
+
+    }
+    
+    // 빨간 하트 클릭시 좋아요 취소
+    @PostMapping("/review/reviewUnlike")
+    public String reviewUnlike (ModelAndView model,
+    		HttpServletRequest request,
+    		@RequestParam("r_no") int reviewNo,
+    		@ModelAttribute Heart heart) {
+    	
+			int result = 0;
+			result = service.deleteHeart(heart);
+			
+			return "redirect: reviewView?no="+heart.getR_no();
+    }
+
 }
