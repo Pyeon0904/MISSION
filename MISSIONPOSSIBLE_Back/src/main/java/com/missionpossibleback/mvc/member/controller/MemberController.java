@@ -41,6 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
