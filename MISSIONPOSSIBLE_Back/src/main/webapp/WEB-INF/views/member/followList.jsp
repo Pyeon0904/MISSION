@@ -136,7 +136,7 @@
 												</c:if>
 											</td>
 											<td style="text-align: center; font-size: 25px">
-									<a href="${path}/member/followPage?ID=${ follow.followId }" >${ follow.followId }</a>
+												<a href="${path}/member/followPage?ID=${ follow.followId }" >${ follow.followId }</a>
 											</td>
 											<td><button class="btn btn-warning" id="btDelete">팔로우 취소</button></td>
 										</tr>		

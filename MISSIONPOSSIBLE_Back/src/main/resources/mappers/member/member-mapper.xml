@@ -47,6 +47,16 @@
 		<result property="followId" column="FOLLOWER_ID"/>
 		<result property="profile" column="RENAMED_FILENAME"/>
 	</resultMap>
+	
+	<resultMap type="memberReport" id="memberReportResultMap">
+		<result property="id" column="ID"/>
+		<result property="reportId" column="REPORT_ID"/>
+		<result property="reportType" column="REPORT_TYPE"/>
+		<result property="reportContent" column="REPORT_CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="reportCount" column="REPORT_COUNT"/>
+	</resultMap>
+	
  	
  	<select id="selectMember" parameterType="string" resultMap="memberResultMap">
  		<include refid="selectMemberSql" />
@@ -181,4 +191,27 @@
 		SELECT ID
 		FROM MEMBER
 	</select>
+	
+	<select id="selectReportMemberList" resultMap="memberReportResultMap">
+		SELECT ID,
+			   REPORT_ID,
+			   REPORT_TYPE,
+			   REPORT_CONTENT,
+			   CREATE_DATE,
+			   REPORT_COUNT
+		FROM REPORT_MEMBER
+	</select>
+	
+	<select id="selectReportListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM REPORT_MEMBER
+	</select>
+	
+	<update id="addMemberReportCount">
+ 		UPDATE REPORT_MEMBER
+ 		SET
+ 			REPORT_COUNT = REPORT_COUNT + 1
+ 		WHERE 
+ 			REPORT_ID = #{warnMemberId}
+ 	</update>
  </mapper>
