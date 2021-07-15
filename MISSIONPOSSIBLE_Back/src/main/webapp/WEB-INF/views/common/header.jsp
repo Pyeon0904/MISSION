@@ -18,11 +18,6 @@
 <!-- 제이쿼리 import -->
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
-<!-- 부트 스트랩
-<script src="${path}/resources/js/bootstrap.min.js"></script>
-<link href="${path}/resources/css/bootstrap.min.css" rel="stylesheet">
--->
-
 <style>
 	*{margin:0; padding:0;}
 	.headerArea{
@@ -47,12 +42,44 @@
 		width:50px;
 		height:80px;
 	}
-	ul.headerMenu>li.introduce>ul.introMenu{
+	ul.introMenu{
 		width:250px;
 		height:60px;
 		margin-left:-50px;
 	}
-	ul.headerMenu>li.introduce>ul.introMenu li {
+	ul.introMenu li {
+		width:120px;
+		height:50px;
+		float:left;
+		font-size:0.8em;
+		font-weight:bold;
+		text-align:center;
+		line-height:3;
+		display:none;
+		float:left;
+	}
+	ul.challengeMenu{
+		width:250px;
+		height:60px;
+		margin-left:-50px;
+	}
+	ul.challengeMenu li {
+		width:120px;
+		height:50px;
+		float:left;
+		font-size:0.8em;
+		font-weight:bold;
+		text-align:center;
+		line-height:3;
+		display:none;
+		float:left;
+	}
+	ul.headerMenu>li.challenge>ul.challengeMenu{
+		width:250px;
+		height:60px;
+		margin-left:-50px;
+	}
+	ul.headerMenu>li.challenge>ul.challengeMenu li {
 		width:120px;
 		height:50px;
 		float:left;
@@ -73,6 +100,7 @@
 		box-shadow: -20px 20px 20px grey;
 		position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 		z-index: 999;
+		display:none;
 	}
 	#login{
 		width:450px;
@@ -82,7 +110,7 @@
 		left:100%;
 		transform:translateX(-100%);
 		text-align:center;
-		position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
+		/*position: relative; z-index 사용해서 배치 앞으로 하기 위해 작성*/
 		z-index: 999;
 	}
 	#loginSubmit, #afterLoginList{
@@ -110,15 +138,40 @@
 </style>
 <script type="text/javascript">
 	$(document).ready(()=>{
+		$(".introduce").hover(
+			function(){
+				$(".introMenu li").slideDown(400);
+			},	
+			function(){
+				$(".introMenu li").slideUp(400);
+			}	
+		);
+		$(".challenge").hover(
+				function(){
+					$(".challengeMenu li").slideDown(400);
+				},	
+				function(){
+					$(".challengeMenu li").slideUp(400);
+				}	
+			);
+		/*
 		$(".introduce").on("mouseenter", () => {
 			$(".introMenu li").slideDown(400);
 		});
 		$(".introduce").on("mouseleave", () => {
 			$(".introMenu li").slideUp(400);
 		});
-		$("#hamburger").hide();
+		*/
+		
+		$(".challenge").on("mouseenter", () => {
+			$(".challengeMenu li").slideDown(400);
+		});
+		$(".challenge").on("mouseleave", () => {
+			$(".challengeMenu li").slideUp(400);
+		});
+		
 	    $(".btnHBG").on("click", () => {
-	       $("#hamburger").animate({width:'toggle'}, 400);
+	       $("#hamburger").css("position", "fixed").css("top", "100px").animate({width:'toggle'}, 400);
 	    });
 	});
 </script>
@@ -135,7 +188,13 @@
 							<li><a href="${ path }/introduce/developer">개발자 소개</a></li>
 						</ul>
 					</li>
-					<li class="header_li"><a href="${ path }/challenge/recruitList">챌린지</a></li>
+					<li class="header_li challenge">
+						<a href="${ path }/challenge/recruitList">챌린지</a>
+						<ul class="challengeMenu">
+							<li><a href="${ path }/challenge/challengeRegister">챌린지 등록</a></li>
+							<li><a href="${ path }/challenge/recruitList">챌린지 목록</a></li>
+						</ul>
+					</li>
 					<li class="header_li">
 						<a href="${ path }">
 							<!-- 로고 이미지 -->
@@ -149,6 +208,9 @@
 			</nav>
 			<div id="hamburger">
 				<div id="login">
+					<div class="btnHBG" style="font-size:2em; text-align:left; margin-left:20px;">
+						<i class="fa fa-caret-square-o-right" aria-hidden="true"></i>
+					</div>
 					<br><br><br><br><br><br><br>
 					<!-- 로그인 전 -->
 					<c:if test="${ loginMember == null }">
@@ -158,9 +220,9 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList"  onclick="#" value="후기>"/><hr>
-						<input type="button" id="loginList"  onclick="#" value="인증샷>"/><hr>
-						<input type="button" id="loginList"  onclick="#" value="고객센터>"/>
+					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->
 					<c:if test="${ loginMember != null }">
@@ -174,19 +236,23 @@
 							<th class="success">완료</th>
 							<th class="success">개설</th>
 							<tr class="success">
-								<td>0</td>
-								<td>0</td>
-								<td>0</td>
+								<!-- 로그인 POST 요청에서 구한 유저의 업적을 출력 -->
+								<c:forEach var="achieveCount" items="${ achievements }">
+									<td><c:out value="${ achieveCount }"/></td>
+								</c:forEach>
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="찜>"/>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/>
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
 								<td>보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
+						</table>
+						<hr>
+						<table style="width: 300px; margin:auto;">
 							<tr>
 								<td>등급</td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
