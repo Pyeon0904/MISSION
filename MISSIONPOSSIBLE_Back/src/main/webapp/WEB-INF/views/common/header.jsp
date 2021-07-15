@@ -42,12 +42,28 @@
 		width:50px;
 		height:80px;
 	}
-	ul.headerMenu>li.introduce>ul.introMenu{
+	ul.introMenu{
 		width:250px;
 		height:60px;
 		margin-left:-50px;
 	}
-	ul.headerMenu>li.introduce>ul.introMenu li {
+	ul.introMenu li {
+		width:120px;
+		height:50px;
+		float:left;
+		font-size:0.8em;
+		font-weight:bold;
+		text-align:center;
+		line-height:3;
+		display:none;
+		float:left;
+	}
+	ul.challengeMenu{
+		width:250px;
+		height:60px;
+		margin-left:-50px;
+	}
+	ul.challengeMenu li {
 		width:120px;
 		height:50px;
 		float:left;
@@ -146,6 +162,14 @@
 			$(".introMenu li").slideUp(400);
 		});
 		*/
+		
+		$(".challenge").on("mouseenter", () => {
+			$(".challengeMenu li").slideDown(400);
+		});
+		$(".challenge").on("mouseleave", () => {
+			$(".challengeMenu li").slideUp(400);
+		});
+		
 	    $(".btnHBG").on("click", () => {
 	       $("#hamburger").css("position", "fixed").css("top", "100px").animate({width:'toggle'}, 400);
 	    });
@@ -216,12 +240,21 @@
 								<c:forEach var="achieveCount" items="${ achievements }">
 									<td><c:out value="${ achieveCount }"/></td>
 								</c:forEach>
+<<<<<<< HEAD
 								
 							</tr>
 						</table>
 						<br><br>
 						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/><hr>
 						<table style="width: 300px; margin:auto;">
+=======
+							</tr>
+						</table>
+						<br><br>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/>
+						<br><br><br>
+						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
+>>>>>>> login
 							<tr>
 								<td>보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>

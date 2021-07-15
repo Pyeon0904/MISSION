@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
 @Mapper
 public interface MemberMapper {
@@ -39,5 +40,11 @@ public interface MemberMapper {
 	int isFollower(@Param("id")String id, @Param("followId")String followId);
 
 	List<String> selectMemberIdList();
+
+	List<memberReport> selectReportMemberList();
+
+	int selectReportListCount();
+
+	int addMemberReportCount(@Param("warnMemberId")String warnMemberId);
 
 }

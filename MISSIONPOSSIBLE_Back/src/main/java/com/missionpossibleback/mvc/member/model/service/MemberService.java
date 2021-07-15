@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
 public interface MemberService {
 	Member login(String id, String pwd);
@@ -44,6 +45,12 @@ public interface MemberService {
 	int isfollow(String id, String followId);
 
 	List<String> getMemberIdList();
+
+	List<memberReport> admin_reportMember();
+
+	int getReportListCount();
+
+	int admin_warnMember(String warnMemberId);
 
 
 }

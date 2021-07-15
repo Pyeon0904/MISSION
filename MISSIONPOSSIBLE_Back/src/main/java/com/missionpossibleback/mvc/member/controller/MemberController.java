@@ -39,22 +39,26 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
-import com.sun.mail.iap.Response;
+import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
-import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({"loginMember", "followMember", "isfollow","listMemberId"})
+@SessionAttributes({"loginMember", "followMember", "isfollow", "listMemberId", "achievements"})
 public class MemberController {
 	
 	@Autowired
 	private  MemberService service;
+	
+	@Autowired
+	private ChallengeService cService;
 	
 	@GetMapping(value = "/member/myPage")
 	public String myPage() {
@@ -94,6 +98,32 @@ public class MemberController {
 	   public String checkNickname() {
 	      
 	      return "member/checkNickname"; 
+	}
+//관리자 페이지
+	@GetMapping("/member/admin_viewWithdrawMember")
+	   public String admin_viewWithdrawMember() {
+	      
+	      return "/member/admin_viewWithdrawMember"; 
+	}
+	@GetMapping("/member/admin_viewMember")
+	   public ModelAndView admin_viewMember(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+		
+		List<memberReport> admin_memberList= service.admin_reportMember();
+		
+		PageInfo pageInfo = new PageInfo(page, 10, service.getReportListCount(), 10);
+		
+		model.addObject("admin_memberList", admin_memberList);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("/member/admin_viewMember");
+		
+	    return model; 
+	} 
+	@RequestMapping(value = "/member/oneDelete", method = {RequestMethod.POST})
+	public String oneDelete( @RequestParam("warnMemberId")String warnMemberId) {
+		
+		service.admin_warnMember(warnMemberId);
+		
+		return "redirect:/member/admin_viewMember";
 	}
 //신고하기	
 	@GetMapping("/member/reportMember")
@@ -258,9 +288,8 @@ public class MemberController {
 	      
 	      return "member/enroll";
 	}
-	
 	@RequestMapping(value = "/member/enroll", method = {RequestMethod.POST})
-	public ModelAndView enroll(ModelAndView model, @ModelAttribute Member member, HttpServletRequest request, @RequestParam("upfile") MultipartFile upfile) {
+	public ModelAndView enroll(@ModelAttribute Pointlog pointlog,ModelAndView model, @ModelAttribute Member member, HttpServletRequest request, @RequestParam("upfile") MultipartFile upfile) {
 		
 		if(upfile != null && !upfile.isEmpty()) {
 			String rootPath = request.getSession().getServletContext().getRealPath("resources");
@@ -278,6 +307,19 @@ public class MemberController {
 		int result = service.save(member);		
 		
 		if(result > 0) {
+			pointlog.setId(member.getId());
+			pointlog.setCno(0);
+			pointlog.setValue(10000);
+			pointlog.setHistory("PLUS_CREATE");
+			
+			int saveLog = cService.savePointlog(pointlog);
+			
+			if(saveLog > 0) {
+				log.info("포인트 증감 로그 저장 완료");
+			} else {
+				log.info("포인트 증감 로그 저장 실패");
+			}
+		
 			model.addObject("msg", "회원가입이 정상적으로 완료되었습니다.");
 			model.addObject("location", "/");
 		} else { 
@@ -492,6 +534,13 @@ public class MemberController {
 		}
 		
 		if(loginMember != null) {
+			
+			int joinCount = cService.getJoinCount(loginMember.getId());// 로그인한 유저가 참여중인 챌린지 개수 출력
+			int finishCount = cService.getEndJoinCount(loginMember.getId());// 로그인한 유저가 완수한 챌린지 개수 출력
+			int createCount = cService.getChallengeCountById(loginMember.getId());// 로그인한 유저가 개설한 챌린지 개수 출력
+			int[] achievements = {joinCount, finishCount, createCount};// 배열로 한 번에 담아서 보내기 위함
+			model.addObject("achievements", achievements);// 위에서 구한 값들 보내기
+			
 			model.addObject("loginMember", loginMember);
 			model.addObject("msg", "로그인 성공!");
 			model.setViewName("redirect:/");
