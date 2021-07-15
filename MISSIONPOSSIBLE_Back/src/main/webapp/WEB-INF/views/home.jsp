@@ -332,12 +332,13 @@ animateCSS('.my-element','slideOutLeft',function() {
 					</tr>
 						<tr>
 							<td>
-								<div class="introcontent">
+							<div class="animated  zoomIn delay-2s">
+								<p class="introcontent">
 									<span>지극히 평범한 일상을 벗어나고 싶으신가요?</span><br>
                                          절망의 끝자락에서 마음이 낙심될 때,<br>
                                          우리가 손잡고 함께하겠습니다.<br>
                                          <span>'작전'</span> 챌린지와 지금 당장 시작해봅시다!<br>
-									         
+									         </p>
 								    </div>
 							     </td>
 						      </tr>
@@ -352,12 +353,13 @@ animateCSS('.my-element','slideOutLeft',function() {
 					<td>
 					  <div class="introTitle">챌린지 소개</div><br><br><br><br>
 		     <span class="challTitle">지키고 싶은<br> 나와의 약속을 고르세요</span><br><br>
-					  <p class="challcontext">
+					  <div class="challcontext">
                        1.포스트 코로나 시대속 다양한 챌린지 모임 제공<br>
                        2.외출,인원,방문 각종 제한속에서 지혜롭게일상을 보내는 방안제시<br>
                        3.다양한 참가자들과의 열정공유, 의지확립으로 코로나 극복<br>
+             <div class="animated fadeIn delay-4s">
       <span>TIP 원하는 챌린지가 없다면<br>
-             "챌린지 개설"로 직접 만들어 보세요.</span></p>
+             "챌린지 개설"로 직접 만들어 보세요.</span></div></div>
 				   <img class="IntrochallImg1"src="${path}/resources/images/mission.png">
 					  <div class="challImgtext1"> 매일 오전 6시 기상</div>
 						<img class="IntrochallImg2"src="${path}/resources/images/mission2.png">
