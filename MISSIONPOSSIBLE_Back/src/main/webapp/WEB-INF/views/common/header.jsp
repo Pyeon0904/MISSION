@@ -19,6 +19,72 @@
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
+	/* --- 헤더 위쪽 관리자 권한 부분 ------------------------------------------------------------------------- */
+		/* 메뉴바 위치 */
+		.menu {
+			z-index:17;
+			text-align:center;
+			position: absolute;
+			left:0%;
+			top: 150px;
+			margin:auto;
+			width: 100%;
+			height:45px;
+		}
+		.col{ position:relative; width:100%; }
+	
+		/*하위 메뉴 구분하기*/
+		.semititle{ 
+			text-align:center;
+			font-family: 'GmarketSansMedium';
+			font-size: 16px;
+			padding: 10px 10px;
+			color:green;
+			text-decoration: none;
+		}
+		
+		/*메인 탭*/	
+		.maintab {
+			position:relative;
+			left: 49%;
+			list-style-type: none;		
+			padding: 0;
+			margin: 0;
+		}
+			
+		/*메인탭 설정*/
+		.maintab li {
+			float: left;
+			width: 120px;
+			position: relative;
+			padding: 0;
+			line-height: 25px;
+		}
+			
+		/*글자 관련 설정*/
+		.submenu {
+			text-align:center;
+			display: block;
+			font-family: 'GmarketSansMedium';
+			font-size: 16px;
+			padding: 10px;
+			color:#948c84;
+			text-decoration: none;
+		}
+		
+		/*세부 탭 기본 설정*/
+		.detailtab {
+			position: absolute;
+			left: 0px;
+			width: 200px;
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			display:none;
+		}
+	/* ---------------------------------------------------------------------------- */
+	
+	/* 공통 헤더 부분 ---------------------------------------------------------------------------- */
 	*{margin:0; padding:0;}
 	.headerArea{
 		width:1200px;
@@ -177,10 +243,32 @@
 </script>
 </head>
 <body>
+	<!-- 헤더 위 관리자권한 부분------------------------------------------------------------ -->
+	<c:if test="${ loginMember.id eq 'admin' }">
+		<div class="menu">
+				<div class="col">
+				<ul class="maintab">
+					<li><a class="semititle" href="${ path }/admin/viewUser">고객관리</a></li>
+					<li><a class="semititle" href="${ path }/admin/viewChallenge">챌린지관리</a></li>
+					<li><a class="semititle" href="${ path }/admin/viewRecruit">신고접수</a></li>
+					<li><a class="semititle" href="${ path }/admin/viewBoard">고객센터관리</a>
+					<li><a class="semititle" href="${ path }/admin/viewReview">후기관리</a></li>
+				</ul>
+				</div>
+		</div>
+	</c:if>
+		<!-- ----------------------------------------------------------------------------- -->
+
 	<header>
 		<div class="headerArea">
 			<nav>
 				<ul class="headerMenu">
+					<li class="header_li">
+						<a href="${ path }">
+							<!-- 로고 이미지 -->
+							<img src="${path}/resources/images/logofirst.png" width="150px" height="150px"/>
+						</a>
+					</li>
 					<li class="header_li introduce">
 						<a href="${ path }/introduce/introduce">소개</a>
 						<ul class="introMenu">
@@ -194,12 +282,6 @@
 							<li><a href="${ path }/challenge/challengeRegister">챌린지 등록</a></li>
 							<li><a href="${ path }/challenge/recruitList">챌린지 목록</a></li>
 						</ul>
-					</li>
-					<li class="header_li">
-						<a href="${ path }">
-							<!-- 로고 이미지 -->
-							<img src="${path}/resources/images/file.png" width="150px" height="82px"/>
-						</a>
 					</li>
 					<li class="header_li"><a href="${ path }/board/boardList">고객센터</a></li>
 					<li class="header_li"><a href="${ path }/review/reviewList">후기게시판</a></li>
