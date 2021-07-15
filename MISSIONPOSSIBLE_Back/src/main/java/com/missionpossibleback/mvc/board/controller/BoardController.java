@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/board")
+
 public class BoardController {
 	@Autowired
 	private BoardService service;
@@ -52,7 +52,7 @@ public class BoardController {
 	private ResourceLoader resourceLoader;
 	
 // 글목록 보기
-	@GetMapping("/boardList")
+	@GetMapping("/board/boardList")
 	public ModelAndView list(ModelAndView model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 
@@ -70,7 +70,7 @@ public class BoardController {
 	}
 	
 // 글 상세보기
-	@GetMapping("/boardDetail")
+	@GetMapping("/board/boardDetail")
 	public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			ModelAndView model, @RequestParam("qna_no") int qna_no) {
 		
@@ -124,7 +124,7 @@ public class BoardController {
 	
 // 게시글 작성 페이지
 // 뷰를 찾아주는 로직
-	@GetMapping("/boardWrite")
+	@GetMapping("/board/boardWrite")
 	public String writeView() {
 		log.info("게시글 작성 페이지 요청");
 		
@@ -133,7 +133,7 @@ public class BoardController {
 	
 	
 // 게시글 등록
-	@PostMapping("/boardWrite") 
+	@PostMapping("/board/boardWrite") 
 	public ModelAndView write(ModelAndView model, HttpServletRequest request,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@ModelAttribute Board board) {
@@ -184,7 +184,7 @@ public class BoardController {
 	}
 	
 // 리뷰 게시글 파일 다운로드
-    @GetMapping("/fileDown")
+    @GetMapping("/board/fileDown")
 	public ResponseEntity<Resource> fileDown(
 			@RequestParam("oriname")String oriname, @RequestParam("rename")String rename,
 			@RequestHeader(name = "user-agent")String header) {
@@ -218,7 +218,7 @@ public class BoardController {
 	}
 	
 // 게시글 수정
-	@GetMapping("/boardModify")
+	@GetMapping("/board/boardModify")
 	public ModelAndView updateView(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestParam("qna_no") int qna_no) {
@@ -238,7 +238,7 @@ public class BoardController {
 		}
 	
 
-	@PostMapping("/boardModify")
+	@PostMapping("/board/boardModify")
 	public ModelAndView update(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			HttpServletRequest request,
@@ -290,7 +290,7 @@ public class BoardController {
 	}
 	
 // 게시글 삭제
-	@GetMapping("/delete")
+	@GetMapping("/board/delete")
 	public ModelAndView delete(ModelAndView model,
 			@RequestParam("qna_no") int qna_no,
 			@ModelAttribute Board board){
@@ -313,7 +313,7 @@ public class BoardController {
 		
 	
 // 비밀글
-	@GetMapping("/password")
+	@GetMapping("/board/password")
 	public ModelAndView checkPwView(ModelAndView model,
 			@RequestParam("qna_no") int qna_no) {
 			
@@ -326,7 +326,7 @@ public class BoardController {
 		}
 
 // 게시글 비밀번호 확인
-	@PostMapping("/password") 
+	@PostMapping("/board/password") 
 	public ModelAndView checkPw(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestParam("pass") String pass,
@@ -358,7 +358,7 @@ public class BoardController {
 	}
 		
 // 답글쓰기
-	@GetMapping("/boardReply")
+	@GetMapping("/board/boardReply")
 	public ModelAndView replyView(ModelAndView model,
 			@RequestParam("qna_no") int qna_no) {
 			
@@ -371,7 +371,7 @@ public class BoardController {
 	}
 		
 
-	@PostMapping("/boardReply")
+	@PostMapping("/board/boardReply")
 	public ModelAndView reply(ModelAndView model, HttpServletRequest request,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@ModelAttribute Board board) {
@@ -405,7 +405,7 @@ public class BoardController {
 	}
 		
 // 검색
-	@RequestMapping(value="/boardSearch" ,method={RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="/board/boardSearch" ,method={RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView search(ModelAndView model, 
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam("type") String type,
@@ -424,8 +424,58 @@ public class BoardController {
 			
 		return model;		
 	}
+	
+	
+// 관리자 페이지 - 게시된 고객센터 페이지
+	@GetMapping("/admin/board/viewQna")
+	public ModelAndView boardView(ModelAndView model) {
+
+		List<Board> list = null;
+			
+		list = service.getBoardAllList();
+			
+		model.addObject("list", list);
+		model.setViewName("admin/board/viewQna");
+			
+		return model;		
+	}
 		
+// 관리자 페이지 - 삭제된 고객센터 페이지
+	@GetMapping("/admin/board/viewDeleteQna")
+	public ModelAndView DeleteView(ModelAndView model) {
+
+		List<Board> list = null;
+			
+		list = service.getDeleteBoardAllList();
 		
+		model.addObject("list", list);
+		model.setViewName("admin/board/viewDeleteQna");
+			
+		return model;		
+	}
+	
+// 관리자 페이지 - 고객센터 게시글 선택 삭제
+		@PostMapping("/admin/board/selectDelete")
+		public String selectDelete(HttpServletRequest request) {
+
+			String[] str = request.getParameterValues("cateSelDelNo");
+			String[] strNo = str[0].split(",");
+			
+			int[] intNo = new int[strNo.length];
+			
+			
+			for(int i=0; i<strNo.length; i++) {
+				intNo[i] = Integer.parseInt(strNo[i]);
+			}
+			
+			service.selectDelete(intNo);
+
+			return "redirect: viewQna";		
+		}
+		
+	
+
+	
 		
 	
 	

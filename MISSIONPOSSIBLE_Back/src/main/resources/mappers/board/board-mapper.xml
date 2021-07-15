@@ -286,6 +286,39 @@
       </choose>
       ORDER BY QNA_NO DESC
    </select>
-
+   
+   <!-- 관리자 페이지에서 STATUS가 N인 게시글 불러오기 -->
+   <select id="selectDeleteBoardList" resultMap="boardListResultMap">
+   	   SELECT  Q.QNA_NO,
+           	  Q.TITLE, 
+           	  Q.WRITER, 
+          	  Q.CONTENT,
+          	  Q.READCOUNT, 
+          	  Q.PASS,
+          	  Q.ORIGINAL_FILENAME, 
+          	  Q.RENAMED_FILENAME, 
+          	  Q.CREATE_DATE, 
+          	  Q.MODIFY_DATE,
+          	  Q.GROUPNO,
+         	  Q.GROUPORD,
+         	  Q.DEPT,
+         	  Q.SORT
+       FROM QNA Q
+       JOIN MEMBER M ON(Q.WRITER = M.ID)
+       WHERE Q.STATUS = 'N'
+       ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+	</select>
+	
+	<!-- 관리자 페이지 선택 삭제 -->
+	<update id="selectDelete" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE QNA
+			SET 
+				STATUS = 'N'
+			WHERE 
+				QNA_NO=#{item}
+		</foreach>
+	</update>
+	
 
 </mapper>
