@@ -134,7 +134,7 @@ $(function () {
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="<%= request.getContextPath() %>/admin/review/oneDelete" method="POST">
+								<form id=delForm" action="${ path }/admin/review/oneDelete" method="POST">
 									<input type="hidden" name="reviewNo" id="reviewNo">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
@@ -176,7 +176,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 삭제하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/review/selectDelete" method="POST">
+							<form id="selDelForm" action="${ path }/admin/review/selectDelete" method="POST">
 								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
