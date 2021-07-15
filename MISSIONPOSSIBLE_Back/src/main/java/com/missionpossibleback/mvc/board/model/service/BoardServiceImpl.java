@@ -222,6 +222,12 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.selectDelete(cateSelDelNo);
 	}
 
+	@Override
+	public int selectOneDelete(String str) {
+		
+		return mapper.selectOneDelete(str);
+	}
+
 	
 	/*
 	@Override

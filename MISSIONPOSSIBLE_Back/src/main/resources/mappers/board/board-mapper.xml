@@ -320,5 +320,13 @@
 		</foreach>
 	</update>
 	
+	<update id="selectOneDelete" parameterType="map">
+		UPDATE QNA
+			SET
+				STATUS = 'N'
+			WHERE
+				QNA_NO=${str}
+	</update>
+	
 
 </mapper>

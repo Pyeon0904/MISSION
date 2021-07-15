@@ -42,6 +42,8 @@ public interface BoardService {
 
 	int selectDelete(int[] intNo);
 
+	int selectOneDelete(String str);
+
 	
 //	public BoardDetail selectOne(int board_id);
 

@@ -51,4 +51,6 @@ public interface BoardMapper {
 	List<Board> selectDeleteBoardList();
 	
 	int selectDelete(int[] cateSelDelNo);
+
+	int selectOneDelete(String str);
 }

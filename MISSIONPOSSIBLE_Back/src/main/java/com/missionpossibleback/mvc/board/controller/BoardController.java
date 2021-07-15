@@ -455,22 +455,32 @@ public class BoardController {
 	}
 	
 // 관리자 페이지 - 고객센터 게시글 선택 삭제
-		@PostMapping("/admin/board/selectDelete")
-		public String selectDelete(HttpServletRequest request) {
+	@PostMapping("/admin/board/selectDelete")
+	public String selectDelete(HttpServletRequest request) {
 
-			String[] str = request.getParameterValues("cateSelDelNo");
-			String[] strNo = str[0].split(",");
+		String[] str = request.getParameterValues("cateSelDelNo");
+		String[] strNo = str[0].split(",");
 			
-			int[] intNo = new int[strNo.length];
+		int[] intNo = new int[strNo.length];
 			
+		for(int i=0; i<strNo.length; i++) {
+			intNo[i] = Integer.parseInt(strNo[i]);
+		}
 			
-			for(int i=0; i<strNo.length; i++) {
-				intNo[i] = Integer.parseInt(strNo[i]);
-			}
-			
-			service.selectDelete(intNo);
+		service.selectDelete(intNo);
 
-			return "redirect: viewQna";		
+		return "redirect: viewQna";		
+	}
+		
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 하나만 삭제
+	@PostMapping("/admin/board/oneDelete")
+	public String selectOneDelete(HttpServletRequest request) {
+
+		String str = request.getParameter("qna_no");
+
+		service.selectOneDelete(str);
+
+		return "redirect: viewQna";		
 		}
 		
 	
