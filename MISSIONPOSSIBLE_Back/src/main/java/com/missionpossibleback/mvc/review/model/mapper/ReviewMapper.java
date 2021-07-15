@@ -60,9 +60,9 @@ public interface ReviewMapper {
 
 	List<Review> selectDeleteReviewList();
 
-	int selectDelete(int[] cateSelDelNo);
+	int selectDelete(int[] intNo);
 
-	int selectRestore(int[] cateSelDelNo);
+	int selectRestore(int[] intNo);
 
 	int selectOneDelete(String str);
 

@@ -196,7 +196,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 경고 처리하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/report/selectWarnReview" method="POST">
+							<form id="selDelForm" action="${ path }/admin/report/selectWarnReview" method="POST">
 								<input type="hidden" name="cateSelWarnNo" id="cateSelWarnNo">
 								<input type="hidden" name="cateSelWarnReportNo" id="cateSelWarnReportNo">
 								<div class="infSendArea">
@@ -257,7 +257,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 삭제하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/report/selectDeleteR" method="POST">
+							<form id="selDelForm" action="${ path }/admin/report/selectDeleteR" method="POST">
 								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">

@@ -218,8 +218,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int selectDelete(int[] cateSelDelNo) {
-		return mapper.selectDelete(cateSelDelNo);
+	public int selectDelete(int[] intNo) {
+		return mapper.selectDelete(intNo);
 	}
 
 	@Override
@@ -228,8 +228,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int selectRestore(int[] cateSelDelNo) {
-		return mapper.selectRestore(cateSelDelNo);
+	public int selectRestore(int[] intNo) {
+		return mapper.selectRestore(intNo);
 	}
 
 	@Override

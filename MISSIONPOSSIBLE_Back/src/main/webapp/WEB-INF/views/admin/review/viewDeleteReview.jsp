@@ -133,7 +133,7 @@ $(function () {
 								<div class="contentArea">
 									<div class="div-inf" id="individual">
 									</div>
-									<form id=delForm" action="<%= request.getContextPath() %>/admin/review/oneRestore" method="POST">
+									<form id=delForm" action="${ path }/admin/review/oneRestore" method="POST">
 										<input type="hidden" name="reviewNo" id="reviewNo">
 										<div class="infSendArea">
 											<input type="submit" class="inf-bt2" value="확인">
@@ -175,7 +175,7 @@ $(function () {
 								<div class="div-inf">
 									<h2>정말로 복구하시겠습니까?</h2>
 								</div>
-								<form id="selDelForm" action="<%= request.getContextPath() %>/admin/review/selectRestore" method="POST">
+								<form id="selDelForm" action="${ path }/admin/review/selectRestore" method="POST">
 									<input type="hidden" name="cateSelResNo" id="cateSelResNo">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">

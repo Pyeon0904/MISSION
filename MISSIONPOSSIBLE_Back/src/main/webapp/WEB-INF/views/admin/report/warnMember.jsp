@@ -139,7 +139,7 @@ $(function () {
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="<%= request.getContextPath() %>/admin/report/delMember" method="POST">
+								<form id=delForm" action="${ path }/admin/report/delMember" method="POST">
 									<input type="hidden" name="warnId" id="warnId">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
@@ -179,7 +179,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 탈퇴 처리하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/report/selectDelMember" method="POST">
+							<form id="selDelForm" action="${ path }/admin/report/selectDelMember" method="POST">
 								<input type="hidden" name="cateSelWarnId" id="cateSelWarnId">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">

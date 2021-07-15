@@ -149,7 +149,7 @@ $(function () {
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="<%= request.getContextPath() %>/admin/report/oneWarnChallenge" method="POST">
+								<form id=delForm" action="${ path }/admin/report/oneWarnChallenge" method="POST">
 									<input type="hidden" name="reportedNo" id="reportedNo">
 									<input type="hidden" name="reportedId" id="reportedId">
 									<div class="infSendArea">
@@ -193,7 +193,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 경고 처리하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/report/selectWarnChallenge" method="POST">
+							<form id="selDelForm" action="${ path }/admin/report/selectWarnChallenge" method="POST">
 								<input type="hidden" name="cateSelWarnNo" id="cateSelWarnNo">
 								<input type="hidden" name="cateSelWarnReportNo" id="cateSelWarnReportNo">
 								<div class="infSendArea">
