@@ -61,8 +61,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board findByNo(int qna_no) {
-		mapper.readCount(qna_no);
+	public Board findByNo(int qna_no, boolean hasRead) {
+		
+		if(!hasRead) {
+			mapper.readCount(qna_no);
+		}
 		
 		return mapper.selectBoardByNo(qna_no);
 	}
@@ -179,8 +182,6 @@ public class BoardServiceImpl implements BoardService {
 		return renameFileName;
 	}
 
-
-
 	@Override
 	public void deleteFile(String filePath) {
 		
@@ -191,6 +192,40 @@ public class BoardServiceImpl implements BoardService {
 		if(file.exists()) {			
 			file.delete();
 		}
+	}
+
+	@Override
+	public int readCount(int qna_no) {
+		
+		return mapper.readCount(qna_no);
+	}
+
+// 관리자페이지
+	// 게시된 글
+	@Override
+	public List<Board> getBoardAllList() {
+		
+		return mapper.selectAll();
+	}
+
+	// 삭제된 글(STATUS='N')
+	@Override
+	public List<Board> getDeleteBoardAllList() {
+		
+		return mapper.selectDeleteBoardList();
+	}
+
+	// 선택 삭제
+	@Override
+	public int selectDelete(int[] cateSelDelNo) {
+		
+		return mapper.selectDelete(cateSelDelNo);
+	}
+
+	@Override
+	public int selectOneDelete(String str) {
+		
+		return mapper.selectOneDelete(str);
 	}
 
 	

@@ -44,5 +44,13 @@ public interface BoardMapper {
 	List<Board> searchBoardList(@Param("type") String type, @Param("keyword") String keyword, RowBounds rowBounds);
 
 	int searchBoardCount(@Param("type") String type, @Param("keyword") String keyword);
+
+	// 관리자 페이지
+	List<Board> selectAll();
 	
+	List<Board> selectDeleteBoardList();
+	
+	int selectDelete(int[] cateSelDelNo);
+
+	int selectOneDelete(String str);
 }
