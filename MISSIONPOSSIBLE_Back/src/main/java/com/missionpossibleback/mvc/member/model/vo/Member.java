@@ -28,4 +28,6 @@ public class Member {
 	
 	private String renamedFileName;
 	
+	private int report_count;
+	
 }

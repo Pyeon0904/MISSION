@@ -359,24 +359,7 @@
 			<![CDATA[
 				AND TO_CHAR(CLG.START_DATE,'YYYYMMDD') < TO_CHAR(SYSDATE,'YYYYMMDD') AND TO_CHAR(CLG.DEADLINE,'YYYYMMDD') < TO_CHAR(SYSDATE,'YYYYMMDD')
 			]]>
-	</select>	
-	
-	<!-- 종료된 챌린지 중 참여했던 챌린지 개수 확인 -->
-	<select id="selectEndJoinCount" parameterType="String" resultType="_int">
-		SELECT
-		    COUNT(*)
-		FROM CHALLENGE CLG
-		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
-		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
-		WHERE 
-			(CLG.STATUS = 'Y') 
-			AND (MCL.MY_STATUS = 'JOIN') 
-			AND (MCL.ID = #{id})
-			<![CDATA[
-				AND ((CLG.START_DATE < SYSDATE) AND (CLG.DEADLINE < SYSDATE))
-			]]>
-	</select>	
+	</select>		
 	
 	<!-- 
 		로그인한 유저가 누른 챌린지가 참여중인 챌린지인지 아닌지 판단하는 로직 
