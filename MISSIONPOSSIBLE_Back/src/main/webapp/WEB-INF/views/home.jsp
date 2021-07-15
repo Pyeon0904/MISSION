@@ -295,7 +295,7 @@ animateCSS('.my-element','slideOutLeft',function() {
 					      data-height="400px"data-autoplay="2000" data-loop="true">
 						   <div data-img="${path}/resources/images/Runing.png">
 						     <p class=Runing><span>오늘 하루</span>는 얼마나달려볼까?</p>
-							   <div class="animated fast bounceInUp -1ms delay-1s">
+							   <div class="animated fast bounceInUp delay-1s">
 							    <p class="teamevent1"><span>Time </span>to&nbsp;<span>Run</span></p>
 							</div>
 						</div>
@@ -332,7 +332,7 @@ animateCSS('.my-element','slideOutLeft',function() {
 					</tr>
 						<tr>
 							<td>
-							<div class="animated  zoomIn delay-2s">
+							<div class="animated  fadeInRight ">
 								<p class="introcontent">
 									<span>지극히 평범한 일상을 벗어나고 싶으신가요?</span><br>
                                          절망의 끝자락에서 마음이 낙심될 때,<br>
@@ -357,7 +357,7 @@ animateCSS('.my-element','slideOutLeft',function() {
                        1.포스트 코로나 시대속 다양한 챌린지 모임 제공<br>
                        2.외출,인원,방문 각종 제한속에서 지혜롭게일상을 보내는 방안제시<br>
                        3.다양한 참가자들과의 열정공유, 의지확립으로 코로나 극복<br>
-             <div class="animated fadeIn delay-4s">
+             <div class="animated fadeInLeft delay-5s">
       <span>TIP 원하는 챌린지가 없다면<br>
              "챌린지 개설"로 직접 만들어 보세요.</span></div></div>
 				   <img class="IntrochallImg1"src="${path}/resources/images/mission.png">
