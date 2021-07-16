@@ -32,13 +32,6 @@
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
 
-		#bg{
-			padding:0px;
-			background-image:url(<%=request.getContextPath()%>/resources/images/backgroundcircle-dark.png);
-			overflow-x:hidden;
-			z-index:0;	
-		}
-
 		/* 로고 설정 */
 		.logo {
 			margin: 0px;
@@ -199,14 +192,14 @@
 		
 		#hamburger{
 			width:450px;
-			height:800px;
+			height:900px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 1;
+			z-index: 999;
 			display:none;
 		}
 		
@@ -292,25 +285,10 @@
 		<!-- 초록색 선 (로고 아래) -->
 		<hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
 		
-		<!-- 헤더 아래 최상단 이미지 삽입 -->
-		<a><img class="headerTop"
-			src="${path}/resources/images/headerTop.png" />
-		</a>
-		
-		<!-- 버튼(작전 더 자세히보기) -->
-		<a href="${path}/introduce/introduce">
-			<img class="homeIntroButton" src="${path}/resources/images/homeIntroButton.png" 
-			style="margin-left:155px; margin-top:10px"/>
-		</a>
-		
-		<!-- 시침표현 로고 이미지 -->
-		<a>
-			<img class="homeIntroButton" src="${path}/resources/images/timeCircle.png" 
-			style="margin-left:600px; margin-top:-500px"/>
-		</a>
 		
 		<div class="menu">
 			<div class="col">
+			<!-- 메뉴바 상세내역 -->
 			<ul class="maintab">
 				<li><a class="semititle" href="${path}/introduce/introduce">소개</a>
 					<ul class="detailtab">
@@ -332,6 +310,7 @@
 					<ul class="detailtab">
 					</ul></li>
 			</ul>
+			<!-- 햄버거바 상세내역 -->
 			<ul class="maintab">
 				<li class="btnHBG header_li"><a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
 					</li>
@@ -340,6 +319,7 @@
 			</div>
 		</div>
 		
+		<!-- 햄버거 & 햄버거바 내부---------------------------------------------------------- -->
 		<div id="hamburger">
 				<div id="login">
 					<div class="btnHBG" style="font-size:2em; text-align:left; margin-left:20px;">

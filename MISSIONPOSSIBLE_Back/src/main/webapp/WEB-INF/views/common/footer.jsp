@@ -24,7 +24,7 @@
 			text-align: center;
 			font-family:
 			font-size:12pt;
-			color:rgba(26, 252, 26);
+			color:black;
 		}
 		</style>
 	</head>
