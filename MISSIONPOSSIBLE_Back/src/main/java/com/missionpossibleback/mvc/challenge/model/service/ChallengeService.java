@@ -81,5 +81,17 @@ public interface ChallengeService {
 	List<Pointlog> findPointlogById(String id);
 
 	Pointlog findPointlogByObject(String id, int cno, String history);
+
+	List<Challenge> getChallengeList();
+
+	int selectDelete(int[] intNo);
+
+	int selectOneDelete(String str);
+
+	List<Challenge> getDeleteChallengeAllList();
+
+	int selectRestore(int[] intNo);
+
+	int selectOneRestore(String str);
 	
 }

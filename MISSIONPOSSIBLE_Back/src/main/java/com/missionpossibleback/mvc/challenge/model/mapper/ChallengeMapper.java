@@ -34,6 +34,8 @@ public interface ChallengeMapper {
 	
 	int selectCertCountById(@Param("no") int no, @Param("id") String id);
 	
+	List<Challenge> selectChallengeList();
+	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
 	List<Challenge> selectRecruitList(RowBounds rowBounds);
@@ -81,5 +83,15 @@ public interface ChallengeMapper {
 	List<Pointlog> selectPointlogById(@Param("id") String id);
 
 	Pointlog selectPointlogByObject(@Param("id") String id, @Param("cno") int cno, @Param("history") String history);
+
+	int selectDelete(int[] intNo);
+
+	int selectOneDelete(String str);
+
+	List<Challenge> selectDeleteChallengeList();
+
+	int selectRestore(int[] intNo);
+
+	int selectOneRestore(String str);
 	
 }

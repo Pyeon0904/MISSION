@@ -132,6 +132,14 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectChallengeList(rowBounds);
 	}
 	
+	// 전체 챌린지 조회(페이징 X)
+	@Override
+	public List<Challenge> getChallengeList() {
+		
+		return mapper.selectChallengeList();
+	}
+
+	
 	// 모집중인 챌린지 조회
 	@Override
 	public List<Challenge> getRecruitList(PageInfo pageInfo) {
@@ -354,8 +362,39 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectPointlogByObject(id, cno, history);
 	}
 
+	//  관리자 페이지 - 여러개의 챌린지 선택 후 삭제 메소드
+	@Override
+	public int selectDelete(int[] intNo) {
+		
+		return mapper.selectDelete(intNo);
+	}
 
+	// 관리자 페이지 - 한 개의 챌린지 선택 후 삭제 메소드
+	@Override
+	public int selectOneDelete(String str) {
+		
+		return mapper.selectOneDelete(str);
+	}
 
-	
+	// 관리자 페이지 - 삭제된 챌린지 전체 조회
+	@Override
+	public List<Challenge> getDeleteChallengeAllList() {
+		
+		return mapper.selectDeleteChallengeList();
+	}
+
+	// 관리자 페이지 - 여러개의 삭제된 챌린지 복구
+	@Override
+	public int selectRestore(int[] intNo) {
+		
+		return mapper.selectRestore(intNo);
+	}
+
+	// 관리자 페이지 - 한 개의 삭제된 챌린지 복구
+	@Override
+	public int selectOneRestore(String str) {
+		
+		return mapper.selectOneRestore(str);
+	}
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.board.model.service.BoardService;
 import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 import com.missionpossibleback.mvc.review.model.service.ReviewService;
@@ -45,10 +46,90 @@ public class AdminController {
       log.info("회원관리 페이지 요청");
    }
    
-   //챌린지관리 (관리자)
-   @GetMapping("/admin/viewChallenge")
-   public void viewChallenge() {
+   // [챌린지] 관리자 페이지 - 챌린지 관리 - 전체 챌린지 목록
+   @GetMapping("/admin/challenge/viewChallenge")
+   public ModelAndView viewChallenge(ModelAndView model) {
       log.info("챌린지리스트 페이지 요청");
+      
+      List<Challenge> list = null;
+      
+      list = C_Service.getChallengeList();
+      
+      model.addObject("list", list);
+      model.setViewName("admin/challenge/viewChallenge");
+      
+      return model;
+   }
+   
+   // [첼린지] 관리자 페이지 - 챌린지 관리 - 삭제된 챌린지 목록
+   @GetMapping("/admin/challenge/viewDeleteChallenge")
+   public ModelAndView DeleteChallengeView(ModelAndView model) {
+
+      List<Challenge> list = null;
+      
+      list = C_Service.getDeleteChallengeAllList();
+      model.addObject("list", list);
+      model.setViewName("admin/challenge/viewDeleteChallenge");
+      
+      return model;
+   }
+   
+   // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 선택 삭제
+   @PostMapping("/admin/challenge/selectDelete")
+   public String selectDeleteChallenge(HttpServletRequest request) {
+
+      String[] str = request.getParameterValues("cateSelDelNo");
+      String[] strNo = str[0].split(",");
+      
+      int[] intNo = new int[strNo.length];
+      
+      for(int i=0; i<strNo.length; i++) {
+         intNo[i] = Integer.parseInt(strNo[i]);
+      }
+
+      C_Service.selectDelete(intNo);
+
+      return "redirect: viewChallenge";      
+   }
+   
+   // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 하나만 삭제
+   @PostMapping("/admin/challenge/oneDelete")
+   public String selectOneDeleteChallenge(HttpServletRequest request) {
+
+      String str = request.getParameter("challengeNo");
+
+      C_Service.selectOneDelete(str);
+
+      return "redirect: viewChallenge";      
+   }
+   
+   // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 선택 복구
+   @PostMapping("/admin/challenge/selectRestore")
+   public String selectRestoreChallenge(HttpServletRequest request) {
+
+      String[] str = request.getParameterValues("cateSelResNo");
+      String[] strNo = str[0].split(",");
+      
+      int[] intNo = new int[strNo.length];
+      
+      for(int i=0; i<strNo.length; i++) {
+         intNo[i] = Integer.parseInt(strNo[i]);
+      }
+
+      C_Service.selectRestore(intNo);
+
+      return "redirect: viewDeleteChallenge";      
+   }
+   
+   // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 하나만 복구
+   @PostMapping("/admin/challenge/oneRestore")
+   public String selectOneRestoreChallenge(HttpServletRequest request) {
+
+      String str = request.getParameter("challengeNo");
+
+      C_Service.selectOneRestore(str);
+
+      return "redirect: viewDeleteChallenge";      
    }
    
    //신고접수 (관리자)
