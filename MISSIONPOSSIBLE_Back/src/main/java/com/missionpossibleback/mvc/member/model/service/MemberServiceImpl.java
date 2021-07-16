@@ -4,15 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.mapper.MemberMapper;
+import com.missionpossibleback.mvc.member.model.vo.Follow;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -139,5 +144,67 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+//팔로우 리스트 
+	@Override
+	public int getListCount() {
+		
+		return mapper.selectListCount();
+	}
 
+	@Override
+	public List<Follow> getFollowList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());	
+		
+		
+		return mapper.selectFollowList(rowBounds, id);
+	}
+//팔로우 취소
+	@Override
+	public int deleteFollow(String deleteFollow, String id) {
+		
+		return mapper.deleteFollow(deleteFollow, id);
+	}
+//회원 신고
+	@Override
+	public int reportMember(String id, String reportId, String reportType, String reportContent) {
+	
+		return mapper.reportMember(id, reportId, reportType, reportContent);
+	}
+//팔로우하기
+	@Override
+	public int follow(String id, String followId) {
+		
+		return mapper.insertFollower(id, followId);
+	}
+//팔로우 되어있는지 확인 
+	@Override
+	public int isfollow(String id, String followId) {
+		
+		return mapper.isFollower(id, followId);
+	}
+//아이디 검색 자동완성
+	@Override
+	public List<String> getMemberIdList() {
+		
+		return mapper.selectMemberIdList();
+	}
+//admin_viewMember - 신고된 회원 조회
+	@Override
+	public List<memberReport> admin_reportMember() {
+		
+		return mapper.selectReportMemberList();
+	}
+	
+	@Override
+	public int getReportListCount() {
+		
+		return mapper.selectReportListCount();
+	}
+//admin- 신고 회원 경고 주기
+	@Override
+	public int admin_warnMember(String warnMemberId) {
+		
+		return mapper.addMemberReportCount(warnMemberId);
+	}
 }

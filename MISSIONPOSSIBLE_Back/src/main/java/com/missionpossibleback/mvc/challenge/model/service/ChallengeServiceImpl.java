@@ -16,6 +16,7 @@ import com.missionpossibleback.mvc.challenge.model.mapper.ChallengeMapper;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		int result = 0;
 		
 		if(challenge.getChallengeNo() != 0) {
-//			result = mapper.updateChallenge(challenge);
+			result = mapper.updateChallenge(challenge);
 		} else {
 			result = mapper.insertChallenge(challenge);
 		}
@@ -65,7 +66,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		int result = 0;
 		
 		if(myChallengeList.getNo() != 0) {
-//			result = mapper.updateMyChallengeList(myChallengeList);
+			
 		} else {
 			result = mapper.insertMyChallengeList(myChallengeList);
 		}
@@ -108,6 +109,17 @@ public class ChallengeServiceImpl implements ChallengeService {
 		}
 		
 		return renameFileName;
+	}
+	
+	// 파일 삭제 로직
+	@Override
+	public void deleteFile(String filePath) {
+		
+		log.info("FILE PATH : {}", filePath );
+		
+		File file = new File(filePath);
+		
+		if(file.exists()) file.delete();
 	}
 	
 	// 전체 챌린지 조회
@@ -176,6 +188,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 			
 		return mapper.selectChallengeCount();
 	}	
+	
+	// 챌린지 전체 개수 출력
+	@Override
+	public int getChallengeCountById(String id) {
+			
+		return mapper.selectChallengeCountById(id);
+	}
 
 	// 모집중인 챌린지 개수 출력 
 	@Override
@@ -213,7 +232,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		log.info("getJoinListCount 요청 - 챌린지NO : " + no + ", 요청한 ID : " + id);
 		
-		return mapper.selelctJoinListCount(no, id);
+		return mapper.selectJoinListCount(no, id);
 	}	
 	
 	// 참여하고 있는 챌린지에서 현재 참여하고 있는 참가자 수를 리턴하는 메소드
@@ -230,11 +249,109 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return mapper.selectCertCount(no);
 	}	
 	
+	// 챌린지 인증 개수 출력 (ID값을 통해 로그인한 유저의 진행도 파악 가능)
+	@Override
+	public int getCertCountById(int no, String id) {
+		
+		return mapper.selectCertCountById(no, id);
+	}
+	
+	
 	// 챌린지NO를 이용해 게시물 객체 접근하기(View 불러오기 위함)
 	@Override
 	public Challenge findByNo(int challengeNo) {
 		
 		return mapper.selectChallengeByNo(challengeNo);
+	}
+	
+	// 챌린지 NO를 이용해 인증게시물등록한 ID리스트 출력
+	@Override
+	public List<String> findCertIdList(int no) {
+		
+		return mapper.selectCertIdList(no);
+	}
+	
+	// 참여중인 챌린지뷰에서 인증 날짜 리스트 조회
+	@Override
+	public List<String> getCertDateById(int no, String id) {
+		
+		return mapper.selectCertDateById(no, id);
+	}
+
+	/*
+	 ============= 검색 기능 =============
+	 */ 
+	// 챌린지 검색 페이징 처리를 위한 개수 세기
+	@Override
+	public int getSearchCount(String key, String word) {
+		
+		return mapper.selectSearchCount(key, word);
+	}
+
+	// 키워드 통해 챌린지 검색 및 페이징
+	@Override
+	public List<Challenge> getSearchList(String key, String word, PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());	
+		
+		return mapper.selectSearchList(key, word, rowBounds);
+	}
+
+	//============ 마이페이지 관련 ==============
+	// 참여중인 챌린지 수 조회
+	@Override
+	public int getJoinCount(String id) {
+		
+		return mapper.selectJoinCount(id);
+	}
+	
+	@Override
+	public int getEndJoinCount(String id) {
+		return mapper.selectEndJoinCount(id);
+	}
+
+	// 참여중인 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getJoinList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectJoinList(rowBounds, id);
+	}
+
+	// MyChallengeList 삭제 (찜 삭제 or 챌린지 참여 포기)
+	@Override
+	public int deleteMyChallengeList(String id, int cNo, String myStatus) {
+		
+		return mapper.deleteMyChallengeList(id, cNo, myStatus);
+	}
+
+	// 챌린지 참가 신청 시 포인트 차감하는 메소드
+	@Override
+	public int saveMemberPoint(String id, int resultPoint) {
+		
+		return mapper.updateMemberPoint(id, resultPoint);
+	}
+
+	// 포인트 증감 로그 저장하는 로직
+	@Override
+	public int savePointlog(Pointlog pointlog) {
+		
+		return mapper.insertPointlog(pointlog);
+	}
+
+	// 포인트 증감 로그 조회(BY ID)
+	@Override
+	public List<Pointlog> findPointlogById(String id) {
+		
+		return mapper.selectPointlogById(id);
+	}
+	
+	//
+	@Override
+	public Pointlog findPointlogByObject(String id, int cno, String history) {
+		
+		return mapper.selectPointlogByObject(id, cno, history);
 	}
 
 

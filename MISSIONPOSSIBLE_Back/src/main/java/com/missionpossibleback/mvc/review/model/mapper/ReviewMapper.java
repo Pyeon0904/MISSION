@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
+import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.review.model.vo.Heart;
 import com.missionpossibleback.mvc.review.model.vo.Reply;
 import com.missionpossibleback.mvc.review.model.vo.Report;
 import com.missionpossibleback.mvc.review.model.vo.Review;
@@ -35,10 +38,62 @@ public interface ReviewMapper {
 
 	int insertReport(Report report);
 
-	int insertRely(Reply reply);
+	int insertReply(Reply reply);
+	
+	int updateReply(Reply reply);
 
 	List<Reply> selectReplyList(int reviewNo);
 
 	boolean deleteReply(int replyNo);
+
+	Reply selectReplyByNo(int replyNo);
+	
+	List<Challenge> selectAllChallengeList(@Param("id") String id);
+
+	List selectAllTitle();
+
+	List selectAllCTitle();
+
+	List selectAllWriterId();
+
+	List<Review> selectReviewList();
+
+	List<Review> selectDeleteReviewList();
+
+	int selectDelete(int[] intNo);
+
+	int selectRestore(int[] intNo);
+
+	int selectOneDelete(String str);
+
+	int selectOneRestore(String str);
+
+	List<Report> selectReportList();
+
+	List<Review> selectReportedReviewList();
+
+	int selectWarn(String[] stringMemberId);
+
+	int updateWarnReport(int[] intReportNo);
+
+	int updateOneReport(int reportNo);
+
+	int OneWarn(String reportedId);
+
+	List<Member> selectAllMember();
+
+	int OneDel(String warnId);
+
+	int selectDel(String[] stringMemberId);
+
+	List<Report> selectReportChallenge();
+
+	int insertHeart(Heart heart);
+
+	List<Heart> selectHeart(@Param("reviewNo")int reviewNo, @Param("id")String id);
+
+	int deletetHeart(Heart heart);
+
+	int selectHeartCount(int reviewNo);
 
 }

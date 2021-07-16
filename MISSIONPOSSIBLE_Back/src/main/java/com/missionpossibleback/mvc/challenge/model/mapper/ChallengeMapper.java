@@ -9,11 +9,14 @@ import org.apache.ibatis.session.RowBounds;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
+import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 
 @Mapper
 public interface ChallengeMapper {
 
 	int selectChallengeCount();
+	
+	int selectChallengeCountById(String id);
 	
 	int selectRecruitCount();
 
@@ -23,11 +26,13 @@ public interface ChallengeMapper {
 	
 	int selectZzimCount(String id);
 	
-	int selelctJoinListCount(@Param("no") int no, @Param("id") String id);
+	int selectJoinListCount(@Param("no") int no, @Param("id") String id);
 	
 	int selectCurrentCount(int no);
 	
 	int selectCertCount(int no);
+	
+	int selectCertCountById(@Param("no") int no, @Param("id") String id);
 	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
@@ -50,5 +55,31 @@ public interface ChallengeMapper {
 	int insertCertify(ChallengeCertify certify);
 	
 	int updateCurrentCount(Challenge challenge);
+
+	List<String> selectCertIdList(@Param("no") int no);
+
+	int selectSearchCount(@Param("key") String key, @Param("word") String word);
+
+	List<Challenge> selectSearchList(@Param("key") String key, @Param("word") String word, RowBounds rowBounds);
+
+	int selectJoinCount(@Param("id") String id);
+	
+	int selectEndJoinCount(String id);
+
+	List<Challenge> selectJoinList(RowBounds rowBounds, @Param("id") String id);
+
+	List<String> selectCertDateById(@Param("no") int no, @Param("id") String id);
+
+	int deleteMyChallengeList(@Param("id") String id, @Param("myChallengeNo") int cNo, @Param("myStatus") String myStatus);
+
+	int updateChallenge(Challenge challenge);
+
+	int updateMemberPoint(@Param("id") String id, @Param("point") int point);
+
+	int insertPointlog(Pointlog pointlog);
+
+	List<Pointlog> selectPointlogById(@Param("id") String id);
+
+	Pointlog selectPointlogByObject(@Param("id") String id, @Param("cno") int cno, @Param("history") String history);
 	
 }

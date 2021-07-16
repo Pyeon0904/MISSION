@@ -129,17 +129,23 @@
 					<h2>진행중인 챌린지 목록</h2>
 					<!-- 챌린지 검색 바... 이거도 구현해야함...ㅠ.ㅠ -->
 					<div class="searchArea">
-						<form action="#" method="GET" class="" id="challengeSearchForm">
-							<input type="hidden" name="" value="" />
-							<div class="inputGroup">
-								<input type="text" class="searchBox" name="term" placeholder="챌린지 검색" />
-								<span class="inputGroupBtn">
-									<button class="btn btnSearch" type="submit">
-										<i class="fa fa-search"></i>
-									</button>
-								</span>
-							</div>
-						</form>
+						<!-- 검색 폼 시작--------------------- -->
+				         <form id="challengeSearch" name="form1" method="GET" action="${path}/challenge/search">
+				            <div align="right" class="row m-4">
+				               <select name="key" class="form-control" required>
+				                  <option value="" selected disabled hidden>::검색 유형::</option>
+				                  <option value="1">챌린지 제목</option>
+				                  <option value="2">챌린지 등록자 ID</option>
+				                  <option value="3">챌린지 내용</option>
+				                  <option value="4">카테고리 이름</option>
+				                  <option value="5">전체</option>
+				               </select>
+				          
+				               <input type="text" name="word" class="form-control" style="padding: 3px 20px 6px 20px" value=${ word }>
+				               <button type="submit" class="btn btn-warning" >검색</button>
+				            </div>
+				         </form>
+				         <!-- 검색 폼 끝---------------------- -->
 					</div>
 				</div><!-- #subHeaderContainer -->
 				

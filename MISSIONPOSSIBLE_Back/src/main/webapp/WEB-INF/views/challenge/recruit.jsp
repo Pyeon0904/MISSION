@@ -122,12 +122,19 @@
 						<input type="hidden" name="" value="" />
 						<input class="btn btnList" type="submit" value="목록으로"/>
 					</form>
+					
+					<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
+						<form action="${ path }/challenge/update" method="GET" id="challengeUpdateForm">
+							<input type="hidden" name="challengeNo" value="${ challenge.challengeNo }"/>
+							<input class="btn btnList" type="submit" value="챌린지 수정"/>
+						</form>
+					</c:if>
 				</div>
 				
 			</c:if>
 			
 			<!-- 종료된 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
-			<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
+			<c:if test="${ (todayNum >= startNum) and (todayNum >= endNum) }">
 			
 				<h2>종료된 챌린지 정보</h2>
 				<div class="funcArea">
@@ -256,20 +263,7 @@
 						<!-- 챌린지 상세 설명(Content) -->
 						<td colspan="2">
 							<p>
-								<c:out value="${ challenge.content }"/><br>
-								⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣴⣾⣿⣶⣶⣆⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀<br>
-								⢀⢀⢀⣀⢀⣤⢀⢀⡀⢀⣿⣿⣿⣿⣷⣿⣿⡇⢀⢀⢀⢀⣤⣀⢀⢀⢀⢀⢀<br>
-								⢀⢀ ⣶⢻⣧⣿⣿⠇ ⢸⣿⣿⣿⣷⣿⣿⣿⣷⢀⢀⢀⣾⡟⣿⡷⢀⢀⢀⢀<br>
-								⢀⢀⠈⠳⣿⣾⣿⣿⢀⠈⢿⣿⣿⣷⣿⣿⣿⣿⢀⢀⢀⣿⣿⣿⠇⢀⢀⢀⢀<br>
-								⢀⢀⢀⢀⢿⣿⣿⣿⣤⡶⠺⣿⣿⣿⣷⣿⣿⣿⢄⣤⣼⣿⣿⡏⢀⢀⢀⢀⢀<br>
-								⢀⢀⢀⢀⣼⣿⣿⣿⠟⢀⢀⠹⣿⣿⣿⣷⣿⣿⣎⠙⢿⣿⣿⣷⣤⣀⡀⢀⢀<br>
-								⢀⢀⢀ ⢸⣿⣿⣿⡿⢀⢀⣤⣿⣿⣿⣷⣿⣿⣿⣄⠈⢿⣿⣿⣷⣿⣿⣷⡀⢀<br>
-								⢀⢀⢀⣿⣿⣿⣿⣷⣀⣀⣠⣿⣿⣿⣿⣷⣿⣷⣿⣿⣷⣾⣿⣿⣿⣷⣿⣿⣿⣆<br>
-								⣿⣿⠛⠋⠉⠉⢻⣿⣿⣿⣿⡇⡀⠘⣿⣿⣿⣷⣿⣿⣿⠛⠻⢿⣿⣿⣿⣿⣷⣦<br>
-								⣿⣿⣧⡀⠿⠇⣰⣿⡟⠉⠉⢻⡆⠈⠟⠛⣿⣿⣿⣯⡉⢁⣀⣈⣉⣽⣿⣿⣿⣷<br>
-								⡿⠛⠛⠒⠚⠛⠉⢻⡇⠘⠃⢸⡇⢀⣤⣾⠋⢉⠻⠏⢹⠁⢤⡀⢉⡟⠉⡙⠏⣹<br>
-								⣿⣦⣶⣶⢀⣿⣿⣿⣷⣿⣿⣿⡇⢀⣀⣹⣶⣿⣷⠾⠿⠶⡀⠰⠾⢷⣾⣷⣶⣿<br>
-								⣿⣿⣿⣿⣇⣿⣿⣿⣷⣿⣿⣿⣇⣰⣿⣿⣷⣿⣿⣷⣤⣴⣶⣶⣦⣼⣿⣿⣿⣷<br>
+								<c:out value="${ challenge.content }"/>
 							</p>
 						</td>
 					</tr>

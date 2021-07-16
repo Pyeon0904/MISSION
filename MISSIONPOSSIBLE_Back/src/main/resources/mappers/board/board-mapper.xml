@@ -2,12 +2,12 @@
 
 <!-- Mapper 설정 파일임을 선언하는 부분 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
 <mapper namespace="com.missionpossibleback.mvc.board.model.mapper.BoardMapper"> <!-- 풀패키지명 써주기 -->
-	
-	<!-- <resultMap type="com.kh.mybatis.board.model.vo.Board" id=""> -->
-	<resultMap type="Board" id="boardListResultMap">
+   
+   <!-- <resultMap type="com.kh.mybatis.board.model.vo.Board" id=""> -->
+   <resultMap type="Board" id="boardListResultMap">
       <id property="qna_no" column="QNA_NO"/> <!-- No를 Board의 no에 매핑 -->
       <result property="title" column="TITLE"/>
       <result property="writer" column="WRITER"/>
@@ -22,147 +22,333 @@
       <result property="groupno" column="GROUPNO"/>
       <result property="groupord" column="GROUPORD"/>
       <result property="dept" column="DEPT"/>
+      <result property="sort" column="SORT"/>
    </resultMap>
-	
-	<select id="selectAll" resultMap="boardListResultMap">
-		SELECT  Q.QNA_NO,
-				Q.TITLE, 
-				Q.WRITER, 
-				Q.CONTENT,
-				Q.READCOUNT, 
-				Q.PASS,
-				Q.ORIGINAL_FILENAME, 
-				Q.RENAMED_FILENAME, 
-				Q.CREATE_DATE, 
-				Q.MODIFY_DATE,
-				Q.GROUPNO,
-				Q.GROUPORD,
-				Q.DEPT
-		FROM QNA Q
-		WHERE Q.STATUS = 'Y'
-		ORDER BY Q.QNA_NO DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
-	</select>
-	
-	<!-- 파라미터는 #{변수 이름}으로 사용함 -->
-	<!-- resultType : 쿼리 실행 후 조회된 결과값의 자료형 -->
-	<select id="selectBoardByNo" parameterType="_int" resultType="Board"> 
-		SELECT 	Q.QNA_NO,
-				Q.TITLE, 
-				Q.WRITER, 
-				Q.CONTENT,
-				Q.READCOUNT,
-				Q.PASS,
-				Q.ORIGINAL_FILENAME, 
-				Q.RENAMED_FILENAME, 
-				Q.CREATE_DATE, 
-				Q.MODIFY_DATE,
-				Q.GROUPNO,
-				Q.GROUPORD,
-				Q.DEPT
-		FROM QNA Q, MEMBER M
-		WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
-	</select>
+   
+   <select id="selectAll" resultMap="boardListResultMap">
+      SELECT  Q.QNA_NO,
+            Q.TITLE, 
+            Q.WRITER, 
+            Q.CONTENT,
+            Q.READCOUNT, 
+            Q.PASS,
+            Q.ORIGINAL_FILENAME, 
+            Q.RENAMED_FILENAME, 
+            Q.CREATE_DATE, 
+            Q.MODIFY_DATE,
+            Q.GROUPNO,
+            Q.GROUPORD,
+            Q.DEPT,
+            Q.SORT
+      FROM QNA Q
+      WHERE Q.STATUS = 'Y'
+      ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+   </select>
+   
+   <!-- 파라미터는 #{변수 이름}으로 사용함 -->
+   <!-- resultType : 쿼리 실행 후 조회된 결과값의 자료형 -->
+   <select id="selectBoardByNo" parameterType="_int" resultType="Board"> 
+      SELECT    Q.QNA_NO,
+            Q.TITLE, 
+            Q.WRITER, 
+            Q.CONTENT,
+            Q.READCOUNT,
+            Q.PASS,
+            Q.ORIGINAL_FILENAME, 
+            Q.RENAMED_FILENAME, 
+            Q.CREATE_DATE, 
+            Q.MODIFY_DATE,
+            Q.GROUPNO,
+            Q.GROUPORD,
+            Q.DEPT,
+            Q.SORT
+      FROM QNA Q, MEMBER M
+      WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
+   </select>
    
    <!-- 조회수 증가 -->
-	<update id="readCount" parameterType="int">
-		UPDATE QNA SET READCOUNT=READCOUNT+1 WHERE QNA_NO=#{qna_no}
-	</update>
-	
-	
-	<!-- 
-		게시글 상세 보기(댓글 포함)	 
-		  1. 쿼리문을 각각 만들어서 하나의 ResultMap에서 매핑하는 방법 
-			 <select id="selectBoardByNo" parameterType="_int" resultMap="boardDetailResultMap" >
-			 	<include refid="boardListSql" />
-			 	AND B.NO = #{boardNo}
-			 </select>
-			
-			<select id="selectBoardReplies" parameterType="_int" resultMap="boardReplyResultMap">	
-				SELECT R.NO, 
-					   R.BOARD_NO, 
-					   R.CONTENT, 
-					   M.ID, 
-					   R.CREATE_DATE, 
-					   R.MODIFY_DATE
-				FROM REPLY R
-				JOIN MEMBER M ON(R.WRITER_NO = M.NO)
-				WHERE R.STATUS='Y' AND BOARD_NO=#{boardNo}
-				ORDER BY R.NO DESC
-			</select>
-			
-		  2. 하나의 쿼리문을 만들어서 하나의 ResultMap에서 매핑하는 방법
-	 -->
-	
-	<!--  글 삽입  -->
-	<!-- parameterType: 조회결과 객체 -->
-	<insert id="insert" parameterType="Board" useGeneratedKeys="true" keyProperty="qna_no" keyColumn="QNA_NO">
-		INSERT INTO QNA(
-			QNA_NO,
-			TITLE,
-			WRITER,
-			CONTENT,
-			READCOUNT,
-			PASS,
-			STATUS,
-			CREATE_DATE,
-			MODIFY_DATE,
-			GROUPNO,
-			GROUPORD,
-			DEPT,
-			ORIGINAL_FILENAME,
-            RENAMED_FILENAME
+   <update id="readCount" parameterType="int">
+      UPDATE QNA SET READCOUNT=READCOUNT+1 WHERE QNA_NO=#{qna_no}
+   </update>
+   
+   
+   <!-- 
+      게시글 상세 보기(댓글 포함)    
+        1. 쿼리문을 각각 만들어서 하나의 ResultMap에서 매핑하는 방법 
+          <select id="selectBoardByNo" parameterType="_int" resultMap="boardDetailResultMap" >
+             <include refid="boardListSql" />
+             AND B.NO = #{boardNo}
+          </select>
+         
+         <select id="selectBoardReplies" parameterType="_int" resultMap="boardReplyResultMap">   
+            SELECT R.NO, 
+                  R.BOARD_NO, 
+                  R.CONTENT, 
+                  M.ID, 
+                  R.CREATE_DATE, 
+                  R.MODIFY_DATE
+            FROM REPLY R
+            JOIN MEMBER M ON(R.WRITER_NO = M.NO)
+            WHERE R.STATUS='Y' AND BOARD_NO=#{boardNo}
+            ORDER BY R.NO DESC
+         </select>
+         
+        2. 하나의 쿼리문을 만들어서 하나의 ResultMap에서 매핑하는 방법
+    -->
+   
+   <!--  글 삽입  -->
+   <!-- parameterType: 조회결과 객체 -->
+   <insert id="insert" parameterType="Board" useGeneratedKeys="true" keyProperty="qna_no" keyColumn="QNA_NO">
+      INSERT INTO QNA(
+         QNA_NO,
+         TITLE,
+         WRITER,
+         CONTENT,
+         READCOUNT,
+         PASS,
+         STATUS,
+         CREATE_DATE,
+         MODIFY_DATE,
+         GROUPNO,
+         GROUPORD,
+         DEPT,
+         ORIGINAL_FILENAME,
+            RENAMED_FILENAME,
+            SORT
          ) VALUES(
-         	SEQ_QNA_NO.NEXTVAL,
-         	#{title},
-         	#{writer},
-         	#{content},
-         	DEFAULT,
-         	#{pass},
-         	DEFAULT,
-         	DEFAULT,
-         	DEFAULT,
-         	SEQ_QNA_NO.CURRVAL,
-         	0,
-         	0,
-			#{originalFileName},
-            #{renamedFileName}
+            SEQ_QNA_NO.NEXTVAL,
+            #{title},
+            #{writer},
+            #{content},
+            DEFAULT,
+            #{pass},
+            DEFAULT,
+            DEFAULT,
+            DEFAULT,
+            SEQ_QNA_NO.CURRVAL,
+            0,
+            0,
+         #{originalFileName},
+            #{renamedFileName},
+            #{sort}
          )
-	</insert>
-	
-	<!-- 게시글 개수 가져오기 -->
-	<select id="selectBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
-		SELECT COUNT(*)
-		FROM QNA
-		WHERE STATUS='Y' 
-	</select>
-	
-	<!-- 게시글 업데이트 -->
-	<update id="update" parameterType="map">
-   		UPDATE QNA
-   		SET
-   			TITLE=#{title},
-   			CONTENT=#{content},
-   			<if test="originalFileName != null">
-   				ORIGINAL_FILENAME=#{originalFileName},
-   			</if>
-   			<if test="renamedFileName != null">
-   				RENAMED_FILENAME=#{renamedFileName},
-   			</if>
-   			MODIFY_DATE=SYSDATE
-   		WHERE
-   			QNA_NO=#{qna_no} AND STATUS='Y'
+   </insert>
+   
+   <!-- 게시글 개수 가져오기 -->
+   <select id="selectBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
+      SELECT COUNT(*)
+      FROM QNA
+      WHERE STATUS='Y' 
+   </select>
+   
+   <!-- 게시글 업데이트 -->
+   <update id="update" parameterType="map">
+         UPDATE QNA
+         SET
+            TITLE=#{title},
+            CONTENT=#{content},
+            <if test="originalFileName != null">
+               ORIGINAL_FILENAME=#{originalFileName},
+            </if>
+            <if test="renamedFileName != null">
+               RENAMED_FILENAME=#{renamedFileName},
+            </if>
+            MODIFY_DATE=SYSDATE
+         WHERE
+            QNA_NO=#{qna_no} AND STATUS='Y'
    </update>
 
-	<!-- 게시글 삭제 -->
-	<update id="delete" parameterType="_int" > 
-		UPDATE QNA SET STATUS='N' WHERE QNA_NO=#{qna_no}
-	</update>
+   <!-- 게시글 삭제 -->
+   <update id="delete" parameterType="_int" > 
+      UPDATE QNA SET STATUS='N' WHERE QNA_NO=#{qna_no}
+   </update>
 
-	<!-- 비밀번호 확인 -->
-	<select id="pass"  parameterType="_int">
-		SELECT * FROM QNA
-		WHERE QNA_NO=#{qna_no}
-	</select>
+   <!-- 비밀번호 확인 -->
+
+   <select id="pass"  parameterType="_int" resultType="Board">
+      SELECT * FROM QNA
+      WHERE QNA_NO=#{qna_no}
+   </select>
    
+   <!-- 답글 관련 -->
+   <!-- 답글 등록 -->
+   <insert id="replyInsert" parameterType="Board" useGeneratedKeys="true" keyProperty="qna_no" keyColumn="QNA_NO">
+      INSERT INTO QNA(
+         QNA_NO,
+         TITLE,
+         WRITER,
+         CONTENT,
+         READCOUNT,
+         PASS,
+         STATUS,
+         CREATE_DATE,
+         MODIFY_DATE,
+         GROUPNO,
+         GROUPORD,
+         DEPT,
+         ORIGINAL_FILENAME,
+            RENAMED_FILENAME
+         ) VALUES(
+            SEQ_QNA_NO.NEXTVAL,
+            #{title},
+            #{writer},
+            #{content},
+            DEFAULT,
+            #{pass},
+            DEFAULT,
+            DEFAULT,
+            DEFAULT,
+            #{groupno},
+            #{groupord}+1,
+            #{dept}+1,
+         #{originalFileName},
+            #{renamedFileName}
+         )
+   </insert>
+   
+   <!-- 답변일 경우 groupord 변경 -->
+   <!-- groupord는 원글의 순번 -->
+   <update id="groupordUpdate" parameterType="Board">
+      UPDATE QNA SET GROUPORD=GROUPORD+1
+      WHERE GROUPNO=#{groupno} AND GROUPORD &gt;=#{groupord}
+   </update>
+   
+   <select id="countDept" parameterType="Board" resultType="_int"><!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
+      SELECT COUNT(GROUPNO) FROM BOARD WHERE GROUPNO=#{groupno} AND DEPT = #{dept}
+   </select>
+   
+   <select id="minGroupord" parameterType="Board" resultType="int">
+      SELECT NVL(MIN(GROUPORD),0) FROM QNA
+      WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord} AND DEPT &lt;=#{dept}
+   </select>
+   
+   <select id="maxDept" parameterType="Board" resultType="int">
+      SELECT NVL(MAX(GROUPORD),0)+1 FROM QNA
+      WHERE GROUPNO=#{groupno}
+   </select>
+   
+   <select id="searchBoardList" resultMap="boardListResultMap">
+      SELECT  Q.QNA_NO,
+            Q.TITLE, 
+            Q.WRITER, 
+            Q.CONTENT,
+            Q.READCOUNT, 
+            Q.PASS,
+            Q.ORIGINAL_FILENAME, 
+            Q.RENAMED_FILENAME, 
+            Q.CREATE_DATE, 
+            Q.MODIFY_DATE,
+            Q.GROUPNO,
+            Q.GROUPORD,
+            Q.DEPT,
+            Q.SORT
+      FROM QNA Q
+      WHERE Q.STATUS = 'Y'
+      <choose>
+         <when test="type == '1'.toString()">
+            AND TITLE LIKE '%'||#{keyword}||'%'
+         </when>
+         <when test="type == '2'.toString()">
+            AND WRITER LIKE '%'||#{keyword}||'%'
+         </when>
+         <when test="type == '3'.toString()">
+            AND CONTENT LIKE '%'||#{keyword}||'%'
+         </when>
+         <when test="type == '4'.toString()">
+            AND TITLE LIKE '%'||#{keyword}||'%'
+            OR WRITER LIKE '%'||#{keyword}||'%'
+            OR CONTENT LIKE '%'||#{keyword}||'%'
+         </when>
+      </choose>
+      ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+   </select>
+   
+   
+   <select id="searchBoardCount" resultType="_int"> <!-- _int는 기본자료형으로 리턴 -->
+      SELECT COUNT(*)
+      FROM QNA
+      WHERE STATUS='Y' 
+      <choose>
+         <when test="type == '1'.toString()">
+            AND TITLE LIKE '%'||#{keyword}||'%'
+         </when>
+         <when test="type == '2'.toString()">
+            AND WRITER LIKE '%'||#{keyword}||'%'
+         </when>
+         <when test="type == '3'.toString()">
+            AND CONTENT LIKE '%'||#{keyword}||'%'
+         </when>
+         <when test="type == '4'.toString()">
+            AND TITLE LIKE '%'||#{keyword}||'%'
+            OR WRITER LIKE '%'||#{keyword}||'%'
+            OR CONTENT LIKE '%'||#{keyword}||'%'
+         </when>
+      </choose>
+      ORDER BY QNA_NO DESC
+   </select>
+   
+   <!-- 관리자 페이지에서 STATUS가 N인 게시글 불러오기 -->
+   <select id="selectDeleteBoardList" resultMap="boardListResultMap">
+   	   SELECT  Q.QNA_NO,
+           	  Q.TITLE, 
+           	  Q.WRITER, 
+          	  Q.CONTENT,
+          	  Q.READCOUNT, 
+          	  Q.PASS,
+          	  Q.ORIGINAL_FILENAME, 
+          	  Q.RENAMED_FILENAME, 
+          	  Q.CREATE_DATE, 
+          	  Q.MODIFY_DATE,
+          	  Q.GROUPNO,
+         	  Q.GROUPORD,
+         	  Q.DEPT,
+         	  Q.SORT
+       FROM QNA Q
+       JOIN MEMBER M ON(Q.WRITER = M.ID)
+       WHERE Q.STATUS = 'N'
+       ORDER BY Q.SORT DESC, Q.GROUPNO DESC, Q.GROUPORD ASC
+	</select>
+	
+	<!-- 관리자 페이지 선택 삭제 -->
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 N으로 업데이트 -->
+	<update id="selectDelete" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE QNA
+			SET 
+				STATUS = 'N'
+			WHERE 
+				QNA_NO=#{item}
+		</foreach>
+	</update>
+	
+	<!-- 게시글 번호로 해당 게시글 STATUS를 N으로 업데이트 -->
+	<update id="selectOneDelete" parameterType="_int">
+		UPDATE QNA
+			SET
+				STATUS = 'N'
+			WHERE
+				QNA_NO=${qna_no}
+	</update>
+	
+	<!-- 관리자 페이지 선택 복구 -->
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 Y로 업데이트 -->
+	<update id="selectRestore" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE QNA
+			SET
+				STATUS='Y'
+			WHERE
+				QNA_NO=#{item}
+		</foreach>
+	</update>
+	
+	<!-- 게시글 번호로 해당 게시글 STATUS를 Y로 업데이트 -->
+	<update id="selectOneRestore" parameterType="_int">
+		UPDATE QNA
+			SET
+				STATUS = 'Y'
+			WHERE
+				QNA_NO=${qna_no}
+	</update>
 
 </mapper>

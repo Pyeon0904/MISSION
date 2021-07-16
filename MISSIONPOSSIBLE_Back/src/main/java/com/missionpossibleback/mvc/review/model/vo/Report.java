@@ -16,9 +16,9 @@ public class Report {
 	
 	private String reportedId;
 	
-	private int C_No;
+	private int c_no;
 	
-	private int R_No;
+	private int r_no;
 		
 	private String category;
 		
@@ -26,5 +26,5 @@ public class Report {
 		
 	private Date createDate;
 		
-	private String statue;
+	private String status;
 }

@@ -15,23 +15,10 @@
 <title>게시판 상세</title>
 
 <style>
-		#box{ 
-            background-color:rgb(224, 239, 132);
-            width:100%;
-            height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-            margin-top:330px;
-            margin-bottom:100px;
-            margin-left:-10px;
-            padding:10px;
-         }
+#box{background-color:rgb(224, 239, 132);width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
-         #conbox{
-            width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-            position:relative; 
-            top:20px;
-            margin:auto;
-         }
-
+#conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
 
 td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
@@ -130,47 +117,36 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 					        <col width="*">
 					    </colgroup>
 					    <tbody id="tbody">
-<!--		<tr>
-   			<th class="success">글번호</th>
-            <td></td>
-            <th class="success">조회수</th>
-            <td></td>
-        </tr>
-        --> 
-           
          
-        <tr>
-            <th class="success">글번호</th>
-            <td>${ board.qna_no }</td>
-            <th class="success">작성자</th>
-            <td>${ board.writer }</td>
-        </tr>
-         
-        <tr>
-            <th class="success">제목</th>
-            <td colspan="3">${ board.title }</td>
-        </tr>
-        
-        <tr>
-            <th class="success">첨부파일</th>
-            <td colspan="3"></td>
-        </tr>
-        
-         
-        <tr>
-            <th class="success">글 내용</th>
-            <td colspan="3">${ board.content }</td>
-        </tr>
+					        <tr>
+					            <th class="success">글번호</th>
+					            <td>${ board.qna_no }</td>
+					            <th class="success">작성자</th>
+					            <td>${ board.writer }</td>
+					        </tr>
+					         
+					        <tr>
+					            <th class="success">제목</th>
+					            <td colspan="3">${ board.title }</td>
+					        </tr>
+					        
+					        <tr>
+					            <th class="success">글 내용</th>
+					            <td colspan="3">${ board.content }</td>
+					        </tr>
 					    </tbody>
 					</table>		
-			
 				</form>
+				
+				
 				<div class="btn_right mt15">
-					<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?${board.qna_no}'">답글쓰기</button>
-					<%--글작성자/관리자인경우 수정삭제 가능 --%>
-					<c:if test="${ !empty loginMember && (loginMember.id == board.writer || loginMember.id == '관리자') }">
-					<button type="button" class="btn black mr5" id="btnUpdate">수정하기</button>
-					<button type="button" class="btn black" id="btnDelete">삭제하기</button>
+					<%--글작성자/관리자인경우 답글수정삭제 가능 --%>
+					<c:if test="${ !empty loginMember && (loginMember.id == board.writer || loginMember.id eq 'admin') }">
+						<button type="button" class="btn black mr5" onclick="location.href='${ path }/board/boardReply?qna_no=${board.qna_no}'">답글쓰기</button>
+					</c:if>
+					<c:if test="${ !empty loginMember && (loginMember.id == board.writer)}">
+						<button type="button" class="btn black mr5" id="btnUpdate">수정하기</button>
+						<button type="button" class="btn black" id="btnDelete">삭제하기</button>
 					</c:if>
 					<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
 				</div>

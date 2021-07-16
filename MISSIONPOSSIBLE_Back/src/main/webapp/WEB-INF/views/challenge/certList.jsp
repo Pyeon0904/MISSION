@@ -49,7 +49,8 @@
 					<li>
 						<div class="certItemCont">
 							<div class="certItemPhotoBox">
-								<img src="${path}/resources/upload/challenge/certify/${ certify.renamedFilename }" alt="챌린지 썸네일" width="70px" height="70px">
+								<img src="${path}/resources/upload/challenge/certify/${ certify.renamedFilename }" 
+									alt="챌린지 썸네일" width="70px" height="70px" onerror="this.src='${path}/resources/images/file.png'">
 							</div>
 					
 							<div class="certItemInfoCont">

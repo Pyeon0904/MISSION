@@ -19,15 +19,17 @@
 	<script src="${ path }/js/jquery-3.6.0.min.js"></script>
 	
 	<!-- 채팅을 위한 SockJS import -->
-	<script src="${ path }/resources/js/sockjs.min.js"></script>
+	<!-- <script src="../resources/js/sockjs.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
 <style>
 	*{margin:0;padding:0;}
 	.chatContainer{
 		width:400px;
-		height:550px;
+		height:570px;
 		position:fixed;
-		
-		bottom:25px;
+		background:rgba(200,255,128,0.5);
+		bottom:0px;
+		display:none;
 	}
 	.chatTable{
 		width:400px;
@@ -50,7 +52,7 @@
 		float:left;
 		position:relative;
 	}
-	.chatTable tr.chatHeader td.headerCont table tr td.windowController div.windowSize{
+	.chatTable tr.chatHeader td.headerCont table tr td.windowController div.windowMin{
 		top: -10px; left: 80px; width:30px; height:30px; border: 1px solid gray; text-align:center;
 	}
 	.chatTable tr.chatHeader td.headerCont table tr td.windowController div.windowClose{
@@ -88,11 +90,11 @@
 	}
 	.chatTable tr.chatSection td div.msgLine div.recvTime{
 		display:table-cell;
-		/*float:right;*/
+		text-align:left;
 	}
 	.chatTable tr.chatSection td div.msgLine div.sendTime{
 		display:table-cell;
-		/*float:left;*/
+		text-align:right;
 	}
 	.chatTable tr.chatFooter{
 		width:100%;
@@ -180,6 +182,7 @@
 		position:fixed;
 		bottom:0px;
 		display:none;
+		background-color:yellow;
 	}
 	
 	.chatMini div {
@@ -192,10 +195,126 @@
 	}
 	
 </style>
+ <script type="text/javascript">
+		var id = "<c:out value='${ loginMember.id }'/>";
+		
+		var webSocket = {
+			init: function(param) {
+				this._url = param.url;
+				this._initSocket();
+			},
+			sendChat: function(e) {
+				this._sendMessage('${param.bang_id}', '${param.user_id}', 'CMD_MSG_SEND', $("#chatId").val() +' : '+ $('#textSend').val());
+				$('#textSend').val('').focus();
+				//e.preventDefault();
+			},
+			sendEnter: function(e) {
+				this._sendMessage('${param.bang_id}', '${param.user_id}', 'CMD_ENTER', $("#chatId").val() +' : '+ $('#textSend').val());
+				$('#textSend').val('').focus();
+			},
+			/////////////////////////////////////////////////////
+			receiveMessage: function(msgData) {
+				// 정의된 CMD 코드에 따라서 분기 처리
+				if(msgData.cmd == 'CMD_MSG_SEND') {					
+					// 메시지를 ":"를 기준으로 나눠서 
+					// 0번째 배열은 아이디 확인 가능
+					// 1번째 배열은 메시지 내용
+					var msgArr0 = msgData.msg.split(" : ");
+					
+					// 0번째 배열값(아이디)가 접속한 id(var id="<c:out value='${loginMember.id}'/>")의 값과 다를 경우
+					// = 내 아이디값과 다른 아이디가 메시지를 보냈을 경우
+					// = 메시지를 받을 경우
+					console.log("msgArr[0] : "+msgArr0[0]);
+					
+					if(msgArr0[0] != id){
+						recvMsg(msgData.msg);
+					} else {
+					// 0번째 배열값(아이디)가 접속한 id(var id="<c:out value='${loginMember.id}'/>")의 값과 같은 경우
+					// = 내 아이디가 메시지를 보냈을 경우
+					// = 메시지를 보낼 경우
+						sendMsg(msgData.msg);
+					}
+				}
+				// 입장
+				else if(msgData.cmd == 'CMD_ENTER') {
+					
+					$(".chatArea").append('<div class="msgLine" style="width:100%; text-align:center;">'+ msgData.msg + '</div>');
+					$(".chatArea").scrollTop($(".chatArea")[0].scrollHeight);
+				}
+				// 퇴장
+				else if(msgData.cmd == 'CMD_EXIT') {
+					
+					$(".chatArea").append('<div class="msgLine" style="width:100%; text-align:center;">'+ msgData.msg + '</div>');
+					$(".chatArea").scrollTop($(".chatArea")[0].scrollHeight);
+				}
+			},
+			closeMessage: function(str) {
+				$(".chatArea").append('<div>' + '연결 끊김 : ' + str + '</div>');
+			},
+			disconnect: function() {
+				this._socket.close();
+			},
+			_initSocket: function() {
+				this._socket = new SockJS(this._url);
+				this._socket.onopen = function(evt) {
+					webSocket.sendEnter();
+				};
+				this._socket.onmessage = function(evt) {
+					webSocket.receiveMessage(JSON.parse(evt.data));
+				};
+				this._socket.onclose = function(evt) {
+					webSocket.closeMessage(JSON.parse(evt.data));
+				}
+			},
+			_sendMessage: function(bang_id, user_id, cmd, msg) {
+				var msgData = {
+						bang_id : bang_id,
+						user_id : user_id,
+						cmd : cmd,
+						msg : msg
+				};
+				var jsonData = JSON.stringify(msgData);
+				this._socket.send(jsonData);
+			}
+		};
+		
+		function getTime(){
+			var now = new Date();
+			
+			var hours = now.getHours(); //시
+			var minutes = now.getMinutes(); //분
+			
+			if(hours < 10) {
+				hours = "0" + hours;
+			} 
+			if(minutes < 10) {
+				minutes = "0" + minutes;
+			}
+			
+			return hours+":"+minutes;
+		}
+		
+		// 보낸 메시지
+		function sendMsg(msg){
+			$(".chatArea").append("<div class='msgLine fright'><div class='time sendTime'>"+getTime()+"</div><div class='msg sendMsg'><p>"+msg+"</p></div></div>");
+			$(".chatArea").scrollTop($(".chatArea")[0].scrollHeight);
+		}
+		
+		// 받은 메시지
+		function recvMsg(msg){
+			$(".chatArea").append("<div class='msgLine fleft'><div class='msg recvMsg'><p>"+msg+"</p></div><div class='time recvTime'>"+getTime()+"</div></div>");
+			$(".chatArea").scrollTop($(".chatArea")[0].scrollHeight);
+		}
+	</script>
+	<script type="text/javascript">
+        $(window).on('load', function () {
+			webSocket.init({ url: '<c:url value="/echo" />' });	
+		});
+	</script>
 </head>
 <body>
 	<div class="chatContainer">
-		<form id="chatForm">
+		<!-- <form id="chatForm"> -->
 		<table border="1" class="chatTable">
 			<tr class="chatHeader">
 				<td class="iconArea">
@@ -207,20 +326,16 @@
 					<table cellspacing="10" cellpadding="0">
 						<tr>
 							<td class="chatTitle">
-								[챌린지 채팅방 제목]
+								<c:out value="${ cTitle }"/>
 							</td>
 							<td class="windowController">
-								<div class="windowSize">
+								<div class="windowMin">
 									<i class="fa fa-window-minimize" aria-hidden="true"></i>
-								<!--  
-									<i class="fa fa-window-maximize" aria-hidden="true"></i>
-								-->	
 								</div>
 								<div class="windowClose">
 									<i class="fa fa-times" aria-hidden="true"></i>
 								</div>
 								<div class="chatCount">
-									현재 인원 : 00명
 								</div>
 							</td>
 						</tr>
@@ -240,105 +355,48 @@
 			</tr>
 			<tr class="chatFooter">
 				<td colspan="2">
-					<!-- <form id="chatForm"> -->
 						<input type="hidden" id="chatId" name="chatId" value="${ loginMember.id }"/>
 						<div class="fixit">
-							<input type="text" name="inputMessage" placeholder="send message..." id="textSend"/>
+							<input type="text" name="inputMessage" placeholder="send message..." id="textSend" 
+								onkeypress="if(event.keyCode==13){webSocket.sendChat();}"/>
 						</div>
 						<div class="fixit">
-							<input type="submit" value="전송" id="btnSend"/>
+							<input type="button" value="전송" id="btnSend" onclick="webSocket.sendChat()"/>
 						</div>
-					<!-- </form> -->
 				</td>
 			</tr>
 		</table>
-		</form>
+		<!-- </form>-->
 	</div>
 	
 	<!-- 최소화 -->
 	<div class="chatMini">
-		<p class="chatTitle">[챌린지 채팅방 제목]</p>
-			<div>
+		<p class="chatTitle">${ cTitle }</p>
+			<div class="windowMax">
 				<i class="fa fa-window-maximize" aria-hidden="true"></i>
 			</div>
-			<div>
+			<div class="windowClose">
 				<i class="fa fa-times" aria-hidden="true"></i>
 			</div>
 	</div>
-	
-	<script type="text/javascript">
-		// 전역 변수 선언 - 모든 홈페이지에서 사용할 수 있게 index에 저장
-		var socket = null;
-		var id = "<c:out value='${ loginMember.id }'/>";
-		// #session_id 이거 지정해줘야함 어'떻'하지...? -해결 : ChatController에서 chatRoom()메소드에서 loginMember의 id 값 받아옴
-		$(document).ready(function(){
-			//if(!isEmpty($("#chatId").val())) connectWS();
-			connectWS();
-		});
-		
-		function connectWS(){
-			var sock = new SockJS("${ path }/echo");
-			
-			socket = sock;
-			
-			sock.onopen = function() { console.log('info : connection opened.'); };
-			
-			sock.onmessage = function(e){
-				// 메시지를 ":"를 기준으로 나눠서 
-				// 0번째 배열은 아이디 확인 가능
-				// 1번째 배열은 메시지 내용
-				var msgArr = e.data.split(" : ");
-				
-				// 0번째 배열값(아이디)가 접속한 id(var id="<c:out value='${loginMember.id}'/>")의 값과 다를 경우
-				// = 내 아이디값과 다른 아이디가 메시지를 보냈을 경우
-				// = 메시지를 받을 경우
-				console.log("msgArr[0] : "+msgArr[0]);
-				
-				if(msgArr[0] != id){
-					recvMsg(e.data);
-				} else {
-				// 0번째 배열값(아이디)가 접속한 id(var id="<c:out value='${loginMember.id}'/>")의 값과 같은 경우
-				// = 내 아이디가 메시지를 보냈을 경우
-				// = 메시지를 보낼 경우
-					sendMsg(e.data);
-				}
-			};
-			
-			sock.onclose = function(){
-				$(".chatArea").append("<p>연결이 종료되었습니다.</p>");
-			};
-			
-			sock.onerror = function(error) {console.log('Error : ', errs);};
-			
-			$("#chatForm").submit(function(event){
-				event.preventDefault();
-				
-				sock.send($("#chatId").val() + " : " + $("#textSend").val());
-				
-				$("#textSend").val('').focus();
+	<script>
+		$(document).ready(() => {
+			$(".windowMin").on("click", () => {
+				$(".chatContainer").animate({height:'toggle'}, 500);
+				$(".chatMini").fadeIn(300);
 			});
-		}
-		
-		function getTime(){
-			var now = new Date();
-			
-			var hours = now.getHours(); //시
-			var minutes = now.getMinutes(); //분
-			
-			return hours+":"+minutes;
-		}
-		
-		// 보낸 메시지
-		function sendMsg(msg){
-			$(".chatArea").append("<div class='msgLine fright'><div class='time sendTime'>"+getTime()+"</div><div class='msg sendMsg'><p>"+msg+"</p></div></div>");
-		}
-		
-		// 받은 메시지
-		function recvMsg(msg){
-			$(".chatArea").append("<div class='msgLine fleft'><div class='msg recvMsg'><p>"+msg+"</p></div><div class='time recvTime'>"+getTime()+"</div></div>");
-		}
-	
-		
+			$(".windowMax").on("click", () => {
+				$(".chatMini").fadeOut(300);
+				$(".chatContainer").animate({height:'toggle'}, 500);
+			});
+			$(".windowClose").on("click", () => {
+				$(".chatContainer").fadeOut(300);
+				$(".chatMini").fadeOut(300);
+			});
+			$(".btnChat").on("click", () => {
+				$(".chatContainer").animate({height:'toggle'}, 500);
+			});
+		});
 	</script>
 </body>
 </html>
