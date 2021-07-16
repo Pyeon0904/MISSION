@@ -14,22 +14,10 @@
 <title>게시판 목록</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
 <style>
-   #box{ 
-            background-color:rgb(224, 239, 132);
-            width:100%;
-            height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-            margin-top:330px;
-            margin-bottom:100px;
-            margin-left:-10px;
-            padding:10px;
-         }
+#box{background-color:rgb(224, 239, 132);width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
-         #conbox{
-            width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-            position:relative; 
-            top:20px;
-            margin:auto;
-         }
+#conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
 h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
 
@@ -151,7 +139,6 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
          
             <table width="100%" class="table01">
                <colgroup>
-               	  <!--<col width="10%" />-->
                   <col width="10%" />
                   <col width="30%" />
                   <col width="15%" />
@@ -160,7 +147,6 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                </colgroup>
                <thead>      
                   <tr>
-                  	 <!-- <th>분류</th> -->
                      <th>글번호</th>
                      <th>제목</th>
                      <th>작성자</th>
@@ -169,15 +155,14 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                   </tr>
                <c:if test="${ list == null }">
                   <tr>
-                           <td colspan="6">조회된 게시글이 없습니다.</td>
-                        </tr>
+                     <td colspan="6">조회된 게시글이 없습니다.</td>
+                  </tr>
                </c:if>   
                </thead>
                <tbody id="tbody">
                   <c:if test="${ list != null }">
                          <c:forEach var="board" items="${ list }">
                             <tr>
-                               <!-- <td>질문</td> -->
                                <c:if test="${ board.sort == 1 }">
                                		<td><c:out value="공지"/></td>
                                </c:if>
@@ -186,27 +171,48 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                                </c:if>
                
                                <td style="text-align:left; padding-left:30px;">
-                                	<c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
-                                 		<a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
-                                        
-                                        	<%-- 답글이면 --%>
-                                        	<c:if test="${ board.groupord > 0 }">
-                                           		<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
-                                        	</c:if>
-                                        	<%-- 원글이면 --%>
-                                        	<c:if test="${ board.groupord == 0 }">
-                                           		<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
-                                        	</c:if>
-                                     	</a>
-                             		 </c:if>
-                              <c:if test="${ board.pass == null }"> <!-- 비밀글이 아니면 -->
+                               <c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
+                                 <%-- 비밀글 && admin 계정이면 --%>
+                                 <c:if test="${loginMember.id eq 'admin' }">
                                      <a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                        <%-- 답글이면 --%>
                                         <c:if test="${ board.groupord > 0 }">
-                        
-                                           <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
+                                           	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
                                         </c:if>
+                                        <%-- 원글이면 --%>
                                         <c:if test="${ board.groupord == 0 }">
+                                           	<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                        </c:if>
+                                      </a>
+                                </c:if>
+                                 <%-- 비밀글 && admin 계정이 아니면 --%>
+                                <c:if test="${loginMember.id ne 'admin' }">
+                                 	 <a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                        <%-- 답글이면 --%>
+                                        <c:if test="${ board.groupord > 0 }">
+                                           	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                        </c:if>
+                                        <%-- 원글이면 --%>
+                                        <c:if test="${ board.groupord == 0 }">
+                                           	<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                        </c:if>
+                                     </a>
+                                </c:if>
+                              </c:if>
+                             	 
+                                <c:if test="${ board.pass == null }"> <!-- 비밀글이 아니면 -->
+                                     <a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                        <%-- 답글이면 --%>
+                                        <c:if test="${ board.groupord > 0 }">
+                                           	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
+                                        </c:if>
+                                        <%-- 원글 && 질문글이면 --%>
+                                        <c:if test="${ board.groupord == 0 && board.sort == 0}">
                                            <c:out value="${ board.title }"/>
+                                        </c:if>
+                                        <%-- 원글 && 공지글이면 --%>
+                                        <c:if test="${ board.groupord == 0 && board.sort == 1}">
+                                           <b><c:out value="${ board.title }"/></b>
                                         </c:if>
                                      </a>
                                   </c:if>

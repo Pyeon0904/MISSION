@@ -22,22 +22,10 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 
 <style>
-	#box{ 
-            background-color:rgb(224, 239, 132);
-            width:100%;
-            height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-            margin-top:330px;
-            margin-bottom:100px;
-            margin-left:-10px;
-            padding:10px;
-         }
+#box{background-color:rgb(224, 239, 132);width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
-         #conbox{
-            width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-            position:relative; 
-            top:20px;
-            margin:auto;
-         }
+#conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
 h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
 
@@ -120,35 +108,25 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 </style>
 
 <script type="text/javascript">
-	
-	$(document).ready(function(){		
-		
-	});
-		
-	/** 게시판 - 목록 페이지 이동 
-	function goBoardList(){				
-		location.href = "${path}/board/boardList";
-	}
-	*/
-	
-	/** 게시판 - 답글 작성  */
-	function insertBoardReply(){
-		var boardSubject = $("#board_subject").val();
-		var boardContent = $("#board_content").val();
+	$(function() {
+		$('#btnWrite').click(function() {
+			if (!$('#board_subject').val()) {
+				alert('글제목을 입력하세요');
+				$('#board_subject').focus();
+				return false;
+			}
 			
-		if (boardSubject == ""){			
-			alert("제목을 입력해주세요.");
-			$("#board_subject").focus();
-			return;
-		}
-		
-		if (boardContent == ""){			
-			alert("내용을 입력해주세요.");
-			$("#board_content").focus();
-			return;
-		}
-		
-	
+			var text = $('#board_content').val();
+			
+			if (text.replace(/\s|　/gi, "").length == 0) {
+			    alert("내용을 입력해주세요.");
+			    $("#board_content").focus();
+			    return false;
+			}
+			
+			$('#boardForm').submit();
+		});
+	});
 </script>
 </head>
 <body>
@@ -172,7 +150,12 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 				    <tbody id="tbody">
 						<tr>
 							<th>제목<span class="t_red">*</span></th>
-							<td><input id="board_subject" name="title" value="" class="tbox01"/></td>
+							<c:if test="${loginMember.id eq 'admin' }">
+								<td><input id="board_subject" name="title" value="답변드립니다:)" class="tbox01"/></td>
+							</c:if>
+							<c:if test="${loginMember.id ne 'admin' }">
+								<td><input id="board_subject" name="title" value="" class="tbox01"/></td>
+							</c:if>
 						</tr>
 						<tr>
 							<th>작성자<span class="t_red">*</span></th>
@@ -180,7 +163,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
-							<td><textarea class="summernote" name="content" style=""></textarea></td>
+							<td><textarea class="summernote" name="content" id="board_content"></textarea></td>
 						</tr>
 						<tr>
 							<th scope="row">비밀번호</th>
@@ -190,7 +173,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 				</table>
 				<div class="btn_right mt15">
 					<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
-					<input type="submit" class="btn black" value="등록하기">
+					<input type="submit" class="btn black" id="btnWrite" value="등록하기">
 				</div>
 			</form>
 		</div>

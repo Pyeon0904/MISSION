@@ -24,22 +24,10 @@
 <script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
-	#box{ 
-            background-color:rgb(224, 239, 132);
-            width:100%;
-            height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-            margin-top:330px;
-            margin-bottom:100px;
-            margin-left:-10px;
-            padding:10px;
-         }
+#box{background-color:rgb(224, 239, 132);width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
-         #conbox{
-            width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-            position:relative; 
-            top:20px;
-            margin:auto;
-         }
+#conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
 h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
 
