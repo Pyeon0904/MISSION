@@ -56,6 +56,8 @@
 			<exclude-mapping path="/member/checkNickEm"/>
 			<exclude-mapping path="/member/findPassword"/>
 			<exclude-mapping path="/member/sendMail"/>
+			<exclude-mapping path="/member/idCheck"/>
+			<exclude-mapping path="/member/nicknameCheck"/>
 
 			<!-- 인터셉터 등록 -->
 			<beans:bean id="loginCheckInterceptor" class="com.missionpossibleback.mvc.common.interceptor.LoginCheckInterceptor" />
