@@ -268,7 +268,6 @@
 							<!-- 로고 이미지 -->
 							<img src="${path}/resources/images/logofirst.png" width="150px" height="150px"/>
 						</a>
-						
 					</li>
 					<li class="header_li introduce">
 						<a href="${ path }/introduce/introduce">소개</a>
