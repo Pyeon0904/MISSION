@@ -62,12 +62,11 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public Board findByNo(int qna_no, boolean hasRead) {
-		
 		if(!hasRead) {
 			mapper.readCount(qna_no);
 		}
-		
 		return mapper.selectBoardByNo(qna_no);
+
 	}
 
 	// 삭제

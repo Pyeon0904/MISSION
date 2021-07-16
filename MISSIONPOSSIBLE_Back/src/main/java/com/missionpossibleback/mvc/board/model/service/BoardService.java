@@ -49,8 +49,4 @@ public interface BoardService {
 	int selectOneRestore(int qna_no);
 
 	
-//	public BoardDetail selectOne(int board_id);
-
-
-
 }
