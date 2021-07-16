@@ -57,4 +57,5 @@ public interface BoardMapper {
 	int selectRestore(int[] intNo);
 
 	int selectOneRestore(int qna_no);
+	
 }

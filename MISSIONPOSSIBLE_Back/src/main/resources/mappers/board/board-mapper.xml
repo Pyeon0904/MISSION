@@ -61,9 +61,10 @@
             Q.GROUPNO,
             Q.GROUPORD,
             Q.DEPT,
-            Q.SORT
+            Q.SORT,
+            Q.STATUS
       FROM QNA Q, MEMBER M
-      WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
+      WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID
    </select>
    
    <!-- 조회수 증가 -->
@@ -350,5 +351,6 @@
 			WHERE
 				QNA_NO=${qna_no}
 	</update>
+	
 
 </mapper>

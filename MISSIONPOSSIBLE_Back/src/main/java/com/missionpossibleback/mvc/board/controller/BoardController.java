@@ -105,15 +105,23 @@ public class BoardController {
     		response.addCookie(cookie);
     		
     	}
-		
-		
-		System.out.println(qna_no);
-	
-		Board board = service.findByNo(qna_no, hasRead);
 
-		model.addObject("hasRead",hasRead);
-		model.addObject("board", board); // view한테 전달해줄 데이터
-		model.setViewName("board/boardDetail");
+		System.out.println(qna_no);
+	 
+			Board board = service.findByNo(qna_no, hasRead);
+			
+			System.out.println(board);
+
+			model.addObject("hasRead",hasRead);
+			model.addObject("board", board); // view한테 전달해줄 데이터
+			model.setViewName("board/boardDetail");
+		
+			if(board.getStatus().equals("N")) {
+				model.addObject("msg", "삭제된 게시글입니다.");
+				model.addObject("location", "/board/boardList");
+				model.setViewName("common/msg");
+			}
+		
 		
 		return model;
 	}
@@ -231,6 +239,12 @@ public class BoardController {
 				model.setViewName("common/msg");
 			}
 			
+			if(board.getStatus().equals("N")) {
+				model.addObject("msg", "삭제된 게시글입니다.");
+				model.addObject("location", "/board/boardList");
+				model.setViewName("common/msg");
+			}
+			
 			return model;
 		}
 	
@@ -239,12 +253,13 @@ public class BoardController {
 	public ModelAndView update(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			HttpServletRequest request,
-			@ModelAttribute Board board, @RequestParam("reloadFile") MultipartFile reloadFile) {
+			@ModelAttribute Board board) {
 		
 		int result = 0;
 		
 		if(loginMember.getId().equals(board.getWriter())) {
 		
+			/*
 			if(reloadFile != null && !reloadFile.isEmpty()) { // 업로드한 파일이 있을 때
 				String rootPath = request.getSession().getServletContext().getRealPath("resources");
 				String savePath = rootPath + "/upload/board";
@@ -263,7 +278,7 @@ public class BoardController {
 					board.setRenamedFileName(renameFileName);
 				}
 			}
-				
+			*/
 
 			result = service.save(board);
 			
