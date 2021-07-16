@@ -298,14 +298,14 @@
 	// 댓글 수정 버튼 클릭시
 	$(document).on("click","#replyModify",function(){ 
 		var replyNo = $(this).attr("data-no")
-		location.replace("${ path }/review/replyModify?replyNo="+replyNo+"&reviewNo=${ review.no }");
+		location.replace("${ path }/review/replyModify?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 	});		
 
 	// 댓글 삭제 버튼 클릭시
 	$(document).on("click","#replyDelete",function(){ 
 				var replyNo = $(this).attr("data-no")
 				if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
-		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }");
+		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 		    	}
 	});	
 	
@@ -322,12 +322,12 @@
 	$(document).ready(() => {
 		
 		$("#update").on("click", (e) => {
-			location.href = "${ path }/review/reviewModify?no=${ review.no }";
+			location.href = "${ path }/review/reviewModify?no=${ review.no }&id=${loginMember.getId()}";
 		});
 		
 		$("#delete").on("click", (e) => {
 			if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
-				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
+				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }&id=${loginMember.getId()}");
 			}
 		});
 	});

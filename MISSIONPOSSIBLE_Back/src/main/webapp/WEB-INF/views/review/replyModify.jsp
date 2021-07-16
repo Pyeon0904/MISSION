@@ -5,18 +5,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../common/header.jsp"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>후기 상세</title>
+<title>댓글 수정</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="/resources/demos/style.css">
 <style>
    #box{ background-color:rgb(224, 239, 132); width:100%; height:1500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
+   .imgButton { width : 35px; height : 35px; }
 </style>
 </head>
 <body>
@@ -87,7 +95,33 @@
 									</tbody>
 								</table>
 								<!-- 게시판 상세보기 테이블 끝 ----------------------->
-
+								<!-- 하트 버튼 클릭시 추천수 +1 ----------------------->
+								<c:if test="${ !empty loginMember}">
+									<div style="margin-left: 990px;">
+									<c:out value="${ count }"/>
+									</div>
+									<div style="margin-left: 960px;">
+										<c:if test="${ Heartlist.isEmpty() }">
+											<form action="${ path }/review/reviewLike" method="POST">
+												<c:if test="${ (heart.m_id != loginMember.id )}">
+													<input type="hidden" name="r_no" value="${ review.no }">
+													<input type="hidden" name="m_id" value="${loginMember.id}">
+													<button type="submit" style="border:0;"><img class="imgButton" src="${ path }/resources/images/unheart.png"></button>
+												</c:if>
+											</form>
+										</c:if>
+										<c:forEach var="heart" items="${ Heartlist }">
+										<form action="${ path }/review/reviewUnlike" method="POST">
+											<c:if test="${heart.m_id == loginMember.id}">
+												<input type="hidden" name="r_no" value="${ review.no }">
+												<input type="hidden" name="m_id" value="${loginMember.id}">
+												<button id="unlike" style="border:0;"><img class="imgButton" src="${ path }/resources/images/heart.png"></button>
+											</c:if>	
+										</form>	
+										</c:forEach>
+									</div>
+								</c:if>
+								<!-- 하트 버튼 끝 ----------------------->
 							<!-- 댓글 테이블 : 작성 ----------------------->
 							<table class="type04">
 								<colgroup>
@@ -116,6 +150,7 @@
 												<input type="hidden" name="reviewNo" value="${ review.no }">
 												<input type="hidden" name="no" value="${ reply.no }">
 												<input type="hidden" name="writerId" value="${ reply.writerId }">
+												<input type="hidden" name="id" value="${ loginMember.getId() }">
 												<tr>
 													<th scope="row"><p>${ reply.writerId }</p></th>
 													<td colspan="2"><textarea name="content" style="width: 500px; height: 50px"><c:out value="${ reply.content }"></c:out></textarea></td>
@@ -156,6 +191,113 @@
 									<button type="button" class="btn black" id="delete">삭제하기</button>
 								</c:if>
 							</div>
+							<!-- 이전글/다음글 -->
+							<table class="type04">
+								<colgroup>
+									<col width="14%">
+								</colgroup>
+								<tbody>
+								<tr>
+									<th style="vertical-align: middle;">이전글</th>
+									<c:if test="${ !empty prevReview }">
+									<td><a style="text-decoration:none; color:#666;" href="${ path }/review/reviewView?no=${prevReview.no}">${ prevReview.title }								
+										<c:if test="${ prevReview.replyCount != 0 }">
+											[${ prevReview.replyCount }]
+										</c:if>
+									</a></td>
+									</c:if>
+									<c:if test="${ empty prevReview }">
+									<td>이전 글이 없습니다.</td>
+									</c:if>
+								</tr>
+								<tr>
+									<th style="vertical-align: middle;">다음글</th>
+									<c:if test="${ !empty nextReview }">
+									<td><a style="text-decoration:none; color:#666;" href="${ path }/review/reviewView?no=${nextReview.no}">${ nextReview.title }
+										<c:if test="${ nextReview.replyCount != 0 }">
+											[${ nextReview.replyCount }]
+										</c:if>									
+									</a></td>
+									</c:if>
+									<c:if test="${ empty nextReview }">
+									<td>다음 글이 없습니다.</td>
+									</c:if>
+								</tr>
+	  							</tbody>
+  							</table>
+  							<!-- 이전글/다음글 끝 -->
+							<!-- 후기 게시글 신고 모달 -->
+							<div class="cateUpdArea" id="cateDelArea">
+								<div class="newWrapper">
+									<div class="titleArea">
+										<h2>후기 게시글 신고</h2>
+									</div>
+									<div class="contentArea">
+										<div class="div-inf" id="individual">
+										</div>
+										<form id="report" action="${path}/review/reviewReport" method="POST">
+								            <table>
+								            	<tr>
+								                    <td></td>
+								                    <td> <!-- 현재 페이지에 담긴 게시글 제목, 게시글 번호, 작성자ID, 신고자ID -->
+								                        신고 후기 게시글 : 
+								                        <input type="text" name="title" id="title" value=" ${ review.title }" readonly><br>
+								                        <input type="hidden" name="r_no" id="r_no" value="${ review.no }"readonly>
+								                        <input type="hidden" name="reportedId" id="reportedId" value="${ review.writerId }"readonly>
+								                        <input type="hidden" name="sendId" id="sendId" value="${ loginMember.id }"readonly>
+								                        <input type="hidden" name="a" id="a" value=""readonly>
+								                    </td>
+								                </tr>
+								                <tr>
+								                <td>&emsp;&emsp;</td>
+								                    <td>           
+								                      	신고 유형 &emsp;&emsp;&emsp; : <select name="category" class="form-control" style="height:22px; width: 177px;" required>
+								                  		<option value="" selected disabled hidden>신고 유형 선택</option>
+								                  		<option value="욕설/비방">욕설/비방</option>
+								                  		<option value="광고">도배</option>
+									                  	<option value="광고">광고</option>
+									                  	<option value="음란물">음란물</option>
+									                  	<option value="개인정보 침해">개인정보 침해</option>
+									                  	<option value="기타">기타</option>
+									              	 </select>
+								                    </td>
+								                </tr>
+								                <tr>
+								                    <td>&emsp;&emsp;</td>
+								                    <td>
+								                        <textarea cols="100" row="100" style="height:50px; width: 400px;" name="content" placeholder="신고 내용을 입력하세요." id="reportContent" class="reportList"></textarea><br><br>    
+								                    </td>
+								                    <td></td>
+								                </tr>
+								                <tr>
+								                    <td colspan="3" align="center">
+								                        <input type="submit" class="inf-bt2" value="신고하기">
+								                        <button type="button" class="inf-bt1 closeDelBtn">취소</button>
+								                    </td>
+								                </tr>
+								            </table>
+								        </form>
+									</div>
+								</div>
+							</div>
+							<script>
+								$(function(){
+									// 게시글 신고
+									$("#btn-report").click(function(){
+										$("div#cateDelArea").css("display", "block");
+										$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
+			
+										// 게시글 번호 폼으로 가져오기
+										var updno = $(this).parent('td').siblings('.noTd').html();
+										$("input#a").val(updno);
+										});
+									
+									$('button.closeDelBtn').click(function(){
+										$('div.cateUpdArea').css("display", "none");
+										$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
+									});
+								});
+							</script>							
 						</div>
 					</div>
 				</div>
@@ -164,23 +306,23 @@
 	</div>
 
 <script type="text/javascript">
+	// 댓글 수정 버튼 클릭시
 	$(document).on("click","#replyModify",function(){ 
 		var replyNo = $(this).attr("data-no")
-		location.replace("${ path }/review/replyModify?replyNo="+replyNo+"&reviewNo=${ review.no }");
+		location.replace("${ path }/review/replyModify?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 	});		
 
-	// 댓글 삭제 버튼 클릭시 삭제
+	// 댓글 삭제 버튼 클릭시
 	$(document).on("click","#replyDelete",function(){ 
 				var replyNo = $(this).attr("data-no")
 				if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
-		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }");
+		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 		    	}
 	});	
 	
 
-
 	// 신고하기 버튼 클릭시 팝업 띄우기
-	$("#btn-report").on("click", (e)=>{
+	$().on("click", (e)=>{
 		const url = "${path}/review/reviewReport?id=${loginMember.getId()}&reviewNo=${ review.no }";
 		const status="left=500px, top=200px, width=510px; height=320px";
 		
@@ -191,12 +333,12 @@
 	$(document).ready(() => {
 		
 		$("#update").on("click", (e) => {
-			location.href = "${ path }/review/reviewModify?no=${ review.no }";
+			location.href = "${ path }/review/reviewModify?no=${ review.no }&id=${loginMember.getId()}";
 		});
 		
 		$("#delete").on("click", (e) => {
 			if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
-				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
+				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }&id=${loginMember.getId()}");
 			}
 		});
 	});
@@ -217,6 +359,7 @@
 		alert("로그인 후 사용하세요")
 	}
 	});
+	
 </script>
 </body>
 </html>

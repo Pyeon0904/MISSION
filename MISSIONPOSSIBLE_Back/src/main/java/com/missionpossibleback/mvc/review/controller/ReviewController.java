@@ -243,15 +243,16 @@ public class ReviewController {
     
     @PostMapping("/review/reviewReport")
     public ModelAndView reviewReport (ModelAndView model,
-         @SessionAttribute(name = "id", required = false) Member loginMember,
+         @SessionAttribute(name = "loginMember", required = false) Member loginMember,
          HttpServletRequest request,
          @RequestParam("r_no") int reviewNo,
+         @RequestParam("sendId") String sendId,
          @ModelAttribute Report report) {
        
           Review review = service.findReviewByNo(reviewNo, true); 
           
           int result = 0;
-          
+          if(loginMember.getId().equals(sendId)) {
              result = service.report(report);
              
              if(result > 0) {
@@ -263,15 +264,30 @@ public class ReviewController {
              }
              
           model.setViewName("common/msg");
-          
+          } else {
+              model.addObject("msg", "잘못된 접근입니다");
+              model.addObject("location", "/review/reviewList");      
+              model.setViewName("common/msg");
+           }
           return model;
        }
 
     // 리뷰 게시글 삭제
     @GetMapping("/review/reviewDelete")
-    public String deleteReview(@RequestParam("reviewNo")int reviewNo) {
-       service.deleteReview(reviewNo);
-       return "redirect: reviewList";
+    public ModelAndView deleteReview(ModelAndView model,
+    		@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+    		@RequestParam("reviewNo")int reviewNo,
+    		@RequestParam("id")String id) {
+    	
+    	 if(loginMember.getId().equals(id)) {
+	       service.deleteReview(reviewNo);
+	       model.setViewName("redirect: reviewList");
+    	 } else {
+    		 model.addObject("msg", "잘못된 접근입니다");
+             model.addObject("location", "/review/reviewList");      
+             model.setViewName("common/msg");
+          }          
+          return model;
     }
 
     // 리뷰 게시글 수정
@@ -349,7 +365,7 @@ public class ReviewController {
          @ModelAttribute Reply reply) {
           
           Review review = service.findReviewByNo(reviewNo, true);
-          
+    
           int result = 0;
           
              result = service.reply(reply);
@@ -372,17 +388,24 @@ public class ReviewController {
     // 리뷰 게시글 댓글 삭제
     @GetMapping("/review/replyDelete")
     public ModelAndView deleteReply(ModelAndView model,
+    	  @SessionAttribute(name = "loginMember", required = false) Member loginMember,
           @RequestParam("reviewNo") int reviewNo,
-          @RequestParam("replyNo")int replyNo) {
-       
-       Review review = service.findReviewByNo(reviewNo, true); 
-       service.deleteReply(replyNo);
-       service.getReplyCount(reviewNo);
-       
-       model.addObject("msg", "댓글을 삭제했습니다.");
-       model.addObject("location", "/review/reviewView?no=" +review.getNo());
-       model.setViewName("common/msg");
-       
+          @RequestParam("replyNo")int replyNo,
+          @RequestParam("id")String id) {
+    	
+       if(loginMember.getId().equals(id)) {
+	       Review review = service.findReviewByNo(reviewNo, true); 
+	       service.deleteReply(replyNo);
+	       service.getReplyCount(reviewNo);
+	       
+	       model.addObject("msg", "댓글을 삭제했습니다.");
+	       model.addObject("location", "/review/reviewView?no=" +review.getNo());
+	       model.setViewName("common/msg");
+       } else {
+           model.addObject("msg", "잘못된 접근입니다");
+           model.addObject("location", "/review/reviewList");      
+           model.setViewName("common/msg");
+       }
        return model;
     }
     
@@ -392,19 +415,34 @@ public class ReviewController {
          HttpServletRequest request,
          @SessionAttribute(name = "loginMember", required = false) Member loginMember,
          @RequestParam("reviewNo") int reviewNo,
-         @RequestParam("replyNo") int replyNo) {
-          
-          boolean hasRead = true;
-          Reply reply = service.findReplyByNo(replyNo);
-          Review review = service.findReviewByNo(reviewNo, hasRead);
-         List<Reply> list = service.getReplyList(reviewNo);
-         int test = replyNo;
-         
-         model.addObject("test",test);
-          model.addObject("review",review);
-          model.addObject("reply", reply);
-          model.addObject("list",list);
-          model.setViewName("/review/replyModify");
+         @RequestParam("replyNo") int replyNo,
+         @RequestParam("id")String id) {
+    	if(loginMember.getId().equals(id)) { 
+	        boolean hasRead = true;
+	        Reply reply = service.findReplyByNo(replyNo);
+	        Review review = service.findReviewByNo(reviewNo, hasRead);
+	        List<Reply> list = service.getReplyList(reviewNo);
+	        int test = replyNo;
+			List<Heart> Heartlist = service.getHeartList(reviewNo,id);
+			int count = service.getHeartCount(reviewNo);
+			Review prevReview = service.getPrevReview(reviewNo);
+			Review nextReview = service.getNextReview(reviewNo);
+			   	    
+			model.addObject("prevReview", prevReview);
+			model.addObject("nextReview", nextReview);
+			model.addObject("count",count);
+			model.addObject("Heartlist", Heartlist);
+	        model.addObject("test",test);
+	        model.addObject("review",review);
+	        model.addObject("reply", reply);
+	        model.addObject("list",list);
+	        model.setViewName("/review/replyModify");
+    	} else {
+            model.addObject("msg", "잘못된 접근입니다");
+            model.addObject("location", "/review/reviewList");      
+            model.setViewName("common/msg");
+         }
+    	
        return model;
     }
     
@@ -414,10 +452,11 @@ public class ReviewController {
          @SessionAttribute(name = "loginMember", required = false) Member loginMember,
          @RequestParam("reviewNo") int reviewNo,
          @RequestParam("no") int replyNo,
-         @ModelAttribute Reply reply) {
-
+         @ModelAttribute Reply reply,
+         @RequestParam("id")String id) {
+    	if(loginMember.getId().equals(id)) { 
           int result = 0;
-         result = service.reply(reply);
+          result = service.reply(reply);
          
           boolean hasRead = true;
           Review review = service.findReviewByNo(reviewNo, hasRead);
@@ -429,7 +468,11 @@ public class ReviewController {
             model.addObject("msg", "댓글 수정에 실패하였습니다.");
             model.addObject("location", "/review/reviewView?no=" +review.getNo());
          }
-      
+    	}	else {
+            model.addObject("msg", "잘못된 접근입니다");
+            model.addObject("location", "/review/reviewList");      
+            model.setViewName("common/msg");
+         }
       model.setViewName("common/msg");
 
        return model;
