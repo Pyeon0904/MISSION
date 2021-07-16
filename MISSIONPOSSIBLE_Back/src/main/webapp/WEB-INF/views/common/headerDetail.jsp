@@ -69,7 +69,7 @@
 		
 		/*마우스 on 
 		.col:hover{ position:relative; width:800px; height:180px; background-color : green;}
-		
+		*/
 		
 		/*하위 메뉴 구분하기*/
 		.semititle{ 
@@ -140,9 +140,8 @@
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
-			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 1;
-			display:none;
+			position: absolute; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
+			z-index: 999;
 		}
 		
 		#login{
@@ -193,9 +192,12 @@
 		         $('.detailtab').slideUp(0);
 		});
         
-        $(".btnHBG").on("click", () => {
- 	       $("#hamburger").animate({width:'toggle'}, 400);
- 		});
+		$(document).ready(()=>{
+			$(".btnHBG").on("click", () => {
+		 		$("#hamburger").animate({width:'toggle'}, 400);
+		 	});
+		});
+        
 </script>
 
 </head>
