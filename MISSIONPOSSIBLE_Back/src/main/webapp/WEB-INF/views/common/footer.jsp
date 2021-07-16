@@ -12,28 +12,30 @@
 		
 		<style>
 		#footer {
-			background-color:#2a1b0a;
 			width:100%;
 			height:50px;
 			padding:10px;
 			margin-left:-10px;
 			margin-bottom:-10px;
 		}
+		
 		/*텍스트 설정*/
 		#copyright{
 			text-align: center;
 			font-family:
 			font-size:12pt;
-			color:rgb(224, 239, 132);
+			color:rgba(26, 252, 26);
 		}
 		</style>
 	</head>
 	
 	<body>
 		<footer>
+			<hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
+		
 			<div id="footer">
 				<p id="copyright">
-				&lt;Copyright 2021. <strong>작전 : 404 에러</strong>.All rights reserved. &gt;
+				&lt;Copyright 2021. <strong>작전 : MISSION</strong>.All rights reserved. &gt;
 				</p>
 			</div>
 		</footer>
