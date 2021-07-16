@@ -25,8 +25,6 @@
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
-	a { text-decoration:none } 
-
 </style>
 </head>
 <body>
@@ -71,7 +69,7 @@
 											<th>첨부파일</th>
 											<td colspan="3">
 												<c:if test="${ !empty review.originalFileName }">
-													<a href="javascript:fileDownload('${ review.originalFileName }', '${ review.renamedFileName }')">
+													<a style="text-decoration:none; color:#666;" href="javascript:fileDownload('${ review.originalFileName }', '${ review.renamedFileName }')">
 														<img src="${ path }/images/file.png" width="20" height="20" /> 
 															<c:out value="${ review.originalFileName }"></c:out>
 													</a>
@@ -191,7 +189,11 @@
 								<tr>
 									<th style="vertical-align: middle;">이전글</th>
 									<c:if test="${ !empty prevReview }">
-									<td><a href="${ path }/review/reviewView?no=${prevReview.no}">${ prevReview.title }</a></td>
+									<td><a style="text-decoration:none; color:#666;" href="${ path }/review/reviewView?no=${prevReview.no}">${ prevReview.title }								
+										<c:if test="${ prevReview.replyCount != 0 }">
+											[${ prevReview.replyCount }]
+										</c:if>
+									</a></td>
 									</c:if>
 									<c:if test="${ empty prevReview }">
 									<td>이전 글이 없습니다.</td>
@@ -200,7 +202,11 @@
 								<tr>
 									<th style="vertical-align: middle;">다음글</th>
 									<c:if test="${ !empty nextReview }">
-									<td><a href="${ path }/review/reviewView?no=${nextReview.no}">${ nextReview.title }</a></td>
+									<td><a style="text-decoration:none; color:#666;" href="${ path }/review/reviewView?no=${nextReview.no}">${ nextReview.title }
+										<c:if test="${ nextReview.replyCount != 0 }">
+											[${ nextReview.replyCount }]
+										</c:if>									
+									</a></td>
 									</c:if>
 									<c:if test="${ empty nextReview }">
 									<td>다음 글이 없습니다.</td>
