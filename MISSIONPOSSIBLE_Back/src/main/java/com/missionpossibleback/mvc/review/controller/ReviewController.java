@@ -183,6 +183,12 @@ public class ReviewController {
     	    
 			Review review = service.findReviewByNo(reviewNo, hasRead);
 			List<Reply> list = service.getReplyList(reviewNo);
+			Review prevReview = service.getPrevReview(reviewNo);
+			Review nextReview = service.getNextReview(reviewNo);
+			
+    	    
+			model.addObject("prevReview", prevReview);
+			model.addObject("nextReview", nextReview);
     		model.addObject("hasRead",hasRead);
     		model.addObject("review",review);
     		model.addObject("list",list);

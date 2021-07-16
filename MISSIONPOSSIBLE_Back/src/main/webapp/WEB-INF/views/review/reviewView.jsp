@@ -180,6 +180,31 @@
 									<button type="button" class="btn black" id="delete">삭제하기</button>
 								</c:if>
 							</div>
+							<table class="type04">
+								<colgroup>
+									<col width="14%">
+								</colgroup>
+								<tbody>
+								<tr>
+									<th style="vertical-align: middle;">이전글</th>
+									<c:if test="${ !empty prevReview }">
+									<td><a href="${ path }/review/reviewView?no=${prevReview.no}">이전글 보기</a></td>
+									</c:if>
+									<c:if test="${ empty prevReview }">
+									<td>이전 글이 없습니다.</td>
+									</c:if>
+								</tr>
+								<tr>
+									<th style="vertical-align: middle;">다음글</th>
+									<c:if test="${ !empty nextReview }">
+									<td><a href="${ path }/review/reviewView?no=${nextReview.no}">다음글 보기</a></td>
+									</c:if>
+									<c:if test="${ empty nextReview }">
+									<td>다음 글이 없습니다.</td>
+									</c:if>
+								</tr>
+	  							</tbody>
+  							</table>
 							<!-- 후기 게시글 신고 모달 -->
 							<div class="cateUpdArea" id="cateDelArea">
 								<div class="newWrapper">
@@ -230,7 +255,7 @@
 								                    </td>
 								                </tr>
 								            </table>
-								        </form>   
+								        </form>
 									</div>
 								</div>
 							</div>

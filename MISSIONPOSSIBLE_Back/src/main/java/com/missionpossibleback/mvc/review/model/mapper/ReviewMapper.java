@@ -96,4 +96,8 @@ public interface ReviewMapper {
 
 	int selectHeartCount(int reviewNo);
 
+	Review selectPrevReview(int reviewNo);
+
+	Review selectNextReview(int reviewNo);
+
 }

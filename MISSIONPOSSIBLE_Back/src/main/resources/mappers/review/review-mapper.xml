@@ -566,5 +566,30 @@
 		FROM HEART
 		WHERE R_NO = #{reviewNo}
 	</select>
+	
+	<!-- 게시글 번호로 해당 게시글의 이전 게시글 1개 조회 -->
+	<select id="selectPrevReview" resultMap="reviewListResultMap">
+		SELECT * 
+		FROM REVIEW 
+		<![CDATA[ 
+		WHERE NO < #{reviewNo} 
+		AND STATUS = 'Y' 
+		AND ROWNUM < 2 
+		]]>
+		ORDER BY NO DESC
+	</select>
+
+	<!-- 게시글 번호로 해당 게시글의 다음 게시글 1개 조회 -->
+	<select id="selectNextReview" resultMap="reviewListResultMap">
+		SELECT * 
+		FROM REVIEW 
+		WHERE NO > #{reviewNo} 
+		AND STATUS = 'Y' 
+		<![CDATA[ 
+		AND ROWNUM < 2 
+		]]>
+		ORDER BY NO ASC
+	</select>
+	
 </mapper>
 
