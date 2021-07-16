@@ -25,6 +25,8 @@
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
+	a { text-decoration:none } 
+
 </style>
 </head>
 <body>
@@ -180,6 +182,7 @@
 									<button type="button" class="btn black" id="delete">삭제하기</button>
 								</c:if>
 							</div>
+							<!-- 이전글/다음글 -->
 							<table class="type04">
 								<colgroup>
 									<col width="14%">
@@ -188,7 +191,7 @@
 								<tr>
 									<th style="vertical-align: middle;">이전글</th>
 									<c:if test="${ !empty prevReview }">
-									<td><a href="${ path }/review/reviewView?no=${prevReview.no}">이전글 보기</a></td>
+									<td><a href="${ path }/review/reviewView?no=${prevReview.no}">${ prevReview.title }</a></td>
 									</c:if>
 									<c:if test="${ empty prevReview }">
 									<td>이전 글이 없습니다.</td>
@@ -197,7 +200,7 @@
 								<tr>
 									<th style="vertical-align: middle;">다음글</th>
 									<c:if test="${ !empty nextReview }">
-									<td><a href="${ path }/review/reviewView?no=${nextReview.no}">다음글 보기</a></td>
+									<td><a href="${ path }/review/reviewView?no=${nextReview.no}">${ nextReview.title }</a></td>
 									</c:if>
 									<c:if test="${ empty nextReview }">
 									<td>다음 글이 없습니다.</td>
@@ -205,6 +208,7 @@
 								</tr>
 	  							</tbody>
   							</table>
+  							<!-- 이전글/다음글 끝 -->
 							<!-- 후기 게시글 신고 모달 -->
 							<div class="cateUpdArea" id="cateDelArea">
 								<div class="newWrapper">
@@ -261,7 +265,7 @@
 							</div>
 							<script>
 								$(function(){
-									// 게시글 삭제
+									// 게시글 신고
 									$("#btn-report").click(function(){
 										$("div#cateDelArea").css("display", "block");
 										$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
