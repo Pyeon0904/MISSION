@@ -204,9 +204,13 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
                                         <c:if test="${ board.groupord > 0 }">
                                            	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
                                         </c:if>
-                                        <%-- 원글이면 --%>
-                                        <c:if test="${ board.groupord == 0 }">
+                                        <%-- 원글 && 질문글이면 --%>
+                                        <c:if test="${ board.groupord == 0 && board.sort == 0}">
                                            <c:out value="${ board.title }"/>
+                                        </c:if>
+                                        <%-- 원글 && 공지글이면 --%>
+                                        <c:if test="${ board.groupord == 0 && board.sort == 1}">
+                                           <b><c:out value="${ board.title }"/></b>
                                         </c:if>
                                      </a>
                                   </c:if>
