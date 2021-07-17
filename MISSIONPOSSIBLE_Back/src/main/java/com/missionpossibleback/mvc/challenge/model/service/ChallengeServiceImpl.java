@@ -444,5 +444,11 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		return mapper.selectCateDelete(strNo);
 	}
+
+	@Override
+	public int cateAdd(String str1, String str2) {
+		
+		return mapper.insertCategory(str1, str2);
+	}
 	
 }

@@ -109,5 +109,7 @@ public interface ChallengeMapper {
 	int selectOneCateDelete(String str);
 
 	int selectCateDelete(String[] strNo);
+
+	int insertCategory(@Param("categoryNo") String categoryNo, @Param("name") String name);
 	
 }

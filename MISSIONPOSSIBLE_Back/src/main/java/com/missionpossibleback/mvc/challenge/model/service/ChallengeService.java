@@ -109,5 +109,7 @@ public interface ChallengeService {
 	int selectOneCateDelete(String str);
 
 	int selectCateDelete(String[] strNo);
+
+	int cateAdd(String str1, String str2);
 	
 }

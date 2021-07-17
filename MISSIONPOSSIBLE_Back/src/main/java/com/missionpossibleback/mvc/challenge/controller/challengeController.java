@@ -1219,5 +1219,16 @@ public class challengeController {
 
 			     return "redirect: viewChallenge";      
 			  }
+		// [챌린지] 관리자 페이지 - 챌린지 관리 - 카테고리 하나만 삭제
+			  @PostMapping("/admin/challenge/addCategory")
+			  public String cateAdd(HttpServletRequest request) {
+
+			     String str1 = request.getParameter("cateNo");
+			     String str2 = request.getParameter("cateName");
+
+			     service.cateAdd(str1, str2);
+
+			     return "redirect: viewChallenge";      
+			  }
 	
 }

@@ -38,6 +38,15 @@ $(function () {
         var temp = $(".cateListTb td:contains('"+text+"')");
         $(temp).parent().show();
     });
+	// 카테고리 등록
+    $("#allEnrollBtn").click(function() {
+       $('div.cateInsArea').css("display", "block");
+       $('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
+    });
+	 $('#closeInsBtn').click(function() {
+	    $('div.cateInsArea').css("display", "none");
+	    $('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
+	 });
 });
 </script>
 <div id="box">
@@ -73,7 +82,7 @@ $(function () {
 							</span>
 							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
-								<button class="enroll-bt1" id="addBtn">추가</button>
+								<button type="button" class="enroll-bt1" id="allEnrollBtn">추가</button>
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>
@@ -123,6 +132,7 @@ $(function () {
 	                        });
 						});					
 					</script>
+					<!--  
 					<script>
 						$(document).ready(()=>{
 							$("#addBtn").on("click", () => {
@@ -132,7 +142,7 @@ $(function () {
 								addObj += 	"<td><input type='checkbox' class='tdCheck'></td>";
 								addObj +=	"<td class='noTd'><input type='text' name='catId' class='catId'/></td>";
 								addObj +=	"<td class='td-3'><input type='text' name='catName' class='catName'/></td>";
-								//addObj +=	"<td><button type='button' class='stat-bt1 removeBtn'>삭제</button></td>";
+							//	addObj +=	"<td><button type='button' class='stat-bt1 removeBtn'>삭제</button></td>";
 								addObj +=	'<td><button type="button" class="stat-bt1 addCateBtn">추가</button></td>';
 								addObj += "</tr>";
 								
@@ -141,6 +151,7 @@ $(function () {
 							
 						});
 					</script>
+					-->
 					<!-- 후기 게시글 삭제 모달 -->
 					<div class="cateUpdArea" id="cateDelArea">
 						<div class="newWrapper">
@@ -231,48 +242,34 @@ $(function () {
 						});
 					</script>
 					</div>
-					<!-- 후기 게시글 삭제 모달 -->
-					<div class="cateUpdArea" id="cateAddArea">
-						<div class="newWrapper">
-							<div class="titleArea">
-								<h2>카테고리 추가</h2>
-							</div>
-							<div class="contentArea">
-								<div class="div-inf" id="informAdd">
-								</div>
-								<input type="hidden" name="cateNo" id="cateNo">
-								<input type="hidden" name="cateName" id="cateName">
-								<div class="infSendArea">
-									<input type="submit" class="inf-bt2" value="확인">
-									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- 후기 게시글 삭제 모달 기능 -->
-					<script>
-						$(function(){
-							// 게시글 삭제
-							$('button.addCateBtn').click(function(){
-								$("div#cateAddArea").css("display", "block");
-								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
-								
-								// 게시글 제목 알려주기
-								var title = $(this).parent('td').siblings('.td-3').find("input.catName");
-								$('div#informAdd').html("<h2>"+title+" 카테고리를<br>추가하시겠습니까?</h2>");
-								$("input#cateName").val(title);
-								
-								// 게시글 번호 폼으로 가져오기
-								var updno = $(this).parent('td').siblings('.noTd').find("input.catId");
-								$("input#cateNo").val(updno);
-								
-							});
-							$('button.closeDelBtn').click(function(){
-								$('div.cateUpdArea').css("display", "none");
-								$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
-							});
-						});
-					</script>
+					<!-- 카테고리 등록 모달 -->
+				      <div class="cateInsArea">
+				         <div class="newWrapper">
+				            <div class="titleArea">
+				               <h2>카테고리 등록</h2>
+				            </div>
+				            <div class="contentArea">
+				               <form id="enrollForm"
+				                  action="${path}/admin/challenge/addCategory" method="POST">
+				                  <table class="category commViewTb">
+				                     <tr>
+				                        <th>카테고리 코드</th>
+				                        <td><input type="text" name="cateNo" placeholder="카테고리 코드를 입력하시오" required></td>
+				                     </tr>
+				                     <tr>
+				                        <th>카테고리 이름</th>
+				                     	<td><input type="text" name="cateName" placeholder="카테고리 이름을 입력하시오" required></td>
+				                     </tr>
+				                  </table>
+				                  <div class="sendArea">
+				                     <button type="button" class="new-bt1" id="closeInsBtn">닫기</button>
+				                     <input type="submit" class="new-bt2" value="등록">
+				                  </div>
+				               </form>
+				            </div>
+				         </div>
+				      </div>
+					
 				</div>
 			</div>
 		</div>
