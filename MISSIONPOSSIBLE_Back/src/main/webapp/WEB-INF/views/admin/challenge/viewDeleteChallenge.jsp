@@ -55,6 +55,12 @@ $(function () {
 								<li class="tab-link current">
 									<a href="${ path }/admin/challenge/viewDeleteChallenge">삭제된 챌린지</a>
 								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/challenge/viewGiveupChallenge">챌린지 포기 사유 조회</a>
+								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/challenge/viewCategory">카테고리 관리</a>
+								</li>
 							</ul>
 						</div>
 				<div class="cateList">

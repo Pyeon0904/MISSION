@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
+import com.missionpossibleback.mvc.challenge.model.vo.Category;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
+import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
@@ -889,7 +891,8 @@ public class challengeController {
 			@RequestParam("cTitle") String title,
 			@RequestParam("giveupReason") String reason,
 			@RequestParam("inputTitle") String inputTitle,
-			@RequestParam("id") String id) {
+			@RequestParam("id") String id,
+			@ModelAttribute Giveup giveup) {
 		
 		log.info("챌린지 포기 신청 POST 요청");
 			
@@ -924,6 +927,18 @@ public class challengeController {
 							log.info("현재 인원수 업데이트 완료");
 						} else {
 							log.info("현재 인원수 업데이트 실패");
+						}
+						
+						giveup.setId(id);
+						giveup.setCno(cNo);
+						giveup.setReason(reason);
+						
+						int saveReason = service.saveGiveup(giveup);
+						
+						if(saveReason > 0) {
+							log.info("챌린지 포기 사유 저장 성공");
+						} else {
+							log.info("챌린지 포기 사유 저장 실패");
 						}
 						
 						model.addObject("msg", id + "님의 의견을 반영하여 챌린지 포기가 완료되었습니다. 홈으로 이동합니다.");
@@ -1013,30 +1028,196 @@ public class challengeController {
 	}
 	
 	// 마이페이지에 삽입될 찜 챌린지 목록
-		@GetMapping("/member/objectZzimList")
-		public ModelAndView myPageZzimList(ModelAndView model,
-				@RequestParam(value="page", required = false, defaultValue = "1") int page,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+	@GetMapping("/member/objectZzimList")
+	public ModelAndView myPageZzimList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 			
 			
-			String id = loginMember.getId();
+		String id = loginMember.getId();
 			
-			log.info("로그인한 ID : " + id);
+		log.info("로그인한 ID : " + id);
 			
-			int listCount = service.getZzimCount(id);
+		int listCount = service.getZzimCount(id);
 			
-			log.info("찜한 챌린지 수 : " + listCount);
+		log.info("찜한 챌린지 수 : " + listCount);
 			
-			List<Challenge> list = null;
-			PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
-			
-			list = service.getZzimList(pageInfo, id);
-			
-			model.addObject("list", list);
-			model.addObject("pageInfo", pageInfo);
-			model.setViewName("member/objectZzimList");
-			
-			return model;
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
+		
+		list = service.getZzimList(pageInfo, id);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("member/objectZzimList");
+		
+		return model;
+	}
+	
+	// [챌린지] 관리자 페이지 - 챌린지 관리 - 전체 챌린지 목록
+	@GetMapping("/admin/challenge/viewChallenge")
+	public ModelAndView viewChallenge(ModelAndView model) {
+	   log.info("챌린지리스트 페이지 요청");
+	    
+	   List<Challenge> list = null;
+	      
+	   list = service.getChallengeList();
+	      
+	   model.addObject("list", list);
+	   model.setViewName("admin/challenge/viewChallenge");
+	     
+	   return model;
+	}
+	   
+	// [첼린지] 관리자 페이지 - 챌린지 관리 - 삭제된 챌린지 목록
+	@GetMapping("/admin/challenge/viewDeleteChallenge")
+	public ModelAndView DeleteChallengeView(ModelAndView model) {
+
+		List<Challenge> list = null;
+	      
+	    list = service.getDeleteChallengeAllList();
+	    
+	    model.addObject("list", list);
+	    model.setViewName("admin/challenge/viewDeleteChallenge");
+	      
+	    return model;
+	}
+	
+	// [첼린지] 관리자 페이지 - 챌린지 관리 - 챌린지 포기 사유 조회
+		@GetMapping("/admin/challenge/viewGiveupChallenge")
+		public ModelAndView giveupChallengeView(ModelAndView model) {
+
+			List<Giveup> list = null;
+		      
+		    list = service.getGiveupList();
+		    
+		    model.addObject("list", list);
+		    model.setViewName("admin/challenge/viewGiveupChallenge");
+		    
+		    return model;
 		}
+		
+		// [첼린지] 관리자 페이지 - 챌린지 관리 - 카테고리 관리
+		@GetMapping("/admin/challenge/viewCategory")
+		public ModelAndView categoryView(ModelAndView model) {
+
+			List<Category> list = null;
+		      
+		    list = service.getCategoryList();
+		    
+		    model.addObject("list", list);
+		    model.setViewName("admin/challenge/viewCategory");
+		    
+		    return model;
+		}
+	   
+	  // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 선택 삭제
+	  @PostMapping("/admin/challenge/selectDelete")
+	  public String selectDeleteChallenge(HttpServletRequest request) {
+		   
+	     String[] str = request.getParameterValues("cateSelDelNo");
+	     String[] strNo = str[0].split(",");
+	     
+	     int[] intNo = new int[strNo.length];
+	      
+	     for(int i=0; i<strNo.length; i++) {
+	        intNo[i] = Integer.parseInt(strNo[i]);
+	     }
+
+	     service.selectDelete(intNo);
+
+	     return "redirect: viewChallenge";      
+	  }
+		   
+		  // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 하나만 삭제
+		  @PostMapping("/admin/challenge/oneDelete")
+		  public String selectOneDeleteChallenge(HttpServletRequest request) {
+
+		     String str = request.getParameter("challengeNo");
+
+		     service.selectOneDelete(str);
+
+		     return "redirect: viewChallenge";      
+		  }
+	   
+	  // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 선택 복구
+	  @PostMapping("/admin/challenge/selectRestore")
+	  public String selectRestoreChallenge(HttpServletRequest request) {
+	     String[] str = request.getParameterValues("cateSelResNo");
+	     String[] strNo = str[0].split(",");
+	      
+	     int[] intNo = new int[strNo.length];
+	     
+	     for(int i=0; i<strNo.length; i++) {
+	        intNo[i] = Integer.parseInt(strNo[i]);
+	     }
+
+	     service.selectRestore(intNo);
+	     
+	     return "redirect: viewDeleteChallenge";      
+	  }
+	   
+	  // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 하나만 복구
+	  @PostMapping("/admin/challenge/oneRestore")
+	  public String selectOneRestoreChallenge(HttpServletRequest request) {
+
+	     String str = request.getParameter("challengeNo");
+
+	     service.selectOneRestore(str);
+
+	     return "redirect: viewDeleteChallenge";      
+	  }
+	  
+	  // [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 하나만 삭제
+	  @PostMapping("/admin/challenge/oneReasonDelete")
+	  public String selectOneReasonDeleteChallenge(HttpServletRequest request) {
+
+	     String str = request.getParameter("no");
+
+	     service.selectOneReasonDelete(str);
+
+	     return "redirect: viewChallenge";      
+	  }
+	  
+	// [챌린지] 관리자 페이지 - 챌린지 관리 - 챌린지 선택 삭제
+		  @PostMapping("/admin/challenge/selectReasonDelete")
+		  public String selectReasonDeleteChallenge(HttpServletRequest request) {
+			   
+		     String[] str = request.getParameterValues("cateSelDelNo");
+		     String[] strNo = str[0].split(",");
+		     
+		     int[] intNo = new int[strNo.length];
+		      
+		     for(int i=0; i<strNo.length; i++) {
+		        intNo[i] = Integer.parseInt(strNo[i]);
+		     }
+
+		     service.selectReasonDelete(intNo);
+
+		     return "redirect: viewChallenge";      
+		  }
+		  
+		  // [챌린지] 관리자 페이지 - 챌린지 관리 - 카테고리 하나만 삭제
+		  @PostMapping("/admin/challenge/oneCateDelete")
+		  public String selectOneCateDeleteChallenge(HttpServletRequest request) {
+
+		     String str = request.getParameter("categoryNo");
+
+		     service.selectOneCateDelete(str);
+
+		     return "redirect: viewChallenge";      
+		  }
+		  
+		// [챌린지] 관리자 페이지 - 챌린지 관리 - 카테고리 선택 삭제
+			  @PostMapping("/admin/challenge/selectCateDelete")
+			  public String selectCateDeleteChallenge(HttpServletRequest request) {
+				   
+			     String[] str = request.getParameterValues("cateSelDelNo");
+			     String[] strNo = str[0].split(",");
+
+			     service.selectCateDelete(strNo);
+
+			     return "redirect: viewChallenge";      
+			  }
 	
 }

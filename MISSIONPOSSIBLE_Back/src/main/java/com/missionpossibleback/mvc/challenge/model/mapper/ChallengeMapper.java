@@ -6,8 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import com.missionpossibleback.mvc.challenge.model.vo.Category;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
+import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 
@@ -93,5 +95,19 @@ public interface ChallengeMapper {
 	int selectRestore(int[] intNo);
 
 	int selectOneRestore(String str);
+
+	List<Giveup> selectGiveup();
+
+	int insertGiveup(Giveup giveup);
+
+	int selectOneReasonDelete(String str);
+
+	int selectReasonDelete(int[] intNo);
+
+	List<Category> selectCategory();
+
+	int selectOneCateDelete(String str);
+
+	int selectCateDelete(String[] strNo);
 	
 }

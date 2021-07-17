@@ -30,7 +30,7 @@
 			CLG.MINUS_POINT
 		FROM CHALLENGE CLG
 		JOIN MEMBER MEM ON(CLG.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
 	</sql>
 	
 	<!-- 챌린지 객체 매핑 -->
@@ -78,6 +78,12 @@
 		<result property="id" column="ID"/>
 		<result property="myChallengeNo" column="MY_CHALLENGE_NO"/>
 		<result property="myStatus" column="MY_STATUS"/>
+	</resultMap>
+	
+	<!-- Category 객체 매핑 -->
+	<resultMap id="categoryResultMap" type="Category" >
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="name" column="NAME"/>
 	</resultMap>
 	
 	<!-- Member 객체 매핑 -->
@@ -174,7 +180,7 @@
 		FROM CHALLENGE CLG
 		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
 		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
 		WHERE (CLG.STATUS = 'Y') AND (MCL.MY_STATUS = 'ZZIM') AND (MCL.ID = #{id})
 		<![CDATA[
 				AND TO_CHAR(SYSDATE,'YYYYMMDD') < TO_CHAR(CLG.START_DATE,'YYYYMMDD') 
@@ -209,7 +215,7 @@
 		FROM CHALLENGE CLG
 		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
 		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
 		WHERE 
 			(CLG.STATUS = 'Y') 
 			AND (MCL.MY_STATUS = 'JOIN') 
@@ -324,7 +330,7 @@
 		FROM CHALLENGE CLG
 		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
 		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
 		WHERE 
 			(CLG.STATUS = 'Y') 
 			AND (MCL.MY_STATUS = 'ZZIM') 
@@ -341,7 +347,7 @@
 		FROM CHALLENGE CLG
 		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
 		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
 		WHERE 
 			(CLG.STATUS = 'Y') 
 			AND (MCL.MY_STATUS = 'JOIN') 
@@ -358,7 +364,7 @@
 		FROM CHALLENGE CLG
 		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
 		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
-		JOIN CATEGORY CAT ON(CLG.CATEGORY_NAME = CAT.NAME)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
 		WHERE 
 			(CLG.STATUS = 'Y') 
 			AND (MCL.MY_STATUS = 'JOIN') 
@@ -506,6 +512,26 @@
 			HISTORY = #{history}
 	</select>
 	
+	<!-- 챌린지 포기 사유 전체 조회 -->
+	<select id="selectGiveup" resultType="Giveup">
+		SELECT
+			NO,
+			ID,
+			CNO,
+			REASON,
+			GIVEUPDATE
+		FROM GIVEUP
+		ORDER BY NO DESC
+	</select>
+	
+	<!-- 카테고리 전체 조회 -->
+	<select id="selectCategory" resultMap="categoryResultMap">
+		SELECT
+			CATEGORY_NO,
+			NAME
+		FROM CATEGORY
+	</select>
+	
 	<!-- 챌린지 등록 -->
 	<insert id="insertChallenge" parameterType="map" useGeneratedKeys="true" keyProperty="challengeNo" keyColumn="CHALLENGE_NO">
 		INSERT INTO CHALLENGE (
@@ -622,6 +648,35 @@
 		)
 	</insert>
 	
+	<!-- 챌린지 포기 사유 삽입 -->
+	<insert id="insertGiveup" parameterType="map">
+		INSERT INTO GIVEUP (
+			NO,
+			ID,
+			CNO,
+			REASON,
+			GIVEUPDATE
+		) VALUES (
+			SEQ_GIVEUP_NO.NEXTVAL,
+			#{id},
+			#{cno},
+			#{reason},
+			SYSDATE
+		)
+	</insert>
+	
+	<!-- 신규 카테고리 삽입 -->
+	<insert id="insertCategory" parameterType="map">
+		INSERT INTO CATEGORY (
+			CATEGORY_NO,
+			NAME
+		) VALUES (
+			#{categoryNo},
+			#{name}
+		)
+	</insert>
+	
+	<!-- 챌린지 현재 참여인원 수정 -->
 	<update id="updateCurrentCount" parameterType="map">
 		UPDATE CHALLENGE
 		SET
@@ -630,6 +685,7 @@
 			CHALLENGE_NO = #{challengeNo}
 	</update>
 	
+	<!-- 챌린지 수정 -->
 	<update id="updateChallenge" parameterType="map">
 		UPDATE CHALLENGE
 		SET
@@ -711,6 +767,34 @@
     		(ID = #{id}) AND
         	(MY_CHALLENGE_NO = #{myChallengeNo}) AND
         	(MY_STATUS = #{myStatus})
+	</delete>
+	
+	<!-- 챌린지 포기 사유 여러개 확인 후 삭제 -->
+	<delete id="selectReasonDelete" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		DELETE FROM GIVEUP
+		WHERE NO = #{item}
+		</foreach>
+	</delete>
+	
+	<!-- 챌린지 포기 사유 한 개 확인 후 삭제 -->
+	<delete id="selectOneReasonDelete" parameterType="map">
+		DELETE FROM GIVEUP
+		WHERE NO = #{str}
+	</delete>
+	
+	<!-- 카테고리 1개 삭제 -->
+	<delete id="selectOneCateDelete" parameterType="map">
+		DELETE FROM CATEGORY
+		WHERE CATEGORY_NO = #{str}
+	</delete>
+	
+	<!-- 카테고리 1개 삭제 -->
+	<delete id="selectCateDelete" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		DELETE FROM CATEGORY
+		WHERE CATEGORY_NO = #{item}
+		</foreach>
 	</delete>
 
 </mapper>

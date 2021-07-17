@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.missionpossibleback.mvc.challenge.model.mapper.ChallengeMapper;
+import com.missionpossibleback.mvc.challenge.model.vo.Category;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
+import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
@@ -395,6 +397,52 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int selectOneRestore(String str) {
 		
 		return mapper.selectOneRestore(str);
+	}
+
+	// 관리자 페이지 - 챌린지 포기 사유 리스트 조회
+	@Override
+	public List<Giveup> getGiveupList() {
+		
+		return mapper.selectGiveup();
+	}
+
+	// 챌린지 포기 시 사유 저장
+	@Override
+	public int saveGiveup(Giveup giveup) {
+		
+		return mapper.insertGiveup(giveup);
+	}
+
+	// 관리자 페이지 - 챌린지 포기 사유 한 개 확인 후 삭제
+	@Override
+	public int selectOneReasonDelete(String str) {
+		
+		return mapper.selectOneReasonDelete(str);
+	}
+
+	// 관리자 페이지 - 챌린지 포기 사유 여러 개 확인 후 삭제
+	@Override
+	public int selectReasonDelete(int[] intNo) {
+		
+		return mapper.selectReasonDelete(intNo);
+	}
+
+	@Override
+	public List<Category> getCategoryList() {
+		
+		return mapper.selectCategory();
+	}
+
+	@Override
+	public int selectOneCateDelete(String str) {
+		
+		return mapper.selectOneCateDelete(str);
+	}
+
+	@Override
+	public int selectCateDelete(String[] strNo) {
+		
+		return mapper.selectCateDelete(strNo);
 	}
 	
 }

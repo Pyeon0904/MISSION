@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.missionpossibleback.mvc.challenge.model.vo.Category;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
+import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
@@ -93,5 +95,19 @@ public interface ChallengeService {
 	int selectRestore(int[] intNo);
 
 	int selectOneRestore(String str);
+
+	List<Giveup> getGiveupList();
+
+	int saveGiveup(Giveup giveup);
+
+	int selectOneReasonDelete(String str);
+
+	int selectReasonDelete(int[] intNo);
+
+	List<Category> getCategoryList();
+
+	int selectOneCateDelete(String str);
+
+	int selectCateDelete(String[] strNo);
 	
 }

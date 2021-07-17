@@ -49,7 +49,7 @@ $(function () {
 						<!-- 탭 -->
 						<div class="tabs">
 							<ul class="tabs">
-								<li class="tab-link current">
+								<li class="tab-link">
 									<a href="${ path }/admin/challenge/viewChallenge">전체 챌린지 조회</a>
 								</li>
 								<li class="tab-link">
@@ -58,14 +58,14 @@ $(function () {
 								<li class="tab-link">
 									<a href="${ path }/admin/challenge/viewGiveupChallenge">챌린지 포기 사유 조회</a>
 								</li>
-								<li class="tab-link">
+								<li class="tab-link current">
 									<a href="${ path }/admin/challenge/viewCategory">카테고리 관리</a>
 								</li>
 							</ul>
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2 id="title">챌린지 관리</h2>
+						<h2 id="title">카테고리 관리</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
@@ -73,6 +73,7 @@ $(function () {
 							</span>
 							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
+								<button class="enroll-bt1" id="addBtn">추가</button>
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>
@@ -80,47 +81,28 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>번호</th><!-- challengeNo -->
-									<th>포인트</th><!-- minusPoint -->
-									<th>카테고리</th><!-- attendStatus / categoryName -->
-									<th>제목</th><!-- title -->
-									<th>생성자</th><!-- id -->
-									<th>현재인원</th><!-- currentCount/maxCount -->
-									<th>진행기간</th><!-- startDate ~ deadline -->
-									<th>처리</th>
+									<th>코드</th>
+									<th>이름</th>
+									<th colspan="2">처리</th>
 								</tr>
 								<c:if test="${ list.isEmpty() }">
 									<tr>
-										<td colspan="9">조회된 게시글이 없습니다.</td>
+										<td colspan="4">조회된 게시글이 없습니다.</td>
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">
-									<c:forEach var="challenge" items="${ list }">
+									<form class="addCategoryForm" action="${path}/admin/challenge/addCategory" method="POST">
+									<c:forEach var="category" items="${ list }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td class="noTd">${ challenge.challengeNo }</td>
-											<td><c:out value="${ challenge.minusPoint }" /></td>
+											<td class="noTd">${ category.categoryNo }</td>
+											<td class="td-3"><c:out value="${ category.name }" /></td>
 											<td>
-												<c:out value="${ challenge.attendStatus }"/>
-												 / <c:out value="${ challenge.categoryName }" />
-											</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/challenge/recruit?no=${challenge.challengeNo}" target="viewF">
-												<c:out value="${ challenge.title } " /> </a>
-											</td>
-											<td><c:out value="${ challenge.id }" /></td>
-											<td>
-												<c:out value="${ challenge.currentCount }"/> / 
-												<c:out value="${ challenge.maxCount }"/>
-											</td>
-											<td>
-												<fmt:formatDate value="${ challenge.startDate }" pattern="yyyy-MM-dd"/> ~ 
-												<fmt:formatDate value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
-											</td>
-											<td>
-												<button type="button" id="selectRemoveBtn" class="stat-bt1 removeBtn">삭제</button>
+												<button type="button" class="stat-bt1 removeBtn">삭제</button>
 											</td>
 										</tr>
 									</c:forEach>
+									</form>
 								</c:if>
 						</table>
 						<!-- 게시글 리스트 테이블 끝 ------------------------>	
@@ -141,17 +123,35 @@ $(function () {
 	                        });
 						});					
 					</script>
+					<script>
+						$(document).ready(()=>{
+							$("#addBtn").on("click", () => {
+								var addObj = "";
+								
+								addObj += "<tr>";
+								addObj += 	"<td><input type='checkbox' class='tdCheck'></td>";
+								addObj +=	"<td class='noTd'><input type='text' name='catId' class='catId'/></td>";
+								addObj +=	"<td class='td-3'><input type='text' name='catName' class='catName'/></td>";
+								//addObj +=	"<td><button type='button' class='stat-bt1 removeBtn'>삭제</button></td>";
+								addObj +=	'<td><button type="button" class="stat-bt1 addCateBtn">추가</button></td>';
+								addObj += "</tr>";
+								
+								$("table.cateListTb").append(addObj);
+							});
+							
+						});
+					</script>
 					<!-- 후기 게시글 삭제 모달 -->
 					<div class="cateUpdArea" id="cateDelArea">
 						<div class="newWrapper">
 							<div class="titleArea">
-								<h2>챌린지 삭제</h2>
+								<h2>카테고리 삭제</h2>
 							</div>
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="${ path }/admin/challenge/oneDelete" method="POST">
-									<input type="hidden" name="challengeNo" id="challengeNo">
+								<form id=delForm" action="${ path }/admin/challenge/oneCateDelete" method="POST">
+									<input type="hidden" name="categoryNo" id="categoryNo">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
 										<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -170,11 +170,11 @@ $(function () {
 								
 								// 게시글 제목 알려주기
 								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
+								$('div#individual').html("<h2>"+title+" 카테고리를<br>정말로 삭제하겠습니까?</h2>");
 								
 								// 게시글 번호 폼으로 가져오기
 								var updno = $(this).parent('td').siblings('.noTd').html();
-								$("input#challengeNo").val(updno);
+								$("input#categoryNo").val(updno);
 							});
 							$('button.closeDelBtn').click(function(){
 								$('div.cateUpdArea').css("display", "none");
@@ -192,7 +192,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 삭제하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="${ path }/admin/challenge/selectDelete" method="POST">
+							<form id="selDelForm" action="${ path }/admin/challenge/selectCateDelete" method="POST">
 								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
@@ -231,6 +231,48 @@ $(function () {
 						});
 					</script>
 					</div>
+					<!-- 후기 게시글 삭제 모달 -->
+					<div class="cateUpdArea" id="cateAddArea">
+						<div class="newWrapper">
+							<div class="titleArea">
+								<h2>카테고리 추가</h2>
+							</div>
+							<div class="contentArea">
+								<div class="div-inf" id="informAdd">
+								</div>
+								<input type="hidden" name="cateNo" id="cateNo">
+								<input type="hidden" name="cateName" id="cateName">
+								<div class="infSendArea">
+									<input type="submit" class="inf-bt2" value="확인">
+									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 후기 게시글 삭제 모달 기능 -->
+					<script>
+						$(function(){
+							// 게시글 삭제
+							$('button.addCateBtn').click(function(){
+								$("div#cateAddArea").css("display", "block");
+								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
+								
+								// 게시글 제목 알려주기
+								var title = $(this).parent('td').siblings('.td-3').find("input.catName");
+								$('div#informAdd').html("<h2>"+title+" 카테고리를<br>추가하시겠습니까?</h2>");
+								$("input#cateName").val(title);
+								
+								// 게시글 번호 폼으로 가져오기
+								var updno = $(this).parent('td').siblings('.noTd').find("input.catId");
+								$("input#cateNo").val(updno);
+								
+							});
+							$('button.closeDelBtn').click(function(){
+								$('div.cateUpdArea').css("display", "none");
+								$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
+							});
+						});
+					</script>
 				</div>
 			</div>
 		</div>

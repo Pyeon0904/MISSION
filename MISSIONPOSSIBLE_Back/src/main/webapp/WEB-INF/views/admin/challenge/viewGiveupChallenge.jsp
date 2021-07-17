@@ -49,13 +49,13 @@ $(function () {
 						<!-- 탭 -->
 						<div class="tabs">
 							<ul class="tabs">
-								<li class="tab-link current">
+								<li class="tab-link">
 									<a href="${ path }/admin/challenge/viewChallenge">전체 챌린지 조회</a>
 								</li>
 								<li class="tab-link">
 									<a href="${ path }/admin/challenge/viewDeleteChallenge">삭제된 챌린지</a>
 								</li>
-								<li class="tab-link">
+								<li class="tab-link current">
 									<a href="${ path }/admin/challenge/viewGiveupChallenge">챌린지 포기 사유 조회</a>
 								</li>
 								<li class="tab-link">
@@ -72,7 +72,7 @@ $(function () {
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
 							</span>
 							<span class="enrollArea">
-								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
+								<button class="enroll-bt1" id="allRemoveBtn">확인</button>
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>
@@ -80,44 +80,29 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>번호</th><!-- challengeNo -->
-									<th>포인트</th><!-- minusPoint -->
-									<th>카테고리</th><!-- attendStatus / categoryName -->
-									<th>제목</th><!-- title -->
-									<th>생성자</th><!-- id -->
-									<th>현재인원</th><!-- currentCount/maxCount -->
-									<th>진행기간</th><!-- startDate ~ deadline -->
+									<th>번호</th>
+									<th>ID</th>
+									<th>챌린지 번호</th>
+									<th>포기 사유</th>
+									<th>요청 일자</th>
 									<th>처리</th>
 								</tr>
 								<c:if test="${ list.isEmpty() }">
 									<tr>
-										<td colspan="9">조회된 게시글이 없습니다.</td>
+										<td colspan="7">조회된 게시글이 없습니다.</td>
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">
-									<c:forEach var="challenge" items="${ list }">
+									<c:forEach var="giveup" items="${ list }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td class="noTd">${ challenge.challengeNo }</td>
-											<td><c:out value="${ challenge.minusPoint }" /></td>
+											<td class="noTd">${ giveup.no }</td>
+											<td><c:out value="${ giveup.id }" /></td>
+											<td><c:out value="${giveup.cno}"/></td>
+											<td class="td-3"><c:out value="${giveup.reason}"/></td>
+											<td><fmt:formatDate value="${ giveup.giveupdate }" pattern="yyyy-MM-dd"/></td>
 											<td>
-												<c:out value="${ challenge.attendStatus }"/>
-												 / <c:out value="${ challenge.categoryName }" />
-											</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/challenge/recruit?no=${challenge.challengeNo}" target="viewF">
-												<c:out value="${ challenge.title } " /> </a>
-											</td>
-											<td><c:out value="${ challenge.id }" /></td>
-											<td>
-												<c:out value="${ challenge.currentCount }"/> / 
-												<c:out value="${ challenge.maxCount }"/>
-											</td>
-											<td>
-												<fmt:formatDate value="${ challenge.startDate }" pattern="yyyy-MM-dd"/> ~ 
-												<fmt:formatDate value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
-											</td>
-											<td>
-												<button type="button" id="selectRemoveBtn" class="stat-bt1 removeBtn">삭제</button>
+												<button type="button" id="selectRemoveBtn" class="stat-bt1 removeBtn">확인</button>
 											</td>
 										</tr>
 									</c:forEach>
@@ -145,13 +130,13 @@ $(function () {
 					<div class="cateUpdArea" id="cateDelArea">
 						<div class="newWrapper">
 							<div class="titleArea">
-								<h2>챌린지 삭제</h2>
+								<h2>포기 사유 확인</h2>
 							</div>
 							<div class="contentArea">
 								<div class="div-inf" id="individual">
 								</div>
-								<form id=delForm" action="${ path }/admin/challenge/oneDelete" method="POST">
-									<input type="hidden" name="challengeNo" id="challengeNo">
+								<form id=delForm" action="${ path }/admin/challenge/oneReasonDelete" method="POST">
+									<input type="hidden" name="no" id="no">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
 										<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -170,11 +155,11 @@ $(function () {
 								
 								// 게시글 제목 알려주기
 								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
+								$('div#individual').html("<h2>"+title+" 사유를<br>정말로 확인하셨습니까?</h2>");
 								
 								// 게시글 번호 폼으로 가져오기
 								var updno = $(this).parent('td').siblings('.noTd').html();
-								$("input#challengeNo").val(updno);
+								$("input#no").val(updno);
 							});
 							$('button.closeDelBtn').click(function(){
 								$('div.cateUpdArea').css("display", "none");
@@ -186,13 +171,13 @@ $(function () {
 					<div class="cateUpdArea" id="selectRemoveArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>챌린지 삭제</h2>
+							<h2>포기 사유 확인</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
-								<h2>정말로 삭제하시겠습니까?</h2>
+								<h2>사유를 확인하셨습니까?</h2>
 							</div>
-							<form id="selDelForm" action="${ path }/admin/challenge/selectDelete" method="POST">
+							<form id="selDelForm" action="${ path }/admin/challenge/selectReasonDelete" method="POST">
 								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
