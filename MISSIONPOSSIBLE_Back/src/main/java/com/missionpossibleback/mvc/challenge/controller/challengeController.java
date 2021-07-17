@@ -234,6 +234,15 @@ public class challengeController {
 		return model;
 	}
 	
+	// 인원수 제한 AJAX
+	@GetMapping("/challenge/unlimited.do")
+	@ResponseBody
+	public int unlimited(@RequestParam(name = "input", required = false) int count) {
+		System.out.println("주입한 인원수 : " + count);
+		
+		return count;
+		}	
+	
 	// 입력한 모집 마감 날짜가 챌린지 시작일로 값이 넘어가게 하는 메소드 구현(AJAX 통신에 쓰임)
 	@GetMapping("/challenge/dateChange.do")
 	@ResponseBody
