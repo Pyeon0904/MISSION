@@ -534,7 +534,7 @@ public class challengeController {
 		int listCount = service.getEndCount();
 		
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getEndList(pageInfo);
 		
@@ -571,7 +571,7 @@ public class challengeController {
 		int listCount = service.getRecruitCount();
 		
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getRecruitList(pageInfo);
 		
@@ -590,7 +590,7 @@ public class challengeController {
 		int listCount = service.getOngoingCount();
 		
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getOngoingList(pageInfo);
 		
@@ -623,7 +623,13 @@ public class challengeController {
 		System.out.println();
 		
 		// 더한 값에 ID리스트의 수를 나눈다 = 평균
-		double avgSuccess = (double) sumSuccess / list.size();
+		double avgSuccess = 0;
+		
+		if(list.size() > 0) {
+			avgSuccess = (double) sumSuccess / list.size();
+		} else {
+			avgSuccess = 0;
+		}
 		log.info("avgSuccess : " + avgSuccess);
 		
 		model.addObject("challenge", challenge);
@@ -841,7 +847,7 @@ public class challengeController {
 			log.info("찜한 챌린지 수 : " + listCount);
 			
 			List<Challenge> list = null;
-			PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+			PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 			
 			list = service.getZzimList(pageInfo, id);
 			
@@ -977,7 +983,7 @@ public class challengeController {
 			@RequestParam("word") String word
     		) {
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, service.getSearchCount(key, word), 12);
+		PageInfo pageInfo = new PageInfo(page, 3, service.getSearchCount(key, word), 12);
 
 		list = service.getSearchList(key, word, pageInfo);
 		

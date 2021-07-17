@@ -7,21 +7,21 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <!-- LIST PATH -->
-<!-- ¸ðÁýÁßÀÎ Ã§¸°Áö ¸®½ºÆ® ÆäÀÌÁö path -->
+<!-- ëª¨ì§‘ì¤‘ì¸ ì±Œë¦°ì§€ ë¦¬ìŠ¤íŠ¸ íŽ˜ì´ì§€ path -->
 <c:set var="recruitListViewPath" value="${ path }/challenge/recruitList"/>
-<!-- ÁøÇàÁßÀÎ Ã§¸°Áö ¸®½ºÆ® ÆäÀÌÁö path -->
+<!-- ì§„í–‰ì¤‘ì¸ ì±Œë¦°ì§€ ë¦¬ìŠ¤íŠ¸ íŽ˜ì´ì§€ path -->
 <c:set var="ongoingListViewPath" value="${ path }/challenge/ongoingList"/>
-<!-- Á¾·áµÈ Ã§¸°Áö ¸®½ºÆ® ÆäÀÌÁö path -->
+<!-- ì¢…ë£Œëœ ì±Œë¦°ì§€ ë¦¬ìŠ¤íŠ¸ íŽ˜ì´ì§€ path -->
 <c:set var="endListViewPath" value="${ path }/challenge/endList"/>
 
 <!-- VIEW PATH -->
-<!-- ¸ðÁýÁßÀÎ Ã§¸°Áöºä ÆäÀÌÁö path -->
+<!-- ëª¨ì§‘ì¤‘ì¸ ì±Œë¦°ì§€ë·° íŽ˜ì´ì§€ path -->
 <c:set var="recruitViewPath" value="${ path }/challenge/recruit"/>
-<!-- ÁøÇàÁßÀÎ Ã§¸°Áöºä ÆäÀÌÁö path -->
+<!-- ì§„í–‰ì¤‘ì¸ ì±Œë¦°ì§€ë·° íŽ˜ì´ì§€ path -->
 <c:set var="ongoingViewPath" value="${ path }/challenge/ongoing"/>
-<!-- Âü¿©ÁßÀÎ Ã§¸°Áöºä ÆäÀÌÁö path -->
+<!-- ì°¸ì—¬ì¤‘ì¸ ì±Œë¦°ì§€ë·° íŽ˜ì´ì§€ path -->
 <c:set var="ongoingViewPath" value="${ path }/challenge/participate"/>
-<!-- Á¾·áµÈ Ã§¸°Áöºä ÆäÀÌÁö path -->
+<!-- ì¢…ë£Œëœ ì±Œë¦°ì§€ë·° íŽ˜ì´ì§€ path -->
 <c:set var="endViewPath" value="${ path }/challenge/end"/>
 
 <!DOCTYPE html>
@@ -30,28 +30,28 @@
 <meta charset="UTF-8">
 <title>s</title>
 
-<!-- ¾ÆÀÌÄÜ ¶óÀÌºê·¯¸® link -->
+<!-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½ link -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- Á¦ÀÌÄõ¸® import -->
+<!-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ import -->
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
-		/* ÀüÃ¼ ¿µ¿ª--------------------------------------------------------------------------*/
+		/* ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½--------------------------------------------------------------------------*/
 				
-			/*---------------Á¦ÀÏ ¹Ù±ù ¿µ¿ª ¼³Á¤-----------------*/
+			/*---------------ï¿½ï¿½ï¿½ï¿½ ï¿½Ù±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½-----------------*/
 			#box{ 
 			   background-color:rgb(224, 239, 132);
 			   width:100%;
-			   height:1200px; /*³ôÀÌ´Â °¢ ¼¼ºÎÆäÀÌÁö ÄÁÅÙÃ÷ º¸°í ¾Ë¾Æ¼­ Àû~´çÈ÷ ¼³Á¤ÇÏ±â*/
+			   height:1200px; /*ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½ï¿½~ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½*/
 			   margin-top:330px;
 			   margin-bottom:100px;
 			   margin-left:-10px;
 			   padding:10px;
 			}
-			/*-------------------ÄÁÅÙÃ÷ ¿µ¿ª---------------------*/
+			/*-------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½---------------------*/
 			#conbox{
-				width:1200px; /* ³ÐÀÌµµ °¢ ¼¼ºÎ ÆäÀÌÁö ÄÁÅÙÃ÷¿¡ ¸ÂÃç¼­ ¼³Á¤*/
+				width:1200px; /* ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ç¼­ ï¿½ï¿½ï¿½ï¿½*/
 				position:relative; 
 				top:20px;
 				margin:auto;
@@ -126,50 +126,50 @@
 				
 				
 				<div id="subHeaderContainer">
-					<h2>Ã§¸°Áö ¸ñ·Ï °Ë»ö °á°ú</h2>
+					<h2>ê²€ìƒ‰ ê²°ê³¼</h2>
 					<div class="searchArea">
-						 <!-- °Ë»ö Æû ½ÃÀÛ--------------------- -->
+						 <!-- ê²€ìƒ‰ í¼ ì‹œìž‘--------------------- -->
 				         <form id="challengeSearch" name="form1" method="GET" action="${path}/challenge/search">
 				            <div align="right" class="row m-4">
 				               <select name="key" class="form-control" required>
-				                  <option value="" selected disabled hidden>::°Ë»ö À¯Çü::</option>
-				                  <option value="1">Ã§¸°Áö Á¦¸ñ</option>
-				                  <option value="2">Ã§¸°Áö µî·ÏÀÚ ID</option>
-				                  <option value="3">Ã§¸°Áö ³»¿ë</option>
-				                  <option value="4">Ä«Å×°í¸® ÀÌ¸§</option>
-				                  <option value="5">ÀüÃ¼</option>
+				                  <option value="" selected disabled hidden>::ê²€ìƒ‰ ìœ í˜•::</option>
+				                  <option value="1">ì±Œë¦°ì§€ ì œëª©</option>
+				                  <option value="2">ì±Œë¦°ì§€ ë“±ë¡ìž ID</option>
+				                  <option value="3">ì±Œë¦°ì§€ ë‚´ìš©</option>
+				                  <option value="4">ì¹´í…Œê³ ë¦¬ ì´ë¦„</option>
+				                  <option value="5">ì „ì²´</option>
 				               </select>
 				          
 				               <input type="text" name="word" class="form-control" style="padding: 3px 20px 6px 20px" value=${ word }>
-				               <button type="submit" class="btn btn-warning" >°Ë»ö</button>
+				               <button type="submit" class="btn btn-warning" >ê²€ìƒ‰</button>
 				            </div>
 				         </form>
-				         <!-- °Ë»ö Æû ³¡---------------------- -->
+				         <!-- ê²€ìƒ‰ í¼ ë---------------------- -->
 					</div>
 				</div><!-- #subHeaderContainer -->
 				
 				<div id="productContainer">
-					<!-- Ä«Å×°í¸® ¹Ù -->
+					<!-- ì¹´í…Œê³ ë¦¬ ë°” -->
 					<div id="categoryBar">
 						<ul id="categoryList">
-						    <li onclick="location.href='${recruitListViewPath}'">¸ðÁýÁßÀÎ Ã§¸°Áö</li>
-						    <li onclick="location.href='${ongoingListViewPath}'">ÁøÇàÁßÀÎ Ã§¸°Áö</li>
-						    <li onclick="location.href='${endListViewPath}'">Á¾·áµÈ Ã§¸°Áö</li>
+						    <li onclick="location.href='${recruitListViewPath}'">ëª¨ì§‘ì¤‘ì¸ ì±Œë¦°ì§€</li>
+						    <li onclick="location.href='${ongoingListViewPath}'">ì§„í–‰ì¤‘ì¸ ì±Œë¦°ì§€</li>
+						    <li onclick="location.href='${endListViewPath}'">ì¢…ë£Œëœ ì±Œë¦°ì§€</li>
 						</ul>
 					</div><!-- categoryBar -->
 					
-					<!-- Ã§¸°Áö Áø¿­ ±¸¿ª -->
+					<!-- Ã§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -->
 					<div id="challengeDisplay">
 						<div class="categoryArea">
-							<h3>°Ë»ö °á°ú</h3>
-							<!-- Á¶È¸µÈ Ã§¸°ÁöÀÇ °³¼ö -->
-							<p>ÃÑ <c:out value="${ pageInfo.listCount }"/>°³</p>
+							<h3>ê²€ìƒ‰ ê²°ê³¼</h3>
+							<!-- ï¿½ï¿½È¸ï¿½ï¿½ Ã§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -->
+							<p>ì´ <c:out value="${ pageInfo.listCount }"/>ê°œ</p>
 						</div>
 						<hr>
 						<div class="challengeList">
-						<!-- »óÇ° ¸®½ºÆ® -->
+						<!-- ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ® -->
 							<div class="challengeListCont">
-							<!-- »óÇ° ¸®½ºÆ® ³»¿ª -->
+							<!-- ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ -->
 								<div class="challengeListDisplay">
 									<ul>
 									<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
@@ -180,21 +180,16 @@
 												</div>
 												<div class="itemInfoCont" style="margin-top:30px;">
 													<p>
-														<span class="itemTitle">ÇØ´ç Ã§¸°Áö¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.</span><br>
+														<span class="itemTitle">ì±Œë¦°ì§€ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ</span><br>
 														<span class="itemSubCont">NONE!</span>
 													</p>
 												</div>
 											</div>
-											<script>
-											$(document).ready(() => {
-												alert("ÇØ´ç Ã§¸°Áö¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
-											});	
-											</script>
 										</li>
 									</c:if>
 									<c:if test="${ list != null }">
 										<c:forEach var="challenge" items="${ list }">
-										<!-- D-Day ·ÎÁ÷ ±¸ÇöÇÑ ÆÄÀÏ include -->
+										<!-- D-Day ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ include -->
 										<%@ include file="date.jsp" %>
 											<c:choose>
 												<c:when test="${ todayNum < startNum && todayNum < endNum }">
@@ -214,7 +209,7 @@
 															</div>
 															<div class="itemInfoCont">
 																<p>
-																	<span class="itemTitle">ÇØ´ç Ã§¸°Áö¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.</span><br>
+																	<span class="itemTitle">ì±Œë¦°ì§€ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ</span><br>
 																	<span class="itemSubCont">NONE!</span>
 																</p>
 															</div>
@@ -255,15 +250,15 @@
 					<div id="pageBarContainer">
 						<div id="pageBar">
 							<!-- 
-								¸Ç Ã³À½À¸·Î 
+								ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 								<button class="pageArrow" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=1'--%>"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
 							-->
 							
-							<!-- ÀÌÀü ÆäÀÌÁö·Î -->
+							<!-- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -->
 							<div class="pageArrow" onclick="location.href='${ path }/challenge/search?page=${  pageInfo.prvePage }&key=${key}&word=${word}'">
 								 <i class="fa fa-caret-left" aria-hidden="true"></i>
 							</div>			
-							<!--  10°³ ÆäÀÌÁö ¸ñ·Ï -->
+							<!--  10ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ -->
 							<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
 					        	<c:if test="${ pageInfo.currentPage == status.current}">
 									<div class="pageCount" style="background-color:yellow;">
@@ -276,12 +271,12 @@
 					               	</div>
 					            </c:if>
 					        </c:forEach>
-					        <!-- ´ÙÀ½ ÆäÀÌÁö·Î -->
+					        <!-- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -->
 							<div class="pageArrow" onclick="location.href='${ path }/challenge/search?page=${ pageInfo.nextPage }&key=${key}&word=${word}'">
 								 <i class="fa fa-caret-right" aria-hidden="true"></i>
 							</div>
 									
-							<!-- ¸Ç ³¡À¸·Î 
+							<!-- ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 							<button class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<%= pageInfo.getMaxPage() %>'--%>"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>'
 							-->
 						</div><!-- #pageBar -->

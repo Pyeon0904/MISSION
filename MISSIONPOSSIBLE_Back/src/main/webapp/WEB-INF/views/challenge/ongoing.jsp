@@ -191,7 +191,8 @@
 									<div class="barGreen" style="width:${progPercent}%"></div>
 								</div>
 								<div class="progStatus">
-									<p>${successDay} / ${totalDay}</p>
+									<fmt:parseNumber var="succDay" value="${successDay}" pattern="0"/>
+									<p>${succDay} / ${totalDay}</p>
 								</div>
 								
 								<h4>챌린지 경과일 수</h4>
