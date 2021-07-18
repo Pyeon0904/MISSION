@@ -57,15 +57,27 @@
 		<result property="reportCount" column="REPORT_COUNT"/>
 	</resultMap>
 	
- 	
+	<resultMap type="wirhdrawalMember" id="withdrawalMemberResultMap">
+		<result property="id" column="ID"/>
+		<result property="reason" column="REASON"/>
+		<result property="dateWithdrawal" column="DATE_WITHDRAWAL"/>
+	</resultMap>
+	
+	<resultMap type="Grade" id="gradeResultMap">
+		<result property="gradeName" column="GRADE_NAME"/>
+		<result property="min" column="MIN_STANDARD"/>
+		<result property="max" column="MAX_STANDARD"/>
+	</resultMap>
+	
  	<select id="selectMember" parameterType="string" resultMap="memberResultMap">
  		<include refid="selectMemberSql" />
-		WHERE ID = #{id} AND STATUS ='Y'
+		WHERE ID = #{id} AND STATUS IN('Y','A')
  	</select>
  	
  	<select id="selectMemberbyNick" parameterType="string" resultMap="memberResultMap">
  		<include refid="selectMemberSql" />
 		WHERE NICKNAME = #{Nickname} AND STATUS ='Y'
+		
  	</select>
  	
  	<update id="updateTempPw" parameterType="Member">
@@ -124,14 +136,38 @@
  			MEMBER_NO = #{memberNo}
  	</update>
  	
- 	<insert id="saveWithdrawal">
+ 	<insert id="saveWithdrawal" parameterType="Member">
 	 	INSERT INTO WITHDRAWAL ( 
+	 		NO, 
 		    ID,  
-		    REASON
+		    REASON,
+		    DATE_WITHDRAWAL,
+		    GRADE_NAME,
+		    MEMBER_NO,
+		    PASSWORD,
+		    NICKNAME,
+		    EMAIL,
+		    POINT,
+		    STATUS,
+		    ORIGINAL_FILENAME,
+		    RENAMED_FILENAME,
+		    REPORT_COUNT 
 		    
 		) VALUES(
-			#{id},
-			#{reasonWithdrawal}
+			SEQ_WITHDRAWAL.NEXTVAL,
+			#{member.id},
+			#{reasonWithdrawal},
+			DEFAULT,
+			#{member.gradeName},
+			#{member.memberNo},
+			#{member.password},
+			#{member.nickname},
+			#{member.email},
+			#{member.point},
+			'N',
+			#{member.originalFileName},
+			#{member.renamedFileName},
+			#{member.report_count}
 		)
  	</insert>
  	
@@ -193,13 +229,15 @@
 	</select>
 	
 	<select id="selectReportMemberList" resultMap="memberReportResultMap">
-		SELECT ID,
-			   REPORT_ID,
-			   REPORT_TYPE,
-			   REPORT_CONTENT,
-			   CREATE_DATE,
-			   REPORT_COUNT
-		FROM REPORT_MEMBER
+		SELECT R.ID,
+			   R.REPORT_ID,
+			   R.REPORT_TYPE,
+			   R.REPORT_CONTENT,
+			   R.CREATE_DATE,
+			   M.REPORT_COUNT
+		FROM REPORT_MEMBER R
+		LEFT JOIN MEMBER M ON(R.REPORT_ID = M.ID)
+		ORDER BY R.CREATE_DATE DESC
 	</select>
 	
 	<select id="selectReportListCount" resultType="_int">
@@ -208,10 +246,39 @@
 	</select>
 	
 	<update id="addMemberReportCount">
- 		UPDATE REPORT_MEMBER
+ 		UPDATE MEMBER
  		SET
  			REPORT_COUNT = REPORT_COUNT + 1
  		WHERE 
- 			REPORT_ID = #{warnMemberId}
+ 			ID = #{warnMemberId}
+ 	</update>
+ 	
+ 	<select id="selectWithdrawalMemberList" resultMap="withdrawalMemberResultMap">
+		SELECT ID,
+			   REASON,
+			   DATE_WITHDRAWAL
+		FROM WITHDRAWAL
+	</select>
+	
+	<select id="setGradeName" resultMap="gradeResultMap">
+		SELECT GRADE_NAME,
+			   MIN_STANDARD,
+			   MAX_STANDARD
+		FROM GRADE
+	</select>
+	
+	<insert id="insertGradename">
+	 	INSERT INTO MEMBER ( 
+		    GRADE_NAME
+		) VALUES(
+			#{gradeName}
+		)
+ 	</insert>
+ 	
+ 	<update id="updateGradename" parameterType="Member">
+ 		UPDATE MEMBER 
+ 		SET 
+ 			GRADE_NAME = #{gradeName}
+		WHERE MEMBER_NO = #{no}
  	</update>
  </mapper>

@@ -53,6 +53,9 @@
 	align:center;
 	}
 	
+	/* 인원수 제한 여부 스위치 */
+	.switch-button { position: relative; display: inline-block; width: 40px; height: 20px; } .switch-button input { opacity: 0; width: 0; height: 0; } .onoff-switch { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; border-radius:20px; background-color: #ccc; box-shadow: inset 1px 5px 1px #999; -webkit-transition: .4s; transition: .4s; } .onoff-switch:before { position: absolute; content: ""; height: 20px; width: 20px; left: 0px; bottom: 0px; background-color: #fff; -webkit-transition: .5s; transition: .4s; border-radius:20px; } .switch-button input:checked + .onoff-switch { background-color: #1afc1a; box-shadow: inset 1px 5px 1px #1af01a; } .switch-button input:checked + .onoff-switch:before { -webkit-transform: translateX(26px); -ms-transform: translateX(26px); transform: translateX(26px); }
+
 	</style>
 </head>
 	
@@ -76,7 +79,6 @@
 						<th>챌린지 제목</th>
 						<td>
 							<input type="text" name="title" style="width:300px" placeholder="사용하실 챌린지명을 적어주세요." required />
-							<input type="button" id="checkDuplicate" value="중복검사" />
 						</td>
 					</tr>
 					<tr>
@@ -86,7 +88,7 @@
 					<tr>
 						<th>챌린지 유형</th>
 						<td>
-			            	<select name="attendStatus">
+			            	<select name="attendStatus" id="attendStatus">
 								<option value="" selected>챌린지 유형 선택</option>
 								<option value="PUBLIC">타인 참여가능(단체)</option>
 								<option value="PRIVATE">타인 참여불가능(개인)</option>
@@ -141,12 +143,111 @@
 					<tr>
 						<th>모집인원</th>
 						<td>
-							<select name="maxCount">
-							   <option value="workout" selected>모집인원 선택</option>
-							   <option value="5">5</option>
-							   <option value="10">10</option>
-							   <option value="15">15</option>
-							</select>
+							<input type="number" name="maxCount" id="maxCount" min="1" max="9999"/>
+							<label>인원수 제한 없음</label>
+							<label class="switch-button">
+								<input type="checkbox" id="unlimitedCount"/>
+								<span class="onoff-switch"></span>
+							</label>
+							<script>
+							$(()=>{
+								$("#attendStatus").on("change", ()=>{
+									if($("#attendStatus").val() == "PRIVATE"){
+										let input = 1;
+										
+										$.ajax({	
+											type : "GET",
+											url : "unlimited.do",
+											data : {
+												input : input
+											},
+											success : function(result){
+												console.log("AJAX GET 통신 성공 : " + result);
+												
+												$("#maxCount").val(result).prop("readonly","readonly");
+												$("#unlimitedCount").prop("disabled", "disabled");
+											},
+											error : function(e){
+												console.log(e);
+											},
+											complete: function() {
+												console.log("complete");
+											}
+										});
+									} else {
+										let input = 2;
+										
+										$.ajax({	
+											type : "GET",
+											url : "unlimited.do",
+											data : {
+												input : input
+											},
+											success : function(result){
+												console.log("AJAX GET 통신 성공 : " + result);
+												
+												$("#maxCount").val(result).removeAttr("readonly");
+												$("#unlimitedCount").removeAttr("disabled");
+											},
+											error : function(e){
+												console.log(e);
+											},
+											complete: function() {
+												console.log("complete");
+											}
+										});
+									}
+								});
+								
+								$("#unlimitedCount").on("change", ()=>{
+									if($("#unlimitedCount").is(":checked")){
+										let input = 9999;
+										
+										$.ajax({	
+											type : "GET",
+											url : "unlimited.do",
+											data : {
+												input : input
+											},
+											success : function(result){
+												console.log("AJAX GET 통신 성공 : " + result);
+												
+												$("#maxCount").val(result).prop("readonly");
+												$("#unlimitedCount").removeAttr("disabled");
+											},
+											error : function(e){
+												console.log(e);
+											},
+											complete: function() {
+												console.log("complete");
+											}
+										});
+									} else {
+										let input = 2;
+										
+										$.ajax({	
+											type : "GET",
+											url : "unlimited.do",
+											data : {
+												input : input
+											},
+											success : function(result){
+												console.log("AJAX GET 통신 성공 : " + result);
+												
+												$("#maxCount").val(result).removeAttr("readonly");
+												$("#unlimitedCount").removeAttr("disabled");
+											},
+											error : function(e){
+												console.log(e);
+											},
+											complete: function() {
+												console.log("complete");
+											}
+										});
+									}
+								});
+							});
+							</script>
 						</td>
 					</tr>
 					<tr>
@@ -233,9 +334,39 @@
 						<th>(선택) 챌린지 썸네일 이미지 첨부</th>
 						<td>
 							<input type="file" id="upfile" name="upfile">
+							<input type="button" id="editfile" name="editfile" value="수정">
 							<input type="button" id="deletefile" name="deletefile" value="삭제">
 						</td>
 					</tr>
+					<tr>
+						<th>이미지 미리보기</th>
+						<td>
+							<div id="preview" style="width:200px;height:200px;border:1px solid gray;position:relative;"></div>
+						</td>
+					</tr>
+					<script>
+					function handleFileSelect(event) {
+					    var input = this;
+					    console.log(input.files)
+					    if (input.files && input.files.length) {
+					        var reader = new FileReader();
+					        this.enabled = false
+					        reader.onload = (function (e) {
+					        console.log(e)
+					            $("#preview").html(['<img style="width:200px;height:200px;" class="thumb" src="', e.target.result, '" title="', escape(e.name), '"/>'].join(''))
+					        });
+					        reader.readAsDataURL(input.files[0]);
+					    }
+					}
+					$('#upfile').change(handleFileSelect);
+					$('#deletefile').on('click', ()=> {
+					    $("#preview").empty()
+					    $("#upfile").val("");
+					});
+					$('#editfile').click( function() {
+					  $("#upfile").click();
+					} );
+					</script>
 					<tr>
 						<th>챌린지에 대한 부가설명</th>
 						<td>

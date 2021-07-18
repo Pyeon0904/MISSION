@@ -29,18 +29,16 @@
     font-style: normal;
 }
 
-@font-face {
-	font-family: 'Noto Sans KR','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif; }
-}
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
-		
+
 		#bg{
 			padding:0px;
+			background-image:url(<%=request.getContextPath()%>/resources/images/backgroundcircle-dark.png);
 			overflow-x:hidden;
 			z-index:0;	
 		}
-		
+
 		/* 로고 설정 */
 		.logo {
 			margin: 0px;
@@ -69,8 +67,8 @@
 			height:45px;
 		}
 		
-		/*마우스 on 
-		.col:hover{ position:relative; width:800px; height:180px; background-color : green;}
+		/*마우스 on */
+		.col:hover{ position:relative; width:800px; height:180px;}
 		
 		
 		/*하위 메뉴 구분하기*/
@@ -201,14 +199,14 @@
 		
 		#hamburger{
 			width:450px;
-			height:900px;
+			height:800px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 999;
+			z-index: 1;
 			display:none;
 		}
 		
@@ -249,7 +247,12 @@
 	
 	
 /* ----------------------------------------------------------------------------------------------- */
-			
+
+		.video{
+			position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
+			z-index: 998;
+		}
+
 </style>
 <script>
 		$(document).on('mouseover', '.menu a', function () {
@@ -274,10 +277,10 @@
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewMember">고객관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/viewUser">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/viewChallenge">챌린지관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
+						<li><a class="adminSemititle" href="${ path }/admin/viewBoard">고객센터관리</a>
 						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
 					</ul>
 					</div>
@@ -294,15 +297,40 @@
 		<!-- 초록색 선 (로고 아래) -->
 		<hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
 		
+		<!-- 헤더 아래 최상단 이미지 삽입 -->
+		<a><img class="headerTop"
+			src="${path}/resources/images/headerTop.png" />
+		</a>
+		
+		<!-- 버튼(작전 더 자세히보기) -->
+		<a href="${path}/introduce/introduce">
+			<img class="homeIntroButton" src="${path}/resources/images/homeIntroButton.png" 
+			style="margin-left:155px; margin-top:10px"/>
+		</a>
+		
+		<!-- 시침표현 로고 이미지 
+		<a>
+			<img class="homeIntroButton" src="${path}/resources/images/timeCircle.png" 
+			style="margin-left:600px; margin-top:-500px"/>
+		</a>
+		-->
+		
+		<!-- 헤더 로고영상 삽입 -->
+		<a>
+		<video class="video"  controls autoplay loop muted>
+        	<source src="${path}/resources/videos/headerCircleRoutine.mp4"
+        	style="margin-left:1000px; margin-top:-500px">
+   		</video>
+		</a>
 		
 		<div class="menu">
 			<div class="col">
-			<!-- 메뉴바 상세내역 -->
 			<ul class="maintab">
 				<li><a class="semititle" href="${path}/introduce/introduce">소개</a>
 					<ul class="detailtab">
 						<li><a class="submenu" href="${path}/introduce/introduce">작전 소개</a></li>
                         <li><a class="submenu" href="${path}/introduce/developer">개발자 소개</a></li>
+                        <li><a class="submenu" href="${path}/introduce/test">test</a></li>
 					</ul></li>
 
 				<li><a class="semititle" href="${path}/challenge/recruitList">챌린지</a>
@@ -319,16 +347,18 @@
 					<ul class="detailtab">
 					</ul></li>
 			</ul>
-			<!-- 햄버거바 상세내역 -->
 			<ul class="maintab">
 				<li class="btnHBG header_li"><a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
 					</li>
 			</ul>
 			
+			
+			
+			
+			
 			</div>
 		</div>
 		
-		<!-- 햄버거 & 햄버거바 내부---------------------------------------------------------- -->
 		<div id="hamburger">
 				<div id="login">
 					<div class="btnHBG" style="font-size:2em; text-align:left; margin-left:20px;">

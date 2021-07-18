@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ include file="../common/header.jsp"%> 
+<%@ include file="/WEB-INF/views/common/header.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 
@@ -131,7 +131,13 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 $(function () {
     $(".memberA").css({ "background": "var(--black)", "color": "var(--white)" });
 
-	// 검색
+	//검색
+	var searchSource = [];
+	
+	<c:forEach var="memberId" items="${listMemberId}">
+		searchSource.push("${memberId}");
+	</c:forEach>
+	
 	$("#searchTxt").keyup(function(){
         var text = $(this).val();
         $(".cateListTb tr:not(#titleTd)").hide();
@@ -151,10 +157,10 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link current">
-									<a href="${ path }/member/admin_viewMember">신고된 회원</a>
+									<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/member/admin_viewWithdrawMember">탈퇴한 회원</a>
+									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
 								</li>
 							</ul>
 						</div>
@@ -162,9 +168,7 @@ $(function () {
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
-								<button class="enroll-bt1" id="allRemoveBtn">경고</button>
+								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 경고</button>
 							</span>
 						</div>
 						<!-- 멤버 신고 테이블 ------------------------>
@@ -180,18 +184,18 @@ $(function () {
 									<th>경고횟수</th>
 									<th>처리</th>
 								</tr>
-								<c:if test="${ admin_memberList != null }">
+								<c:if test="${ admin_memberList != null}">
 									<c:forEach var="memberReport" items="${ admin_memberList }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td><fmt:formatDate type="date" value="${ memberReport.createDate }" /></td>
+											<td style="width: 100px"><fmt:formatDate type="date" value="${ memberReport.createDate }" /></td>
 											<td><c:out value="${ memberReport.id }" /></td>
-											<td style="color: red;"><c:out value="${ memberReport.reportId }" /></td>
+											<td style="color: red;" class="noTd"><c:out value="${ memberReport.reportId }" /></td>
 											<td><c:out value="${ memberReport.reportType }" /></td>
 											<td><c:out value="${ memberReport.reportContent }" /></td>
 											<td><c:out value="${ memberReport.reportCount }" /></td>
 											<td>
-												<button type="button" id="selectRemoveBtn" class="stat-bt1 removeBtn" value="${ memberReport.reportId }">경고</button>
+												<button type="button" id="selectRemoveBtn" style="content: left;" class="stat-bt1 removeBtn" value="${ memberReport.reportId }">경고</button>
 											</td>
 										</tr>
 									</c:forEach>
@@ -248,7 +252,7 @@ $(function () {
 						<div class="contentArea">
 							<div class="div-inf" id="individual">
 							</div>
-							<form id=delForm action="<%= request.getContextPath() %>/member/oneDelete" method="POST">
+							<form id=delForm action="<%= request.getContextPath() %>/member/oneMemberWarn" method="POST">
 								<input type="hidden" name="warnMemberId" id="warnMemberId">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
@@ -278,25 +282,25 @@ $(function () {
 						});
 					});
 				</script>
-				<!-- 후기 게시글 선택 삭제 모달 -->	
+				<!-- 후기 게시글 선택 경고 모달 -->	
 				<div class="cateUpdArea" id="selectRemoveArea">
-				<div class="newWrapper">
-					<div class="titleArea">
-						<h2>회원 경고</h2>
-					</div>
-					<div class="contentArea">
-						<div class="div-inf">
-							<h2>정말로 삭제하시겠습니까?</h2>
+					<div class="newWrapper">
+						<div class="titleArea">
+							<h2>회원 경고</h2>
 						</div>
-						<form id="selDelForm" action="<%= request.getContextPath() %>/review/selectDelete" method="POST">
-							<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
-							<div class="infSendArea">
-								<input type="submit" class="inf-bt2" value="확인">
-								<button type="button" class="inf-bt1 closeDelBtn">취소</button>
+						<div class="contentArea">
+							<div class="div-inf">
+								<h2>정말로 경고를 주시겠습니까?</h2>
 							</div>
-						</form>
+							<form id="selDelForm" action="<%= request.getContextPath() %>/member/selectMemberWarn" method="POST">
+								<input type="hidden" name="cateSelWarnNO" id="cateSelWarnNO">
+								<div class="infSendArea">
+									<input type="submit" class="inf-bt2" value="확인">
+									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
+								</div>
+							</form>
+						</div>
 					</div>
-				</div>
 				</div>
 				<script>
 					$(function(){
@@ -307,15 +311,15 @@ $(function () {
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
 							// 체크된 번호 배열로 묶어서 전달
-							var arrNo = [];
+							var arrID = [];
 							var $objects = $('.tdCheck');
 							
 							$.each($objects,function(index,item){
 								if($(item).prop('checked')){
 									// 선택된 값 삭제 창에 전달
-									var selno = $(item).parent('td').siblings('.noTd').html();
-									arrNo.push(selno);
-									$("#cateSelDelNo").val(arrNo);
+									var selID = $(item).parent('td').siblings('.noTd').html();
+									arrID.push(selID);
+									$("#cateSelWarnNO").val(arrID);
 								}
 							});
 						});
@@ -333,4 +337,4 @@ $(function () {
 </div>
 </body>
 </html>
-<%@ include file="../common/footer.jsp"%>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%> 

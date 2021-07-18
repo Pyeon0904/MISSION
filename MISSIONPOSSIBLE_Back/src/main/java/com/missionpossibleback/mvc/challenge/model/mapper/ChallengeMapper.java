@@ -6,8 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import com.missionpossibleback.mvc.challenge.model.vo.Category;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
+import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 
@@ -33,6 +35,8 @@ public interface ChallengeMapper {
 	int selectCertCount(int no);
 	
 	int selectCertCountById(@Param("no") int no, @Param("id") String id);
+	
+	List<Challenge> selectChallengeList();
 	
 	List<Challenge> selectChallengeList(RowBounds rowBounds);
 	
@@ -81,5 +85,31 @@ public interface ChallengeMapper {
 	List<Pointlog> selectPointlogById(@Param("id") String id);
 
 	Pointlog selectPointlogByObject(@Param("id") String id, @Param("cno") int cno, @Param("history") String history);
+
+	int selectDelete(int[] intNo);
+
+	int selectOneDelete(String str);
+
+	List<Challenge> selectDeleteChallengeList();
+
+	int selectRestore(int[] intNo);
+
+	int selectOneRestore(String str);
+
+	List<Giveup> selectGiveup();
+
+	int insertGiveup(Giveup giveup);
+
+	int selectOneReasonDelete(String str);
+
+	int selectReasonDelete(int[] intNo);
+
+	List<Category> selectCategory();
+
+	int selectOneCateDelete(String str);
+
+	int selectCateDelete(String[] strNo);
+
+	int insertCategory(@Param("categoryNo") String categoryNo, @Param("name") String name);
 	
 }

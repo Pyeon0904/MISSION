@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ include file="../common/header.jsp"%> 
+<%@ include file="/WEB-INF/views/common/header.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/admin.css">
@@ -162,172 +162,69 @@ $(function () {
 			<div class="tabs">
 				<ul class="tabs">
 					<li class="tab-link">
-						<a href="${ path }/member/admin_viewMember">게시된 후기글</a>
+						<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
 					</li>
 					<li class="tab-link current">
-						<a href="${ path }/member/admin_viewDeleteMemberw">삭제된 후기글</a>
+						<a href="${ path }/admin/member/admin_viewDeleteMemberw">탈퇴한 회원</a>
 					</li>
 				</ul>
 			</div>
-						<h2>후기 게시판 관리</h2>
-						<div class="btnArea">
-					<span class="searchArea">
-						<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-					</span>
-					<span class="enrollArea">
-						<button class="enroll-bt1" id="allRemoveBtn">복구</button>
-					</span>
-				</div>
-				<script>
-					$(function(){
-						// 회원 등록
-					    $("#enrollBtn, #allEnrollBtn").click(function () {
-					        $('div#mem-enroll-div').css("display", "block");
-					        $('div.div-wrapper, div.navicon').css("pointer-events", "none");
-					    });
-					    $('#close-btn3').click(function () {
-					        $('#mem-enroll-div').css("display", "none");
-					        $('div.div-wrapper, div.navicon').css("pointer-events", "all");
-					    });
-					});
-				</script>
-
-						<!-- 게시글 리스트 테이블 ------------------------>
-						<div class="tbArea">
-							<table class="cateListTb memListTb">
-								<tr id="titleTd">
-									<th><input type="checkbox" id="allChecked"></th>
-									<th>글번호</th>
-									<th>제목</th>
-									<th>챌린지</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>조회수</th>
-									<th>처리</th>
-								</tr>
-								<c:if test="${ list != null }">
-									<c:forEach var="review" items="${ list }">
-										<tr>
-											<td><input type="checkbox" class="tdCheck"></td>
-											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
-												<c:out value="${ review.title } " /></a>
-											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
-											<td><c:out value="${ review.writerId }" /></td>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
-											<td><c:out value="${ review.viewCount }" /></td>
-											<td>
-												<button type="button" class="stat-bt1 restoreBtn">복구</button>
-											</td>
-										</tr>
-									</c:forEach>
-								</c:if>
-						</table>
-						<!-- 게시글 리스트 테이블 끝 ------------------------>		
-						<script>
-							$(function(){
-								// 전체선택 해제
-								$("#allChecked").click(function(){
-		                            $("input:checkbox").each(function(){
-		                                if($(this).is(":checked")){
-		                                    $(this).prop("checked",false);
-		                                    $("#allChecked").prop("checked",false);
-		                                } else {
-		                                    $(this).prop("checked",true);
-		                                    $("#allChecked").prop("checked",true);
-		                                }
-		                            });
-		                        });
-							});					
-						</script>
-						<!-- 후기 게시글 복구 모달 -->
-						<div class="cateUpdArea" id="cateDelArea">
-							<div class="newWrapper">
-								<div class="titleArea">
-									<h2>후기 게시글 복구 </h2>
-								</div>
-								<div class="contentArea">
-									<div class="div-inf" id="individual">
-									</div>
-									<form id=delForm" action="<%= request.getContextPath() %>/review/oneRestore" method="POST">
-										<input type="hidden" name="reviewNo" id="reviewNo">
-										<div class="infSendArea">
-											<input type="submit" class="inf-bt2" value="확인">
-											<button type="button" class="inf-bt1 closeDelBtn">취소</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-						<script>
-							$(function(){
-								// 후기 게시글 복구 
-								$('button.restoreBtn').click(function(){
-									$("div#cateDelArea").css("display", "block");
-									$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
-									
-									// 게시글 제목 알려주기
-									var secId = $(this).parent('td').siblings('.td-3').html();
-									$('div#individual').html("<h2>"+secId+" 게시글을<br>정말로 복구하겠습니까?</h2>");
-									
-									// 게시글 번호 폼으로 가져오기
-									var updno = $(this).parent('td').siblings('.noTd').html();
-									$("input#reviewNo").val(updno);
-								});
-								$('button.closeDelBtn').click(function(){
-									$('div.cateUpdArea').css("display", "none");
-									$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
-								});
-							});
-						</script>
-						<!-- 후기 게시글 선택 복구 모달 -->	
-						<div class="cateUpdArea" id="selectRemoveArea">
-						<div class="newWrapper">
-							<div class="titleArea">
-								<h2>후기 게시글 복구</h2>
-							</div>
-							<div class="contentArea">
-								<div class="div-inf">
-									<h2>정말로 복구하시겠습니까?</h2>
-								</div>
-								<form id="selDelForm" action="<%= request.getContextPath() %>/review/selectRestore" method="POST">
-									<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
-									<div class="infSendArea">
-										<input type="submit" class="inf-bt2" value="확인">
-										<button type="button" class="inf-bt1 closeDelBtn">취소</button>
-									</div>
-								</form>
-							</div>
-						</div>	
-						<script>
-							$(function(){
-								// 게시글 선택 복구
-								$('#allRemoveBtn').click(function(){
-									// 모달 창 띄우기
-									$("#selectRemoveArea").css("display", "block");
-									$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
-									
-									// 체크된 번호 배열로 묶어서 전달
-									var arrNo = [];
-									var $objects = $('.tdCheck');
-									
-									$.each($objects,function(index,item){
-										if($(item).prop('checked')){
-											// 선택된 값 삭제 창에 전달
-											var selno = $(item).parent('td').siblings('.noTd').html();
-											arrNo.push(selno);
-											$("#cateSelDelNo").val(arrNo);
-										}
-									});
-								});
-								$('button.closeDelBtn').click(function(){
-									$('div.cateUpdArea').css("display", "none");
-									$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
-								});
-							});
-						</script>					
-						</div>
+			<h2>탈퇴한 회원 관리</h2>
+			<div class="btnArea">
+				<span class="searchArea">
+					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+				</span>
+			</div>
+					<!-- 탈퇴 리스트 테이블 ------------------------>
+					<div class="tbArea">
+						<table class="cateListTb memListTb">
+							<tr id="titleTd">
+									<th>날짜</th>
+									<th>탈퇴한 회원 ID</th>
+									<th>탈퇴 이유</th>
+							</tr>
+							<c:if test="${ admin_WithdrawalMemberList != null }">
+								<c:forEach var="WithdrawalMemberList" items="${ admin_WithdrawalMemberList }">
+									<tr>
+										<td style="width: 200px"><fmt:formatDate type="date" value="${ WithdrawalMemberList.dateWithdrawal }"/></td>
+										<td style="width: 200px; color: red"><c:out value="${ WithdrawalMemberList.id }" /></td>
+										<td>
+										<c:if test="${ WithdrawalMemberList.reason == null}">
+												<c:out value="기입한 내용이 없습니다." />
+										</c:if>
+										<c:if test="${ WithdrawalMemberList.reason != null}">
+											<c:out value="${ WithdrawalMemberList.reason }" />
+										</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:if>
+						</table>	
+					</div>
+					 <!-- 페이지바 -->
+					<div id="pageBar">
+						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=1'">&lt;&lt;</button>
+						
+						<!-- 이전 페이지로 -->
+						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ pageInfo.prvePage }'">&lt;</button>
+			
+						<!--  10개 페이지 목록 -->
+						<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
+							<c:if test="${ pageInfo.currentPage == status.current}">
+								<button disabled><c:out value="${ status.current }"/></button>
+							</c:if>
+							<c:if test="${ pageInfo.currentPage != status.current}">
+								<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ status.current }'">
+									<c:out value="${ status.current }"/>
+								</button>
+							</c:if>
+						</c:forEach>
+						
+						<!-- 다음 페이지로 -->
+						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ pageInfo.nextPage }'">&gt;</button>
+						
+						<!-- 맨 끝으로 -->
+						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
 					</div>
 				</div>
 			</div>
@@ -336,4 +233,4 @@ $(function () {
 </div>
 </body>
 </html>
-<%@ include file="../common/footer.jsp"%>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%> 

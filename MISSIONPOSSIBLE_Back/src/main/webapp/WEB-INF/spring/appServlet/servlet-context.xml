@@ -21,6 +21,7 @@
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/css/**" location="/resources/css/" />
 	<resources mapping="/images/**" location="/resources/images/" />
+	<resources mapping="/videos/**" location="/resources/videos/" />
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -47,6 +48,7 @@
 		<interceptor>
 			<!-- 인터셉터를 적용시킬 요청(컨트롤러) 선택 -->
 			<mapping path="/member/**"/>
+			<mapping path="/review/**"/>
 			
 			<!-- 인터셉터를 제외시킬 요청(컨트롤러) 선택 -->
 			<exclude-mapping path="/member/enroll"/>
@@ -56,9 +58,25 @@
 			<exclude-mapping path="/member/checkNickEm"/>
 			<exclude-mapping path="/member/findPassword"/>
 			<exclude-mapping path="/member/sendMail"/>
+			<exclude-mapping path="/member/idCheck"/>
+			<exclude-mapping path="/member/nicknameCheck"/>
+			<exclude-mapping path="/review/reviewList"/>
+         	<exclude-mapping path="/review/reviewSearch"/>
+         	<exclude-mapping path="/review/reviewView"/>
 
 			<!-- 인터셉터 등록 -->
 			<beans:bean id="loginCheckInterceptor" class="com.missionpossibleback.mvc.common.interceptor.LoginCheckInterceptor" />
 		</interceptor>	
 	</interceptors>	
+	
+	<interceptors>
+      <interceptor>
+         <!-- 인터셉터를 적용시킬 요청(컨트롤러) 선택 -->
+         <mapping path="/admin/**"/>
+         
+         <!-- 인터셉터 등록 -->
+         <beans:bean id="AdminCheckInterceptor" class="com.missionpossibleback.mvc.common.interceptor.AdminCheckInterceptor" />
+      </interceptor>   
+   </interceptors>   
+   
 </beans:beans>

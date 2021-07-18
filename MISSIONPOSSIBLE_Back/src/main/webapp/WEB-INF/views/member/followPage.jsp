@@ -24,6 +24,18 @@
 	     top:20px;
 	     margin:auto;
 	}
+	.box {
+     	width: 200px;
+     	height: 200px;
+	    border-radius: 70%;
+	    overflow: hidden;
+	    margin:auto;
+	}
+	.profile {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	}
 </style>
 <script type="text/javascript">
 	$(document).ready(()=>{
@@ -55,40 +67,57 @@
 					<input type="button" value="신고하기" id="btnBan" class="btn btn-default"/>
 				</div>
 				<div id="myPage-container">
-					<table class="table table-bordered table-hover" border="1" style="width:900px; height:200px; margin:auto; background-color: white;">
+					<table class="table table-bordered table-hover" style="width:900px; height:200px; margin:auto;">
 						<tr>
-							<td rowspan="3" style="width:250px; height:200px;">
+							<td rowspan="2" style="width:400px; height:200px;">
 								<c:if test="${ followMember.renamedFileName == null }">
-									<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+									<div class="box" style="background: #BDBDBD;">
+										<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+									</div>
 								</c:if>
 								<c:if test="${ followMember.renamedFileName != null }">
-									<img src="${path}/resources/upload/profile/${ followMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+									<div class="box" style="background: #BDBDBD;">
+										<img src="${path}/resources/upload/profile/${ followMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+									</div>
 								</c:if>
 							</td>
-							<td>
+							<td class="title">
 								<h4><b>닉네임</b></h4>
 							</td>
-							<td>
-								<h4>${ followMember.id }</h4>
+							<td class="title">
+								<h4><b>회원등급</b></h4>
+							</td >
+							<td class="title">
+								<h4><b>포인트</b></h4>
 							</td>
 						</tr>
-						<tr>
+						<tr class="content">
 							<td>
-								<h4><b>등급</b></h4>
+								<h4>${ followMember.nickname }</h4>
 							</td>
 							<td>
 								<h4>${ followMember.gradeName }</h4>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h4><b>보유 포인트</b></h4>
 							</td>
 							<td>
 								<h4>${ followMember.point }</h4>
 							</td>
 						</tr>
 					</table>
+					<br><br><br><br>
+					<c:if test="${ isfollow > 0}">
+						<!-- 참여중인 챌린지 리스트 include -->
+						<div id="joinList-container">
+							<h3>참여중인 챌린지</h3>
+							<iframe id="joinList-content" name="joinList-content"
+								src="${ path }/member/objectJoinList" 
+								width="960px" height="400px" scrolling="no" frameborder="1">
+							</iframe>
+						</div>
+					</c:if>
+					<c:if test="${ isfollow == 0}">
+						<br><br>
+						<h3>참여중인 챌린지를 보려면 계정을 팔로우 하세요.</h3>
+					</c:if>
 				</div>
 			</form>
 		</div>

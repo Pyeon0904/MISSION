@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+
+
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -13,17 +15,47 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <!-- Fotorama from CDNJS, 19 KB -->
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css"
 	rel="stylesheet">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+
 <!-- Animate.CSS -->
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
+
+
 <%@ include file="/WEB-INF/views/common/headerDetail.jsp"%>
 <style>
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansLight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'AppleSDGothicNeoB;
+	font-weight: 30px;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'AppleSDGothicNeoB, Noto Sans KR','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
+	font-weight: normal;
+    font-style: normal;
+}
+
 /* 전체 영역--------------------------------------------------------------------------*/
 
 /*---------------제일 바깥 영역 설정-----------------*/
@@ -143,12 +175,14 @@ font-weight: bold;
 /*------------------------------챌린지 소개--------------------------*/
 /*챌린지 소개 글*/
 .challTitle{
+	font-family: 'notosansgothic';
     font-size: 18pt;
 	font-weight: bold;
 	color: black;
 	line-height: 1.5em;
 }
 .challcontext{
+	font-family: 'AppleSDGothicNeoB';
     width:550px;
     height:420px;
 	font-size: 13.5pt;
@@ -241,6 +275,7 @@ font-weight: bold;
 
 /*제목 */
 .introTitle {
+	font-family: 'AppleSDGothicNeoB';
     width:500px;
     height:50px;
 	color: black;

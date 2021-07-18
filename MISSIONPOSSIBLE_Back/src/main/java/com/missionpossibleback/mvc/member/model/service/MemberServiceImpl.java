@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.mapper.MemberMapper;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
+import com.missionpossibleback.mvc.member.model.vo.Grade;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
@@ -140,7 +141,7 @@ public class MemberServiceImpl implements MemberService {
 		result *= mapper.deleteMember(loginMember.getMemberNo());
 		
 		//withdrawal 값 추가
-		result *= mapper.saveWithdrawal(loginMember.getId(), reasonWithdrawal);
+		result *= mapper.saveWithdrawal(loginMember, reasonWithdrawal);
 		
 		return result;
 	}
@@ -191,9 +192,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 //admin_viewMember - 신고된 회원 조회
 	@Override
-	public List<memberReport> admin_reportMember() {
+	public List<memberReport> admin_reportMember(PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
 		
-		return mapper.selectReportMemberList();
+		return mapper.selectReportMemberList(rowBounds);
 	}
 	
 	@Override
@@ -206,5 +209,25 @@ public class MemberServiceImpl implements MemberService {
 	public int admin_warnMember(String warnMemberId) {
 		
 		return mapper.addMemberReportCount(warnMemberId);
+	}
+//admin_viewWithdrawMember- 탈퇴 회원 
+	@Override
+	public List<memberReport> admin_withdrawalMember(PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectWithdrawalMemberList(rowBounds);
+	}
+//등급테이블 가져오기
+	@Override
+	public List<Grade> setGradeName(int point) {
+		
+		return mapper.setGradeName();
+	}
+//등급 member gradeName에 삽입
+	@Override
+	public void updateGradename(String gradeName, int no) {
+		
+		mapper.updateGradename(gradeName, no);
 	}
 }

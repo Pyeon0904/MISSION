@@ -30,28 +30,28 @@
 <meta charset="UTF-8">
 <title>s</title>
 
-<!-- 아이콘 라이브러리 link -->
+<!-- ������ ���̺귯�� link -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- 제이쿼리 import -->
+<!-- �������� import -->
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
-		/* 전체 영역--------------------------------------------------------------------------*/
+		/* ��ü ����--------------------------------------------------------------------------*/
 				
-			/*---------------제일 바깥 영역 설정-----------------*/
+			/*---------------���� �ٱ� ���� ����-----------------*/
 			#box{ 
 			   background-color:rgb(224, 239, 132);
 			   width:100%;
-			   height:1200px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+			   height:1200px; /*���̴� �� ���������� ������ ���� �˾Ƽ� ��~���� �����ϱ�*/
 			   margin-top:330px;
 			   margin-bottom:100px;
 			   margin-left:-10px;
 			   padding:10px;
 			}
-			/*-------------------컨텐츠 영역---------------------*/
+			/*-------------------������ ����---------------------*/
 			#conbox{
-				width:1200px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
+				width:1200px; /* ���̵� �� ���� ������ �������� ���缭 ����*/
 				position:relative; 
 				top:20px;
 				margin:auto;
@@ -122,11 +122,11 @@
 	<div id="box">
 		<section id="section">
 			<div id="conbox">
-
-															
-		
+			
+				
+				
 				<div id="subHeaderContainer">
-					<h2>모집중인 챌린지 목록</h2>
+					<h2>검색 결과</h2>
 					<div class="searchArea">
 						 <!-- 검색 폼 시작--------------------- -->
 				         <form id="challengeSearch" name="form1" method="GET" action="${path}/challenge/search">
@@ -158,18 +158,18 @@
 						</ul>
 					</div><!-- categoryBar -->
 					
-					<!-- 챌린지 진열 구역 -->
+					<!-- ç���� ���� ���� -->
 					<div id="challengeDisplay">
 						<div class="categoryArea">
-							<h3>모집중인 챌린지</h3>
-							<!-- 조회된 챌린지의 개수 -->
+							<h3>검색 결과</h3>
+							<!-- ��ȸ�� ç������ ���� -->
 							<p>총 <c:out value="${ pageInfo.listCount }"/>개</p>
 						</div>
 						<hr>
 						<div class="challengeList">
-						<!-- 상품 리스트 -->
+						<!-- ��ǰ ����Ʈ -->
 							<div class="challengeListCont">
-							<!-- 상품 리스트 내역 -->
+							<!-- ��ǰ ����Ʈ ���� -->
 								<div class="challengeListDisplay">
 									<ul>
 									<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
@@ -178,61 +178,45 @@
 												<div class="itemPhotoBox">
 													<img src="${path}/resources/images/file.png" alt="desc" width="200px">
 												</div>
-												<div class="itemInfoCont">
+												<div class="itemInfoCont" style="margin-top:30px;">
 													<p>
-														<span class="itemTitle">등록된 챌린지를 찾을 수 없습니다.</span><br>
+														<span class="itemTitle">챌린지를 찾을 수 없음</span><br>
 														<span class="itemSubCont">NONE!</span>
 													</p>
 												</div>
 											</div>
 										</li>
-										<script>
-										$(document).ready(() => {
-											alert("해당 챌린지를 찾을 수 없습니다!");
-										});	
-										</script>
 									</c:if>
 									<c:if test="${ list != null }">
 										<c:forEach var="challenge" items="${ list }">
-											<li style="width:25%;">
-												<div class="itemCont">
-													<div class="itemPhotoBox">
-														<c:if test="${ challenge.thumbnailFile == null }">
-															<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
-														</c:if>
-														<c:if test="${ challenge.thumbnailFile != null }">
-															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
-																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
-														</c:if>
-														<div class="viewPoint" style="width:100px;height:50px;position:relative;top:-150px;left:50px">
-															<img src="${path}/resources/images/point/${challenge.minusPoint}p.png" width="80px" height="40px"/>
+										<!-- D-Day ���� ������ ���� include -->
+										<%@ include file="date.jsp" %>
+											<c:choose>
+												<c:when test="${ todayNum < startNum && todayNum < endNum }">
+													<%@ include file="objectRecruit.jsp" %>
+												</c:when>
+												<c:when test="${ todayNum >= startNum && todayNum < endNum }">
+													<%@ include file="objectOngoing.jsp" %>
+												</c:when>
+												<c:when test="${ todayNum >= startNum && todayNum >= endNum }">
+													<%@ include file="objectEnd.jsp" %>
+												</c:when>
+												<c:otherwise>
+													<li style="width:25%;">
+														<div class="itemCont">
+															<div class="itemPhotoBox">
+																<img src="${path}/resources/images/file.png" alt="desc" width="200px">
+															</div>
+															<div class="itemInfoCont">
+																<p>
+																	<span class="itemTitle">챌린지를 찾을 수 없음</span><br>
+																	<span class="itemSubCont">NONE!</span>
+																</p>
+															</div>
 														</div>
-														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
-															<span class="details">상세보기</span>
-														</div>
-													</div>
-													<div class="itemInfoCont">
-														<p>
-															<span class="itemTitle">
-																<c:out value="${ challenge.title }"/>
-															</span>
-															<br>
-															<span class="itemSubCont">챌린지 모집기간</span>
-															<br>
-															
-															<!-- D-Day 로직 구현한 파일 include -->
-															<%@ include file="date.jsp" %>															
-																										
-															<!-- 
-																챌린지 시작일에서 오늘 날짜를 뺌 D-Day 완성! 
-															-->
-															<span class="itemProgressStatus">
-																D-<c:out value="${ startNum - todayNum }"></c:out>
-															</span>
-														</p>
-													</div>
-												</div>
-											</li>
+													</li>
+												</c:otherwise>
+											</c:choose>
 										</c:forEach>
 									</c:if>
 									<script>
@@ -266,15 +250,15 @@
 					<div id="pageBarContainer">
 						<div id="pageBar">
 							<!-- 
-								맨 처음으로 
+								�� ó������ 
 								<button class="pageArrow" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=1'--%>"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
 							-->
 							
-							<!-- 이전 페이지로 -->
-							<div class="pageArrow" onclick="location.href='${ path }/challenge/recruitList?page=${ pageInfo.prvePage }'">
+							<!-- ���� �������� -->
+							<div class="pageArrow" onclick="location.href='${ path }/challenge/search?page=${  pageInfo.prvePage }&key=${key}&word=${word}'">
 								 <i class="fa fa-caret-left" aria-hidden="true"></i>
 							</div>			
-							<!--  10개 페이지 목록 -->
+							<!--  10�� ������ ��� -->
 							<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
 					        	<c:if test="${ pageInfo.currentPage == status.current}">
 									<div class="pageCount" style="background-color:yellow;">
@@ -282,17 +266,17 @@
 					               	</div>
 					            </c:if>
 					            <c:if test="${ pageInfo.currentPage != status.current}">
-					               	<div class="pageCount" onclick="location.href='${ path }/challenge/recruitList?page=${ status.current }'">
+					               	<div class="pageCount" onclick="location.href='${ path }/challenge/search?page=${ status.current }&key=${key}&word=${word}'">
 					               		<c:out value="${ status.current }"/>
 					               	</div>
 					            </c:if>
 					        </c:forEach>
-					        <!-- 다음 페이지로 -->
-							<div class="pageArrow" onclick="location.href='${ path }/challenge/recruitList?page=${ pageInfo.nextPage }'">
+					        <!-- ���� �������� -->
+							<div class="pageArrow" onclick="location.href='${ path }/challenge/search?page=${ pageInfo.nextPage }&key=${key}&word=${word}'">
 								 <i class="fa fa-caret-right" aria-hidden="true"></i>
 							</div>
 									
-							<!-- 맨 끝으로 
+							<!-- �� ������ 
 							<button class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<%= pageInfo.getMaxPage() %>'--%>"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>'
 							-->
 						</div><!-- #pageBar -->

@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.missionpossibleback.mvc.challenge.model.service.ChallengeService;
+import com.missionpossibleback.mvc.challenge.model.vo.Category;
 import com.missionpossibleback.mvc.challenge.model.vo.Challenge;
 import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
+import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
@@ -231,6 +233,15 @@ public class challengeController {
 		
 		return model;
 	}
+	
+	// 인원수 제한 AJAX
+	@GetMapping("/challenge/unlimited.do")
+	@ResponseBody
+	public int unlimited(@RequestParam(name = "input", required = false) int count) {
+		System.out.println("주입한 인원수 : " + count);
+		
+		return count;
+		}	
 	
 	// 입력한 모집 마감 날짜가 챌린지 시작일로 값이 넘어가게 하는 메소드 구현(AJAX 통신에 쓰임)
 	@GetMapping("/challenge/dateChange.do")
@@ -523,7 +534,7 @@ public class challengeController {
 		int listCount = service.getEndCount();
 		
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getEndList(pageInfo);
 		
@@ -560,7 +571,7 @@ public class challengeController {
 		int listCount = service.getRecruitCount();
 		
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getRecruitList(pageInfo);
 		
@@ -579,7 +590,7 @@ public class challengeController {
 		int listCount = service.getOngoingCount();
 		
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getOngoingList(pageInfo);
 		
@@ -612,7 +623,13 @@ public class challengeController {
 		System.out.println();
 		
 		// 더한 값에 ID리스트의 수를 나눈다 = 평균
-		double avgSuccess = (double) sumSuccess / list.size();
+		double avgSuccess = 0;
+		
+		if(list.size() > 0) {
+			avgSuccess = (double) sumSuccess / list.size();
+		} else {
+			avgSuccess = 0;
+		}
 		log.info("avgSuccess : " + avgSuccess);
 		
 		model.addObject("challenge", challenge);
@@ -682,60 +699,66 @@ public class challengeController {
 		int resultPoint = loginMember.getPoint() - challenge.getMinusPoint();
 		
 		if(resultPoint >= 0) {
-			
-			result = service.saveMyChallengeList(myChallengeList);
-			
-			if(result > 0) {
-				if(myStatus.equals("ZZIM")) {
-					model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
-				} else if(myStatus.equals("JOIN")){
-					// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
-					// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
-					// 현재 참여자 불러오는 메소드
-					int participantsCount = service.getCurrentCount(myChallengeNo); 
-					
-					// 불러온 현재 참여자 수를 불러온 챌린지에 저장
-					challenge.setCurrentCount(participantsCount);
-					
-					// 변경된 챌린지 정보를 업데이트하는 메소드
-					int updateCurrCount = service.saveCurrentCount(challenge);
-					
-					if(updateCurrCount > 0) {
-						log.info("현재 인원수 업데이트 완료");
-					} else {
-						log.info("현재 인원수 업데이트 실패");
-					}
-					
-					// 포인트를 차감하고 참가신청을 할 수 있는 상태이기 떄문에 포인트 차감한 것을 적용
-					int updatePoint = service.saveMemberPoint(id, resultPoint);
-					
-					if(updatePoint > 0) {
-						log.info("포인트 차감 성공");
+			if(challenge.getMaxCount() > challenge.getCurrentCount()) {
+				
+				result = service.saveMyChallengeList(myChallengeList);
+				
+				if(result > 0) {
+					if(myStatus.equals("ZZIM")) {
+						model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
+					} else if(myStatus.equals("JOIN")){
+						// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
+						// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
+						// 현재 참여자 불러오는 메소드
+						int participantsCount = service.getCurrentCount(myChallengeNo); 
+						System.out.println("해당 챌린지 참여자 수 : "+participantsCount);
 						
-						pointlog.setId(id);
-						pointlog.setCno(myChallengeNo);
-						pointlog.setValue(challenge.getMinusPoint());
-						pointlog.setHistory("MINUS_JOIN");
+						// 불러온 현재 참여자 수를 불러온 챌린지에 저장
+						challenge.setCurrentCount(participantsCount);
 						
-						int saveLog = service.savePointlog(pointlog);
-						if(saveLog > 0) {
-							log.info("포인트 증감 로그 저장 완료");
+						// 변경된 챌린지 정보를 업데이트하는 메소드
+						int updateCurrCount = service.saveCurrentCount(challenge);
+						
+						if(updateCurrCount > 0) {
+							log.info("현재 인원수 업데이트 완료! 현재 해당 챌린지 참여자 수 : " + challenge.getCurrentCount());
 						} else {
-							log.info("포인트 증감 로그 저장 실패");
+							log.info("현재 인원수 업데이트 실패");
 						}
-					} else {
-						log.info("포인트 차감 실패");
+						
+						// 포인트를 차감하고 참가신청을 할 수 있는 상태이기 떄문에 포인트 차감한 것을 적용
+						int updatePoint = service.saveMemberPoint(id, resultPoint);
+						
+						if(updatePoint > 0) {
+							log.info("포인트 차감 성공");
+							
+							pointlog.setId(id);
+							pointlog.setCno(myChallengeNo);
+							pointlog.setValue(challenge.getMinusPoint());
+							pointlog.setHistory("MINUS_JOIN");
+							
+							int saveLog = service.savePointlog(pointlog);
+							if(saveLog > 0) {
+								log.info("포인트 증감 로그 저장 완료");
+							} else {
+								log.info("포인트 증감 로그 저장 실패");
+							}
+						} else {
+							log.info("포인트 차감 실패");
+						}
+						
+						model.addObject("msg", "챌린지 참가신청이 정상적으로 완료되었습니다.");
 					}
-					
-					model.addObject("msg", "챌린지 참가신청이 정상적으로 완료되었습니다.");
+				} else {
+					if(myStatus.equals("ZZIM")) {
+						model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
+					} else if(myStatus.equals("JOIN")) {
+						model.addObject("msg", "이미 참가신청한 챌린지입니다.");
+					}
 				}
 			} else {
-				if(myStatus.equals("ZZIM")) {
-					model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
-				} else if(myStatus.equals("JOIN")) {
-					model.addObject("msg", "이미 참가신청한 챌린지입니다.");
-				}
+				model.addObject("msg", "해당 챌린지는 인원이 모두 채워졌기 때문에, 조기 모집 마감되었습니다.");
 			}
+			
 		} else {
 			if(myStatus.equals("ZZIM")) {
 				result = service.saveMyChallengeList(myChallengeList);
@@ -830,7 +853,7 @@ public class challengeController {
 			log.info("찜한 챌린지 수 : " + listCount);
 			
 			List<Challenge> list = null;
-			PageInfo pageInfo = new PageInfo(page, 10, listCount, 12);
+			PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 			
 			list = service.getZzimList(pageInfo, id);
 			
@@ -889,7 +912,8 @@ public class challengeController {
 			@RequestParam("cTitle") String title,
 			@RequestParam("giveupReason") String reason,
 			@RequestParam("inputTitle") String inputTitle,
-			@RequestParam("id") String id) {
+			@RequestParam("id") String id,
+			@ModelAttribute Giveup giveup) {
 		
 		log.info("챌린지 포기 신청 POST 요청");
 			
@@ -926,6 +950,18 @@ public class challengeController {
 							log.info("현재 인원수 업데이트 실패");
 						}
 						
+						giveup.setId(id);
+						giveup.setCno(cNo);
+						giveup.setReason(reason);
+						
+						int saveReason = service.saveGiveup(giveup);
+						
+						if(saveReason > 0) {
+							log.info("챌린지 포기 사유 저장 성공");
+						} else {
+							log.info("챌린지 포기 사유 저장 실패");
+						}
+						
 						model.addObject("msg", id + "님의 의견을 반영하여 챌린지 포기가 완료되었습니다. 홈으로 이동합니다.");
 						model.addObject("location", "/");
 					} else {
@@ -953,7 +989,7 @@ public class challengeController {
 			@RequestParam("word") String word
     		) {
 		List<Challenge> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, service.getSearchCount(key, word), 12);
+		PageInfo pageInfo = new PageInfo(page, 3, service.getSearchCount(key, word), 12);
 
 		list = service.getSearchList(key, word, pageInfo);
 		
@@ -1013,30 +1049,30 @@ public class challengeController {
 	}
 	
 	// 마이페이지에 삽입될 찜 챌린지 목록
-		@GetMapping("/member/objectZzimList")
-		public ModelAndView myPageZzimList(ModelAndView model,
-				@RequestParam(value="page", required = false, defaultValue = "1") int page,
-				@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
+	@GetMapping("/member/objectZzimList")
+	public ModelAndView myPageZzimList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 			
 			
-			String id = loginMember.getId();
+		String id = loginMember.getId();
 			
-			log.info("로그인한 ID : " + id);
+		log.info("로그인한 ID : " + id);
 			
-			int listCount = service.getZzimCount(id);
+		int listCount = service.getZzimCount(id);
 			
-			log.info("찜한 챌린지 수 : " + listCount);
+		log.info("찜한 챌린지 수 : " + listCount);
 			
-			List<Challenge> list = null;
-			PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
-			
-			list = service.getZzimList(pageInfo, id);
-			
-			model.addObject("list", list);
-			model.addObject("pageInfo", pageInfo);
-			model.setViewName("member/objectZzimList");
-			
-			return model;
-		}
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 5, listCount, 4);
+		
+		list = service.getZzimList(pageInfo, id);
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("member/objectZzimList");
+		
+		return model;
+	}
 	
 }

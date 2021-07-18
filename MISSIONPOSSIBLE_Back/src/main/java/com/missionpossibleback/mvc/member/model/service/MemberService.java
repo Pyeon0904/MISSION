@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Follow;
+import com.missionpossibleback.mvc.member.model.vo.Grade;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
@@ -46,11 +47,17 @@ public interface MemberService {
 
 	List<String> getMemberIdList();
 
-	List<memberReport> admin_reportMember();
+	List<memberReport> admin_reportMember(PageInfo pageInfo);
 
 	int getReportListCount();
 
 	int admin_warnMember(String warnMemberId);
+
+	List<memberReport> admin_withdrawalMember(PageInfo pageInfo);
+
+	List<Grade> setGradeName(int point);
+
+	void updateGradename(String gradeName, int no);
 
 
 }
