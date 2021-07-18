@@ -699,60 +699,66 @@ public class challengeController {
 		int resultPoint = loginMember.getPoint() - challenge.getMinusPoint();
 		
 		if(resultPoint >= 0) {
-			
-			result = service.saveMyChallengeList(myChallengeList);
-			
-			if(result > 0) {
-				if(myStatus.equals("ZZIM")) {
-					model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
-				} else if(myStatus.equals("JOIN")){
-					// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
-					// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
-					// 현재 참여자 불러오는 메소드
-					int participantsCount = service.getCurrentCount(myChallengeNo); 
-					
-					// 불러온 현재 참여자 수를 불러온 챌린지에 저장
-					challenge.setCurrentCount(participantsCount);
-					
-					// 변경된 챌린지 정보를 업데이트하는 메소드
-					int updateCurrCount = service.saveCurrentCount(challenge);
-					
-					if(updateCurrCount > 0) {
-						log.info("현재 인원수 업데이트 완료");
-					} else {
-						log.info("현재 인원수 업데이트 실패");
-					}
-					
-					// 포인트를 차감하고 참가신청을 할 수 있는 상태이기 떄문에 포인트 차감한 것을 적용
-					int updatePoint = service.saveMemberPoint(id, resultPoint);
-					
-					if(updatePoint > 0) {
-						log.info("포인트 차감 성공");
+			if(challenge.getMaxCount() > challenge.getCurrentCount()) {
+				
+				result = service.saveMyChallengeList(myChallengeList);
+				
+				if(result > 0) {
+					if(myStatus.equals("ZZIM")) {
+						model.addObject("msg", "찜 목록에 정상적으로 저장되었습니다.");
+					} else if(myStatus.equals("JOIN")){
+						// 챌린지 참가신청인 경우 챌린지 테이블의 CURRENT_COUNT값이 업데이트됨.
+						// 지금 코드가 실행되는 이 시점은 이미 내 챌린지 목록(MY_CHALLENGE_LIST 테이블)에 해당 챌린지가 등록이 돼서 저장이 된 상태임.
+						// 현재 참여자 불러오는 메소드
+						int participantsCount = service.getCurrentCount(myChallengeNo); 
+						System.out.println("해당 챌린지 참여자 수 : "+participantsCount);
 						
-						pointlog.setId(id);
-						pointlog.setCno(myChallengeNo);
-						pointlog.setValue(challenge.getMinusPoint());
-						pointlog.setHistory("MINUS_JOIN");
+						// 불러온 현재 참여자 수를 불러온 챌린지에 저장
+						challenge.setCurrentCount(participantsCount);
 						
-						int saveLog = service.savePointlog(pointlog);
-						if(saveLog > 0) {
-							log.info("포인트 증감 로그 저장 완료");
+						// 변경된 챌린지 정보를 업데이트하는 메소드
+						int updateCurrCount = service.saveCurrentCount(challenge);
+						
+						if(updateCurrCount > 0) {
+							log.info("현재 인원수 업데이트 완료! 현재 해당 챌린지 참여자 수 : " + challenge.getCurrentCount());
 						} else {
-							log.info("포인트 증감 로그 저장 실패");
+							log.info("현재 인원수 업데이트 실패");
 						}
-					} else {
-						log.info("포인트 차감 실패");
+						
+						// 포인트를 차감하고 참가신청을 할 수 있는 상태이기 떄문에 포인트 차감한 것을 적용
+						int updatePoint = service.saveMemberPoint(id, resultPoint);
+						
+						if(updatePoint > 0) {
+							log.info("포인트 차감 성공");
+							
+							pointlog.setId(id);
+							pointlog.setCno(myChallengeNo);
+							pointlog.setValue(challenge.getMinusPoint());
+							pointlog.setHistory("MINUS_JOIN");
+							
+							int saveLog = service.savePointlog(pointlog);
+							if(saveLog > 0) {
+								log.info("포인트 증감 로그 저장 완료");
+							} else {
+								log.info("포인트 증감 로그 저장 실패");
+							}
+						} else {
+							log.info("포인트 차감 실패");
+						}
+						
+						model.addObject("msg", "챌린지 참가신청이 정상적으로 완료되었습니다.");
 					}
-					
-					model.addObject("msg", "챌린지 참가신청이 정상적으로 완료되었습니다.");
+				} else {
+					if(myStatus.equals("ZZIM")) {
+						model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
+					} else if(myStatus.equals("JOIN")) {
+						model.addObject("msg", "이미 참가신청한 챌린지입니다.");
+					}
 				}
 			} else {
-				if(myStatus.equals("ZZIM")) {
-					model.addObject("msg", "이미 찜 목록에 존재하는 챌린지입니다.");
-				} else if(myStatus.equals("JOIN")) {
-					model.addObject("msg", "이미 참가신청한 챌린지입니다.");
-				}
+				model.addObject("msg", "해당 챌린지는 인원이 모두 채워졌기 때문에, 조기 모집 마감되었습니다.");
 			}
+			
 		} else {
 			if(myStatus.equals("ZZIM")) {
 				result = service.saveMyChallengeList(myChallengeList);

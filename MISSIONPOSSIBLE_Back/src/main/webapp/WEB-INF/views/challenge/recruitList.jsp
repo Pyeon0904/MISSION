@@ -204,6 +204,9 @@
 															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
 																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
 														</c:if>
+														<div class="viewPoint" style="width:100px;height:50px;position:relative;top:-150px;left:50px">
+															<img src="${path}/resources/images/point/${challenge.minusPoint}p.png" width="80px" height="40px"/>
+														</div>
 														<div class="itemShowMenu" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'">
 															<span class="details">상세보기</span>
 														</div>
