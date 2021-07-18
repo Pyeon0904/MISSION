@@ -34,6 +34,12 @@ public class introduceController {
 	      
 	      return "finalmember/developer";
 	   }
+	   @GetMapping("/introduce/test")
+	   public String test() {
+	      log.info("동영상 테스트 페이지 요청");
+	      
+	      return "introduce/test";
+	   }
 	  
 	   
 }

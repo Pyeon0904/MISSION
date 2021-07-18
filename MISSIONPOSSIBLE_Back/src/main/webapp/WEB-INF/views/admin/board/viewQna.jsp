@@ -29,7 +29,7 @@
 <script>
 $(function () {
    // 상단 고객센터 게시판 관리 메뉴 클릭시 black으로 바꾸기
-   $(".reviewA").css({ "background" : "var(--black)", "color" : "var(--white)"});
+   $(".boardA").css({ "background" : "var(--black)", "color" : "var(--white)"});
 
    // 검색
    $("#searchTxt").keyup(function(){
@@ -69,6 +69,9 @@ $(function () {
                      <span class="enrollArea">
                         <button class="enroll-bt1" id="allRemoveBtn">삭제</button>
                      </span>
+                     <span class="enrollArea">
+                        <button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
+                     </span>
                   </div>
                   <!-- 게시글 리스트 테이블 ------------------------>
                   <div class="tbArea">
@@ -99,8 +102,28 @@ $(function () {
                                  <c:if test="${board.sort == 0 }">
                                     <td><c:out value="질문" /></td>
                                  </c:if>
-                                 <td class="view-click td-3"><a class="getURL" href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" target="viewF">
-                                    <c:out value="${ board.title } " /> </a>
+                                 <td class="view-click td-3" style="width:35%; text-align:left; padding-left:60px;"><a class="getURL" href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" target="viewF">
+                                 	<%-- 답글 && 비밀글X 이면 --%>
+                                    <c:if test="${ board.groupord > 0 && board.pass == null }">
+                                        <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
+                                    </c:if>
+                                    <%-- 원글 && 질문글 && 비밀글X 이면 --%>
+                                    <c:if test="${ board.groupord == 0 && board.sort == 0 && board.pass == null}">
+                                           <c:out value="${ board.title }"/>
+                                    </c:if>
+                                    <%-- 원글 && 공지글 && 비밀글X 이면 --%>
+                                    <c:if test="${ board.groupord == 0 && board.sort == 1 && board.pass == null}">
+                                        <b><c:out value="${ board.title }"/></b>
+                                    </c:if>
+                                    <%-- 답글 && 비밀글 이면 --%>
+                                    <c:if test="${ board.groupord > 0 && board.pass != null }">
+                                         <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                    </c:if>
+                                    <%-- 원글 && 비밀글 이면 --%>
+                                    <c:if test="${ board.groupord == 0 && board.pass != null}">
+                                        <c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                    </c:if>
+                    			 </a>
                                  </td>
                                  <td><c:out value="${ board.writer }" /></td>
                                  <td><fmt:formatDate type="date" value="${ board.createDate }" /></td>
@@ -140,7 +163,7 @@ $(function () {
                      <div class="contentArea">
                         <div class="div-inf" id="individual">
                         </div>
-                        <form id=delForm" action="${ path }/admin/board/oneDelete" method="POST">
+                        <form id="delForm" action="${ path }/admin/board/oneDelete" method="POST">
                            <input type="hidden" name="qna_no" id="qna_no">
                            <div class="infSendArea">
                               <input type="submit" class="inf-bt2" value="확인">

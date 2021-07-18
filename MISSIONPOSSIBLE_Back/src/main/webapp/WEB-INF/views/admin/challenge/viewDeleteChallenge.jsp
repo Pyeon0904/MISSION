@@ -4,17 +4,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%> 
-<%@ include file="/WEB-INF/views/admin/common/navi.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-
+<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>후기 게시판</title>
+<title>챌린지 게시판</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -28,7 +27,7 @@
 <script>
 $(function () {
 	// 상단 후기 게시판 관리 메뉴 클릭시 black으로 바꾸기
-	$(".boardA").css({ "background" : "var(--black)", "color" : "var(--white)"});
+	$(".reviewA").css({ "background" : "var(--black)", "color" : "var(--white)"});
 
 	// 검색
 	$("#searchTxt").keyup(function(){
@@ -51,16 +50,22 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link">
-									<a href="${ path }/admin/board/viewQna">게시된 고객센터글</a>
+									<a href="${ path }/admin/challenge/viewChallenge">전체 챌린지 조회</a>
 								</li>
 								<li class="tab-link current">
-									<a href="${ path }/admin/board/viewDeleteQna">삭제된 고객센터글</a>
+									<a href="${ path }/admin/challenge/viewDeleteChallenge">삭제된 챌린지</a>
+								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/challenge/viewGiveupChallenge">챌린지 포기 사유 조회</a>
+								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/challenge/viewCategory">카테고리 관리</a>
 								</li>
 							</ul>
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2 id="title">고객센터 게시판 관리</h2>
+						<h2 id="title">챌린지 관리</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
@@ -75,35 +80,42 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>글번호</th>
-									<th>분류</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>조회수</th>
+									<th>번호</th><!-- challengeNo -->
+									<th>포인트</th><!-- minusPoint -->
+									<th>카테고리</th><!-- attendStatus / categoryName -->
+									<th>제목</th><!-- title -->
+									<th>생성자</th><!-- id -->
+									<th>현재인원</th><!-- currentCount/maxCount -->
+									<th>진행기간</th><!-- startDate ~ deadline -->
 									<th>처리</th>
 								</tr>
 								<c:if test="${ list.isEmpty() }">
 									<tr>
-										<td colspan="8">삭제된 게시글이 없습니다.</td>
+										<td colspan="9">조회된 게시글이 없습니다.</td>
 									</tr>
 								</c:if>
 								<c:if test="${ !list.isEmpty() }">
-									<c:forEach var="board" items="${ list }">
+									<c:forEach var="challenge" items="${ list }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td class="noTd td-2"><c:out value="${ board.qna_no }" /></td>
-											<c:if test="${board.sort == 1 }">
-                                    			<td><c:out value="공지" /></td>
-                                			</c:if>
-                                			<c:if test="${board.sort == 0 }">
-                                   				<td><c:out value="질문" /></td>
-                                 			</c:if>
-											<td class="view-click td-3" style="width:35%;"><c:out value="${ board.title } " />
+											<td class="noTd td-2">${ challenge.challengeNo }</td>
+											<td><c:out value="${ challenge.minusPoint }" /></td>
+											<td>
+												<c:out value="${ challenge.attendStatus }"/>
+												 / <c:out value="${ challenge.categoryName }" />
 											</td>
-											<td><c:out value="${ board.writer }" /></td>
-											<td><fmt:formatDate type="date" value="${ board.createDate }" /></td>
-											<td><c:out value="${ board.readCount }" /></td>
+											<td class="view-click td-3">
+												<c:out value="${ challenge.title }"/>
+											</td>
+											<td><c:out value="${ challenge.id }" /></td>
+											<td>
+												<c:out value="${ challenge.currentCount }"/> / 
+												<c:out value="${ challenge.maxCount }"/>
+											</td>
+											<td>
+												<fmt:formatDate value="${ challenge.startDate }" pattern="yyyy-MM-dd"/> ~ 
+												<fmt:formatDate value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
+											</td>
 											<td>
 												<button type="button" class="stat-bt1 restoreBtn">복구</button>
 											</td>
@@ -129,17 +141,17 @@ $(function () {
 		                        });
 							});					
 						</script>
-						<!-- 고객센터 게시글 복구 모달 -->
+						<!-- 후기 게시글 복구 모달 -->
 						<div class="cateUpdArea" id="cateRestoreArea">
 							<div class="newWrapper">
 								<div class="titleArea">
-									<h2>고객센터 게시글 복구 </h2>
+									<h2>챌린지 복구 </h2>
 								</div>
 								<div class="contentArea">
 									<div class="div-inf" id="individual">
 									</div>
-									<form id="delForm" action="${ path }/admin/board/oneRestore" method="POST">
-										<input type="hidden" name="qna_no" id="qna_no">
+									<form id=delForm" action="${ path }/admin/challenge/oneRestore" method="POST">
+										<input type="hidden" name="challengeNo" id="challengeNo">
 										<div class="infSendArea">
 											<input type="submit" class="inf-bt2" value="확인">
 											<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -148,10 +160,10 @@ $(function () {
 								</div>
 							</div>
 						</div>
-						<!-- 고객센터 게시글 복구 모달 기능 -->
+						<!-- 후기 게시글 복구 모달 기능 -->
 						<script>
 							$(function(){
-								// 고객센터 게시글 복구 
+								// 후기 게시글 복구 
 								$('button.restoreBtn').click(function(){
 									$("div#cateRestoreArea").css("display", "block");
 									$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
@@ -162,7 +174,7 @@ $(function () {
 									
 									// 게시글 번호 폼으로 가져오기
 									var updno = $(this).parent('td').siblings('.noTd').html();
-									$("input#qna_no").val(updno);
+									$("input#challengeNo").val(updno);
 								});
 								$('button.closeDelBtn').click(function(){
 									$('div.cateUpdArea').css("display", "none");
@@ -170,17 +182,17 @@ $(function () {
 								});
 							});
 						</script>
-						<!-- 고객센터 게시글 선택 복구 모달 -->	
+						<!-- 후기 게시글 선택 복구 모달 -->	
 						<div class="cateUpdArea" id="selectRestoreArea">
 						<div class="newWrapper">
 							<div class="titleArea">
-								<h2>고객센터 게시글 복구</h2>
+								<h2>챌린지 복구</h2>
 							</div>
 							<div class="contentArea">
 								<div class="div-inf">
 									<h2>정말로 복구하시겠습니까?</h2>
 								</div>
-								<form id="selDelForm" action="${ path }/admin/board/selectRestore" method="POST">
+								<form id="selDelForm" action="${ path }/admin/challenge/selectRestore" method="POST">
 									<input type="hidden" name="cateSelResNo" id="cateSelResNo">
 									<div class="infSendArea">
 										<input type="submit" class="inf-bt2" value="확인">
@@ -189,7 +201,7 @@ $(function () {
 								</form>
 							</div>
 						</div>	
-						<!-- 고객센터 게시글 선택 복구 모달 기능 -->	
+						<!-- 후기 게시글 선택 복구 모달 기능 -->	
 						<script>
 							$(function(){
 								// 게시글 선택 복구
@@ -221,8 +233,6 @@ $(function () {
 					</div>
 				</div>
 			</div>
-		</div>
-		</div>
 		</div>
 	</section>
 </div>
