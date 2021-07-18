@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 import com.missionpossibleback.mvc.member.model.vo.Follow;
+import com.missionpossibleback.mvc.member.model.vo.Grade;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 import com.missionpossibleback.mvc.member.model.vo.memberReport;
 
@@ -25,8 +26,8 @@ public interface MemberMapper {
 
 	int deleteMember(@Param("memberNo") int memberNo);
 
-	int saveWithdrawal(@Param("id") String id, @Param("reasonWithdrawal") String reasonWithdrawal);
-
+	int saveWithdrawal(@Param("member")Member member, @Param("reasonWithdrawal") String reasonWithdrawal);
+	
 	int selectListCount();
 
 	List<Follow> selectFollowList(RowBounds rowBounds, @Param("id") String id);
@@ -41,10 +42,16 @@ public interface MemberMapper {
 
 	List<String> selectMemberIdList();
 
-	List<memberReport> selectReportMemberList();
+	List<memberReport> selectReportMemberList(RowBounds rowBounds);
 
 	int selectReportListCount();
 
 	int addMemberReportCount(@Param("warnMemberId")String warnMemberId);
+
+	List<memberReport> selectWithdrawalMemberList(RowBounds rowBounds);
+
+	List<Grade> setGradeName();
+
+	void updateGradename(@Param("gradeName")String gradeName, @Param("no")int no);
 
 }

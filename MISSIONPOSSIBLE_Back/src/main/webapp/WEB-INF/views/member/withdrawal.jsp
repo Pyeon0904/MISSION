@@ -48,7 +48,7 @@
 			<br><br>
 			<div id="withdrawal-container">
 				<form action="withdrawal" method="POST">
-					<table class="table table-bordered table-hover" border="1" style="width:1000px; height:500px; margin:auto; background-color: white">
+					<table class="table table-bordered table-hover" style="width:1000px; height:500px; margin:auto; background-color: white">
 						<tr>
 							<td colspan="2" style="text-align:left;">
 								<h8>
@@ -71,7 +71,7 @@
 										<option value="personal">개인적인 사정으로 인해 탈퇴합니다.</option>
 										<option value="direct">직접입력</option>
 									</select>
-									<input type="text" id="selboxDirect" name="selboxDirect" style="width:500px;"/>
+									<input type="text" id="selboxDirect" name="selboxDirect" style="width:300px;"/>
 								</div>
 							</td>
 						</tr>

@@ -24,6 +24,22 @@
         top:20px;
         margin:auto;
      }
+     .box {
+     	width: 200px;
+     	height: 200px;
+	    border-radius: 70%;
+	    overflow: hidden;
+	    margin:auto;
+	}
+	.profile {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	}
+	.title{
+		text-align: left;
+		font-size: 20px;
+	}
 </style>
 <script type="text/javascript">
 	$(document).ready(()=>{
@@ -46,18 +62,22 @@
 		<hr>
 		<br><br>
 		<div id="myPage-container">
-			<table class="table table-bordered table-hover" border="1" style="width:900px; height:200px; margin:auto; background-color: white;">
+			<table class="table table-bordered table-hover"  style="width:900px; height:200px; margin:auto;">
 				<tr>
-					<td rowspan="4" style="width:250px; height:200px;">
+					<td rowspan="4" style="width:400px; height:200px;">
 						<c:if test="${ loginMember.renamedFileName == null }">
-							<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+							<div class="box" style="background: #BDBDBD;">
+								<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+							</div>	
 						</c:if>
 						<c:if test="${ loginMember.renamedFileName != null }">
-							<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+							<div class="box" style="background: #BDBDBD;">
+								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+							</div>
 						</c:if>
 					</td>
 					<td>
-						<h4><b>닉네임</b></h4>
+						<h4 class="title"><b>닉네임</b></h4>
 					</td>
 					<td>
 						<h4>${ loginMember.nickname }</h4>
@@ -65,7 +85,7 @@
 				</tr>
 				<tr>
 					<td>
-						<h4><b>이메일</b></h4>
+						<h4 class="title"><b>이메일</b></h4>
 					</td>
 					<td>
 						<h4>${ loginMember.email }</h4>
@@ -73,7 +93,7 @@
 				</tr>
 				<tr>
 					<td>
-						<h4><b>등급</b></h4>
+						<h4 class="title"><b>등급</b></h4>
 					</td>
 					<td>
 						<h4>${ loginMember.gradeName }</h4>
@@ -81,16 +101,16 @@
 				</tr>
 				<tr>
 					<td>
-						<h4><b>보유 포인트</b></h4>
+						<h4 class="title"><b>보유 포인트</b></h4>
 					</td>
 					<td>
 						<h4>${ loginMember.point }</h4>
 					</td>
 				</tr>
 			</table>
-			<br>
-			<button class="btn btn-outline-success btn-lg" id="check">회원정보수정</button>
-			
+			<br><br>
+			<button class="btn btn-outline-success btn-lg" id="check" style="margin-left: 730px">회원정보수정</button>
+			<br><br><br><br>
 			<!-- 참여중인 챌린지 리스트 include -->
 			<div id="joinList-container">
 				<h3>참여중인 챌린지</h3>

@@ -371,7 +371,7 @@ ul {
 			
 			open(url, "", status);
 		});	
-	
+		
 	   $("#member_pw1").blur((event) => {
 	      let pass1 = $("#member_pw").val();         
 	      let pass2 = $(event.target).val();
@@ -386,151 +386,205 @@ ul {
 	   });
 	   
 	 //아이디 유효성검사
-    $("#member_id").on("input",function(){
-        var regex = /^[a-zA-Z0-9]{4,12}$/;
-        var result = regex.exec($("#member_id").val())
-        
-        if(result != null){
-            $(".id.regex").html("");
-        }else{
-            $(".id.regex").html("영어 대소문자,숫자 4-12자리");
-            $(".id.regex").css("color","red")
-        }
-    });
-	 
+       $("#member_id").on("input",function(){
+    	   let id = $("#member_id").val().trim();
+    	   valiId(id);
+       });
 	 
 	 //비밀번호 유효성검사
-    $("#member_pw").on("input",function(){
-        var regex = /^[A-Za-z\d]{8,12}$/;
-        var result = regex.exec($("#member_pw").val())
-        
-        if(result != null){
-            $(".pw.regex").html("");
-        }else{
-            $(".pw.regex").html("영어 대소문자,숫자 8-12자리");
-            
-        }
-    });
+       $("#member_pw").on("input",function(){
+    	   let pw = $("#member_pw").val().trim();
+    	   valiPw(pw);
+       });
 	   
 	   // 닉네임 유효성 검사
 	   $("#member_nickname").on("input",function(){
-        var regex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
-        var result = regex.exec($("#member_nickname").val());
-        
-        if(result != null){
-           $(".name.regex").html("");  
-        }else{
-            $(".name.regex").html("특수문자 제외 2-10자리");
-        }
-        
-    });
+		  let nickname = $("#member_nickname").val().trim();
+		  valiNick(nickname);
+       });
 	 
-  //email유효성 검사
-    $("#member_email").on("input",function(){
-         var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-         var result = regex.exec($("#member_email").val());
-        
-        if(result != null){
-           $(".email.regex").html("");  
-        }else{
-            $(".email.regex").html("올바른 이메일이 아닙니다");
-        }
-    });
- 
-	// 닉네임 중복을 확인 처리 콜백함수
-	   $("#checkNicknameDuplicate").on("click",function(){
-	      // 중복확인전에 닉네임 값이 2글자 이상인지 확인
-	      var nickname = $("#member_nickname").val().trim();
-	      
-	      if (nickname.length < 1) {
-	         alert("닉네임은 최소 2글자 이상 입력하세요.")
-	         return;
-	      }
+     //email유효성 검사
+       $("#member_email").on("input",function(){
+    	  valiEmail();
+       });
+     
+    // 닉네임 중복을 확인 처리 콜백함수
+ 	   $("#checkNicknameDuplicate").on("click",function(){
+ 	      // 중복확인전에 닉네임 값이 2글자 이상인지 확인
+ 	      var nickname = $("#member_nickname").val().trim();
+ 	      
+ 	      if (nickname.length < 1) {
+ 	         alert("닉네임은 최소 2글자 이상 입력하세요.")
+ 	         return;
+ 	      }
 
-	      $.ajax({
-				type: "get",
-				url: "${path}/member/nicknameCheck",
-				dataType: "json",
-				data: {
-					nickname // 속성의 키값과 변수명이 동일할 경우
-				},
-				success: function(data) {
-					console.log(data);
-					
-					if(data.validate === true) {
-						alert("이미 사용중인 닉네임 입니다.");
-						$("#member_nickname").val('');
-					} else {
-						alert("사용 가능한 닉네임 입니다.");
-						$("#checkNickname").val('통과');
-					}
-				},
-				error: function(e) {
-					console.log(e);
-				}
-			});
-
-	   });
+ 	      $.ajax({
+ 				type: "get",
+ 				url: "${path}/member/nicknameCheck",
+ 				dataType: "json",
+ 				data: {
+ 					nickname // 속성의 키값과 변수명이 동일할 경우
+ 				},
+ 				success: function(data) {
+ 					console.log(data);
+ 					
+ 					if(data.validate === true) {
+ 						alert("이미 사용중인 닉네임 입니다.");
+ 						$("#member_nickname").val('');
+ 					} else {
+ 						alert("사용 가능한 닉네임 입니다.");
+ 						$("#checkNickname").val('통과');
+ 					}
+ 				},
+ 				error: function(e) {
+ 					console.log(e);
+ 				}
+ 			});
+ 	   });
 	
 	   //수정하기 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행     
 	   $("#updateSubmit").on("click",function(){
-	 	   var id = $("#member_id").val();
-	 	   var pw = $("#member_pw").val();
-	 	   var name = $("#member_nickname").val();
-	 	   var email = $("#member_email").val();
-	 	   
-	 	   var idregex = /^[a-zA-Z0-9]{4,12}$/;
-	 	   var pwregex = /^[A-Za-z\d]{8,12}$/;
-	 	   var nameregex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
-	 	   var emailregex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	 	   
-	 	   var idregex = idregex.exec(id);
-	 	   if(idregex == null){
-	 		   alert("아이디 양식을 다시 확인해주세요");
-	 		   return;
-	 	   }
-	 	   var pwregex = pwregex.exec(pw);
-	 	   if(pwregex == null){
-	 		   alert("비밀번호 양식을 다시 확인해주세요");
-	 		   retrun;
-	 	   }
-	 	   var nameregex = nameregex.exec(name);
-	 	   if(nameregex == null){
-	 		   alert("이름 양식을 다시 확인해주세요");
-	 		   retrun;
-	 	   }
-	 	   
-	 	   if($("#checkname").val()==""){
-		   	        alert('닉네임중복 확인을 해주세요.');
-		   	        return;
-		    	}
-	 	 
-	 	 // 빈칸 없을 때 제출.
-	 	 ${"join_content"}.submit();
-	
-	    })
+    	   var id = $("#member_id").val().trim();
+    	   var pw = $("#member_pw").val().trim();
+    	   var nickname = $("#member_nickname").val().trim();
+    	   var email = $("#member_email").val().trim();
+    	   
+    	   if(!valiId(id)){
+    		   alert("아이디 양식을 다시 확인해주세요");
+    		   return;
+    	   }
+    	   
+    	   if(!valiPw(pw)){
+    		   alert("비밀번호 양식을 다시 확인해주세요");
+    		   retrun;
+    	   }
+    	  
+    	   if(!valiNick(nickname)){
+    		   alert("닉네임 양식을 다시 확인해주세요");
+    		   retrun;
+    	   }
+    	   
+    	   if(!valiEmail(email)){
+    		   alert("이메일 양식을 다시 확인해주세요");
+    		   retrun;
+    	   }
+    	  
+    	   if($("#checkNickname").val()!="통과"){
+	   	        alert('닉네임 중복확인 해주세요.');
+	   	        return;
+   	    	}
+    	 
+    	 // 빈칸 없을 때 제출
+    	   ${"join_content"}.submit();
+
+       })
 	});
 	
 	// 이메일 선택부분
-	 function email_select() {
-	     var m = document.getElementById("member_email");
-	     if (m.value != "") {
-	         m.value = m.value + document.getElementById("member_email_select").value;
-	         var n = m.value.split("@")[0];
-	         m.value = n + document.getElementById("member_email_select").value;
-	     }
-	 }
+    function email_select() {
+        var m = document.getElementById("member_email");
+        if (m.value != "") {
+            m.value = m.value + document.getElementById("member_email_select").value;
+            var n = m.value.split("@")[0];
+            m.value = n + document.getElementById("member_email_select").value;
+            
+            if(document.getElementById("member_email_select").value != ""){
+            	$(".email.regex").html("");
+            }else{
+            	$(".email.regex").html("올바른 이메일이 아닙니다");
+            }
+        }
+    }
 	
-	//프로필 썸네일 띄우기
-	    function setThumbnail(event) { 
-	    	var reader = new FileReader(); 
-	    	reader.onload = function(event) { 
-	    		var img = document.getElementById("profile");
-	    		img.setAttribute("src", event.target.result);
-	    };
-	    	reader.readAsDataURL(event.target.files[0]); 	
-	   }
-	
+ 	// 취소버튼
+    function join_cn() {
+        location.href = "${ path }";
+    }
+ 	
+ 	//프로필 썸네일 띄우기
+    function setThumbnail(event) { 
+    	var reader = new FileReader(); 
+    	reader.onload = function(event) { 
+    		var img = document.getElementById("profile");
+    		img.setAttribute("src", event.target.result);
+    };
+    	reader.readAsDataURL(event.target.files[0]); 	
+   }
+ 	
+ 	function valiPw(pw){
+ 	   var checkNumber = /[^0-9]/;
+ 	   var checkEnglish =  /[^a-zA-Z]/;
+ 	   var checkBlank = /[\s]/;
+ 	   var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+ 	   var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+ 	   
+        if(pw.length < 8 || pw.length > 12){
+            $(".pw.regex").html("영문,숫자,특수문자 혼합 8-12자리");
+        }else if(checkKorean.test(pw)){
+     	   $(".pw.regex").html("한글을 포함할 수 없습니다.");
+        }else if(!checkEnglish.test(pw)||!checkNumber.test(pw)||!checkspe.test(pw)){
+     	   $(".pw.regex").html("영문,숫자,특수문자를 혼합하여 입력해주세요.");
+        }else if(checkBlank.test(pw)){
+            $(".pw.regex").html("공백을 포함할 수 없습니다.");
+        }else{
+     	   $(".pw.regex").html("");
+     	   return true;
+        }
+ 	}
+ 	
+ 	function valiId(id){
+ 	   var checkNumber = /[^0-9]/;
+ 	   var checkEnglish =  /[^a-zA-Z]/;
+ 	   var checkBlank = /[\s]/;
+ 	   var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+ 	   var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+ 	   
+        if(id.length < 4 || id.length > 12){
+            $(".id.regex").html("영문,숫자를 혼합 4-12자리");
+        }else if(checkKorean.test(id)){
+     	   $(".id.regex").html("한글을 포함할 수 없습니다.");
+        }else if(!checkEnglish.test(id)||!checkNumber.test(id)){
+     	   $(".id.regex").html("영문,숫자를 혼합하여 입력해주세요.");
+        }else if(checkBlank.test(id)){
+            $(".id.regex").html("공백을 포함할 수 없습니다.");
+        }else if(checkspe.test(id)){
+        	 $(".id.regex").html("특수문자를 포함할 수 없습니다.");
+        }else{
+     	   $(".id.regex").html("");
+     	  return true;
+        }
+ 	}
+ 	function valiNick(nickname){
+ 		var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+		var checkBlank = /[\s]/;
+		  
+		  if(nickname.length < 2 || nickname.length > 10){
+			  $(".name.regex").html("영문,숫자를 혼합 2-10자리");
+		  }else if(checkBlank.test(nickname)){
+			  $(".name.regex").html("공백을 포함할 수 없습니다.");
+		  }else if(checkspe.test(nickname)){
+			  $(".name.regex").html("특수문자를 포함할 수 없습니다.");
+		  }else{
+			  $(".name.regex").html("");
+			  return true;
+		  }
+ 	}
+ 	function valiEmail(){
+ 		var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        var result = regex.exec($("#member_email").val());
+       
+       if(result != null){
+          $(".email.regex").html("");  
+          return true;
+       }else{
+           $(".email.regex").html("올바른 이메일이 아닙니다");
+       }
+ 	}
+ 	function btNicknameCheck(){
+ 		const target = document.getElementById("checkNicknameDuplicate");
+ 		target.disabled = false;
+ 	}
+
 </script>
 
 <div id="box">
@@ -590,8 +644,8 @@ ul {
 					                <span class="join_li_title"><b style="color:red;">·</b>닉네임</span>
 					                <div class="join_li_input">
 					                <input type="text" class="member_nickname" id="member_nickname" name="nickname"
-					                	style="width: 280px; margin-right: 10px;" value="${ loginMember.nickname }">
-					                <button type="button" class="addr_btn" onclick="" id="checkNicknameDuplicate">중복확인</button>
+					                	style="width: 280px; margin-right: 10px;" value="${ loginMember.nickname }" onchange="btNicknameCheck()">
+					                <button type="button" class="addr_btn" id="checkNicknameDuplicate" disabled="disabled">중복확인</button>
 					                <div class="name regex"></div>
 					                </div>
 					            </li>
@@ -601,7 +655,7 @@ ul {
 					                <div class="join_li_input2">
 					                    <div class="join_li_input_out">
 				
-					                        <input type="text" class="member_email" id="member_email" name="email" value="${ email[0] }">
+					                        <input type="text" class="member_email" id="member_email" name="email" value="${ loginMember.email }">
 					                        <select class="member_email_select" id="member_email_select" onchange="email_select();">
 					                            <option value="" selected>${ email[1] }</option>
 					                            <option value="@naver.com">naver.com</option>
@@ -645,7 +699,7 @@ ul {
          <input type="hidden" name="userId" id="checkid">
 </form>
 <form name="checkNicknameForm">
-         <input type="hidden" name="userNickname" id="checkNickname">
+         <input type="hidden" name="userNickname" id="checkNickname" value="통과">
 </form>
 </body>
 </html>
