@@ -42,24 +42,7 @@ public class AdminController {
     @Autowired
     private BoardService B_service;
    
-    
-   //--------------------------------------------------------------------------
-  
-   
-   //회원관리 (관리자) 
-   @GetMapping("/admin/viewUser")
-   public void viewUser() {
-      log.info("회원관리 페이지 요청");
-   }
-   
-   //챌린지관리 (관리자)
-   @GetMapping("/admin/viewChallenge")
-   public void viewChallenge() {
-      log.info("챌린지리스트 페이지 요청");
-   }
-   
-   
-   
+ 
    // 후기관리(관리자)-----------------------------------------------------------------------------------
    
    // 관리자 페이지 - 후기 게시글 관리 - 게시된 후기글 목록
@@ -307,8 +290,7 @@ public class AdminController {
    }
 
    // 고객센터(관리자)-----------------------------------------------------------------------------------
-   
-   // 관리자 페이지 - 게시된 고객센터 페이지
+// 관리자 페이지 - 게시된 고객센터글 목록
    @GetMapping("/admin/board/viewQna")
    public ModelAndView boardView(ModelAndView model) {
 
@@ -322,7 +304,7 @@ public class AdminController {
       return model;      
    }
       
-   // 관리자 페이지 - 삭제된 고객센터 페이지
+// 관리자 페이지 - 삭제된 고객센터글 목록
    @GetMapping("/admin/board/viewDeleteQna")
    public ModelAndView DeleteView(ModelAndView model) {
 
@@ -336,7 +318,7 @@ public class AdminController {
       return model;      
    }
    
-   // 관리자 페이지 - 고객센터 게시글 선택 삭제
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 선택 삭제
    @PostMapping("/admin/board/selectDelete")
    public String selectDelete(HttpServletRequest request) {
 
@@ -354,16 +336,41 @@ public class AdminController {
       return "redirect: viewQna";      
    }
       
-   // 관리자 페이지 - 고객센터 게시글 관리 - 게시글 하나만 삭제
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 하나만 삭제
    @PostMapping("/admin/board/oneDelete")
-   public String selectOneDelete(HttpServletRequest request) {
+   public String selectOneDelete(@RequestParam("qna_no") int qna_no) {
 
-      String str = request.getParameter("qna_no");
-
-      B_service.selectOneDelete(str);
+	   B_service.selectOneDelete(qna_no);
 
       return "redirect: viewQna";      
+   }
+   
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 선택 복구
+   @PostMapping("/admin/board/selectRestore")
+   public String selectRestore(HttpServletRequest request) {
+
+      String[] str = request.getParameterValues("cateSelResNo");
+      String[] strNo = str[0].split(",");
+         
+      int[] intNo = new int[strNo.length];
+         
+      for(int i=0; i<strNo.length; i++) {
+         intNo[i] = Integer.parseInt(strNo[i]);
       }
+         
+      B_service.selectRestore(intNo);
+
+      return "redirect: viewDeleteQna";      
+   }
+   
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 하나만 삭제
+   @PostMapping("/admin/board/oneRestore")
+   public String selectOneRestore(@RequestParam("qna_no") int qna_no) {
+
+	   B_service.selectOneRestore(qna_no);
+
+      return "redirect: viewDeleteQna";      
+   }
    
    // 챌린지(관리자)-----------------------------------------------------------------------------------
 	// [챌린지] 관리자 페이지 - 챌린지 관리 - 전체 챌린지 목록
