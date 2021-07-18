@@ -498,10 +498,11 @@
 				ID=#{reportedId}
 	</update>
 	
-	<!-- 경고 회원 관리에 모든 회원 리스트 불러오기 -->
+	<!-- 경고 회원 관리에 경고 횟수가 1 이상인 회원 리스트 불러오기 -->
 	<select id="selectAllMember" parameterType="_int" resultMap="memberResultMap">
  		SELECT *
 		FROM MEMBER
+		WHERE REPORT_COUNT > 0
 	</select>
 	
 	<!-- 경고 받은 회원 ID로 해당 회원 탈퇴시키기-->

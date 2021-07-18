@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ include file="/WEB-INF/views/common/headerDetail.jsp"%> 
+<%@ include file="/WEB-INF/views/common/header.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
@@ -53,7 +53,7 @@ $(function () {
 									<a href="${ path }/admin/report/reportReview">신고된 후기 게시글</a>
 								</li>
 								<li class="tab-link">
-									<a href="approve">신고된 회원</a>
+									<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
 								</li>
 								<li class="tab-link">
 									<a href="${ path }/admin/report/reportChallenge">신고된 챌린지</a>
