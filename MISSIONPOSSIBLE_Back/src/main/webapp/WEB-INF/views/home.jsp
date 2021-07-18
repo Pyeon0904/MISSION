@@ -22,16 +22,16 @@
 <!-- Animate.CSS -->
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<%@ include file="/WEB-INF/views/common/headerDetail.jsp"%>
 <style>
 /* 전체 영역--------------------------------------------------------------------------*/
 
 /*---------------제일 바깥 영역 설정-----------------*/
 #box {
-	background-color: rgb(224, 239, 132);
+	background-color: none;
 	width: 100%;
-	height: 2100px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-	margin-top: 100px;
+	height: 2800px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+	margin-top: 0px;
 	margin-bottom: 100px;
 	margin-left: -10px;
 	padding: 10px;

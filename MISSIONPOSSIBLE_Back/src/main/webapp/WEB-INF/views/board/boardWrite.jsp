@@ -23,22 +23,10 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 
 <style>
-	#box{ 
-            background-color:rgb(224, 239, 132);
-            width:100%;
-            height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-            margin-top:330px;
-            margin-bottom:100px;
-            margin-left:-10px;
-            padding:10px;
-         }
+#box{background-color:rgb(224, 239, 132);width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
-         #conbox{
-            width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-            position:relative; 
-            top:20px;
-            margin:auto;
-         }
+#conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
 h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
 
@@ -127,21 +115,18 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 		$('#btnWrite').click(function() {
 			if (!$('#board_subject').val()) {
 				alert('글제목을 입력하세요');
-				$('#sboard_subject').focus();
+				$('#board_subject').focus();
 				return false;
 			}
-			if (!$('#board_content').val()) {
-				alert('내용을 입력하세요');
-				$('#name').focus();
-				return false;
+			
+			var text = $('#board_content').val();
+			
+			if (text.replace(/\s|　/gi, "").length == 0) {
+			    alert("내용을 입력해주세요.");
+			    $("#board_content").focus();
+			    return false;
 			}
-
-			<%--if (!$('#bpwd').val()) {
-				alert('비밀번호를 입력하세요');
-				$('#bpwd').focus();
-				return;
-			} --%>
-
+			
 			$('#boardForm').submit();
 		});
 	});
@@ -173,7 +158,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
-							<td><textarea class="summernote" name="content" style="" id="board_content"></textarea></td>
+							<td><textarea class="summernote" name="content" id="board_content"></textarea></td>
 							<!-- <td><textarea name="editor" id="editor" rows="10" cols="100" style="width:700px; height:412px;"></textarea></td> -->
 						</tr>
 						<!--

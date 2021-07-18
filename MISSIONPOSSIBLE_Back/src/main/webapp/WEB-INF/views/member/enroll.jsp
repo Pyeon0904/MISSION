@@ -536,13 +536,13 @@ ul {
     	   }
     	   
     	 //아이디 중복체크를 하지 않았으면 전송되지 않도록
-    	   if($("#checkid").val()==""){
-    	        alert('아이디중복 확인을 해주세요.');
+    	   if($("#checkid").val()!="통과"){
+    	        alert('아이디 중복확인 해주세요.');
     	        return;
     	    }
     	 
-    	   if($("#checkname").val()==""){
-	   	        alert('닉네임중복 확인을 해주세요.');
+    	   if($("#checkNickname").val()!="통과"){
+	   	        alert('닉네임 중복확인 해주세요.');
 	   	        return;
    	    	}
     	 
