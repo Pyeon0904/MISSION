@@ -61,9 +61,10 @@
             Q.GROUPNO,
             Q.GROUPORD,
             Q.DEPT,
-            Q.SORT
+            Q.SORT,
+            Q.STATUS
       FROM QNA Q, MEMBER M
-      WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID AND Q.STATUS='Y'
+      WHERE Q.QNA_NO=#{qna_no} AND Q.WRITER = M.ID
    </select>
    
    <!-- 조회수 증가 -->
@@ -210,7 +211,7 @@
    <!-- groupord는 원글의 순번 -->
    <update id="groupordUpdate" parameterType="Board">
       UPDATE QNA SET GROUPORD=GROUPORD+1
-      WHERE GROUPNO=#{groupno} AND GROUPORD>#{groupord}
+      WHERE GROUPNO=#{groupno} AND GROUPORD &gt;=#{groupord}
    </update>
    
    <select id="countDept" parameterType="Board" resultType="_int"><!-- 원글과 같은 dept인 글의 갯수 얻어오기 -->
@@ -310,6 +311,7 @@
 	</select>
 	
 	<!-- 관리자 페이지 선택 삭제 -->
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 N으로 업데이트 -->
 	<update id="selectDelete" parameterType="map">
 		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 		UPDATE QNA
@@ -320,12 +322,34 @@
 		</foreach>
 	</update>
 	
-	<update id="selectOneDelete" parameterType="map">
+	<!-- 게시글 번호로 해당 게시글 STATUS를 N으로 업데이트 -->
+	<update id="selectOneDelete" parameterType="_int">
 		UPDATE QNA
 			SET
 				STATUS = 'N'
 			WHERE
-				QNA_NO=${str}
+				QNA_NO=${qna_no}
+	</update>
+	
+	<!-- 관리자 페이지 선택 복구 -->
+	<!-- 게시글 번호 배열로 해당 게시글들 STATUS를 Y로 업데이트 -->
+	<update id="selectRestore" parameterType="map">
+		<foreach collection="array" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		UPDATE QNA
+			SET
+				STATUS='Y'
+			WHERE
+				QNA_NO=#{item}
+		</foreach>
+	</update>
+	
+	<!-- 게시글 번호로 해당 게시글 STATUS를 Y로 업데이트 -->
+	<update id="selectOneRestore" parameterType="_int">
+		UPDATE QNA
+			SET
+				STATUS = 'Y'
+			WHERE
+				QNA_NO=${qna_no}
 	</update>
 	
 

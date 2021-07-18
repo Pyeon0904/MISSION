@@ -42,11 +42,11 @@ public interface BoardService {
 
 	int selectDelete(int[] intNo);
 
-	int selectOneDelete(String str);
+	int selectOneDelete(int qna_no);
+
+	int selectRestore(int[] intNo);
+
+	int selectOneRestore(int qna_no);
 
 	
-//	public BoardDetail selectOne(int board_id);
-
-
-
 }

@@ -62,12 +62,11 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public Board findByNo(int qna_no, boolean hasRead) {
-		
 		if(!hasRead) {
 			mapper.readCount(qna_no);
 		}
-		
 		return mapper.selectBoardByNo(qna_no);
+
 	}
 
 	// 삭제
@@ -126,9 +125,14 @@ public class BoardServiceImpl implements BoardService {
 			
 			
 		} else {
+			int mingroupord = mapper.minGroupord(board);
+			
+			board.setGroupord(mingroupord);
+			
 			mapper.groupordUpdate(board);
 			
-		
+			board.setGroupord(mingroupord-1);
+			
 		}
 		return mapper.replyInsert(board);
 	}
@@ -217,15 +221,27 @@ public class BoardServiceImpl implements BoardService {
 
 	// 선택 삭제
 	@Override
-	public int selectDelete(int[] cateSelDelNo) {
+	public int selectDelete(int[] intNo) {
 		
-		return mapper.selectDelete(cateSelDelNo);
+		return mapper.selectDelete(intNo);
 	}
 
 	@Override
-	public int selectOneDelete(String str) {
+	public int selectOneDelete(int qna_no) {
 		
-		return mapper.selectOneDelete(str);
+		return mapper.selectOneDelete(qna_no);
+	}
+
+	@Override
+	public int selectRestore(int[] intNo) {
+		
+		return mapper.selectRestore(intNo);
+	}
+
+	@Override
+	public int selectOneRestore(int qna_no) {
+		
+		return mapper.selectOneRestore(qna_no);
 	}
 
 	

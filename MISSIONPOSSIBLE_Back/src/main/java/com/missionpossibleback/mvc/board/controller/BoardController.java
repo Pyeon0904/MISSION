@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +35,6 @@ import com.missionpossibleback.mvc.board.model.service.BoardService;
 import com.missionpossibleback.mvc.board.model.vo.Board;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
-import com.missionpossibleback.mvc.review.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -108,15 +105,23 @@ public class BoardController {
     		response.addCookie(cookie);
     		
     	}
-		
-		
-		System.out.println(qna_no);
-	
-		Board board = service.findByNo(qna_no, hasRead);
 
-		model.addObject("hasRead",hasRead);
-		model.addObject("board", board); // view한테 전달해줄 데이터
-		model.setViewName("board/boardDetail");
+		System.out.println(qna_no);
+	 
+			Board board = service.findByNo(qna_no, hasRead);
+			
+			System.out.println(board);
+
+			model.addObject("hasRead",hasRead);
+			model.addObject("board", board); // view한테 전달해줄 데이터
+			model.setViewName("board/boardDetail");
+		
+			if(board.getStatus().equals("N")) {
+				model.addObject("msg", "삭제된 게시글입니다.");
+				model.addObject("location", "/board/boardList");
+				model.setViewName("common/msg");
+			}
+		
 		
 		return model;
 	}
@@ -234,6 +239,12 @@ public class BoardController {
 				model.setViewName("common/msg");
 			}
 			
+			if(board.getStatus().equals("N")) {
+				model.addObject("msg", "삭제된 게시글입니다.");
+				model.addObject("location", "/board/boardList");
+				model.setViewName("common/msg");
+			}
+			
 			return model;
 		}
 	
@@ -242,12 +253,13 @@ public class BoardController {
 	public ModelAndView update(ModelAndView model,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			HttpServletRequest request,
-			@ModelAttribute Board board, @RequestParam("reloadFile") MultipartFile reloadFile) {
+			@ModelAttribute Board board) {
 		
 		int result = 0;
 		
 		if(loginMember.getId().equals(board.getWriter())) {
 		
+			/*
 			if(reloadFile != null && !reloadFile.isEmpty()) { // 업로드한 파일이 있을 때
 				String rootPath = request.getSession().getServletContext().getRealPath("resources");
 				String savePath = rootPath + "/upload/board";
@@ -266,7 +278,7 @@ public class BoardController {
 					board.setRenamedFileName(renameFileName);
 				}
 			}
-				
+			*/
 
 			result = service.save(board);
 			
@@ -426,7 +438,7 @@ public class BoardController {
 	}
 	
 	
-// 관리자 페이지 - 게시된 고객센터 페이지
+// 관리자 페이지 - 게시된 고객센터글 목록
 	@GetMapping("/admin/board/viewQna")
 	public ModelAndView boardView(ModelAndView model) {
 
@@ -440,7 +452,7 @@ public class BoardController {
 		return model;		
 	}
 		
-// 관리자 페이지 - 삭제된 고객센터 페이지
+// 관리자 페이지 - 삭제된 고객센터글 목록
 	@GetMapping("/admin/board/viewDeleteQna")
 	public ModelAndView DeleteView(ModelAndView model) {
 
@@ -454,7 +466,7 @@ public class BoardController {
 		return model;		
 	}
 	
-// 관리자 페이지 - 고객센터 게시글 선택 삭제
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 선택 삭제
 	@PostMapping("/admin/board/selectDelete")
 	public String selectDelete(HttpServletRequest request) {
 
@@ -474,20 +486,42 @@ public class BoardController {
 		
 // 관리자 페이지 - 고객센터 게시글 관리 - 게시글 하나만 삭제
 	@PostMapping("/admin/board/oneDelete")
-	public String selectOneDelete(HttpServletRequest request) {
+	public String selectOneDelete(@RequestParam("qna_no") int qna_no) {
 
-		String str = request.getParameter("qna_no");
-
-		service.selectOneDelete(str);
+		service.selectOneDelete(qna_no);
 
 		return "redirect: viewQna";		
-		}
-		
+	}
 	
+// 관리자 페이지 - 후기 게시글 관리 - 게시글 선택 복구
+	@PostMapping("/admin/board/selectRestore")
+	public String selectRestore(HttpServletRequest request) {
 
+		String[] str = request.getParameterValues("cateSelResNo");
+		String[] strNo = str[0].split(",");
+			
+		int[] intNo = new int[strNo.length];
+			
+		for(int i=0; i<strNo.length; i++) {
+			intNo[i] = Integer.parseInt(strNo[i]);
+		}
+			
+		service.selectRestore(intNo);
+
+		return "redirect: viewDeleteQna";		
+	}
+	
+// 관리자 페이지 - 고객센터 게시글 관리 - 게시글 하나만 삭제
+	@PostMapping("/admin/board/oneRestore")
+	public String selectOneRestore(@RequestParam("qna_no") int qna_no) {
+
+		service.selectOneRestore(qna_no);
+
+		return "redirect: viewDeleteQna";		
+	}
 	
 		
-	
+
 	
 }
 		
