@@ -274,10 +274,10 @@
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/viewUser">고객관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/viewChallenge">챌린지관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/viewBoard">고객센터관리</a>
+						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
 						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
 					</ul>
 					</div>

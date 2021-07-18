@@ -162,10 +162,10 @@ $(function () {
 			<div class="tabs">
 				<ul class="tabs">
 					<li class="tab-link">
-						<a href="${ path }/member/admin_viewMember">신고된 회원</a>
+						<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
 					</li>
 					<li class="tab-link current">
-						<a href="${ path }/member/admin_viewDeleteMemberw">탈퇴한 회원</a>
+						<a href="${ path }/admin/member/admin_viewDeleteMemberw">탈퇴한 회원</a>
 					</li>
 				</ul>
 			</div>

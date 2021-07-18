@@ -561,7 +561,7 @@ public class AdminController {
       
       model.addObject("admin_WithdrawalMemberList", admin_WithdrawalMemberList);
       model.addObject("pageInfo", pageInfo);
-      model.setViewName("/member/admin_viewWithdrawMember");
+      model.setViewName("admin/member/admin_viewWithdrawMember");
       
        return model; 
    }
@@ -575,7 +575,7 @@ public class AdminController {
       
       model.addObject("admin_memberList", admin_memberList);
       model.addObject("pageInfo", pageInfo);
-      model.setViewName("/member/admin_viewMember");
+      model.setViewName("admin/member/admin_viewMember");
       
        return model; 
    } 
@@ -585,7 +585,7 @@ public class AdminController {
       
 	   M_service.admin_warnMember(warnMemberId);
       
-      return "redirect:/admin/member/admin_viewMember";
+      return "redirect:admin/member/admin_viewMember";
    }
    
    @RequestMapping(value = "/admin/member/selectMemberWarn", method = {RequestMethod.POST})
@@ -596,6 +596,6 @@ public class AdminController {
          System.out.println( "경고" + warnMemberId[i]);
       }
       
-      return "redirect:/admin/member/admin_viewMember";
+      return "redirect:admin/member/admin_viewMember";
    }
 }
