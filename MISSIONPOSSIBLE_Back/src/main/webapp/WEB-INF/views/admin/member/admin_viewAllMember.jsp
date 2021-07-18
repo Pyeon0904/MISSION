@@ -156,46 +156,51 @@ $(function () {
 						<!-- 탭 -->
 						<div class="tabs">
 							<ul class="tabs">
-								<li class="tab-link current">
-									<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
+								<li class="tab-link">
+									<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
 								</li>
 								<li class="tab-link">
 									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
 								</li>
+								<li class="tab-link current">
+									<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
+								</li>
 							</ul>
 						</div>
-						<h2>신고된 멤버 관리</h2>
+						<h2>활동중인 전체 회원</h2>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 경고</button>
+								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 탈퇴</button>
 							</span>
 						</div>
-						<!-- 멤버 신고 테이블 ------------------------>
+						<!-- 전체(활동중) 멤버 테이블 ------------------------>
 						<div class="tbArea">
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>신고일자</th>
-									<th>신고자ID</th>
-									<th>신고된ID</th>
-									<th>신고유형</th>
-									<th>신고내용</th>
+									<th>회원번호</th>
+									<th>ID</th>
+									<th>등급</th>
+									<th>포인트</th>
+									<th>닉네임</th>
+									<th>이메일</th>
 									<th>경고횟수</th>
 									<th>처리</th>
 								</tr>
-								<c:if test="${ admin_memberList != null}">
-									<c:forEach var="memberReport" items="${ admin_memberList }">
+								<c:if test="${ admin_allMemberList != null}">
+									<c:forEach var="allMemberList" items="${ admin_allMemberList }">
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
-											<td style="width: 100px"><fmt:formatDate type="date" value="${ memberReport.createDate }" /></td>
-											<td><c:out value="${ memberReport.id }" /></td>
-											<td style="color: red;" class="noTd"><c:out value="${ memberReport.reportId }" /></td>
-											<td><c:out value="${ memberReport.reportType }" /></td>
-											<td><c:out value="${ memberReport.reportContent }" /></td>
-											<td><c:out value="${ memberReport.reportCount }" /></td>
+											<td><c:out value="${ allMemberList.memberNo }" /></td>
+											<td class="noTd"><c:out value="${ allMemberList.id }" /></td>
+											<td><c:out value="${ allMemberList.gradeName }" /></td>
+											<td><c:out value="${ allMemberList.point }" /></td>
+											<td><c:out value="${ allMemberList.nickname }" /></td>
+											<td><c:out value="${ allMemberList.email }" /></td>
+											<td><c:out value="${ allMemberList.report_count }" /></td>
 											<td>
-												<button type="button" id="selectRemoveBtn" style="content: left;" class="stat-bt1 removeBtn" value="${ memberReport.reportId }">경고</button>
+												<button type="button" id="selectRemoveBtn" style="content: left;" class="stat-bt1 removeBtn" value="${ allMemberList.id }">탈퇴</button>
 											</td>
 										</tr>
 									</c:forEach>
@@ -204,10 +209,10 @@ $(function () {
 			    <!-- 게시글 리스트 테이블 끝 ------------------------>	
 			    <!-- 페이지바 -->
 				<div id="pageBar">
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=1'">&lt;&lt;</button>
+					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=1'">&lt;&lt;</button>
 					
 					<!-- 이전 페이지로 -->
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=${ pageInfo.prvePage }'">&lt;</button>
+					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ pageInfo.prvePage }'">&lt;</button>
 		
 					<!--  10개 페이지 목록 -->
 					<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
@@ -215,17 +220,17 @@ $(function () {
 							<button disabled><c:out value="${ status.current }"/></button>
 						</c:if>
 						<c:if test="${ pageInfo.currentPage != status.current}">
-							<button onclick="location.href='${ path }/member/admin_viewMember?page=${ status.current }'">
+							<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ status.current }'">
 								<c:out value="${ status.current }"/>
 							</button>
 						</c:if>
 					</c:forEach>
 					
 					<!-- 다음 페이지로 -->
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=${ pageInfo.nextPage }'">&gt;</button>
+					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ pageInfo.nextPage }'">&gt;</button>
 					
 					<!-- 맨 끝으로 -->
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
+					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
 				</div>
 				<script>
 					$(function(){
@@ -241,19 +246,19 @@ $(function () {
                                 }
                             });
                         });
-					});					
+					});	
+				<!-- 회원 탈퇴 -->
 				</script>
-				<!-- 후기 게시글 삭제 모달 -->
 				<div class="cateUpdArea" id="cateDelArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>회원 경고</h2>
+							<h2>회원 탈퇴</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf" id="individual">
 							</div>
-							<form id=delForm action="<%= request.getContextPath() %>/member/oneMemberWarn" method="POST">
-								<input type="hidden" name="warnMemberId" id="warnMemberId">
+							<form id=delForm action="${ path }/admin/member/onedelMember" method="POST">
+								<input type="hidden" name="oneDeleteId" id="oneDeleteId">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
 									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -264,36 +269,35 @@ $(function () {
 				</div>
 				<script>
 					$(function(){
-						// 게시글 삭제
+						//회원 탈퇴
 						$('button.removeBtn').click(function(){
 							$("div#cateDelArea").css("display", "block");
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
-							// 게시글 제목 알려주기
 							var secId = $(this).val();
-							$('div#individual').html("<h2>"+secId+" 회원을<br> 경고 처리 하시겠습니까?</h2>");
+							$('div#individual').html("<h2>"+secId+" 회원을<br> 탈퇴 처리 하시겠습니까?</h2>");
 							
-							// 아이디 폼으로 가져오기
-							$("input#warnMemberId").val(secId);
+							// 회원 탈퇴 폼으로 가져오기
+							$("input#oneDeleteId").val(secId);
 						});
 						$('button.closeDelBtn').click(function(){
 							$('div.cateUpdArea').css("display", "none");
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
 						});
 					});
+				<!-- 선택된 회원 탈퇴 -->
 				</script>
-				<!-- 후기 게시글 선택 경고 모달 -->	
 				<div class="cateUpdArea" id="selectRemoveArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>회원 경고</h2>
+							<h2>회원 탈퇴</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
-								<h2>정말로 경고를 주시겠습니까?</h2>
+								<h2>정말로 탈퇴를 하시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/member/selectMemberWarn" method="POST">
-								<input type="hidden" name="cateSelWarnNO" id="cateSelWarnNO">
+							<form id="selDelForm" action="${ path }/admin/member/selectDelMember" method="POST">
+								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
 									<button type="button" class="inf-bt1 closeDelBtn">취소</button>
@@ -304,22 +308,20 @@ $(function () {
 				</div>
 				<script>
 					$(function(){
-						// 게시글 삭제
 						$('#allRemoveBtn').click(function(){
-							// 모달 창 띄우기
+						
 							$("#selectRemoveArea").css("display", "block");
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
-							// 체크된 번호 배열로 묶어서 전달
 							var arrID = [];
 							var $objects = $('.tdCheck');
 							
 							$.each($objects,function(index,item){
 								if($(item).prop('checked')){
-									// 선택된 값 삭제 창에 전달
+					
 									var selID = $(item).parent('td').siblings('.noTd').html();
 									arrID.push(selID);
-									$("#cateSelWarnNO").val(arrID);
+									$("#cateSelDelNo").val(arrID);
 								}
 							});
 						});

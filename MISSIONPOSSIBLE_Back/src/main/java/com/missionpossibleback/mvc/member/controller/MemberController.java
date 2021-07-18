@@ -253,7 +253,7 @@ public class MemberController {
 	public ModelAndView followList(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page, @SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 		
 		List<Follow> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, service.getListCount(), 10); 
+		PageInfo pageInfo = new PageInfo(page, 10, service.getFollowListCount(), 10); 
 		
 		list = service.getFollowList(pageInfo, loginMember.getId());
 		
