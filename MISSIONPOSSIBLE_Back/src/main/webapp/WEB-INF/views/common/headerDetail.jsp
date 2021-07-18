@@ -34,7 +34,6 @@
 
 		#bg{
 			padding:0px;
-			background-image:url(<%=request.getContextPath()%>/resources/images/backgroundcircle-dark.png);
 			overflow-x:hidden;
 			z-index:0;	
 		}
