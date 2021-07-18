@@ -16,7 +16,8 @@
 			    POINT,
 			    STATUS,
 			    ORIGINAL_FILENAME,
-			    RENAMED_FILENAME
+			    RENAMED_FILENAME,
+			    REPORT_COUNT
 		FROM MEMBER
  	</sql>
  	
@@ -39,6 +40,7 @@
  		<result property="status" column="STATUS"/>
  		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
  		<result property="renamedFileName" column="RENAMED_FILENAME"/>
+ 		<result property="report_count" column="REPORT_COUNT"/>
  	</resultMap>
  	
  	<resultMap type="Follow" id="followListResultMap">
@@ -55,9 +57,10 @@
 		<result property="reportContent" column="REPORT_CONTENT"/>
 		<result property="createDate" column="CREATE_DATE"/>
 		<result property="reportCount" column="REPORT_COUNT"/>
+		<result property="status" column="STATUS"/>
 	</resultMap>
 	
-	<resultMap type="wirhdrawalMember" id="withdrawalMemberResultMap">
+	<resultMap type="withdrawalMember" id="withdrawalMemberResultMap">
 		<result property="id" column="ID"/>
 		<result property="reason" column="REASON"/>
 		<result property="dateWithdrawal" column="DATE_WITHDRAWAL"/>
@@ -136,38 +139,16 @@
  			MEMBER_NO = #{memberNo}
  	</update>
  	
- 	<insert id="saveWithdrawal" parameterType="Member">
-	 	INSERT INTO WITHDRAWAL ( 
-	 		NO, 
+ 	<insert id="saveWithdrawal">
+	 	INSERT INTO WITHDRAWAL (  
 		    ID,  
 		    REASON,
-		    DATE_WITHDRAWAL,
-		    GRADE_NAME,
-		    MEMBER_NO,
-		    PASSWORD,
-		    NICKNAME,
-		    EMAIL,
-		    POINT,
-		    STATUS,
-		    ORIGINAL_FILENAME,
-		    RENAMED_FILENAME,
-		    REPORT_COUNT 
+		    DATE_WITHDRAWAL
 		    
 		) VALUES(
-			SEQ_WITHDRAWAL.NEXTVAL,
-			#{member.id},
+			#{id},
 			#{reasonWithdrawal},
-			DEFAULT,
-			#{member.gradeName},
-			#{member.memberNo},
-			#{member.password},
-			#{member.nickname},
-			#{member.email},
-			#{member.point},
-			'N',
-			#{member.originalFileName},
-			#{member.renamedFileName},
-			#{member.report_count}
+			DEFAULT
 		)
  	</insert>
  	
@@ -178,7 +159,7 @@
 	
 	<select id="selectFollowList" resultMap="followListResultMap">
 		<include refid="followListSql"/>
-		WHERE F.ID = #{id}
+		WHERE F.ID = #{id} AND STATUS IN('Y')
 		ORDER BY F.NO DESC
 	</select>
 	
@@ -226,6 +207,7 @@
 	<select id="selectMemberIdList" resultType="String">
 		SELECT ID
 		FROM MEMBER
+		WHERE STATUS IN('Y')
 	</select>
 	
 	<select id="selectReportMemberList" resultMap="memberReportResultMap">
@@ -234,7 +216,8 @@
 			   R.REPORT_TYPE,
 			   R.REPORT_CONTENT,
 			   R.CREATE_DATE,
-			   M.REPORT_COUNT
+			   M.REPORT_COUNT,
+			   M.STATUS
 		FROM REPORT_MEMBER R
 		LEFT JOIN MEMBER M ON(R.REPORT_ID = M.ID)
 		ORDER BY R.CREATE_DATE DESC
@@ -281,4 +264,38 @@
  			GRADE_NAME = #{gradeName}
 		WHERE MEMBER_NO = #{no}
  	</update>
+ 	
+ 	<update id="oneMemberReturn">
+ 		UPDATE MEMBER
+ 		SET
+ 			STATUS='Y'
+ 		WHERE 
+ 			ID = #{returnMemberId}
+ 	</update>
+ 	
+ 	<delete id="deleteWithdrawal">
+		DELETE FROM WITHDRAWAL
+		WHERE ID = #{returnMemberId}
+	</delete>
+	
+	<select id="selectAllMemberList" parameterType="string" resultMap="memberResultMap">
+ 		<include refid="selectMemberSql" />
+		WHERE STATUS IN('Y')
+ 	</select>
+ 	
+ 	<select id="selectAllMemberListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE STATUS IN('Y')
+	</select>
+	
+	<select id="selectWithdrawalListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM WITHDRAWAL
+	</select>
+	
+	<select id="getFollowListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+	</select>
  </mapper>
