@@ -209,8 +209,12 @@ public class AdminController {
    public String selectOneDel(HttpServletRequest request) {
 
       String warnId = request.getParameter("warnId");
-
+      
+      //status N
       R_service.OneDel(warnId);
+      
+      //탈퇴 테이블 행 추가
+      M_service.adminWithdrawal(warnId, "관리자 강제 탈퇴");
 
       return "redirect: warnMember";      
    }
@@ -226,6 +230,9 @@ public class AdminController {
       
       for(int i=0; i<memberId.length; i++) {
          StringMemberId[i] = memberId[i];
+         
+       //탈퇴 테이블 행 추가
+         M_service.adminWithdrawal(StringMemberId[i], "관리자 강제 탈퇴");
       }
       
       R_service.selectDel(StringMemberId);
@@ -551,23 +558,24 @@ public class AdminController {
 			  }
    
    // 회원관리(관리자)-----------------------------------------------------------------------------------
-
+			  
+//탈퇴한 회원
    @GetMapping("/admin/member/admin_viewWithdrawMember")
       public ModelAndView admin_viewWithdrawMember(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
          
-      PageInfo pageInfo = new PageInfo(page, 10, M_service.getReportListCount(), 10);
+      PageInfo pageInfo = new PageInfo(page, 10, M_service.getWithdrawalListCount(), 10);
       
       List<memberReport> admin_WithdrawalMemberList= M_service.admin_withdrawalMember(pageInfo);
       
       model.addObject("admin_WithdrawalMemberList", admin_WithdrawalMemberList);
       model.addObject("pageInfo", pageInfo);
-      model.setViewName("/member/admin_viewWithdrawMember");
+      model.setViewName("admin/member/admin_viewWithdrawMember");
       
        return model; 
    }
-   
-   @GetMapping("/admin/member/admin_viewMember")
-      public ModelAndView admin_viewMember(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+ //신고된 회원
+   @GetMapping("/admin/member/admin_viewReportMember")
+      public ModelAndView admin_viewReportMember(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
       
       PageInfo pageInfo = new PageInfo(page, 10, M_service.getReportListCount(), 10);
       
@@ -575,19 +583,33 @@ public class AdminController {
       
       model.addObject("admin_memberList", admin_memberList);
       model.addObject("pageInfo", pageInfo);
-      model.setViewName("/member/admin_viewMember");
+      model.setViewName("admin/member/admin_viewReportMember");
       
        return model; 
    } 
-   
+//전체 회원 관리
+   @GetMapping("/admin/member/admin_viewAllMember")
+      public ModelAndView admin_viewAllMameber(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+      
+      PageInfo pageInfo = new PageInfo(page, 10, M_service.getAllMemberListCount(), 10);
+      
+      List<Member> admin_allMemberList= M_service.admin_AllMember(pageInfo);
+      
+      model.addObject("admin_allMemberList", admin_allMemberList);
+      model.addObject("pageInfo", pageInfo);
+      model.setViewName("admin/member/admin_viewAllMember");
+      
+       return model; 
+   } 
+//회원 경고주기  
    @RequestMapping(value = "/admin/member/oneMemberWarn", method = {RequestMethod.POST})
    public String oneMemberWarn( @RequestParam("warnMemberId")String warnMemberId) {
       
 	   M_service.admin_warnMember(warnMemberId);
       
-      return "redirect:/admin/member/admin_viewMember";
+      return "redirect: admin_viewReportMember";
    }
-   
+//선택 회원 경고주기
    @RequestMapping(value = "/admin/member/selectMemberWarn", method = {RequestMethod.POST})
    public String selectMemberWarn( @RequestParam("cateSelWarnNO")String[] warnMemberId) {
       
@@ -596,6 +618,53 @@ public class AdminController {
          System.out.println( "경고" + warnMemberId[i]);
       }
       
-      return "redirect:/admin/member/admin_viewMember";
+      return "redirect: admin_viewReportMember";
+   }
+//탈퇴 회원 복구하기
+   @RequestMapping(value = "/admin/member/oneMemberReturn", method = {RequestMethod.POST})
+   public String oneMemberReturn( @RequestParam("returnMemberId")String returnMemberId) {
+      
+	   System.out.println(returnMemberId);
+	   //member status = Y
+	   M_service.admin_oneMemberReturn(returnMemberId);
+	   
+	   //withdrawal 테이블 해당 행 삭제
+	   M_service.admin_deleteWithdrawal(returnMemberId);
+      
+      return "redirect: admin_viewWithdrawMember";
+   }
+//전체 회원 관리 - 하나만 탈퇴
+   @PostMapping("/admin/member/onedelMember")
+   public String onedelMember(HttpServletRequest request) {
+
+	      String oneDeleteId = request.getParameter("oneDeleteId");
+	      
+	      //status N
+	      R_service.OneDel(oneDeleteId);
+	      
+	      //탈퇴 테이블 행 추가
+	      M_service.adminWithdrawal(oneDeleteId, "관리자 강제 탈퇴");
+
+	      return "redirect: admin_viewAllMember";      
+   }
+//전체 회원 관리 - 선택된 회원 탈퇴
+   @PostMapping("/admin/member/selectDelMember")
+   public String selectDelMember(HttpServletRequest request) {
+
+      String[] member = request.getParameterValues("cateSelDelNo");
+      String[] memberId = member[0].split(",");
+      
+      String[] StringMemberId = new String[memberId.length];
+      
+      for(int i=0; i<memberId.length; i++) {
+         StringMemberId[i] = memberId[i];
+         
+       //탈퇴 테이블 행 추가
+         M_service.adminWithdrawal(StringMemberId[i], "관리자 강제 탈퇴");
+      }
+      
+      R_service.selectDel(StringMemberId);
+
+      return "redirect: admin_viewAllMember";      
    }
 }

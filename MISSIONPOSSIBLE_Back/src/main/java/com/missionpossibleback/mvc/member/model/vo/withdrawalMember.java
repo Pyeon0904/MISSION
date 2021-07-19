@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class wirhdrawalMember {
+public class withdrawalMember {
 	
 	private String id;
 	
