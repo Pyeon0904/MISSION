@@ -162,7 +162,7 @@ $(function () {
 			<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link">
-									<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
+									<a href="${ path }/admin/member/admin_viewAllMember">활동중인 회원</a>
 								</li>
 								<li class="tab-link current">
 									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
