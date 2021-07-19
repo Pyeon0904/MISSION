@@ -13,7 +13,7 @@
 
 /*---------------제일 바깥 영역 설정-----------------*/
 #box {
-	background-color: rgb(224, 239, 132);
+	background-color: none;
 	width: 100%;
 	height: 1800px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
 	margin-top: 100px;
