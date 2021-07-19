@@ -149,7 +149,7 @@
 					</div>
 
 					<!-- 페이징 처리 ------------>
-					<div id="pageBar" style="align: center;">
+					<div style="align: center; margin-top:10px; text-align:center;">
 						<!-- 맨 처음으로 -->
 						<button onclick="location.href='${ path }/review/reviewList?page=1'">&lt;&lt;</button>
 
