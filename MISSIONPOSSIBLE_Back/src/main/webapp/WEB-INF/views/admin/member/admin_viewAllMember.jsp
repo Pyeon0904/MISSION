@@ -156,18 +156,18 @@ $(function () {
 						<!-- 탭 -->
 						<div class="tabs">
 							<ul class="tabs">
-								<li class="tab-link">
-									<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
+								<li class="tab-link current">
+									<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
 								</li>
 								<li class="tab-link">
 									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
 								</li>
-								<li class="tab-link current">
-									<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
-								</li>
 							</ul>
 						</div>
-						<h2>활동중인 전체 회원</h2>
+						<div class="cateList">
+						<div class="head">
+							<h2 id="title">활동중인 전체 회원</h2>
+						</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
@@ -207,31 +207,6 @@ $(function () {
 								</c:if>
 						</table>
 			    <!-- 게시글 리스트 테이블 끝 ------------------------>	
-			    <!-- 페이지바 -->
-				<div id="pageBar">
-					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=1'">&lt;&lt;</button>
-					
-					<!-- 이전 페이지로 -->
-					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ pageInfo.prvePage }'">&lt;</button>
-		
-					<!--  10개 페이지 목록 -->
-					<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-						<c:if test="${ pageInfo.currentPage == status.current}">
-							<button disabled><c:out value="${ status.current }"/></button>
-						</c:if>
-						<c:if test="${ pageInfo.currentPage != status.current}">
-							<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ status.current }'">
-								<c:out value="${ status.current }"/>
-							</button>
-						</c:if>
-					</c:forEach>
-					
-					<!-- 다음 페이지로 -->
-					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ pageInfo.nextPage }'">&gt;</button>
-					
-					<!-- 맨 끝으로 -->
-					<button onclick="location.href='${ path }/admin/member/admin_viewAllMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
-				</div>
 				<script>
 					$(function(){
 						// 전체선택 해제

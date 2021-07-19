@@ -160,19 +160,19 @@ $(function () {
 					<div class="inner">
 								<!-- 탭 -->
 			<div class="tabs">
-				<ul class="tabs">
-					<li class="tab-link">
-						<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
-					</li>
-					<li class="tab-link current">
-						<a href="${ path }/admin/member/admin_viewDeleteMemberw">탈퇴한 회원</a>
-					</li>
-					<li class="tab-link">
-						<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
-					</li>
-				</ul>
+							<ul class="tabs">
+								<li class="tab-link">
+									<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
+								</li>
+								<li class="tab-link current">
+									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
+								</li>
+							</ul>
 			</div>
-			<h2>탈퇴한 회원 관리</h2>
+			<div class="cateList">
+			<div class="head">
+				<h2 id="title">탈퇴한 회원 관리</h2>
+			</div>
 			<div class="btnArea">
 				<span class="searchArea">
 					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
@@ -205,31 +205,6 @@ $(function () {
 								</c:forEach>
 							</c:if>
 						</table>	
-					</div>
-					 <!-- 페이지바 -->
-					<div id="pageBar">
-						<button onclick="location.href='${ path }/admin/member/admin_viewWithdrawMember?page=1'">&lt;&lt;</button>
-						
-						<!-- 이전 페이지로 -->
-						<button onclick="location.href='${ path }/admin/member/admin_viewWithdrawMember?page=${ pageInfo.prvePage }'">&lt;</button>
-			
-						<!--  10개 페이지 목록 -->
-						<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-							<c:if test="${ pageInfo.currentPage == status.current}">
-								<button disabled><c:out value="${ status.current }"/></button>
-							</c:if>
-							<c:if test="${ pageInfo.currentPage != status.current}">
-								<button onclick="location.href='${ path }/admin/member/admin_viewWithdrawMember?page=${ status.current }'">
-									<c:out value="${ status.current }"/>
-								</button>
-							</c:if>
-						</c:forEach>
-						
-						<!-- 다음 페이지로 -->
-						<button onclick="location.href='${ path }/admin/member/admin_viewWithdrawMember?page=${ pageInfo.nextPage }'">&gt;</button>
-						
-						<!-- 맨 끝으로 -->
-						<button onclick="location.href='${ path }/admin/member/admin_viewWithdrawMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
 					</div>
 					<!-- 회원 복구 확인  -->
 					<div class="cateUpdArea" id="cateDelArea">

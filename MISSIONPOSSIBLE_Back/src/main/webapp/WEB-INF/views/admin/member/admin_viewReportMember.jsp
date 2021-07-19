@@ -156,18 +156,24 @@ $(function () {
 						<!-- 탭 -->
 						<div class="tabs">
 							<ul class="tabs">
+								<li class="tab-link">
+									<a href="${ path }/admin/report/reportReview">신고된 후기 게시글</a>
+								</li>
 								<li class="tab-link current">
 									<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
+									<a href="${ path }/admin/report/reportChallenge">신고된 챌린지</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/admin/member/admin_viewAllMember">전체 회원</a>
+									<a href="${ path }/admin/report/warnMember">경고 회원 관리</a>
 								</li>
 							</ul>
 						</div>
-						<h2>신고된 멤버 관리</h2>
+						<div class="cateList">
+						<div class="head">
+							<h2 id="title">신고된 멤버 관리</h2>
+						</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
@@ -215,31 +221,6 @@ $(function () {
 									</c:forEach>
 								</c:if>
 						</table>	
-			    <!-- 페이지바 -->
-				<div id="pageBar">
-					<button onclick="location.href='${ path }/admin/member/admin_viewReportMember?page=1'">&lt;&lt;</button>
-					
-					<!-- 이전 페이지로 -->
-					<button onclick="location.href='${ path }/admin/member/admin_viewReportMember?page=${ pageInfo.prvePage }'">&lt;</button>
-		
-					<!--  10개 페이지 목록 -->
-					<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-						<c:if test="${ pageInfo.currentPage == status.current}">
-							<button disabled><c:out value="${ status.current }"/></button>
-						</c:if>
-						<c:if test="${ pageInfo.currentPage != status.current}">
-							<button onclick="location.href='${ path }/admin/member/admin_viewReportMember?page=${ status.current }'">
-								<c:out value="${ status.current }"/>
-							</button>
-						</c:if>
-					</c:forEach>
-					
-					<!-- 다음 페이지로 -->
-					<button onclick="location.href='${ path }/admin/member/admin_viewReportMember?page=${ pageInfo.nextPage }'">&gt;</button>
-					
-					<!-- 맨 끝으로 -->
-					<button onclick="location.href='${ path }/admin/member/admin_viewReportMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
-				</div>
 				<script>
 					$(function(){
 						$("#allChecked").click(function(){

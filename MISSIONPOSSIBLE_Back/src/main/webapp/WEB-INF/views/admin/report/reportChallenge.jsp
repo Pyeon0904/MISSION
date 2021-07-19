@@ -53,7 +53,7 @@ $(function () {
 									<a href="${ path }/admin/report/reportReview">신고된 후기 게시글</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
+									<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
 								</li>
 								<li class="tab-link current">
 									<a href="${ path }/admin/report/reportChallenge">신고된 챌린지</a>
