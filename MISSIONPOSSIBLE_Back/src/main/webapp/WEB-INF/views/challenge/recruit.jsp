@@ -262,9 +262,7 @@
 					<tr>
 						<!-- 챌린지 상세 설명(Content) -->
 						<td colspan="2">
-							<p>
-								<c:out value="${ challenge.content }"/>
-							</p>
+							${ challenge.content }
 						</td>
 					</tr>
 				</table>

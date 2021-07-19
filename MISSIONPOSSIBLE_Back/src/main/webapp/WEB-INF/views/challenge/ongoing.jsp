@@ -171,7 +171,7 @@
 								</tr>
 								<tr>
 									<td colspan="2">
-										<c:out value="${ challenge.content }"/>
+										${ challenge.content }
 									</td>
 								</tr>
 							</table>
