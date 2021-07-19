@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
 	#box{ 
-            background-color:rgb(224, 239, 132);
+            background-color:none;
             width:100%;
             height:5000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
             margin-top:330px;

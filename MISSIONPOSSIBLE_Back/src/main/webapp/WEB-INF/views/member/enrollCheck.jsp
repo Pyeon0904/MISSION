@@ -113,7 +113,7 @@ ul {
   padding: 0;
 }
 #box{ 
-        background-color:rgb(224, 239, 132);
+        background-color:none;
         width:100%;
         height:1000px; 
         margin-top:330px;
