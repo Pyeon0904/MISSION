@@ -128,64 +128,70 @@ public class ReviewController {
    // 리뷰 게시글 상세보기
    @RequestMapping(value="/review/reviewView" , method={RequestMethod.GET,RequestMethod.POST})
     public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-          @SessionAttribute(name = "loginMember", required = false) Member loginMember,
-          ModelAndView model,
-         @RequestParam("no") int reviewNo,
-         @ModelAttribute Reply reply) {
-      
-       // 새로고침시 조회수가 증가하는 것을 방지하는 로직
-       // 쿠키에 조회한 내용을 기록하여 한 번 조회하면 그 뒤에는 조회수가 올라가지 않도록 설정
-       // reviewHistory라는 쿠키에 내가 읽은 게시물이 저장되고 있다! (ex. |1| |2| |13|...)
-       // reviewHistory에 내가 지금 보고 있는 페이지가 있는지? (=이미 한번 본 게시글인지)
-       // 1. 쿠키에 조회한 이력이 있는지 확인      
-      Cookie[] cookies = request.getCookies();
-      String reviewHistory = "";   // 쿠키에서 게시글 조회 이력을 읽어오는 변수
-      boolean hasRead = false;   // 읽은 글이면 true, 읽지 않은 글이면 false
-      
-       if(cookies != null) {
-          String name = null;
-          String value = null;
-          
-          for(Cookie cookie : cookies) {
-             name = cookie.getName();
-             value = cookie.getValue();
-             
-             // reviewHistory인 쿠키값을 찾기
-             if("reviewHistory".equals(name)) {
-                reviewHistory = value;
-                
-                if(reviewHistory.contains("|" + reviewNo + "|")) {
-                   // 읽은 게시글
-                   hasRead = true;
-                   
-                   break;
-                }
-             }
-          }
-       }
-       
-       // 2. 읽지 않은 게시글이면 cookie에 기록
-       if(!hasRead) {
-          Cookie cookie = new Cookie("reviewHistory", reviewHistory + "|" + reviewNo + "|");
-          
-          cookie.setMaxAge(-1);   // 브라우저 종료시 삭제
-          response.addCookie(cookie);
-          
-       }
-           if(loginMember != null) {
-          String id = loginMember.getId();
-         List<Heart> Heartlist = service.getHeartList(reviewNo,id);
-         int count = service.getHeartCount(reviewNo);
-         
-         model.addObject("count",count);
-         model.addObject("Heartlist", Heartlist);
-           }
-           
-         Review review = service.findReviewByNo(reviewNo, hasRead);
-         List<Reply> list = service.getReplyList(reviewNo);
-          model.addObject("hasRead",hasRead);
-          model.addObject("review",review);
-          model.addObject("list",list);
+    		@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+    		ModelAndView model,
+			@RequestParam("no") int reviewNo,
+			@ModelAttribute Reply reply) {
+		
+    	// 새로고침시 조회수가 증가하는 것을 방지하는 로직
+    	// 쿠키에 조회한 내용을 기록하여 한 번 조회하면 그 뒤에는 조회수가 올라가지 않도록 설정
+    	// reviewHistory라는 쿠키에 내가 읽은 게시물이 저장되고 있다! (ex. |1| |2| |13|...)
+    	// reviewHistory에 내가 지금 보고 있는 페이지가 있는지? (=이미 한번 본 게시글인지)
+    	// 1. 쿠키에 조회한 이력이 있는지 확인		
+		Cookie[] cookies = request.getCookies();
+		String reviewHistory = "";	// 쿠키에서 게시글 조회 이력을 읽어오는 변수
+		boolean hasRead = false;	// 읽은 글이면 true, 읽지 않은 글이면 false
+		
+    	if(cookies != null) {
+    		String name = null;
+    		String value = null;
+    		
+    		for(Cookie cookie : cookies) {
+    			name = cookie.getName();
+    			value = cookie.getValue();
+    			
+    			// reviewHistory인 쿠키값을 찾기
+    			if("reviewHistory".equals(name)) {
+    				reviewHistory = value;
+    				
+    				if(reviewHistory.contains("|" + reviewNo + "|")) {
+    					// 읽은 게시글
+    					hasRead = true;
+    					
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	
+    	// 2. 읽지 않은 게시글이면 cookie에 기록
+    	if(!hasRead) {
+    		Cookie cookie = new Cookie("reviewHistory", reviewHistory + "|" + reviewNo + "|");
+    		
+    		cookie.setMaxAge(-1);	// 브라우저 종료시 삭제
+    		response.addCookie(cookie);
+    		
+    	}
+    	    if(loginMember != null) {
+    		String id = loginMember.getId();
+			List<Heart> Heartlist = service.getHeartList(reviewNo,id);
+			int count = service.getHeartCount(reviewNo);
+			
+			model.addObject("count",count);
+			model.addObject("Heartlist", Heartlist);
+    	    }
+    	    
+			Review review = service.findReviewByNo(reviewNo, hasRead);
+			List<Reply> list = service.getReplyList(reviewNo);
+			Review prevReview = service.getPrevReview(reviewNo);
+			Review nextReview = service.getNextReview(reviewNo);
+			
+    	    
+			model.addObject("prevReview", prevReview);
+			model.addObject("nextReview", nextReview);
+    		model.addObject("hasRead",hasRead);
+    		model.addObject("review",review);
+    		model.addObject("list",list);
             model.setViewName("review/reviewView");
             return model;
     }
@@ -237,15 +243,16 @@ public class ReviewController {
     
     @PostMapping("/review/reviewReport")
     public ModelAndView reviewReport (ModelAndView model,
-         @SessionAttribute(name = "id", required = false) Member loginMember,
+         @SessionAttribute(name = "loginMember", required = false) Member loginMember,
          HttpServletRequest request,
          @RequestParam("r_no") int reviewNo,
+         @RequestParam("sendId") String sendId,
          @ModelAttribute Report report) {
        
           Review review = service.findReviewByNo(reviewNo, true); 
           
           int result = 0;
-          
+          if(loginMember.getId().equals(sendId)) {
              result = service.report(report);
              
              if(result > 0) {
@@ -257,15 +264,30 @@ public class ReviewController {
              }
              
           model.setViewName("common/msg");
-          
+          } else {
+              model.addObject("msg", "잘못된 접근입니다");
+              model.addObject("location", "/review/reviewList");      
+              model.setViewName("common/msg");
+           }
           return model;
        }
 
     // 리뷰 게시글 삭제
     @GetMapping("/review/reviewDelete")
-    public String deleteReview(@RequestParam("reviewNo")int reviewNo) {
-       service.deleteReview(reviewNo);
-       return "redirect: reviewList";
+    public ModelAndView deleteReview(ModelAndView model,
+    		@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+    		@RequestParam("reviewNo")int reviewNo,
+    		@RequestParam("id")String id) {
+    	
+    	 if(loginMember.getId().equals(id)) {
+	       service.deleteReview(reviewNo);
+	       model.setViewName("redirect: reviewList");
+    	 } else {
+    		 model.addObject("msg", "잘못된 접근입니다");
+             model.addObject("location", "/review/reviewList");      
+             model.setViewName("common/msg");
+          }          
+          return model;
     }
 
     // 리뷰 게시글 수정
@@ -343,7 +365,7 @@ public class ReviewController {
          @ModelAttribute Reply reply) {
           
           Review review = service.findReviewByNo(reviewNo, true);
-          
+    
           int result = 0;
           
              result = service.reply(reply);
@@ -366,17 +388,24 @@ public class ReviewController {
     // 리뷰 게시글 댓글 삭제
     @GetMapping("/review/replyDelete")
     public ModelAndView deleteReply(ModelAndView model,
+    	  @SessionAttribute(name = "loginMember", required = false) Member loginMember,
           @RequestParam("reviewNo") int reviewNo,
-          @RequestParam("replyNo")int replyNo) {
-       
-       Review review = service.findReviewByNo(reviewNo, true); 
-       service.deleteReply(replyNo);
-       service.getReplyCount(reviewNo);
-       
-       model.addObject("msg", "댓글을 삭제했습니다.");
-       model.addObject("location", "/review/reviewView?no=" +review.getNo());
-       model.setViewName("common/msg");
-       
+          @RequestParam("replyNo")int replyNo,
+          @RequestParam("id")String id) {
+    	
+       if(loginMember.getId().equals(id)) {
+	       Review review = service.findReviewByNo(reviewNo, true); 
+	       service.deleteReply(replyNo);
+	       service.getReplyCount(reviewNo);
+	       
+	       model.addObject("msg", "댓글을 삭제했습니다.");
+	       model.addObject("location", "/review/reviewView?no=" +review.getNo());
+	       model.setViewName("common/msg");
+       } else {
+           model.addObject("msg", "잘못된 접근입니다");
+           model.addObject("location", "/review/reviewList");      
+           model.setViewName("common/msg");
+       }
        return model;
     }
     
@@ -386,19 +415,34 @@ public class ReviewController {
          HttpServletRequest request,
          @SessionAttribute(name = "loginMember", required = false) Member loginMember,
          @RequestParam("reviewNo") int reviewNo,
-         @RequestParam("replyNo") int replyNo) {
-          
-          boolean hasRead = true;
-          Reply reply = service.findReplyByNo(replyNo);
-          Review review = service.findReviewByNo(reviewNo, hasRead);
-         List<Reply> list = service.getReplyList(reviewNo);
-         int test = replyNo;
-         
-         model.addObject("test",test);
-          model.addObject("review",review);
-          model.addObject("reply", reply);
-          model.addObject("list",list);
-          model.setViewName("/review/replyModify");
+         @RequestParam("replyNo") int replyNo,
+         @RequestParam("id")String id) {
+    	if(loginMember.getId().equals(id)) { 
+	        boolean hasRead = true;
+	        Reply reply = service.findReplyByNo(replyNo);
+	        Review review = service.findReviewByNo(reviewNo, hasRead);
+	        List<Reply> list = service.getReplyList(reviewNo);
+	        int test = replyNo;
+			List<Heart> Heartlist = service.getHeartList(reviewNo,id);
+			int count = service.getHeartCount(reviewNo);
+			Review prevReview = service.getPrevReview(reviewNo);
+			Review nextReview = service.getNextReview(reviewNo);
+			   	    
+			model.addObject("prevReview", prevReview);
+			model.addObject("nextReview", nextReview);
+			model.addObject("count",count);
+			model.addObject("Heartlist", Heartlist);
+	        model.addObject("test",test);
+	        model.addObject("review",review);
+	        model.addObject("reply", reply);
+	        model.addObject("list",list);
+	        model.setViewName("/review/replyModify");
+    	} else {
+            model.addObject("msg", "잘못된 접근입니다");
+            model.addObject("location", "/review/reviewList");      
+            model.setViewName("common/msg");
+         }
+    	
        return model;
     }
     
@@ -408,10 +452,11 @@ public class ReviewController {
          @SessionAttribute(name = "loginMember", required = false) Member loginMember,
          @RequestParam("reviewNo") int reviewNo,
          @RequestParam("no") int replyNo,
-         @ModelAttribute Reply reply) {
-
+         @ModelAttribute Reply reply,
+         @RequestParam("id")String id) {
+    	if(loginMember.getId().equals(id)) { 
           int result = 0;
-         result = service.reply(reply);
+          result = service.reply(reply);
          
           boolean hasRead = true;
           Review review = service.findReviewByNo(reviewNo, hasRead);
@@ -423,7 +468,11 @@ public class ReviewController {
             model.addObject("msg", "댓글 수정에 실패하였습니다.");
             model.addObject("location", "/review/reviewView?no=" +review.getNo());
          }
-      
+    	}	else {
+            model.addObject("msg", "잘못된 접근입니다");
+            model.addObject("location", "/review/reviewList");      
+            model.setViewName("common/msg");
+         }
       model.setViewName("common/msg");
 
        return model;

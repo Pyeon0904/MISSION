@@ -26,7 +26,7 @@ public interface MemberMapper {
 
 	int deleteMember(@Param("memberNo") int memberNo);
 
-	int saveWithdrawal(@Param("member")Member member, @Param("reasonWithdrawal") String reasonWithdrawal);
+	int saveWithdrawal(@Param("id")String id, @Param("reasonWithdrawal") String reasonWithdrawal);
 	
 	int selectListCount();
 
@@ -53,5 +53,17 @@ public interface MemberMapper {
 	List<Grade> setGradeName();
 
 	void updateGradename(@Param("gradeName")String gradeName, @Param("no")int no);
+
+	void oneMemberReturn(@Param("returnMemberId")String returnMemberId);
+
+	void deleteWithdrawal(@Param("returnMemberId")String returnMemberId);
+
+	List<Member> selectAllMemberList(RowBounds rowBounds);
+
+	int selectAllMemberListCount();
+
+	int selectWithdrawalListCount();
+
+	int getFollowListCount();
 
 }

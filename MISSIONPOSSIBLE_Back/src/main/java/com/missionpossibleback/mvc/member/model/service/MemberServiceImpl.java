@@ -141,7 +141,7 @@ public class MemberServiceImpl implements MemberService {
 		result *= mapper.deleteMember(loginMember.getMemberNo());
 		
 		//withdrawal 값 추가
-		result *= mapper.saveWithdrawal(loginMember, reasonWithdrawal);
+		result *= mapper.saveWithdrawal(loginMember.getId(), reasonWithdrawal);
 		
 		return result;
 	}
@@ -190,6 +190,26 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.selectMemberIdList();
 	}
+//등급테이블 가져오기
+	@Override
+	public List<Grade> setGradeName(int point) {
+			
+		return mapper.setGradeName();
+	}
+//등급 member gradeName에 삽입
+	@Override
+	public void updateGradename(String gradeName, int no) {
+			
+		mapper.updateGradename(gradeName, no);
+	}
+//팔로우 리스트 count
+	@Override
+	public int getFollowListCount() {
+		
+		return mapper.getFollowListCount();
+	}
+	
+////////////////////////////////////////관리자/////////////////////////////////////////////////////////
 //admin_viewMember - 신고된 회원 조회
 	@Override
 	public List<memberReport> admin_reportMember(PageInfo pageInfo) {
@@ -198,19 +218,15 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.selectReportMemberList(rowBounds);
 	}
-	
+//admin_viewMember - 전체 회원 조회
 	@Override
-	public int getReportListCount() {
+	public List<Member> admin_AllMember(PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
 		
-		return mapper.selectReportListCount();
+		return mapper.selectAllMemberList(rowBounds);
 	}
-//admin- 신고 회원 경고 주기
-	@Override
-	public int admin_warnMember(String warnMemberId) {
-		
-		return mapper.addMemberReportCount(warnMemberId);
-	}
-//admin_viewWithdrawMember- 탈퇴 회원 
+//admin_viewWithdrawMember- 탈퇴 회원 뷰
 	@Override
 	public List<memberReport> admin_withdrawalMember(PageInfo pageInfo) {
 		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
@@ -218,16 +234,47 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.selectWithdrawalMemberList(rowBounds);
 	}
-//등급테이블 가져오기
+//관리자 - 신고된 회원 수 
 	@Override
-	public List<Grade> setGradeName(int point) {
+	public int getReportListCount() {
 		
-		return mapper.setGradeName();
+		return mapper.selectReportListCount();
 	}
-//등급 member gradeName에 삽입
+//관리자 - 전체 회원 수 
 	@Override
-	public void updateGradename(String gradeName, int no) {
+	public int getAllMemberListCount() {
 		
-		mapper.updateGradename(gradeName, no);
+		return mapper.selectAllMemberListCount();
+	}
+//관리자 - 탈퇴한 회원 수
+	@Override
+	public int getWithdrawalListCount() {
+		
+		return mapper.selectWithdrawalListCount();
+	}
+//관리자 - 신고 회원 경고 주기
+	@Override
+	public int admin_warnMember(String warnMemberId) {
+		
+		return mapper.addMemberReportCount(warnMemberId);
+	}
+//관리자 - 회원 강제 탈퇴시 탈퇴 테이블 행추가
+	@Override
+	public void adminWithdrawal(String warnId, String reason) {
+		
+		mapper.saveWithdrawal(warnId, reason);
+	}
+//관리자 - 탈퇴 회원 복구
+	@Override
+	public void admin_oneMemberReturn(String returnMemberId) {
+		
+		mapper.oneMemberReturn(returnMemberId);
+	}
+//관리자 - 복구 시 withdrawal 행 삭제
+	@Override
+	public void admin_deleteWithdrawal(String returnMemberId) {
+		
+		mapper.deleteWithdrawal(returnMemberId);
+		
 	}
 }

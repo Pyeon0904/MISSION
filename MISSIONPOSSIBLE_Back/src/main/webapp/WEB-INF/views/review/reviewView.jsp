@@ -69,7 +69,7 @@
 											<th>첨부파일</th>
 											<td colspan="3">
 												<c:if test="${ !empty review.originalFileName }">
-													<a href="javascript:fileDownload('${ review.originalFileName }', '${ review.renamedFileName }')">
+													<a style="text-decoration:none; color:#666;" href="javascript:fileDownload('${ review.originalFileName }', '${ review.renamedFileName }')">
 														<img src="${ path }/images/file.png" width="20" height="20" /> 
 															<c:out value="${ review.originalFileName }"></c:out>
 													</a>
@@ -180,6 +180,41 @@
 									<button type="button" class="btn black" id="delete">삭제하기</button>
 								</c:if>
 							</div>
+							<!-- 이전글/다음글 -->
+							<table class="type04">
+								<colgroup>
+									<col width="14%">
+								</colgroup>
+								<tbody>
+								<tr>
+									<th style="vertical-align: middle;">이전글</th>
+									<c:if test="${ !empty prevReview }">
+									<td><a style="text-decoration:none; color:#666;" href="${ path }/review/reviewView?no=${prevReview.no}">${ prevReview.title }								
+										<c:if test="${ prevReview.replyCount != 0 }">
+											[${ prevReview.replyCount }]
+										</c:if>
+									</a></td>
+									</c:if>
+									<c:if test="${ empty prevReview }">
+									<td>이전 글이 없습니다.</td>
+									</c:if>
+								</tr>
+								<tr>
+									<th style="vertical-align: middle;">다음글</th>
+									<c:if test="${ !empty nextReview }">
+									<td><a style="text-decoration:none; color:#666;" href="${ path }/review/reviewView?no=${nextReview.no}">${ nextReview.title }
+										<c:if test="${ nextReview.replyCount != 0 }">
+											[${ nextReview.replyCount }]
+										</c:if>									
+									</a></td>
+									</c:if>
+									<c:if test="${ empty nextReview }">
+									<td>다음 글이 없습니다.</td>
+									</c:if>
+								</tr>
+	  							</tbody>
+  							</table>
+  							<!-- 이전글/다음글 끝 -->
 							<!-- 후기 게시글 신고 모달 -->
 							<div class="cateUpdArea" id="cateDelArea">
 								<div class="newWrapper">
@@ -230,13 +265,13 @@
 								                    </td>
 								                </tr>
 								            </table>
-								        </form>   
+								        </form>
 									</div>
 								</div>
 							</div>
 							<script>
 								$(function(){
-									// 게시글 삭제
+									// 게시글 신고
 									$("#btn-report").click(function(){
 										$("div#cateDelArea").css("display", "block");
 										$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
@@ -263,14 +298,14 @@
 	// 댓글 수정 버튼 클릭시
 	$(document).on("click","#replyModify",function(){ 
 		var replyNo = $(this).attr("data-no")
-		location.replace("${ path }/review/replyModify?replyNo="+replyNo+"&reviewNo=${ review.no }");
+		location.replace("${ path }/review/replyModify?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 	});		
 
 	// 댓글 삭제 버튼 클릭시
 	$(document).on("click","#replyDelete",function(){ 
 				var replyNo = $(this).attr("data-no")
 				if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
-		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }");
+		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 		    	}
 	});	
 	
@@ -287,12 +322,12 @@
 	$(document).ready(() => {
 		
 		$("#update").on("click", (e) => {
-			location.href = "${ path }/review/reviewModify?no=${ review.no }";
+			location.href = "${ path }/review/reviewModify?no=${ review.no }&id=${loginMember.getId()}";
 		});
 		
 		$("#delete").on("click", (e) => {
 			if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
-				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }");
+				location.replace("${ path }/review/reviewDelete?reviewNo=${ review.no }&id=${loginMember.getId()}");
 			}
 		});
 	});

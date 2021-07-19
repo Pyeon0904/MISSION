@@ -178,7 +178,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 							<td><input type="password" class="tbox01" name="pass"></td>
 						</tr>
 						
-						<c:if test="${ loginMember.id.equals(\"admin\") }">
+						<c:if test="${ loginMember.status eq 'A' }">
 							<tr class="form-inline">
 								<th scope="row">공지글</th>
 						    	<td style="vertical-align : middle;">

@@ -157,21 +157,30 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link current">
-									<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
+									<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
 								</li>
 								<li class="tab-link">
-									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
+									<a href="${ path }/admin/report/reportChallenge">신고된 챌린지</a>
+								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/report/reportReview">신고된 후기 게시글</a>
+								</li>
+								<li class="tab-link">
+									<a href="${ path }/admin/report/warnMember">경고 회원 관리</a>
 								</li>
 							</ul>
 						</div>
-						<h2>신고된 멤버 관리</h2>
+						<div class="cateList">
+						<div class="head">
+							<h2 id="title">신고된 멤버 관리</h2>
+						</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
 								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 경고</button>
 							</span>
 						</div>
-						<!-- 멤버 신고 테이블 ------------------------>
+						<!-- 신고된 멤버 테이블 ------------------------>
 						<div class="tbArea">
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
@@ -182,6 +191,7 @@ $(function () {
 									<th>신고유형</th>
 									<th>신고내용</th>
 									<th>경고횟수</th>
+									<th>상태</th>
 									<th>처리</th>
 								</tr>
 								<c:if test="${ admin_memberList != null}">
@@ -195,41 +205,24 @@ $(function () {
 											<td><c:out value="${ memberReport.reportContent }" /></td>
 											<td><c:out value="${ memberReport.reportCount }" /></td>
 											<td>
-												<button type="button" id="selectRemoveBtn" style="content: left;" class="stat-bt1 removeBtn" value="${ memberReport.reportId }">경고</button>
+												<c:if test="${ memberReport.status eq 'N'}">
+													<c:out value="탈퇴" />
+												</c:if>
+												<c:if test="${ memberReport.status eq 'Y'}">
+													<c:out value="활동중" />
+												</c:if>
+											</td>
+											<td>
+												<c:if test="${ memberReport.status eq 'Y'}">
+													<button type="button" id="selectRemoveBtn" style="content: left;" class="stat-bt1 removeBtn" value="${ memberReport.reportId }">경고</button>
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>
 								</c:if>
-						</table>
-			    <!-- 게시글 리스트 테이블 끝 ------------------------>	
-			    <!-- 페이지바 -->
-				<div id="pageBar">
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=1'">&lt;&lt;</button>
-					
-					<!-- 이전 페이지로 -->
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=${ pageInfo.prvePage }'">&lt;</button>
-		
-					<!--  10개 페이지 목록 -->
-					<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-						<c:if test="${ pageInfo.currentPage == status.current}">
-							<button disabled><c:out value="${ status.current }"/></button>
-						</c:if>
-						<c:if test="${ pageInfo.currentPage != status.current}">
-							<button onclick="location.href='${ path }/member/admin_viewMember?page=${ status.current }'">
-								<c:out value="${ status.current }"/>
-							</button>
-						</c:if>
-					</c:forEach>
-					
-					<!-- 다음 페이지로 -->
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=${ pageInfo.nextPage }'">&gt;</button>
-					
-					<!-- 맨 끝으로 -->
-					<button onclick="location.href='${ path }/member/admin_viewMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
-				</div>
+						</table>	
 				<script>
 					$(function(){
-						// 전체선택 해제
 						$("#allChecked").click(function(){
                             $("input:checkbox").each(function(){
                                 if($(this).is(":checked")){
@@ -243,7 +236,7 @@ $(function () {
                         });
 					});					
 				</script>
-				<!-- 후기 게시글 삭제 모달 -->
+				<!-- 회원 경고 -->
 				<div class="cateUpdArea" id="cateDelArea">
 					<div class="newWrapper">
 						<div class="titleArea">
@@ -252,7 +245,7 @@ $(function () {
 						<div class="contentArea">
 							<div class="div-inf" id="individual">
 							</div>
-							<form id=delForm action="<%= request.getContextPath() %>/member/oneMemberWarn" method="POST">
+							<form id=delForm action="<%= request.getContextPath() %>/admin/member/oneMemberWarn" method="POST">
 								<input type="hidden" name="warnMemberId" id="warnMemberId">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
@@ -264,16 +257,13 @@ $(function () {
 				</div>
 				<script>
 					$(function(){
-						// 게시글 삭제
 						$('button.removeBtn').click(function(){
 							$("div#cateDelArea").css("display", "block");
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
-							// 게시글 제목 알려주기
 							var secId = $(this).val();
 							$('div#individual').html("<h2>"+secId+" 회원을<br> 경고 처리 하시겠습니까?</h2>");
 							
-							// 아이디 폼으로 가져오기
 							$("input#warnMemberId").val(secId);
 						});
 						$('button.closeDelBtn').click(function(){
@@ -282,7 +272,7 @@ $(function () {
 						});
 					});
 				</script>
-				<!-- 후기 게시글 선택 경고 모달 -->	
+				<!-- 선택 회원 경고 -->	
 				<div class="cateUpdArea" id="selectRemoveArea">
 					<div class="newWrapper">
 						<div class="titleArea">
@@ -292,7 +282,7 @@ $(function () {
 							<div class="div-inf">
 								<h2>정말로 경고를 주시겠습니까?</h2>
 							</div>
-							<form id="selDelForm" action="<%= request.getContextPath() %>/member/selectMemberWarn" method="POST">
+							<form id="selDelForm" action="<%= request.getContextPath() %>/admin/member/selectMemberWarn" method="POST">
 								<input type="hidden" name="cateSelWarnNO" id="cateSelWarnNO">
 								<div class="infSendArea">
 									<input type="submit" class="inf-bt2" value="확인">
@@ -304,19 +294,15 @@ $(function () {
 				</div>
 				<script>
 					$(function(){
-						// 게시글 삭제
 						$('#allRemoveBtn').click(function(){
-							// 모달 창 띄우기
 							$("#selectRemoveArea").css("display", "block");
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
-							// 체크된 번호 배열로 묶어서 전달
 							var arrID = [];
 							var $objects = $('.tdCheck');
 							
 							$.each($objects,function(index,item){
 								if($(item).prop('checked')){
-									// 선택된 값 삭제 창에 전달
 									var selID = $(item).parent('td').siblings('.noTd').html();
 									arrID.push(selID);
 									$("#cateSelWarnNO").val(arrID);

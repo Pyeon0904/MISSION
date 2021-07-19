@@ -270,13 +270,13 @@
 </head>
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
-		<c:if test="${ loginMember.id eq 'admin' }">
+		<c:if test="${ loginMember.status eq 'A' }">
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">고객관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고접수</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
 						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
 					</ul>

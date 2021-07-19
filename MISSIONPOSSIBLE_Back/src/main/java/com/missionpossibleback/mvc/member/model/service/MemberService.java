@@ -59,5 +59,18 @@ public interface MemberService {
 
 	void updateGradename(String gradeName, int no);
 
+	void adminWithdrawal(String warnId, String reason);
+
+	void admin_oneMemberReturn(String returnMemberId);
+
+	void admin_deleteWithdrawal(String returnMemberId);
+
+	List<Member> admin_AllMember(PageInfo pageInfo);
+
+	int getAllMemberListCount();
+
+	int getWithdrawalListCount();
+
+	int getFollowListCount();
 
 }
