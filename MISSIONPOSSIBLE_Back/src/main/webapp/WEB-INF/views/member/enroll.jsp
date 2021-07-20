@@ -671,7 +671,7 @@ ul {
 			<table  border="1" style="margin:0 auto;">
 				<tr>
 					<td style="width:300px; height:300px;">
-						<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+						<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
 					</td>
 					<td>
 						<ul class="join_ulcss">
