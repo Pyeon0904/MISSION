@@ -343,8 +343,8 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
+					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
 						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->
