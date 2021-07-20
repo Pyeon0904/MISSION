@@ -149,7 +149,7 @@
 		/*메인 탭*/	
 		.adminMaintab {
 			position:relative;
-			left: 63.1%;
+			left: 62%;
 			list-style-type: none;		
 			padding: 0;
 			margin: 0;
@@ -158,7 +158,7 @@
 		/*메인탭 설정*/
 		.adminMaintab li {
 			float: left;
-			width: 120px;
+			width: 140px;
 			position: relative;
 			padding: 0;
 			line-height: 25px;
@@ -198,15 +198,15 @@
 		
 		#hamburger{
 			width:450px;
-			height:800px;
+			height:850px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 1;
 			display:none;
+			z-index: 999;
 		}
 		
 		#login{
@@ -267,15 +267,15 @@
 </head>
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
-		<c:if test="${ loginMember.id eq 'admin' }">
+		<c:if test="${ loginMember.status eq 'A' }">
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
-						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기게시판관리</a></li>
 					</ul>
 					</div>
 			</div>

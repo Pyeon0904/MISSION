@@ -10,7 +10,7 @@
 		text-align:center;
 	}
 	#box{ 
-      background-color:rgb(224, 239, 132);
+      background-color:none;
       width:100%;
       height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
       margin-top:330px;
@@ -72,7 +72,7 @@
 							<td rowspan="2" style="width:400px; height:200px;">
 								<c:if test="${ followMember.renamedFileName == null }">
 									<div class="box" style="background: #BDBDBD;">
-										<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+										<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 									</div>
 								</c:if>
 								<c:if test="${ followMember.renamedFileName != null }">

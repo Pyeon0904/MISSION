@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
 	#box{ 
-            background-color:rgb(224, 239, 132);
+            background-color:none;
             width:100%;
             height:5000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
             margin-top:330px;
@@ -160,28 +160,32 @@ $(function () {
 					<div class="inner">
 								<!-- 탭 -->
 			<div class="tabs">
-				<ul class="tabs">
-					<li class="tab-link">
-						<a href="${ path }/admin/member/admin_viewMember">신고된 회원</a>
-					</li>
-					<li class="tab-link current">
-						<a href="${ path }/admin/member/admin_viewDeleteMemberw">탈퇴한 회원</a>
-					</li>
-				</ul>
+							<ul class="tabs">
+								<li class="tab-link">
+									<a href="${ path }/admin/member/admin_viewAllMember">활동중인 회원</a>
+								</li>
+								<li class="tab-link current">
+									<a href="${ path }/admin/member/admin_viewWithdrawMember">탈퇴한 회원</a>
+								</li>
+							</ul>
 			</div>
-			<h2>탈퇴한 회원 관리</h2>
+			<div class="cateList">
+			<div class="head">
+				<h2 id="title">탈퇴한 회원 관리</h2>
+			</div>
 			<div class="btnArea">
 				<span class="searchArea">
 					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
 				</span>
 			</div>
-					<!-- 탈퇴 리스트 테이블 ------------------------>
+			<!-- 탈퇴 리스트 테이블 ------------------------>
 					<div class="tbArea">
 						<table class="cateListTb memListTb">
 							<tr id="titleTd">
 									<th>날짜</th>
 									<th>탈퇴한 회원 ID</th>
 									<th>탈퇴 이유</th>
+									<th>복구</th>
 							</tr>
 							<c:if test="${ admin_WithdrawalMemberList != null }">
 								<c:forEach var="WithdrawalMemberList" items="${ admin_WithdrawalMemberList }">
@@ -196,36 +200,51 @@ $(function () {
 											<c:out value="${ WithdrawalMemberList.reason }" />
 										</c:if>
 										</td>
+										<td><button type="button" id="Return" class="stat-bt1 removeBtn" value="${ WithdrawalMemberList.id }">복구</button></td>
 									</tr>
 								</c:forEach>
 							</c:if>
 						</table>	
 					</div>
-					 <!-- 페이지바 -->
-					<div id="pageBar">
-						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=1'">&lt;&lt;</button>
-						
-						<!-- 이전 페이지로 -->
-						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ pageInfo.prvePage }'">&lt;</button>
-			
-						<!--  10개 페이지 목록 -->
-						<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
-							<c:if test="${ pageInfo.currentPage == status.current}">
-								<button disabled><c:out value="${ status.current }"/></button>
-							</c:if>
-							<c:if test="${ pageInfo.currentPage != status.current}">
-								<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ status.current }'">
-									<c:out value="${ status.current }"/>
-								</button>
-							</c:if>
-						</c:forEach>
-						
-						<!-- 다음 페이지로 -->
-						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ pageInfo.nextPage }'">&gt;</button>
-						
-						<!-- 맨 끝으로 -->
-						<button onclick="location.href='${ path }/member/admin_viewWithdrawMember?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
+					<!-- 회원 복구 확인  -->
+					<div class="cateUpdArea" id="cateDelArea">
+						<div class="newWrapper">
+							<div class="titleArea">
+								<h2>회원 복구</h2>
+							</div>
+							<div class="contentArea">
+								<div class="div-inf" id="individual">
+								</div>
+								<form id=delForm action="<%= request.getContextPath() %>/admin/member/oneMemberReturn" method="POST">
+									<input type="hidden" name="returnMemberId" id="returnMemberId">
+									<div class="infSendArea">
+										<input type="submit" class="inf-bt2" value="확인">
+										<button type="button" class="inf-bt1 closeDelBtn">취소</button>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
+					<script>
+						$(function(){
+							// 회원복구
+							$('button.removeBtn').click(function(){
+								$("div#cateDelArea").css("display", "block");
+								$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
+								
+								// 회원 아이디 알려주기
+								var secId = $(this).val();
+								$('div#individual').html("<h2>"+secId+" 회원을<br> 복구 하시겠습니까?</h2>");
+								
+								// 아이디 폼으로 가져오기
+								$("input#returnMemberId").val(secId);
+							});
+							$('button.closeDelBtn').click(function(){
+								$('div.cateUpdArea').css("display", "none");
+								$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
+							});
+						});
+					</script>
 				</div>
 			</div>
 		</div>

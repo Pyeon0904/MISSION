@@ -96,4 +96,8 @@ public interface ReviewService {
 
 	int getHeartCount(int reviewNo);
 
+	Review getPrevReview(int reviewNo);
+
+	Review getNextReview(int reviewNo);
+
 }

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ include file="/WEB-INF/views/common/headerDetail.jsp"%> 
+<%@ include file="/WEB-INF/views/common/header.jsp"%> 
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
@@ -19,7 +19,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+   #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
@@ -94,7 +94,14 @@ $(function () {
 											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
 											<td class="view-click td-3"><c:out value="${ review.title } " />
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>

@@ -79,8 +79,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
-div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
-
+div#pageBar{margin-top:10px; text-align:center; background-color:none;}
 
 .ui-autocomplete {
 	max-height: 120px;
@@ -88,8 +87,6 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 	/* prevent horizontal scrollbar */
 	overflow-x: hidden;
 	}
-
-div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
 
 table.type04 {
   border-collapse: separate;

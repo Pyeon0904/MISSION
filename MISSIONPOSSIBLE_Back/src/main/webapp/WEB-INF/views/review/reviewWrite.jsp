@@ -22,7 +22,7 @@
 <script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+   #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
@@ -46,16 +46,16 @@
 				    <tbody id="tbody">
 						<tr>
 							<th>제목<span class="t_red">*</span></th>
-							<td><input id="board_subject" name="title" class="tbox01" placeholder="제목을 입력해주세요." required/></td>
+							<td><input id="board_subject" name="title" class="tbox01" placeholder="제목을 입력해주세요." style="width:350px" required/></td>
 						</tr>
 						<tr>
 							<th>작성자</th>
-							<td><input type="text" name="writerId" class="tbox01" value="${ loginMember.id }" readonly></td>
+							<td><input type="text" name="writerId" class="tbox01" value="${ loginMember.id }" style="width:350px" readonly></td>
 						</tr>
 						<tr>
 							<th>챌린지</th>
 							<td>			
-								<input type="text" name="challengeTitle" class="tbox01" id="challangeSearch" placeholder="내가 참여한&완료된 챌린지에만 후기를 작성할 수 있습니다." readonly/>
+								<input type="text" name="challengeTitle" class="tbox01" id="challangeSearch" placeholder="내가 참여한&완료된 챌린지에만 후기를 작성할 수 있습니다." style="width:350px" readonly/>
 						</tr>
 						<tr>
 							<th>내용<span class="t_red">*</span></th>
@@ -133,25 +133,6 @@ function sendFile(file, editor, welEditable) {
           }
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 </body>
 </html>

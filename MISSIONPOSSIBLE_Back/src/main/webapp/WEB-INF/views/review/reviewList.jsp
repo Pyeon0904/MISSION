@@ -20,7 +20,7 @@
 
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+   #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
@@ -83,7 +83,7 @@
 									<option value="5">전체</option>
 								</select> 
 								<input type="text" id="searchInput" name="word" class="form-control"
-									style="width: 200px; padding: 3px 20px 6px 20px" value=${ word }>
+									placeholder="검색어를 입력하세요" style="width: 140px; padding: 3px 20px 6px 20px" value=${ word }>
 								<button type="submit" class="btn btn-warning">검색</button>
 							</div>
 						</form>
@@ -121,14 +121,21 @@
 									<c:forEach var="review" items="${ list }">
 										<tr>
 											<td><c:out value="${ review.no }" /></td>
-											<td><a href="${ path }/review/reviewView?no=${review.no}">
+											<td><a href="${ path }/review/reviewView?no=${review.no}" style="text-decoration:none; color:#666;">
 												<c:out value="${ review.title } " /> 
 													<c:if test="${ review.replyCount != 0 }">
 														[${ review.replyCount }]
 													</c:if>
 												</a>
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>											
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>
@@ -149,7 +156,7 @@
 					</div>
 
 					<!-- 페이징 처리 ------------>
-					<div id="pageBar" style="align: center;">
+					<div style="align: center; margin-top:10px; text-align:center;">
 						<!-- 맨 처음으로 -->
 						<button onclick="location.href='${ path }/review/reviewList?page=1'">&lt;&lt;</button>
 

@@ -24,4 +24,6 @@ public class memberReport {
 	
 	private int reportCount;
 	
+	private String status;
+	
 }

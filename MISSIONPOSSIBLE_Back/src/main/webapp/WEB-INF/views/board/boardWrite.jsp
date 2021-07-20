@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 
 <style>
-#box{background-color:rgb(224, 239, 132);width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+#box{background-color:none;width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
      margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
@@ -178,7 +178,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 							<td><input type="password" class="tbox01" name="pass"></td>
 						</tr>
 						
-						<c:if test="${ loginMember.id.equals(\"admin\") }">
+						<c:if test="${ loginMember.status eq 'A' }">
 							<tr class="form-inline">
 								<th scope="row">공지글</th>
 						    	<td style="vertical-align : middle;">

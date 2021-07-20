@@ -270,13 +270,13 @@
 </head>
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
-		<c:if test="${ loginMember.id eq 'admin' }">
+		<c:if test="${ loginMember.status eq 'A' }">
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">고객관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고접수</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
 						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
 					</ul>
@@ -343,8 +343,8 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
+					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
 						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->

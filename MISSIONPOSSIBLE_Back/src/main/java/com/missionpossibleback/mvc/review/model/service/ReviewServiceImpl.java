@@ -307,4 +307,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.selectHeartCount(reviewNo);
 	}
 
+	@Override
+	public Review getPrevReview(int reviewNo) {
+		return mapper.selectPrevReview(reviewNo);
+	}
+
+	@Override
+	public Review getNextReview(int reviewNo) {
+		return mapper.selectNextReview(reviewNo);
+	}
+
 }

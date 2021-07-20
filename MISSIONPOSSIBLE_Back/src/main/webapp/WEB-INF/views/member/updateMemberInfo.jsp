@@ -338,7 +338,7 @@ ul {
 	 text-align: center;
 }
 #box{ 
-        background-color:rgb(224, 239, 132);
+        background-color:none;
         width:100%;
         height:1000px; 
         margin-top:330px;
@@ -601,7 +601,7 @@ ul {
 					<tr>
 						<td style="width:300px; height:200px;">
 							<c:if test="${ loginMember.renamedFileName == null }">
-								<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
 							</c:if>
 							<c:if test="${ loginMember.renamedFileName != null }">
 								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
