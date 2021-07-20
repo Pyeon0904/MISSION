@@ -95,7 +95,14 @@ $(function () {
 											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
 												<c:out value="${ review.title } " /> </a>
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>

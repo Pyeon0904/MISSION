@@ -94,7 +94,14 @@ $(function () {
 											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
 											<td class="view-click td-3"><c:out value="${ review.title } " />
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>
