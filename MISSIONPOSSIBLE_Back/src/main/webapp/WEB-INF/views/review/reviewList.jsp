@@ -128,7 +128,14 @@
 													</c:if>
 												</a>
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>											
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>

@@ -50,7 +50,7 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link">
-									<a href="${ path }/admin/member/reportMember">신고된 회원</a>
+									<a href="${ path }/admin/member/admin_viewReportMember">신고된 회원</a>
 								</li>
 								<li class="tab-link current">
 									<a href="${ path }/admin/report/reportChallenge">신고된 챌린지</a>
