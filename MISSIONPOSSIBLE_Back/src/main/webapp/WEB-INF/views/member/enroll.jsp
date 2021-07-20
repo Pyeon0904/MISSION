@@ -15,6 +15,29 @@
 <title>회원가입</title>
 <style>
 
+/* 전체 페이지 틀 */
+	#box{ 
+    	background-color:none;
+    	width:100%;
+    	height:600px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+    	margin-top:auto;
+    	margin-bottom:150px;
+    	margin-left:-10px;
+    	padding:10px;
+	}       
+	#conbox{
+	     width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
+	     position:relative; 
+	     top:20px;
+	     margin:auto;
+}
+/* -------------------------------------------------------------- */
+	h3{
+		font-weight:bold;
+		text-align:center;
+		font-size:50px;
+	}
+
 .section_join{
     height: auto;
     /* border: 1px solid red; */
@@ -179,7 +202,8 @@
     width: 110px;
     height: 40px;
     border: none;
-    background-color: #eee;
+    background-color: #F7F8E0;
+    color: black;
     cursor: pointer;
 }
 
@@ -272,8 +296,8 @@
 .join_all_btn{
     width: 250px;
     height: 40px;
-    background-color: black;
-    color: white;
+    background-color: #F7F8E0;
+    color: black;
     text-align: center;
     line-height: 40px;
     float: left;
@@ -302,7 +326,6 @@
 /* 기본 setting 사항 */
 
 html,
-body,
 div,
 label,
 section,
@@ -368,27 +391,12 @@ ul {
      color: red;
 }
  
-#box{ 
-      background-color:none;
-      width:100%;
-      height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-      margin-top:330px;
-      margin-bottom:100px;
-      margin-left:-10px;
-      padding:10px;
-}       
-#conbox{
-	     width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-	     position:relative; 
-	     top:20px;
-	     margin:auto;
-}
 .input-file-button{
 
 	  padding: 10px 20px;
-	  background-color:black;
+	  background-color:#F7F8E0;
 	  border-radius: 4px;
-	  color: white;
+	  color: black;
 	  cursor: pointer;
 }
 
@@ -656,14 +664,11 @@ ul {
 
 </head>
 <body>
-<br><br><br>
 
 <div id="box">
       <section id="section">
          <div id="conbox">
-	<br><br><br><br><br><br>
-	<h4 style="text-align: center;">회원가입</h4>
-	<br><br>
+	<h3>회원가입</h3>
 	<hr>
 	<br><br>
 	<div id="enroll-container">

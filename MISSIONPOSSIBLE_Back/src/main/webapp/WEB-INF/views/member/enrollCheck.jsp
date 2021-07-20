@@ -14,6 +14,31 @@
 <meta charset="UTF-8">
 <title>이용약관</title>
 <style>
+
+/* 전체 페이지 틀 */
+	#box{ 
+	        background-color:none;
+	        width:100%;
+	        height:600px; 
+	        margin-top:auto;
+	        margin-bottom:100px;
+	        margin-left:-10px;
+	        padding:10px;
+	}
+	#conbox{
+	        width:1600px; 
+	        position:relative; 
+	        top:20px;
+	        margin:auto;
+	}
+/*-------------------------------------------------------*/
+
+	h3{
+		font-weight:bold;
+		text-align:center;
+		font-size:50px;
+	}
+
 /*회원가입 부분*/
 .section_agree {
   height: auto;
@@ -112,21 +137,7 @@ ul {
   margin: 0;
   padding: 0;
 }
-#box{ 
-        background-color:none;
-        width:100%;
-        height:1000px; 
-        margin-top:330px;
-        margin-bottom:100px;
-        margin-left:-10px;
-        padding:10px;
-}
-#conbox{
-        width:1600px; 
-        position:relative; 
-        top:20px;
-        margin:auto;
-}
+
 </style>
 </head>
 <body>
@@ -168,7 +179,7 @@ ul {
       <section id="section">
          <div id="conbox">
 			<div class="agreeout">
-			    <p>JOIN US</p>
+			    <h3>회원가입</h3>
 			    <form name="member_agree" id="member_agree">
 			        <ul class="agree_ulcss">
 			            <li>약관동의</li>
