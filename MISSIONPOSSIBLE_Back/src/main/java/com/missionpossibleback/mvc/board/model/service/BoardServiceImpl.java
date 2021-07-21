@@ -140,17 +140,17 @@ public class BoardServiceImpl implements BoardService {
 	
 	// 검색
 	@Override
-	public List<Board> getSearchBoardList(String type, String keyword, PageInfo pageInfo) {
+	public List<Board> getSearchBoardList(String type, String keyword, PageInfo pageInfo, String startdate, String enddate) {
 		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
 		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());	
 		
-		return mapper.searchBoardList(type, keyword, rowBounds);
+		return mapper.searchBoardList(type, keyword, rowBounds, startdate, enddate);
 	}
 
 	@Override
-	public int getSerchBoardCount(String type, String keyword) {
+	public int getSerchBoardCount(String type, String keyword, String startdate, String enddate) {
 		
-		return mapper.searchBoardCount(type, keyword);
+		return mapper.searchBoardCount(type, keyword, startdate, enddate);
 	}
 
 	@Override
