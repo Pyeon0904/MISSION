@@ -21,7 +21,7 @@
 
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:none; width:100%; height:1500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
@@ -56,11 +56,18 @@
 											<th>작성자</th>
 											<td>${ review.writerId }</td>
 											<th>작성일</th>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
+											<td><fmt:formatDate type="both" timeStyle="short" value="${ review.createDate }" /></td>
 										</tr>
 										<tr>
 											<th>챌린지 이름</th>
-											<td colspan="3">${ review.challengeTitle }</td>
+											<td colspan="3">
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 										</tr>
 										<tr>
 											<th>제목</th>
@@ -98,7 +105,7 @@
 								<!-- 게시판 상세보기 테이블 끝 ----------------------->		
 								<!-- 하트 버튼 클릭시 추천수 +1 ----------------------->
 								<c:if test="${ !empty loginMember}">
-										<div style="margin-left: 990px;"><b>${ count }</b></div>
+										<div style="margin-left: 990px;"><b style="color:#7A7A7A;">${ count }</b></div>
 									<div style="margin-left: 950px;">
 										<c:if test="${ Heartlist.isEmpty() }">
 											<form action="${ path }/review/reviewLike" method="POST">
@@ -152,10 +159,10 @@
 										<td id="replyContent">${ reply.content }</td>
 										<td id="replyCreateDate">
 										<c:if test="${ reply.modifyDate != null}">
-											<fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.modifyDate }" />
+											<fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${ reply.modifyDate }" />
 										</c:if>
 										<c:if test="${ reply.modifyDate == null}">
-											<fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" />
+											<fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${ reply.createDate }" />
 										</c:if>
 										</td>
 										<td>

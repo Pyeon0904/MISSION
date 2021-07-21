@@ -23,7 +23,7 @@
 <script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
-   #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .pageTitle{ margin-bottom : 50px; }
@@ -62,7 +62,7 @@
                   <tr>
                      <th>챌린지</th>
                      <td>         
-                        <input type="text" name="challengeTitle" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" style="width:350px" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
+                        <input type="text" name="challengeTitle" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" style="width:350px" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다." readonly/>
                   </tr>
                   <tr>
                   <tr>
@@ -106,7 +106,7 @@ $("#challangeSearch").on("click", (e)=>{
 
 $(document).ready(function() {
 	$('#summernote').summernote({
-		  height: 300,                 	// 에디터 높이
+		  height: 400,                 	// 에디터 높이
 		  minHeight: null,             	// 최소 높이
 		  maxHeight: 400,             	// 최대 높이
 		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
