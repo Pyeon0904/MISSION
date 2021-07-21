@@ -307,15 +307,6 @@
 		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 		    	}
 	});	
-	
-
-	// 신고하기 버튼 클릭시 팝업 띄우기
-	$().on("click", (e)=>{
-		const url = "${path}/review/reviewReport?id=${loginMember.getId()}&reviewNo=${ review.no }";
-		const status="left=500px, top=200px, width=510px; height=320px";
-		
-		open(url, "", status);
-	});	
 
 	// 게시글 수정&삭제 버튼 클릭시
 	$(document).ready(() => {
