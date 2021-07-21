@@ -152,7 +152,7 @@
 		/*메인 탭*/	
 		.adminMaintab {
 			position:relative;
-			left: 62%;
+			left: 58%;
 			list-style-type: none;		
 			padding: 0;
 			margin: 0;
@@ -201,7 +201,7 @@
 		
 		#hamburger{
 			width:450px;
-			height:900px;
+			height:850px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
@@ -370,19 +370,20 @@
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
-								<td>보유 포인트</td>
+								<td style="color:#8FBC8F">보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
 						</table>
-						<hr>
-						<table style="width: 300px; margin:auto;">
+						
+						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
-								<td>등급</td>
+								<td style="color:#8FBC8F">등급</td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
 						<br><br>
-						<button class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+					
 					</c:if>
 				</div>
 			</div>

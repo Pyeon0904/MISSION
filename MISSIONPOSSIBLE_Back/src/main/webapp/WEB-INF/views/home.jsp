@@ -76,220 +76,15 @@
 	margin: auto;
 }
 
-/*-----------------------------------------------------------------------------------*/
-/*----------------------기획 의도-----------------------------------*/
-/* 사진 안에 글 */
-.Runing{
-position:absolute;
-top:15px;
-left:250px;
-font-size: 25px;
-font-weight: bold;
-}
-.Runing span{
-color:green;
-}
-.teamevent1{
-position:absolute;
-right:250px;
-top:20px;
-color:black;
-font-size:20px;
-font-weight: bold;
 
-}
-.teamevent1 span{
-  color:#368AFF;
+.pageTitle2{
+	margin-left: 40px;
 }
 
-
-.JORDANleft{
-position:absolute;
-color:black;
-left:285px;
-font-size:20px;
-top:60px;
-font-weight: bold;
-}
-.JORDANright{
-position:absolute;
-color:white;
-left:700px;
-top:55px;
-font-size: 20px;
-line-height:1.5em;
-font-weight: bold;
-}
-.temaevent2{
-position:absolute;
-color:white;
-top:200px;
-left:780px;
-font-size:19px;
-}
-.temaevent2 span{
-  color:#FF1212;
-  font-weight: bold;
-}
-.JSPARK{
-position:absolute;
-top:10px;
-left:350px;
-color:white;
-font-size: 23px;
-line-height:1.5em;
+.board{
+	margin-left: 40px; 
 }
 
-.temaevent3{
-position:absolute;
-color:white;
-top:200px;
-left:300px;
-font-size:18px;
-}
-
-.temaevent3 span{
-  color:#FF1212;
-  font-weight: bold;
-}
-/* --------------------- 간단히 홈페이지소개 ---------------------- */
-
-/* 간단히 소개 이미지*/
-.introImg{
-  width:500px;
-  height:360px;
-}
-/* 간단히 홈페이지 설명 영역 지정 */
-.introcontent {
-	width: 500px;
-	height: 350px;
-	text-align:center;
-	font-size: 18pt;
-	line-height:3.0em;
-}
-.introcontent span{
-font-weight: bold;
-	color: black;
-}
-
-/*------------------------------챌린지 소개--------------------------*/
-/*챌린지 소개 글*/
-.challTitle{
-	font-family: 'notosansgothic';
-    font-size: 18pt;
-	font-weight: bold;
-	color: black;
-	line-height: 1.5em;
-}
-.challcontext{
-	font-family: 'AppleSDGothicNeoB';
-    width:550px;
-    height:420px;
-	font-size: 13.5pt;
-	color: black;
-	text-align:left;
-	line-height: 2.5em;
-}
-.challcontext span{
-font-weight: bold;
-	color: red;
-}
-
-/*챌린지 소개 이미지*/
-.IntrochallImg1{
-	position:absolute;
-	object-fit: cover;
-    width: 500px;
-	height: 300px;
-	left: 550px;
-	top:870px;
-}
-.IntrochallImg2{
-    position:absolute;
-	object-fit: cover;
-    width: 500px;
-	height: 300px;
-	left: 550px;
-	top:1220px;
-}
-/*챌린지 소개 이미지 소개 글*/
-.challImgtext1{
- text-align:center;
- position:absolute;
- top:1180px;
- left:555px;
- font-size:22px;
- font-weight: bold;
- color: black;
-}
-.challImgtext2{
- text-align:center;
- width:1180px;
- height:30px;
- font-size:22px;
- font-weight: bold;
- color: black;
-}
-/*------------------게시판 소개------------------*/
-.boardImg1{
-    width: 400px;
-	height: 400px;
-	object-fit: cover;
-	
-}
-.boardImg2{
-    width: 400px;
-	height: 400px;
-	object-fit: cover;
-	margin-top:50px;
-}
-.boardService{
-font-size: 25pt;
-font-weight: bold;
-	color: black;
-	
-}
-.boardReview{
-font-size: 25pt;
-font-weight: bold;
-	color: black;
-	
-}
-
-/*-----------------------공통-----------------------*/
-
-/*자세히보기 */
-.ViewMore {
-  position:absolute;
-	width: 1280px;
-	height: 30px;
-	top:450px;
-	left:1100px;
-}
-.ViewMore2 {
- position:absolute;
-	width: 1280px;
-	height: 30px;
-	top:880px;
-	left:1100px;
-}
-
-/*제목 */
-.introTitle {
-	font-family: 'AppleSDGothicNeoB';
-    width:500px;
-    height:50px;
-	color: black;
-	font-size: 20pt;
-	font-weight: bold;
-	text-align:left;
-}
-/*포인트 스타일*/
-.span{
-	font-size: 18pt;
-	font-weight: bold;
-	color: black;
-}
 </style>
 <script>
 function animateCSS(element, animationName, callback) {
@@ -321,110 +116,28 @@ animateCSS('.my-element','slideOutLeft',function() {
 
 </head>
 <body>
-<!-- 기획의도 -->
-    <div id="box">
-	   <section id="section">
-		   <div id="conbox">
-			    <div id="plan">
-				    <div id="show">
-					    <div class="fotorama" data-width="1200px" 
-					      data-height="400px"data-autoplay="2000" data-loop="true">
-						   <div data-img="${path}/resources/images/Runing.png">
-						     <p class=Runing><span>오늘 하루</span>는 얼마나달려볼까?</p>
-							   <div class="animated fast bounceInUp delay-1s">
-							    <p class="teamevent1"><span>Time </span>to&nbsp;<span>Run</span></p>
-							</div>
-						</div>
-						<div data-img="${path}/resources/images/JORDAN.jpg">
-						<p class=JORDANleft>한 번 포기하면 습관이된다. </p>
-						<p class=JORDANright>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
-							<div class="animated  fadeInRight delay-3s">
-							<p class="temaevent2">Do <span>not give</span> up</p></div>
-						</div>
-						<div data-img="${path}/resources/images/JSPark.jpg">
-						<p class=JSPARK><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							&nbsp;&nbsp;-박지성-</p>
-							<div class="animated  fadeInLeft delay-5s">
-							<p class="temaevent3">Don't rest + <span>Just do it</span></p></div>
-						</div>
-					</div>
-				</div>
-			</div>
-        <hr style="margin-bottom:10px;">
-        
-<!-- 간단히 홈페이지 소개  -->
-		     <div id="intro">
-				<table class="introTable">
-				    <tr>
-						<td rowspan="2">
-							<div class="introTitle">챌린지 홈페이지에 오신걸 환영합니다!</div>
-							<img class="introImg"src="${path}/resources/images/Lewan.PNG">
-					       </td>
-						   <td>
-							<div class="ViewMore">
-								<a href="${ path }/introduce/introduce">자세히 보기</a>
-							</div>
-						</td>
-					</tr>
-						<tr>
-							<td>
-							<div class="animated  fadeInRight ">
-								<p class="introcontent">
-									<span>지극히 평범한 일상을 벗어나고 싶으신가요?</span><br>
-                                         절망의 끝자락에서 마음이 낙심될 때,<br>
-                                         우리가 손잡고 함께하겠습니다.<br>
-                                         <span>'작전'</span> 챌린지와 지금 당장 시작해봅시다!<br>
-									         </p>
-								    </div>
-							     </td>
-						      </tr>
-					     </table>
-				   </div>
- <hr style="margin-bottom:10px;"> 
- 
-<!-- 챌린지 소개 -->
-          <div id=challintro>
-	          <table id="Introchalltable">
-	              <tr>
-					<td>
-					  <div class="introTitle">챌린지 소개</div><br><br><br><br>
-		     <span class="challTitle">지키고 싶은<br> 나와의 약속을 고르세요</span><br><br>
-					  <div class="challcontext">
-                       1.포스트 코로나 시대속 다양한 챌린지 모임 제공<br>
-                       2.외출,인원,방문 각종 제한속에서 지혜롭게일상을 보내는 방안제시<br>
-                       3.다양한 참가자들과의 열정공유, 의지확립으로 코로나 극복<br>
-             <div class="animated fadeInLeft delay-5s">
-      <span>TIP 원하는 챌린지가 없다면<br>
-             "챌린지 개설"로 직접 만들어 보세요.</span></div></div>
-				   <img class="IntrochallImg1"src="${path}/resources/images/mission.png">
-					  <div class="challImgtext1"> 매일 오전 6시 기상</div>
-						<img class="IntrochallImg2"src="${path}/resources/images/mission2.png">
-						  <p class="challImgtext2"><span>책 읽기</span></p>
-					        </td>
-						       <td>
-							      <div class="ViewMore2">
-								     <a href="${ path }/challenge/recruitList">자세히 보기</a>
-							   </div>
-						   </td>
-					 </tr>
-		     </table>
-	    </div>
+	<div id="box">
 <hr style="margin-bottom:10px;">
+        
 
+<hr style="margin-bottom:10px;"> 
+
+						<a>
+							<img class="pageTitle2"
+							src="${path}/resources/images/whyJackJeon.png"/>
+						</a>
+
+<hr style="margin-bottom:10px;">
 		      	<!-- -------------- 게시판(고객센터&후기) 관련 사진 삽입 ------------------ -->
 				        <div class="board">
 				            <img src="${ path }/resources/images/boardMain.png" usemap="#maptest">
 				            <map name="maptest">
-				                <area shape="rect" coords="0,0,475,305" href="${ path }/board/boardList">
-				            	<area shape="rect" coords="476,0,975,305" href="${ path }/review/reviewList">
+				                <area shape="rect" coords="0,0,950,600" href="${ path }/board/boardList">
+				            	<area shape="rect" coords="951,0,1915,600" href="${ path }/review/reviewList">
 				            </map>
 				        </div>
-				         
-				 
 				<!-- ------------------------------------------------------- -->
-          </div>
-	   </section>
-      </div>
-   </body>
+	</div>
+</body>
 </html>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

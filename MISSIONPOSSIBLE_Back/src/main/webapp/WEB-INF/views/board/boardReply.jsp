@@ -22,8 +22,8 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 
 <style>
-#box{background-color:none;width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
+#box{background-color:none;width:100%;height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:50px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
@@ -109,6 +109,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .button_base:hover {cursor: pointer;}
 .b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
 .b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
+.pageTitle{margin-left: -34px;}
 </style>
 
 <script type="text/javascript">
@@ -140,7 +141,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 	<div id="wrap">
 	<div id="container">
 		<div class="inner">		
-			<h2 style="padding-bottom:20px;">게시글 작성</h2>
+         	<a><img class="pageTitle" src="${path}/resources/images/pageTitle/게시글작성.png" /></a>
 			<form id="boardForm" name="boardForm" action="${ path }/board/boardReply" enctype="multipart/form-data" method="POST">
 				<input type="hidden" id="parent_groupno"	name="groupno"	value="${board.groupno}"/> <!-- 부모 게시글 번호 -->
 				<input type="hidden" id="parent_groupord"	name="groupord"	value="${board.groupord}"/> <!-- 부모 groupno -->

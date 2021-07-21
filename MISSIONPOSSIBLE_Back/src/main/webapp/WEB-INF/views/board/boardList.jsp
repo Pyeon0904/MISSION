@@ -14,8 +14,8 @@
 <title>게시판 목록</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
 <style>
-#box{background-color:none;width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
+#box{background-color:none;width:100%;height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:50px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
@@ -98,11 +98,12 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
-div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
+div#pageBar{margin-top:10px; text-align:center; background-color: none;}
 
 .button_base:hover {cursor: pointer;}
 .b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
 .b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
+.pageTitle{margin-left: -32px;}
 </style>
 
 </head>
@@ -114,7 +115,8 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 <div id="wrap">
    <div id="container">
       <div class="inner">      
-         <h2>고객센터</h2>   
+         <a><img class="pageTitle" src="${path}/resources/images/pageTitle/고객센터.png" /></a>
+ 
          
        <!-- 검색 폼 시작--------------------- -->
          <form id="searchForm" name="form1" method="GET" action="${path}/board/boardSearch">

@@ -591,7 +591,7 @@ ul {
       <section id="section">
          <div id="conbox">
 		<br><br><br><br><br><br>
-		<h4 style="text-align: center;">회원정보 수정</h4>
+         <a><img class="pageTitle" src="${path}/resources/images/pageTitle/회원정보수정.png" /></a>
 		<br><br>
 		<hr>
 		<br><br>
