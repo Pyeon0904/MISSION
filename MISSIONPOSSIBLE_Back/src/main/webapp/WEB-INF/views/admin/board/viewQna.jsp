@@ -21,9 +21,19 @@
 
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:none; width:100%; height:5000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+         margin-top:50px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
+
+	/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 265px;
+	}
+	/* ---------------------- */
+
 </style>
 </head>
 <script>
@@ -44,6 +54,10 @@ $(function () {
 <div id="box">
    <section id="section">
       <div id="conbox">
+      <!-- title 이미지 삽입 -->
+		<a><img class="pageTitle"
+			src="${path}/resources/images/pageTitle/고객센터관리.png" />
+		</a>
          <div id="wrap">
             <div id="container">
                <div class="inner">
@@ -60,7 +74,7 @@ $(function () {
                   </div>
             <div class="cateList">
                <div class="head">
-                  <h2 id="title">고객센터 게시판 관리</h2>
+                  <h2>_</h2>
                </div>
                   <div class="btnArea">
                      <span class="searchArea">

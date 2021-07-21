@@ -34,7 +34,6 @@
 
 		#bg{
 			padding:0px;
-			background-image:url(<%=request.getContextPath()%>/resources/images/backgroundcircle-dark.png);
 			overflow-x:hidden;
 			z-index:0;	
 		}
@@ -67,8 +66,8 @@
 			height:45px;
 		}
 		
-		/*마우스 on */
-		.col:hover{ position:relative; width:800px; height:180px;}
+		/*마우스 on 
+		.col:hover{ position:relative; width:800px; height:180px; background-color : green;}
 		
 		
 		/*하위 메뉴 구분하기*/
@@ -199,15 +198,15 @@
 		
 		#hamburger{
 			width:450px;
-			height:800px;
+			height:850px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 1;
 			display:none;
+			z-index: 999;
 		}
 		
 		#login{
@@ -247,12 +246,7 @@
 	
 	
 /* ----------------------------------------------------------------------------------------------- */
-
-		.video{
-			position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 998;
-		}
-
+			
 </style>
 <script>
 		$(document).on('mouseover', '.menu a', function () {
@@ -273,14 +267,14 @@
 </head>
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
-		<c:if test="${ loginMember.id eq 'admin' }">
+		<c:if test="${ loginMember.status eq 'A' }">
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/viewUser">고객관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/viewBoard">고객센터관리</a>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고접수</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
 						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
 					</ul>
 					</div>
@@ -308,19 +302,10 @@
 			style="margin-left:155px; margin-top:10px"/>
 		</a>
 		
-		<!-- 시침표현 로고 이미지 
+		<!-- 시침표현 로고 이미지 -->
 		<a>
 			<img class="homeIntroButton" src="${path}/resources/images/timeCircle.png" 
 			style="margin-left:600px; margin-top:-500px"/>
-		</a>
-		-->
-		
-		<!-- 헤더 로고영상 삽입 -->
-		<a>
-		<video class="video"  controls autoplay loop muted>
-        	<source src="${path}/resources/videos/headerCircleRoutine.mp4"
-        	style="margin-left:1000px; margin-top:-500px">
-   		</video>
 		</a>
 		
 		<div class="menu">
@@ -330,7 +315,6 @@
 					<ul class="detailtab">
 						<li><a class="submenu" href="${path}/introduce/introduce">작전 소개</a></li>
                         <li><a class="submenu" href="${path}/introduce/developer">개발자 소개</a></li>
-                        <li><a class="submenu" href="${path}/introduce/test">test</a></li>
 					</ul></li>
 
 				<li><a class="semititle" href="${path}/challenge/recruitList">챌린지</a>
@@ -352,10 +336,6 @@
 					</li>
 			</ul>
 			
-			
-			
-			
-			
 			</div>
 		</div>
 		
@@ -373,8 +353,8 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
+					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
 						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->
