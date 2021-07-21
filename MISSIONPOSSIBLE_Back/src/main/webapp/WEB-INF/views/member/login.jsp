@@ -11,8 +11,8 @@
 	#box{ 
         background-color:none;
         width:100%;
-        height:600px; 
-        margin-top:auto;
+        height:auto; 
+        margin-top:50px;
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;
@@ -106,6 +106,21 @@
   width:100%;
   transition:200ms ease all;
 }
+
+/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 600px;
+	}
+	/* ---------------------- */
+
+.pageTitle{
+	width : 300px;
+	height : 200px;
+}
+
 </style>
 
 
@@ -131,10 +146,13 @@
 </script>
 <div id="box">
       <section id="section">
-         <div id="conbox">
+        <div id="conbox">
+		<!-- title 이미지 삽입 -->
+		<a><img class="pageTitle"
+			src="${path}/resources/images/pageTitle/로그인큰버전.png" />
+		</a>
 		
-		<h3>로그인</h3>
-		<br><br>
+		<br><br><br><br>
 		<div id="login-container">
 			<form action="login" method="POST">
 				<table>

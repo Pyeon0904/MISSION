@@ -152,7 +152,7 @@
 		/*메인 탭*/	
 		.adminMaintab {
 			position:relative;
-			left: 63.1%;
+			left: 62%;
 			list-style-type: none;		
 			padding: 0;
 			margin: 0;
@@ -161,7 +161,7 @@
 		/*메인탭 설정*/
 		.adminMaintab li {
 			float: left;
-			width: 120px;
+			width: 140px;
 			position: relative;
 			padding: 0;
 			line-height: 25px;
@@ -274,11 +274,11 @@
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고접수</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
-						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기게시판관리</a></li>
 					</ul>
 					</div>
 			</div>

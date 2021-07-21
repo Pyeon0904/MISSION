@@ -19,8 +19,8 @@
 	#box{ 
 	        background-color:none;
 	        width:100%;
-	        height:600px; 
-	        margin-top:auto;
+	        height:auto; 
+	        margin-top:50px;
 	        margin-bottom:100px;
 	        margin-left:-10px;
 	        padding:10px;
@@ -138,6 +138,21 @@ ul {
   padding: 0;
 }
 
+/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 600px;
+	}
+	/* ---------------------- */
+
+.pageTitle{
+	width : 320px;
+	height : 200px;
+}
+
+
 </style>
 </head>
 <body>
@@ -178,8 +193,13 @@ ul {
 <div id="box">
       <section id="section">
          <div id="conbox">
+          <!-- title 이미지 삽입 -->
+			<a><img class="pageTitle"
+				src="${path}/resources/images/pageTitle/회원가입큰버전.png"/>
+			</a>
+			<br><br><br><br>
 			<div class="agreeout">
-			    <h3>회원가입</h3>
+	
 			    <form name="member_agree" id="member_agree">
 			        <ul class="agree_ulcss">
 			            <li>약관동의</li>

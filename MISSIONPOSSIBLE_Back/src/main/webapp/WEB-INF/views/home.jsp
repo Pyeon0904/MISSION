@@ -62,7 +62,7 @@
 #box {
 	background-color: none;
 	width: 100%;
-	height: 2800px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+	height: 2000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
 	margin-top: 0px;
 	margin-bottom: 100px;
 	margin-left: -10px;
@@ -255,6 +255,7 @@ font-weight: bold;
 	color: black;
 	
 }
+
 /*-----------------------공통-----------------------*/
 
 /*자세히보기 */
@@ -409,27 +410,18 @@ animateCSS('.my-element','slideOutLeft',function() {
 		     </table>
 	    </div>
 <hr style="margin-bottom:10px;">
-     <!-- 게시판 소개 -->
-		      <div class="boardintro">
-		         <table class="boardtable">
-		       <tr>
-		     <td>
-		     <p class="introTitle">소통의 장</p>
-		     <a href="${ path }/board/boardList">
-		     <img class="boardImg1" src="${path}/resources/images/Service.jpg">
-		     </a>
-		     <p class="boardService"><span>고객센터</span></p>		    
-		     </td>
-		     <td>
-		     <a href="${ path }/review/reviewList">
-		     <img class="boardImg2" src="${path}/resources/images/flower.png">
-		     </a>
-		     <div class="boardReview"><p><span>후기게시판</span></p>
-		        </div>
-		     </td>
-		  </tr>
-		     </table>
-		      </div>
+
+		      	<!-- -------------- 게시판(고객센터&후기) 관련 사진 삽입 ------------------ -->
+				        <div class="board">
+				            <img src="${ path }/resources/images/boardMain.png" usemap="#maptest">
+				            <map name="maptest">
+				                <area shape="rect" coords="0,0,475,305" href="${ path }/board/boardList">
+				            	<area shape="rect" coords="476,0,975,305" href="${ path }/review/reviewList">
+				            </map>
+				        </div>
+				         
+				 
+				<!-- ------------------------------------------------------- -->
           </div>
 	   </section>
       </div>
