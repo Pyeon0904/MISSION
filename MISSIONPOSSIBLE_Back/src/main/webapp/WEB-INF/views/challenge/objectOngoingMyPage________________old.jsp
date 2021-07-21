@@ -69,7 +69,7 @@
 															<div class="barEmpty">
 																<div class="barGreen" style="width:${progPercent}%"></div>
 															</div>
-															<div class="progStatus">
+															<div class="progStatus" style="float:right">
 																<p>${successDay} / ${totalDay}</p>
 															</div>
 														</div>

@@ -3,14 +3,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
 <c:set var="path" value="${pageContext.request.contextPath}"/>
+
+<!-- LIST PATH -->
+<!-- 모집중인 챌린지 리스트 페이지 path -->
+<c:set var="recruitListViewPath" value="${ path }/challenge/recruitList"/>
+<!-- 진행중인 챌린지 리스트 페이지 path -->
+<c:set var="ongoingListViewPath" value="${ path }/challenge/ongoingList"/>
+<!-- 종료된 챌린지 리스트 페이지 path -->
+<c:set var="endListViewPath" value="${ path }/challenge/endList"/>
+
+<!-- VIEW PATH -->
+<!-- 모집중인 챌린지뷰 페이지 path -->
+<c:set var="recruitViewPath" value="${ path }/challenge/recruit"/>
+<!-- 진행중인 챌린지뷰 페이지 path -->
+<c:set var="ongoingViewPath" value="${ path }/challenge/ongoing"/>
+<!-- 참여중인 챌린지뷰 페이지 path -->
+<c:set var="ongoingViewPath" value="${ path }/challenge/participate"/>
+<!-- 종료된 챌린지뷰 페이지 path -->
+<c:set var="endViewPath" value="${ path }/challenge/end"/>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>s</title>
+
 <!-- 아이콘 라이브러리 link -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -18,72 +36,62 @@
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
-	*{margin:0;padding:0;}
+/*	.test{border:1px solid gray}*/
 	#challengeDisplay{ width:950px; height:auto; float:left; font-size:0.9em;}
-	.challengeListCont{width:100%; height:330px; margin:0 auto;}
-	.challengeListDisplay ul li{list-style-type:none;float:left;}
-	.itemCont{ width:auto; height:330px;}
+	.notFound{width:980px; height:200px;background-color:#edffed; border-radius:10px;text-align:center;margin:10px 0 0 50px;line-height:200px;}
+	.challengeListDisplay {margin-left:-40px; margin-top:-15px;}
+	.challengeListDisplay ul li{width:25%; height:340px;list-style-type:none;float:left;border-radius:8px; background-color:#edffed;}
+	.itemCont{ width:auto; height:275px;}
 	.itemCont .itemPhotoBox {width:180px; height:180px; margin:0 auto; margin-top:20px;}
 	.itemCont .itemInfoCont {width:180px; height:auto; margin:10px auto 0 auto;}
 	.itemCont .itemInfoCont .itemTitle{ font-weight:bold;}
 	.itemCont .itemInfoCont .itemSubCont{margin-top:10px;}
 	.itemShowMenu{
 		width:180px; height:180px; background:rgba(0,0,0,0.5); 
-		position:relative; top:-180px; left:0px; 
+		position:relative; top:-182px; left:0px; 
 		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5.75;
+		opacity : 0; transition : 0.3s;
 	}
-	#pageBarContainer{width:950px; height:60px; text-align:center;}
-	#pageBar{
-		width:49%; height:50px; margin:0 auto;
-	}
-	#pageBar div.pageArrow {
-		width:30px; height:30px; margin:10px 10px 0 10px; float:left; 
-		color:white; background-color:brown; font-size:2em; 
-		border-radius:5px; line-height:0;
-	}
-	#pageBar div.pageCount{ 
-		width:30px; height:30px; border:none; background-color:#61380B;
-		border-radius:50%; margin:10px; float:left;
-	}
-	#barContainer{ width:150px; height:50px;}
+	.itemShowMenu:hover{opacity:1}
+	
+	/*페이지 바 CSS 구현*/
+	.pagination-container { width:1015px; height:60px;float:right;margin:0 auto;text-align: center; position:absolute; top:350px;}
+	.pagination { position: relative;}
+	.pagination a {position: relative;display: inline-block;color: #0b520b;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
+	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #0b520b;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
+	.pagination a:hover,.pagination a .pagination-active {color: #fff;}
+	.pagination a:hover:before,.pagination a .pagination-active:before {transform: scale(1);}
+	.pagination .pagination-active {color: #fff;}
+	.pagination .pagination-active:before {transform: scale(1);}
+	.pagination-newer {margin-right: 50px;}
+	.pagination-older {margin-left: 50px;}
+	
+	/*나의 진행도 progress바 css*/
+	#barContainer{ width:150px; height:50px;position:relative;top:-10px;}
 	.barEmpty{
-    	width:150px; height:10px; 
+    	width:150px; height:10px; position:relative;top:-10px;
     	border:1px solid gray; border-radius:5px;
     	margin:0 auto; background-color:#f0f0f0;
     }
     .barGreen{
     	height:100%; background-color:lime; border-radius:5px;
     }
+    .progStatus{
+    	width:150px; height:30px;position:relative;top:-25px; text-align:right;
+    }
 </style>
 </head>
 <body>
-					<div id="challengeDisplay">
-						<!-- 상품 리스트 -->
-							<div class="challengeListCont">
-							<!-- 상품 리스트 내역 -->
-								<div class="challengeListDisplay">
-									<ul>
-									<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
-										<li style="width:25%;">
-											<div class="itemCont">
-												<div class="itemPhotoBox">
-													<img src="${path}/resources/images/file.png" alt="desc" width="200px">
-												</div>
-												<div class="itemInfoCont">
-													<p>
-														<span class="itemTitle">등록된 챌린지를 찾을 수 없습니다.</span><br>
-														<span class="itemSubCont">NONE!</span>
-													</p>
-												</div>
-											</div>
-										</li>
-										<script>
-										$(document).ready(() => {
-											alert("해당 챌린지를 찾을 수 없습니다!");
-										});	
-										</script>
-									</c:if>
-									<c:if test="${ list != null }">
+
+					<div id="challengeDisplay" class="test">
+						<div class="challengeListDisplay">
+							<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
+								<div class="notFound">
+									<h2>조건에 일치하는 챌린지를 찾을 수 없습니다.</h2>
+								</div>
+							</c:if>
+							<c:if test="${ list != null }">
+							<ul class="test">
 										<c:set var="tempNum" value="0"/>
 										<c:forEach var="challenge" items="${ list }" >
 											<!-- D-Day 로직 구현한 파일 include -->
@@ -91,87 +99,26 @@
 											<%@ include file="../challenge/objectOngoingMyPage.jsp" %>
 											<c:set var="tempNum" value="${ tempNum + 1}"/>
 										</c:forEach>
-									</c:if>
-									<script>
-										$(document).ready(()=>{
-											$("div.itemShowMenu").hide();
-											
-											$(".itemPhotoBox").hover(
-												function(){
-													$(this).find(".itemShowMenu").fadeIn(200);
-												}, 
-												function(){
-													$(this).find(".itemShowMenu").fadeOut(200);
-												}
-											);
-											
-											$("#categoryBar ul li").hover(
-												function(){
-													$(this).css("background", "#FFF000");
-												}, 
-												function(){
-													$(this).css("background", "none");
-												}
-											);
-										});
-									</script>
-									</ul>
-								</div>
-							</div>
-							
-					<div id="pageBarContainer">
-						<div id="pageBar">
-							<!-- 맨 처음으로 -->
-							<div class="pageButton pageArrow firstPage" onclick="location.href='${ path }/member/objectJoinList?page=1'">
-								 <i class="fa fa-fast-backward" aria-hidden="true"></i>
-							</div>
+							</ul>
+							</c:if>
+						</div>
+					</div><!-- #challengeDisplay -->
+					<div class="pagination-container">
+						<div class="pagination">
 							<!-- 이전 페이지로 -->
-							<div class="pageButton pageArrow prevPage" onclick="location.href='${ path }/member/objectJoinList?page=${ pageInfo.prvePage }'">
-								 <i class="fa fa-caret-left" aria-hidden="true"></i>
-							</div>			
+							<a class="pagination-newer" href="${ path }/member/objectJoinList?page=${ pageInfo.prvePage }">PREV</a>			
 							<!--  10개 페이지 목록 -->
 							<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
 					        	<c:if test="${ pageInfo.currentPage == status.current}">
-									<div class="pageButton pageCount" style="background-color:yellow;">
-					              		<c:out value="${ status.current }"/>
-					               	</div>
+					               	<a class="pagination-active"><c:out value="${ status.current }"/></a>
 					            </c:if>
 					            <c:if test="${ pageInfo.currentPage != status.current}">
-					               	<div class="pageButton pageCount pageNum" onclick="location.href='${ path }/member/objectJoinList?page=${ status.current }'">
-					               		<c:out value="${ status.current }"/>
-					               	</div>
+					               	<a href="${ path }/member/objectJoinList?page=${ status.current }"><c:out value="${ status.current }"/></a>
 					            </c:if>
 					        </c:forEach>
-					        
-					        <!-- 맨 끝으로 -->
-							<div class="pageButton pageArrow pageMax" style="float:right;"
-								onclick="location.href='${ path }/member/objectJoinList?page=${ pageInfo.maxPage}'">
-								 <i class="fa fa-fast-forward" aria-hidden="true"></i>
-							</div>
-							
 					        <!-- 다음 페이지로 -->
-							<div class="pageButton pageArrow pageNext" style="float:right;"
-								onclick="location.href='${ path }/member/objectJoinList?page=${ pageInfo.nextPage }'">
-								 <i class="fa fa-caret-right" aria-hidden="true"></i>
-							</div>
-							
-							<script>
-							$(document).ready(()=>{
-								/*
-									pageBar class 지정
-
-									맨처음	.firstPage
-									이전		.prevPage
-									번호지정	.pageNum
-									맨끝		.pageMax
-									다음		.pageNext
-								*/
-								
-							});
-							</script>		
-							
+							<a class="pagination-older" href="${ path }/member/objectJoinList?page=${ pageInfo.nextPage }">NEXT</a>		
 						</div><!-- #pageBar -->
-					</div><!-- #pageBarContainer -->
-				</div><!-- challengeDisplay -->
+					</div><!-- .pagination-container -->
 </body>
 </html>
