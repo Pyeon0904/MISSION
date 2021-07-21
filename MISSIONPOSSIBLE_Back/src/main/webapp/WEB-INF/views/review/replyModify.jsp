@@ -25,6 +25,7 @@
          margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
+   .pageTitle{ margin-bottom : 50px; }
 </style>
 </head>
 <body>
@@ -34,7 +35,7 @@
 				<div id="wrap">
 					<div id="container">
 						<div class="inner">
-							<h2 style="padding-bottom: 20px;">후기 게시판</h2>
+							<a><img class="pageTitle" src="${path}/resources/images/pageTitle/후기게시판.png" /></a>
 								<input type="hidden" name="no" value="${ review.no }" />
 								<!-- 게시판 상세보기 테이블 ----------------------->
 								<table width="100%" class="table01">

@@ -26,6 +26,7 @@
    #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
          margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
+   .pageTitle{ margin-bottom : 50px; }
 </style>
 
 </head>
@@ -38,7 +39,7 @@
 <div id="wrap">
    <div id="container">
       <div class="inner">   
-         <h2 style="padding-bottom:20px;">게시글 수정</h2>
+         <a><img class="pageTitle" src="${path}/resources/images/pageTitle/게시글수정.png" /></a>
          <form action="${ path }/review/reviewModify" enctype="multipart/form-data" method="POST">   
          	<input type="hidden" name="no" value="${ review.no }" />
          	<input type="hidden" name="originalFileName" value="${ review.originalFileName }" />

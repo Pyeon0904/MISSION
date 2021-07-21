@@ -70,7 +70,7 @@
 			<div id="wrap">
 				<div id="container">
 					<div class="inner">
-						<h2>후기 게시판</h2>
+						<a><img class="pageTitle" src="${path}/resources/images/pageTitle/후기게시판.png" /></a>
 						<!-- 검색 폼 시작--------------------- -->
 						<form id="reviewSearch" name="form1" method="GET" action="${path}/review/reviewSearch">
 							<div align="right" class="row m-4">
