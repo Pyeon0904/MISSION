@@ -25,15 +25,15 @@
 			#box{ 
 			   background-color:none;
 			   width:100%;
-			   height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-			   margin-top:330px;
+			   height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+			   margin-top:50px;
 			   margin-bottom:100px;
 			   margin-left:-10px;
 			   padding:10px;
 			}
 			/*-------------------컨텐츠 영역---------------------*/
 			#conbox{
-				width:800px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
+				width:1000px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
 				position:relative; 
 				top:20px;
 				margin:auto;
@@ -45,7 +45,8 @@
 	
 	#registerArea{
 		clear: both;
-		border: 1px solid rgb(224, 239, 132);	
+		width:100%;
+		height:auto;
 	}
 	
 	#tb{
@@ -56,6 +57,37 @@
 	/* 인원수 제한 여부 스위치 */
 	.switch-button { position: relative; display: inline-block; width: 40px; height: 20px; } .switch-button input { opacity: 0; width: 0; height: 0; } .onoff-switch { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; border-radius:20px; background-color: #ccc; box-shadow: inset 1px 5px 1px #999; -webkit-transition: .4s; transition: .4s; } .onoff-switch:before { position: absolute; content: ""; height: 20px; width: 20px; left: 0px; bottom: 0px; background-color: #fff; -webkit-transition: .5s; transition: .4s; border-radius:20px; } .switch-button input:checked + .onoff-switch { background-color: #1afc1a; box-shadow: inset 1px 5px 1px #1af01a; } .switch-button input:checked + .onoff-switch:before { -webkit-transform: translateX(26px); -ms-transform: translateX(26px); transform: translateX(26px); }
 
+h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
+input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
+input[type="checkbox"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
+input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
+input[type="password"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
+input[type="file"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;height:22px;color:#666;background:#fff;border:1px solid #cdcdcd}
+input[type="date"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
+select{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;vertical-align:middle;border:none}
+textarea{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding:5px;vertical-align:middle;border:1px solid #cdcdcd}
+em, address{font-style:normal}
+
+/*table*/
+table.table02 caption{height:45px;line-height:45px;color:#333;padding-left:35px;border-top:1px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 caption.center{padding-top:6px;height:39px;line-height:130%;text-align:center;color:#333;padding-left:0;border-top:3px solid #464646;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 tbody th{padding:10px;vertical-align:middle;font-family:'malgunbd';color:#333;border-right:1px solid #c9c9c9;border-bottom:1px solid #c9c9c9;background:#ececec}
+table.table02 tbody td{padding:10px;vertical-align:middle;padding-left:15px;background:#fafafa;border-bottom:1px solid #c9c9c9}
+
+/* select_style */
+.selbox{*margin-top:2px;height:28px;*height:18px;padding:3px 4px 4px 3px;border:solid 1px #abadb3;vertical-align:middle}
+
+/* textbox_style */
+input.tbox01{width:200px;height:26px;line-height:26px}
+
+/* text_color_style */
+.t_blue{color:#004fa8}
+.t_red{color:#f55500}
+
+.subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
+	
 	</style>
 </head>
 	
@@ -63,8 +95,9 @@
 	<div id="box">
 	<section id="section">
 	<div id="conbox">
-		<h1>챌린지 등록</h1>
-		<hr>	
+		<div class="subHeaderImg">
+			<img alt="" src="${path}/resources/images/pageTitle/챌린지등록.png">
+		</div>	
 			<div id="registerArea">
 				<!-- 
 						열린 form 태그 추가  
@@ -74,21 +107,30 @@
 						열린 form 태그 추가
 				-->
 				<form action="${path}/challenge/challengeRegister" method="POST" enctype="multipart/form-data">
-				<table id="tb">
+				<table id="tb" class="table02">
+				<caption><strong><span class="t_red">*</span> 표시는 필수입력 항목입니다.</strong></caption>
+				<colgroup>
+					<col width="20%">
+					<col width="*">
+				</colgroup>
+				<tbody id="tbody">
 					<tr><!-- &nbsp; : 스페이스 / &ensp; : 스페이스 / &emsp; : 큰스페이스 -->
-						<th>챌린지 제목</th>
+						<th><span class="t_red">*</span>챌린지 제목</th>
 						<td>
-							<input type="text" name="title" style="width:300px" placeholder="사용하실 챌린지명을 적어주세요." required />
+							<input type="text" name="title" class="tbox01" style="width:300px" placeholder="사용하실 챌린지명을 적어주세요." required />
 						</td>
 					</tr>
 					<tr>
 						<th>챌린지 등록자</th>
-						<td><input type="text" name="id" value="${loginMember.id}" readonly></td>
+						<td>
+							<input type="hidden" name="id" class="tbox01" value="${loginMember.id}" readonly>
+							<c:out value="${loginMember.id}"/>
+						</td>
 					</tr>
 					<tr>
-						<th>챌린지 유형</th>
+						<th><span class="t_red">*</span>챌린지 유형</th>
 						<td>
-			            	<select name="attendStatus" id="attendStatus">
+			            	<select name="attendStatus" id="attendStatus" class="selbox">
 								<option value="" selected>챌린지 유형 선택</option>
 								<option value="PUBLIC">타인 참여가능(단체)</option>
 								<option value="PRIVATE">타인 참여불가능(개인)</option>
@@ -96,9 +138,9 @@
 						</td>
 					</tr>
 					<tr>
-						<th>카테고리</th>
+						<th><span class="t_red">*</span>카테고리</th>
 						<td>
-							<select id="category" name="categoryNo">
+							<select id="category" name="categoryNo" class="selbox">
 								<option value="default" selected>카테고리 선택</option>
 							    <option value="EXERCISE">운동</option>
 							    <option value="STUDY">공부</option>
@@ -141,9 +183,9 @@
 						</td>
 					</tr>
 					<tr>
-						<th>모집인원</th>
+						<th><span class="t_red">*</span>모집인원</th>
 						<td>
-							<input type="number" name="maxCount" id="maxCount" min="1" max="9999"/>
+							<input type="number" name="maxCount" id="maxCount" min="1" max="9999" class="tbox01" style="width:50px"/>
 							<label>인원수 제한 없음</label>
 							<label class="switch-button">
 								<input type="checkbox" id="unlimitedCount"/>
@@ -264,7 +306,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th>모집기간</th>
+						<th><span class="t_red">*</span>모집기간</th>
 						<td>
 							<input type="date" name="recruitStart" value="${ date }"/> ~ <input type="date" name="recruitEnd" id="recruitEnd"/> 까지 모집함 (선택 날짜에 챌린지 자동 진행)
 						</td>
@@ -306,15 +348,15 @@
 						});
 					</script>
 					<tr>
-						<th>진행기간</th>
+						<th><span class="t_red">*</span>진행기간</th>
 						<td>
 							<input type="date" name="startDate" id="startDate"/> ~ <input type="date" name="deadline"/> 까지 챌린지 진행
 						</td>
 					</tr>
 					<tr>
-						<th>참여시 차감 포인트</th>
+						<th><span class="t_red">*</span>참여시 차감 포인트</th>
 						<td>
-							<select name="minusPoint">
+							<select name="minusPoint" class="selbox">
 								<option value="" selected>참여시 차감될 포인트 양</option>
 								<option value="100">100 포인트</option>
 								<option value="500">500 포인트</option>
@@ -327,7 +369,7 @@
 					<tr>
 						<th>(선택) 오픈 카톡 링크</th>
 						<td>
-							<input type="text" name="opentalkLink" style="width:300px" placeholder="오픈 카톡방이 있다면 링크를 함께 적어주세요."/>
+							<input type="text" name="opentalkLink"  class="tbox01" style="width:300px" placeholder="오픈 카톡방이 있다면 링크를 함께 적어주세요."/>
 						</td>
 					</tr>
 					<tr>
@@ -368,7 +410,7 @@
 					} );
 					</script>
 					<tr>
-						<th>챌린지에 대한 부가설명</th>
+						<th><span class="t_red">*</span>챌린지에 대한 부가설명</th>
 						<td>
 							<textarea id="summernote" name="content" style="width:700" required
 							placeholder=" 챌린지에 대한 상세한 설명을 작성해주세요.&#13;&#10;&#13;&#10;  
@@ -434,6 +476,7 @@
 							<input type="reset"  value="취소" />
 						</th>
 					</tr>
+				</tbody>
 				</table>
 				<!-- 
 						닫힌 form 태그 추가  
