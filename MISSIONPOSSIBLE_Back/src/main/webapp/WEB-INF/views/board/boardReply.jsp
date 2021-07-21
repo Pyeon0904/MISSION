@@ -105,6 +105,10 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination a.onpage{font-family:'malgunbd';color:#0460a5}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
+
+.button_base:hover {cursor: pointer;}
+.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
+.b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
 </style>
 
 <script type="text/javascript">
@@ -172,8 +176,8 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 				    </tbody>
 				</table>
 				<div class="btn_right mt15">
-					<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
-					<input type="submit" class="btn black" id="btnWrite" value="등록하기">
+					<button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/board/boardList'">목록으로</button>
+					<input type="submit" class="button_base b01_simple_rollover" id="btnWrite" value="등록하기">
 				</div>
 			</form>
 		</div>

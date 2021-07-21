@@ -99,6 +99,10 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
 div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
+
+.button_base:hover {cursor: pointer;}
+.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
+.b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
 </style>
 
 </head>
@@ -228,7 +232,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
          </form>         
          <div class="btn_right mt15">
             <c:if test="${ loginMember != null }">
-               <button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardWrite'">글쓰기</button>
+               <button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/board/boardWrite'">글쓰기</button>
             </c:if>
          </div>
       </div>

@@ -62,9 +62,10 @@ table.table02 tbody td{padding:10px;vertical-align:middle;padding-left:15px;back
 a:link, a:visited, a:hover, a:active{color:#666;text-decoration:underline}
 a:hover{color:#0076c8} */
 
-/* button */
+/* button 
 .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
 .btn.black {border-color:#191919;color:#fff;background-color:#333;text-decoration:none;}
+*/
 
 /* button_align */
 .btn_left{clear:both;text-align:left}
@@ -106,8 +107,12 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination a.onpage{font-family:'malgunbd';color:#0460a5}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
-</style>
 
+.button_base:hover {cursor: pointer;}
+.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding: 10px; background-color: #AFE525;}
+.b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
+
+</style>
 </head>
 
 <script type="text/javascript">
@@ -186,13 +191,11 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 						    	</td>
 							</tr>
 						</c:if>
-					
-						
 				    </tbody>
 				</table>
 				<div class="btn_right mt15">
-				<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
-				<input type="submit" class="btn black" id="btnWrite" value="등록하기">
+					<button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/board/boardList'">목록으로</button>
+					<input type="submit" class="button_base b01_simple_rollover" id="btnWrite" value="등록하기">
 				</div>
 			</form>
 		</div>
