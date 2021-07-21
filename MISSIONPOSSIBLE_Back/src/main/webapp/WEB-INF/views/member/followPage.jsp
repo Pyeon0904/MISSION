@@ -109,7 +109,7 @@
 						<div id="joinList-container">
 							<h3>참여중인 챌린지</h3>
 							<iframe id="joinList-content" name="joinList-content"
-								src="${ path }/member/objectJoinList" 
+								src="${ path }/member/objectJoinList_follow" 
 								width="960px" height="400px" scrolling="no" frameborder="1">
 							</iframe>
 						</div>

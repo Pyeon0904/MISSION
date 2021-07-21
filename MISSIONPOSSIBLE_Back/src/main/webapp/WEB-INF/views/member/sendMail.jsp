@@ -23,7 +23,7 @@ div { position:relative;
 </head>
 <body>
 <div>
-	회원님의 이메일(${ loginMember.email })로 비밀번호 변경을 위한 임시 비밀번호를 발송하였습니다.<br>
+	회원님의 이메일(${ confirmMember.email })로 비밀번호 변경을 위한 임시 비밀번호를 발송하였습니다.<br>
 	로그인 후 반드시 비밀번호를 재설정 해주십시오.<br><br><br>
 	<input type='BUTTON' value=" 창닫기" style="width: 380px; height: 30px;" onClick='self.close()'>
 </div>
