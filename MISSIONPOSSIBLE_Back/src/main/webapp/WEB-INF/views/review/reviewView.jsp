@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
    #box{ background-color:none; width:100%; height:1500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
 </style>
@@ -170,12 +170,12 @@
 							<!-- 로그인X : 목록으로 / 로그인O : 신고하기 / 작성자 로그인 : 수정하기, 삭제하기 -->
 							<div class="btn_right mt15">
 								<c:if test="${ !empty loginMember && (loginMember.id != review.writerId )}">
-									<input type="button" class="btn black" id="btn-report" value="신고하기">
+									<input type="button" class="button_base b01_simple_rollover" id="btn-report" value="신고하기">
 								</c:if>
-								<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewList'">목록으로</button>
+								<button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/review/reviewList'">목록으로</button>
 								<c:if test="${ !empty loginMember && (loginMember.id == review.writerId )}">
-									<button type="button" class="btn black mr5" id="update">수정하기</button>
-									<button type="button" class="btn black" id="delete">삭제하기</button>
+									<button type="button" class="button_base b01_simple_rollover" id="update">수정하기</button>
+									<button type="button" class="button_base b01_simple_rollover" id="delete">삭제하기</button>
 								</c:if>
 							</div>
 							<!-- 이전글/다음글 -->

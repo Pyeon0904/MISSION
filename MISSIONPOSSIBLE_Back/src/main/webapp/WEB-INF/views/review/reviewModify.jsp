@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
    #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
 
@@ -52,16 +52,16 @@
                 <tbody id="tbody">
                    <tr>
                      <th>제목<span class="t_red">*</span></th>
-                     <td><input type="text" class="tbox01" name="title" id="title" value="${ review.title }"></td>
+                     <td><input type="text"  name="title" class="tbox01" value="${ review.title }" style="width:350px" required></td>
                   </tr>
                    <tr>
                      <th>작성자</th>
-                     <td><input type="text" name="writerId" value="${ review.writerId }" readonly></td>
+                     <td><input type="text" name="writerId" class="tbox01" value="${ review.writerId }" style="width:350px" readonly></td>
                   </tr>
                   <tr>
                      <th>챌린지</th>
                      <td>         
-                        <input type="text" name="challengeTitle" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
+                        <input type="text" name="challengeTitle" value="${ review.challengeTitle }" class="tbox01" id="challangeSearch" style="width:350px" placeholder="내가 참여한&마감된 챌린지에만 후기를 작성할 수 있습니다."/>
                   </tr>
                   <tr>
                   <tr>
@@ -85,8 +85,8 @@
                 </tbody>
             </table>   
             <div class="btn_right mt15">
-	            <input type="button" class="btn black mr5" onclick="location.replace('${ path }/review/reviewList')" value="목록으로">
-	            <input type="submit" class="btn black" value="수정하기">
+	            <input type="button" class="button_base b01_simple_rollover" onclick="location.replace('${ path }/review/reviewList')" value="목록으로">
+	            <input type="submit" class="button_base b01_simple_rollover" value="수정하기">
 	         </div>
          </form>
       </div>

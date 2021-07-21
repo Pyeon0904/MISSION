@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
    #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
 </head>
@@ -148,7 +148,7 @@
 						<!-- 로그인 된 회원에게만 글쓰기 버튼 보이기 ------------>
 						<div class="btn_right mt15">
 							<c:if test="${ loginMember != null }">
-								<button type="button" class="btn black mr5"
+								<button type="button" class="button_base b01_simple_rollover" 
 									onclick="location.href='${path}/review/reviewWrite'">글쓰기</button>
 							</c:if>
 						</div>

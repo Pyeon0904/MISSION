@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
    #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
 </head>
@@ -46,7 +46,7 @@
 				    <tbody id="tbody">
 						<tr>
 							<th>제목<span class="t_red">*</span></th>
-							<td><input id="board_subject" name="title" class="tbox01" placeholder="제목을 입력해주세요." style="width:350px" required/></td>
+							<td><input type="text" name="title" class="tbox01" placeholder="제목을 입력해주세요." style="width:350px" required/></td>
 						</tr>
 						<tr>
 							<th>작성자</th>
@@ -68,8 +68,8 @@
 				    </tbody>
 				</table>
 			<div class="btn_right mt15">
-				<input type="submit" class="btn black" value="등록하기">
-				<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewList'">목록으로</button>
+				<input type="submit" class="button_base b01_simple_rollover"  value="등록하기">
+				<button type="button" class="button_base b01_simple_rollover"  onclick="location.href='${path}/review/reviewList'">목록으로</button>
 			</div>
 			</form>
 		</div>

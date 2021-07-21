@@ -40,7 +40,7 @@ a:hover{color:#0076c8} */
 
 /* button_align */
 .btn_left{clear:both;text-align:left}
-.btn_right{clear:both;text-align:right}
+.btn_right{clear:both;text-align:right;}
 .btn_center{clear:both;text-align:center}
 
 /* select_style */
@@ -109,3 +109,7 @@ table.type04 td {
   vertical-align: top;
   border-bottom: 1px solid #ccc;
 }
+
+.button_base:hover {cursor: pointer;}
+.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
+.b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
