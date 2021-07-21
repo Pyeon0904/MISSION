@@ -1,6 +1,6 @@
 @charset "EUC-KR";
 a[class*="btn"] {text-decoration: none;}
-input[class*="btn"], 
+input[class*="btn"],
 button[class*="btn"] {border: 0;}
 
 /* Here you can change the button sizes */
@@ -53,12 +53,12 @@ button[class*="btn"] {border: 0;}
 
 /* default button style */
 .btn {
+	color: white;
 	position: relative;
 	border: 0;
 	padding: 15px 25px;
 	display: inline-block;
 	text-align: center;
-	color: white;
 }
 .btn:active {
 	top: 4px;	
