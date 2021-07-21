@@ -31,9 +31,9 @@ public interface BoardService {
 
 	int delete(int qna_no); // 삭제
 	
-	List<Board> getSearchBoardList(String type, String keyword, PageInfo pageInfo); // 검색 목록 조회
+	List<Board> getSearchBoardList(String type, String keyword, PageInfo pageInfo, String startdate, String enddate); // 검색 목록 조회
 	
-	int getSerchBoardCount(String type, String keyword); // 검색 게시글 수
+	int getSerchBoardCount(String type, String keyword, String startdate, String enddate); // 검색 게시글 수
 	
 	// 관리자 페이지
 	List<Board> getBoardAllList(); // 관리자 페이지 게시된 글

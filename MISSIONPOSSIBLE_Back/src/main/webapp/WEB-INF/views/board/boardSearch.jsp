@@ -15,7 +15,7 @@
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
 <style>
 #box{background-color:none;width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
+     margin-top:auto;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
@@ -235,12 +235,12 @@ div#pageBar{margin-top:10px; text-align:center; background-color: none;}
          </div>
       </div>
       
-      <div id="pageBar" style="align:center;">
+      <div style="align: center; margin-top:10px; text-align:center;">
          <!-- 맨 처음으로 -->
-         <button onclick="location.href='${ path }/board/boardSearch?page=1'">&lt;&lt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=1&startdate=${ startdate }&enddate=${enddate}&type=${type}&keyword=${keyword}'">&lt;&lt;</button>
          
          <!-- 이전 페이지로 -->
-         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.prvePage }&type=${type}&keyword=${keyword}'">&lt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.prvePage }&startdate=${ startdate }&enddate=${enddate}&type=${type}&keyword=${keyword}'">&lt;</button>
 
          <!--  10개 페이지 목록 -->
          <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status"> <!-- status는 반복될 때 해당하는 페이지 -->
@@ -248,15 +248,15 @@ div#pageBar{margin-top:10px; text-align:center; background-color: none;}
                 <button disabled><c:out value="${ status.current }" /></button>
              </c:if>
              <c:if test="${ pageInfo.currentPage != status.current }">
-                <button onclick="location.href='${ path }/board/boardSearch?page=${ status.current }&type=${type}&keyword=${keyword}'"><c:out value="${ status.current }" /></button>
+                <button onclick="location.href='${ path }/board/boardSearch?page=${ status.current }&startdate=${ startdate }&enddate=${enddate}&type=${type}&keyword=${keyword}'"><c:out value="${ status.current }" /></button>
              </c:if>
          </c:forEach>
          
          <!-- 다음 페이지로 -->
-         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.nextPage }&type=${type}&keyword=${keyword}'">&gt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.nextPage }&startdate=${ startdate }&enddate=${enddate}&type=${type}&keyword=${keyword}'">&gt;</button>
          
          <!-- 맨 끝으로 -->
-         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.maxPage }&type=${type}&keyword=${keyword}'">&gt;&gt;</button>
+         <button onclick="location.href='${ path }/board/boardSearch?page=${ pageInfo.maxPage }&startdate=${ startdate }&enddate=${enddate}&type=${type}&keyword=${keyword}'">&gt;&gt;</button>
       </div>
          
    </div>

@@ -13,15 +13,19 @@
 <meta charset="UTF-8">
 <title>게시판 목록</title>
 <script src="${ path }/js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <style>
 #box{background-color:none;width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
+     margin-top:auto;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
 h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
 
-td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+p,td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
 
 input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
 input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
@@ -119,7 +123,10 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
        <!-- 검색 폼 시작--------------------- -->
          <form id="searchForm" name="form1" method="GET" action="${path}/board/boardSearch">
             <div align="right" class="row m-4">
-
+			   <p>조회기간을 선택해주세요 
+        			<input type="text" id="datepicker1" name="startdate" style="padding-top: 5px; padding-bottom: 6px;"><img src="${path}/resources/images/calendar-icon.png" id="startDt" style="margin-left:-24px; margin-bottom:-7px;">~
+        			<input type="text" id="datepicker2" name="enddate" style="padding-top: 5px; padding-bottom: 6px;"><img src="${path}/resources/images/calendar-icon.png" id="endDt" style="margin-left:-24px; margin-bottom:-7px;">
+    		   </p>
                <select name="type" class="form-control" id="type" required>
                   <option value="" selected disabled hidden>::검색 유형::</option>
                   <option value="1">글제목</option>
@@ -237,7 +244,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
          </div>
       </div>
       
-      <div id="pageBar" style="align:center;">
+      <div style="align: center; margin-top:10px; text-align:center;">
          <!-- 맨 처음으로 -->
          <button onclick="location.href='${ path }/board/boardList?page=1'">&lt;&lt;</button>
          
@@ -267,6 +274,33 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 </div>
 </section>
 </div>
+
+<script>
+   $(function() {
+       //input을 datepicker로 선언
+       $("#datepicker1,#datepicker2").datepicker({
+           dateFormat: 'yy-mm-dd' //달력 날짜 형태
+           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+           ,changeYear: true //option값 년 선택 가능
+           ,changeMonth: true //option값  월 선택 가능                
+           //,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+           //,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+           ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+           ,buttonText: "선택" //버튼 호버 텍스트              
+           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+           ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+           ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+       });                    
+       
+       //초기값을 오늘 날짜로 설정해줘야 합니다.
+       $("#datepicker1,#datepicker2").datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)   
+   });
+</script>
 </body>
 </html>
 <%@ include file="../common/footer.jsp"%>
