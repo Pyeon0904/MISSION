@@ -23,8 +23,10 @@
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
    #box{ background-color:none; width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
+   .pageTitle{ margin-bottom : 50px; margin-left: -34px;}
+   }
 </style>
 </head>
 <body>
@@ -35,7 +37,7 @@
 <div id="wrap">
 	<div id="container">
 		<div class="inner">		
-			<h2 style="padding-bottom:20px;">게시글 작성</h2>
+			<a><img class="pageTitle" src="${path}/resources/images/pageTitle/게시글작성.png" /></a>
 			<form action="${ path }/review/reviewWrite" enctype="multipart/form-data" method="POST">
 				<table width="100%" class="table02">
 				<caption><strong><span class="t_red">*</span> 표시는 필수입력 항목입니다.</strong></caption>
@@ -46,7 +48,7 @@
 				    <tbody id="tbody">
 						<tr>
 							<th>제목<span class="t_red">*</span></th>
-							<td><input id="board_subject" name="title" class="tbox01" placeholder="제목을 입력해주세요." style="width:350px" required/></td>
+							<td><input type="text" name="title" class="tbox01" placeholder="제목을 입력해주세요." style="width:350px" required/></td>
 						</tr>
 						<tr>
 							<th>작성자</th>
@@ -68,8 +70,8 @@
 				    </tbody>
 				</table>
 			<div class="btn_right mt15">
-				<input type="submit" class="btn black" value="등록하기">
-				<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewList'">목록으로</button>
+				<input type="submit" class="button_base b01_simple_rollover"  value="등록하기">
+				<button type="button" class="button_base b01_simple_rollover"  onclick="location.href='${path}/review/reviewList'">목록으로</button>
 			</div>
 			</form>
 		</div>
@@ -91,7 +93,7 @@ $("#challangeSearch").on("click", (e)=>{
 
 $(document).ready(function() {
 	$('#summernote').summernote({
-		  height: 300,                 	// 에디터 높이
+		  height: 400,                 	// 에디터 높이
 		  minHeight: null,             	// 최소 높이
 		  maxHeight: 400,             	// 최대 높이
 		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부

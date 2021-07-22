@@ -29,7 +29,7 @@
 													<img src="${path}/resources/images/point/${challenge.minusPoint}p.png" width="50px" height="25px"/>
 												</div>
 												<div class="itemOpacCont">
-													<div class="itemShowMenu" onclick="location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'" style="z-index:2">
+													<div class="itemShowMenu" onclick="window.parent.location.href='${ path }/challenge/recruit?no=${ challenge.challengeNo }'" style="z-index:2">
 														<span class="details">상세보기</span>
 													</div>
 													<div class="itemDelete" onclick="zzimDelete(${ challenge.challengeNo });" style="z-index:3">

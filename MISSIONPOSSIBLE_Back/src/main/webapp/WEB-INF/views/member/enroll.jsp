@@ -19,8 +19,8 @@
 	#box{ 
     	background-color:none;
     	width:100%;
-    	height:600px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-    	margin-top:auto;
+    	height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+    	margin-top:50px;
     	margin-bottom:150px;
     	margin-left:-10px;
     	padding:10px;
@@ -400,6 +400,21 @@ ul {
 	  cursor: pointer;
 }
 
+/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 600px;
+	}
+	/* ---------------------- */
+
+.pageTitle{
+	width : 320px;
+	height : 200px;
+}
+
+
 </style>
 <script type="text/javascript">
 	$(document).ready(() => {	
@@ -635,20 +650,25 @@ ul {
         }
  	}
  	function valiNick(nickname){
- 		var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
-		var checkBlank = /[\s]/;
-		  
-		  if(nickname.length < 2 || nickname.length > 10){
-			  $(".name.regex").html("영문,숫자를 혼합 2-10자리");
-		  }else if(checkBlank.test(nickname)){
-			  $(".name.regex").html("공백을 포함할 수 없습니다.");
-		  }else if(checkspe.test(nickname)){
-			  $(".name.regex").html("특수문자를 포함할 수 없습니다.");
-		  }else{
-			  $(".name.regex").html("");
-			  return true;
-		  }
- 	}
+         var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+         var checkBlank = /[\s]/;
+         var checkNumber = /[^0-9]/gi;
+         var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+         var checkEnglish =  /[^a-zA-Z]/;
+         
+         if(nickname.length < 2 || nickname.length > 10){
+            $(".name.regex").html("영문 또는 한글 2-10자리");
+         }else if(checkBlank.test(nickname)){
+            $(".name.regex").html("공백을 포함할 수 없습니다.");
+         }else if(checkspe.test(nickname)){
+            $(".name.regex").html("특수문자를 포함할 수 없습니다.");
+         }else if(!checkNumber.test(nickname)){
+            $(".name.regex").html("'숫자'만으로의 조합은 입력할 수 없습니다.");
+         }else{
+            $(".name.regex").html("");
+            return true;
+         }
+     }
  	function valiEmail(){
  		var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         var result = regex.exec($("#member_email").val());
@@ -667,8 +687,12 @@ ul {
 
 <div id="box">
       <section id="section">
-         <div id="conbox">
-	<h3>회원가입</h3>
+        <div id="conbox">
+        <!-- title 이미지 삽입 -->
+		<a><img class="pageTitle"
+			src="${path}/resources/images/pageTitle/회원가입큰버전.png"/>
+		</a>
+	<br><br><br><br>
 	<hr>
 	<br><br>
 	<div id="enroll-container">

@@ -421,19 +421,23 @@ public class BoardController {
 	public ModelAndView search(ModelAndView model, 
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam("type") String type,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam("keyword") String keyword,
+			@RequestParam("startdate") String startdate,
+			@RequestParam("enddate") String enddate) {
 			
 		List<Board> list = null;
-		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchBoardCount(type, keyword), 10); 
+		PageInfo pageInfo = new PageInfo(page, 10, service.getSerchBoardCount(type, keyword, startdate, enddate ), 10); 
 
-		list = service.getSearchBoardList(type, keyword, pageInfo);
+		list = service.getSearchBoardList(type, keyword, pageInfo, startdate, enddate);
 			
 		model.addObject("list", list);
 		model.addObject("type", type);
 		model.addObject("keyword", keyword);
 		model.addObject("pageInfo", pageInfo);
+		model.addObject("startdate", startdate);
+		model.addObject("enddate", enddate);
 		model.setViewName("board/boardSearch");
-			
+		
 		return model;		
 	}
 }

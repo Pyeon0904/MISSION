@@ -100,7 +100,7 @@
 							<script>
 								function zzimDelete(no){
 									if(confirm("해당 챌린지를 찜 목록에서 삭제하시겠습니까?")){
-										location.href="${path}/challenge/zzimDelete.do?cNo="+no;
+										location.href="${path}/challenge/zzimDelete.do?isMyPage=true&cNo="+no;
 									} else {
 										alert("사용자에 의해 찜 목록 삭제 요청이 취소되었습니다.");
 									}

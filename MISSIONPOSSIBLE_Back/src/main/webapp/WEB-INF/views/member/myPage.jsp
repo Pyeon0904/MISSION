@@ -12,8 +12,8 @@
 	#box{ 
         background-color:none;
         width:100%;
-        height:1500px; 
-        margin-top:330px;
+        height:auto; 
+        margin-top:50px;
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;
@@ -57,7 +57,7 @@
       <section id="section">
          <div id="conbox">
 		<br><br><br><br><br><br>
-		<h4>마이페이지</h4>
+         <a><img class="pageTitle" src="${path}/resources/images/pageTitle/마이페이지.png" /></a>
 		<br><br>
 		<hr>
 		<br><br>
@@ -116,12 +116,12 @@
 				<h3>참여중인 챌린지</h3>
 				<iframe id="joinList-content" name="joinList-content"
 					src="${ path }/member/objectJoinList" 
-					width="960px" height="400px" scrolling="no" frameborder="1">
+					width="960px" height="400px" scrolling="no" frameborder="0">
 				</iframe>
 				<h3>찜한 챌린지</h3>
 				<iframe id="zzimList-content" name="zzimList-content"
 					src="${ path }/member/objectZzimList" 
-					width="960px" height="400px" scrolling="no" frameborder="1">
+					width="960px" height="400px" scrolling="no" frameborder="0">
 				</iframe>
 			</div>
 		 </div>

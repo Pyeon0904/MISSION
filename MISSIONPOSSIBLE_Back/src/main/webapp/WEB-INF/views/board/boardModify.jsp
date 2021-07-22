@@ -24,8 +24,8 @@
 <script src="${path}/resources/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${path}/resources/summernote/summernote-lite.css">
 <style>
-#box{background-color:none;width:100%;height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-     margin-top:330px;margin-bottom:100px;margin-left:-10px;padding:10px;}
+#box{background-color:none;width:100%;height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+     margin-top:50px;margin-bottom:100px;margin-left:-10px;padding:10px;}
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
@@ -107,6 +107,11 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination a.onpage{font-family:'malgunbd';color:#0460a5}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
+
+.button_base:hover {cursor: pointer;}
+.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
+.b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
+.pageTitle{margin-left: -34px;}
 </style>
 </head>
 <body>
@@ -116,7 +121,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 <div id="wrap">
 	<div id="container">
 		<div class="inner">	
-			<h2 style="padding-bottom:20px;">게시글 수정</h2>
+         	<a><img class="pageTitle" src="${path}/resources/images/pageTitle/게시글수정.png" /></a>
 			<form id="boardForm" name="boardForm" action="${ path }/board/boardModify" method="POST" enctype="multipart/form-data">	
 				<input type="hidden" name="qna_no" value="${ board.qna_no }" />
 				<table width="100%" class="table02">
@@ -150,8 +155,8 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 				    </tbody>
 				</table>	
 				<div class="btn_right mt15">
-					<button type="button" class="btn black mr5" onclick="location.href='${path}/board/boardList'">목록으로</button>
-					<input type="submit" class="btn black" value="수정하기">
+					<button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/board/boardList'">목록으로</button>
+					<input type="submit" class="button_base b01_simple_rollover" value="수정하기">
 				</div>
 			</form>
 			
