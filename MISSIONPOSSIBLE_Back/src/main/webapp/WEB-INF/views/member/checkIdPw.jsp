@@ -12,14 +12,13 @@
 <meta charset="UTF-8">
 <title>회원 인증</title>
 <style> 
-	div{ 
+div{ 
 		position:relative; 	
 		height: auto;
-		margin-top: 150px;
-		margin-left: 300px;
+		margin-top: auto;
+		margin-left: 150px;
 		margin-right: 60px;
 		font-size: 25px;
-		text-align: left;
 	} 
 </style> 
 </head>

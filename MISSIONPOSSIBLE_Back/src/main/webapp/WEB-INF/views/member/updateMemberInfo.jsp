@@ -340,8 +340,8 @@ ul {
 #box{ 
         background-color:none;
         width:100%;
-        height:1000px; 
-        margin-top:330px;
+        height:auto; 
+        margin-top:50px;
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;

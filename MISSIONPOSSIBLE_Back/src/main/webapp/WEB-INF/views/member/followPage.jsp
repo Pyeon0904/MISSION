@@ -12,8 +12,8 @@
 	#box{ 
       background-color:none;
       width:100%;
-      height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-      margin-top:330px;
+      height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+      margin-top:50px;
       margin-bottom:100px;
       margin-left:-10px;
       padding:10px;
@@ -36,6 +36,9 @@
 	    height: 100%;
 	    object-fit: cover;
 	}
+	
+	.pageTitle{margin-left: -34px;}
+	
 </style>
 <script type="text/javascript">
 	$(document).ready(()=>{
@@ -52,7 +55,7 @@
       <section id="section">
          <div id="conbox">
 			<br><br><br><br><br><br>
-			<h4>팔로우 페이지</h4>
+			<a><img class="pageTitle" src="${path}/resources/images/pageTitle/팔로우리스트.png" /></a>
 			<br><br>
 			<hr>
 			<br><br>

@@ -15,8 +15,8 @@
 	div{ 
 		position:relative; 	
 		height: auto;
-		margin-top: 150px;
-		margin-left: 300px;
+		margin-top: auto;
+		margin-left: 150px;
 		margin-right: 60px;
 		font-size: 25px;
 	} 
@@ -39,7 +39,7 @@
 			</tr>
 		</table>
 		<br>
-		<button type="submit" style="width: 270px; height: 30px;">인증하기</button>
+		<button type="submit" style="width: 247px; height: 30px;">인증하기</button>
 	</form>
 </div>
 </body>

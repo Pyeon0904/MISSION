@@ -11,14 +11,14 @@
 <style>
 #report{ width : 500px; }
  .reportList{ width : 400px; }
- section{
- 	position:relative; 	
-	height: auto;
-	margin-top: 150px;
-	margin-left: 230px;
-	margin-right: 60px;
-	font-size: 30px;
- }
+section{ 
+		position:relative; 	
+		height: auto;
+		margin-top: auto;
+		margin-left: 50px;
+		margin-right: 60px;
+		font-size: 25px;
+	} 
 </style>
 <body>
         <section>

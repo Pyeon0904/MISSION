@@ -15,11 +15,11 @@
 div{ 
 		position:relative; 	
 		height: auto;
-		margin-top: 150px;
-		margin-left: 330px;
+		margin-top: auto;
+		margin-left: 190px;
 		margin-right: 60px;
-		font-size: 30px;
-	}
+		font-size: 25px;
+	} 
 </style> 
 
 </head>

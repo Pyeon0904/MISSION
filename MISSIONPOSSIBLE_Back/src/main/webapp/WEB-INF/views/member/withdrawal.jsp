@@ -51,7 +51,7 @@
 <div id="box">
       <section id="section">
          <div id="conbox">
-			<br><br><br><br><br><br>
+			
 			<br><br>
          	<a><img class="pageTitle" src="${path}/resources/images/pageTitle/회원탈퇴.png" /></a>
 			<hr>

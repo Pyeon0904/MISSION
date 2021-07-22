@@ -12,14 +12,14 @@
 <meta charset="UTF-8">
 <title>비밀번호 찾기</title>
 <style> 
-	div{ 
-			position:relative; 	
-			height: auto;
-			margin-top: 150px;
-			margin-left: 300px;
-			margin-right: 60px;
-			font-size: 25px;
-		} 
+div{ 
+		position:relative; 	
+		height: auto;
+		margin-top: auto;
+		margin-left: 150px;
+		margin-right: 60px;
+		font-size: 25px;
+	} 
 </style> 
 </head>
 <body>
