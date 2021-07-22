@@ -30,69 +30,75 @@
 <meta charset="UTF-8">
 <title>s</title>
 
-<!-- ������ ���̺귯�� link -->
+<!-- 아이콘 라이브러리 link -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- �������� import -->
+<!-- view 페이지용 테스트 CSS link -->
+<link rel="stylesheet" href="${ path }/resources/css/btn-view.css">
+
+<!-- 제이쿼리 import -->
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
-		/* ---------------------------------------------------------------------*/
+		/* 전체 영역--------------------------------------------------------------------------*/
 				
-			/*--------------------------------*/
+			/*---------------제일 바깥 영역 설정-----------------*/
 			#box{ 
 			   background-color:none;
 			   width:100%;
-			   height:1200px; 
-			   margin-top:330px;
+			   height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+			   margin-top:50px;
 			   margin-bottom:100px;
 			   margin-left:-10px;
 			   padding:10px;
 			}
-			/*----------------------------------------*/
+			/*-------------------컨텐츠 영역---------------------*/
 			#conbox{
-				width:1200px; 
+				width:1200px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
 				position:relative; 
 				top:20px;
 				margin:auto;
 			}
 			    
 		/*-----------------------------------------------------------------------------------*/
-    	
-    #subHeaderContainer{width:100%; height:70px; }
-    #subHeaderContainer h2{float:left; margin-top:20px;}
+/*	.test{border:1px solid gray}*/
+    #subHeaderContainer{width:100%; height:100px; float:left;}
+    #subHeaderContainer .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
 	#subHeaderContainer .searchArea{
-		width:310px; height:40px; 
-		float:right; margin-right:26px;
-		margin-top:20px;
-	}    
-	#subHeaderContainer .searchArea .inputGroup .searchBox{
-		width:243px; height:40px; border:4px solid #61380B;
-		margin-left:7.2px; float:left; padding:5px;
+		width:400px; height:80px;
+		float:right; margin-top:20px;
 	}
-	#subHeaderContainer .searchArea .inputGroup .inputGroupBtn .btnSearch{
-		width:55px; height:40px; 
-		border:1px solid gray;
-		/*border-left-style:none;
-		border-right-style:1px solid gray;
-		border-top-style:none;
-		border-bottom-style:1px solid gray;*/
-		border-style:none;
-		border-radius:0;
-		background-color:#61380B;
-		color:white;
-		margin-left:-2px;
+	.searchText{
+		border-top:none;
+		border-right:none; 
+		border-bottom:3px solid #64b564; 
+		border-left:none; 
+		width:150px;height:25px; 
+		margin-right:-5px;
+		padding: 0 5px 0 5px;
 	}
+	.searchText:focus{
+		background-color:#edffed;
+	}
+	.selectBox{
+		width:110px;
+		height:27px;
+		border-top:none;
+		border-right:none; 
+		border-bottom:3px solid #64b564; 
+		border-left:none;
+	}
+	#subHeaderContainer .listCountArea{width:70px; height:30px; float:right; margin-top:15px; text-align:right;}
     
-	#categoryBar{ width:200px; height:150px; float:left;}
+	#categoryBar{ width:200px; height:1000px; float:left;}
 	#categoryBar ul{ list-style-type : none;}
-	#categoryBar ul li{ width:200px; height:50px; border-bottom:1px solid gray; line-height:3;}
-	
-	#challengeDisplay{ width:950px; height:auto; float:left; font-size:0.9em; margin-left:20px;}
-	.categoryArea {width:890px; height:auto; margin:0 auto; padding:10px 0;}
-	.categoryArea p {float:right; margin-top:-10px;}
-	.challengeListCont{width:890px; height:auto; margin:0 auto;}
-	.challengeListDisplay ul li{list-style-type:none;float:left;}
+	#categoryBar ul li{ width:200px; height:50px; border-bottom:1px solid gray; line-height:3; position:relative;left:-40px; top:-18px; font-size:1em;font-weight:bold;transition : 0.3s;}
+	#categoryBar ul li:hover{background:#0bc20b; color:#fff;}
+		
+	#challengeDisplay{ width:995px; height:auto; float:right; font-size:0.9em;}
+	.notFound{width:980px; height:200px;background-color:#edffed; border-radius:10px;text-align:center;margin:10px 0 0 50px;line-height:200px;}
+	.challengeListDisplay {margin-left:-40px; margin-top:-15px;}
+	.challengeListDisplay ul li{width:22.5%; height:30%;margin:1%;list-style-type:none;float:left;border-radius:8px; background-color:#edffed;}
 	.itemCont{ width:auto; height:275px;}
 	.itemCont .itemPhotoBox {width:180px; height:180px; margin:0 auto; margin-top:20px;}
 	.itemCont .itemInfoCont {width:180px; height:auto; margin:10px auto 0 auto;}
@@ -100,38 +106,46 @@
 	.itemCont .itemInfoCont .itemSubCont{margin-top:10px;}
 	.itemShowMenu{
 		width:180px; height:180px; background:rgba(0,0,0,0.5); 
-		position:relative; top:-180px; left:0px; 
-		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5.75;
+		position:relative; top:-233px; left:0px; 
+		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5;
+		opacity : 0; transition : 0.3s;
 	}
-	#pageBarContainer{width:950px; height:60px; text-align:center; float:right; margin-right:30px;}
-	#pageBar{
-		width:255px; height:50px; margin:0 auto;
-	}
-	#pageBar div.pageArrow {
-		width:30px; height:30px; margin:10px 10px 0 10px; float:left; 
-		color:white; background-color:brown; font-size:2em; 
-		border-radius:5px; line-height:0;
-	}
-	#pageBar div.pageCount{ 
-		width:30px; height:30px; border:none; background-color:#61380B;
-		border-radius:50%; margin:10px; float:left;
-	}
+	.itemShowMenu:hover{opacity:1}
+	
+	/*페이지 바 CSS 구현*/
+	.pagination-container { width:1015px; height:60px;float:right;margin:0 auto;text-align: center;}
+	.pagination { position: relative;}
+	.pagination a {position: relative;display: inline-block;color: #0b520b;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
+	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #0b520b;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
+	.pagination a:hover,.pagination a .pagination-active {color: #fff;}
+	.pagination a:hover:before,.pagination a .pagination-active:before {transform: scale(1);}
+	.pagination .pagination-active {color: #fff;}
+	.pagination .pagination-active:before {transform: scale(1);}
+	.pagination-newer {margin-right: 50px;}
+	.pagination-older {margin-left: 50px;}
+	
+	/*오른쪽 위 input 버튼 추가 CSS 수정*/
+	.btn.green {background-color: #6fde7e;}/*버튼 윗부분*/
+	.btn.green {box-shadow: 0px 4px 0px #62bf6e;}/*버튼 아랫부분*/
+	.btn.green:active {box-shadow: 0 0 #62bf6e; background-color: #62bf6e;}/*버튼 아랫부분*/
+	
+	footer{width:100%; height:100px; position:absolute; bottom:-800px;}
 </style>
 </head>
 <body>
 	<div id="box">
 		<section id="section">
 			<div id="conbox">
-			
-				
-				
-				<div id="subHeaderContainer">
-					<h2>검색 결과</h2>
-					<div class="searchArea">
+				<div id="subHeaderContainer" class="test">
+					<!--modify-->
+					<div class="subHeaderImg test">
+						<img alt="" src="${path}/resources/images/pageTitle/챌린지검색.png">
+					</div>
+					<div class="searchArea test">
 						 <!-- 검색 폼 시작--------------------- -->
 				         <form id="challengeSearch" name="form1" method="GET" action="${path}/challenge/search">
 				            <div align="right" class="row m-4">
-				               <select name="key" class="form-control" required>
+				               <select name="key" class="selectBox" required>
 				                  <option value="" selected disabled hidden>::검색 유형::</option>
 				                  <option value="1">챌린지 제목</option>
 				                  <option value="2">챌린지 등록자 ID</option>
@@ -140,69 +154,51 @@
 				                  <option value="5">전체</option>
 				               </select>
 				          
-				               <input type="text" name="word" class="form-control" style="padding: 3px 20px 6px 20px" value=${ word }>
-				               <button type="submit" class="btn btn-warning" >검색</button>
+				               <input type="text" name="word" class="searchText" value=${ word }>
+				               <button type="submit" class="btn green mini" >검색</button>
 				            </div>
 				         </form>
 				         <!-- 검색 폼 끝---------------------- -->
+				         <div class="listCountArea test">
+							총 <c:out value="${ pageInfo.listCount }"/>개
+						</div>
 					</div>
+					
 				</div><!-- #subHeaderContainer -->
-				
-				<div id="productContainer">
+				<div id="productContainer" class="test">
 					<!-- 카테고리 바 -->
-					<div id="categoryBar">
+					<div id="categoryBar" class="test">
 						<ul id="categoryList">
-						    <li onclick="location.href='${recruitListViewPath}'">모집중인 챌린지</li>
-						    <li onclick="location.href='${ongoingListViewPath}'">진행중인 챌린지</li>
-						    <li onclick="location.href='${endListViewPath}'">종료된 챌린지</li>
+						    <li class="btn-category btn-3" onclick="location.href='${recruitListViewPath}'">모집중인 챌린지</li>
+						    <li class="btn-category btn-3" onclick="location.href='${ongoingListViewPath}'">진행중인 챌린지</li>
+						    <li class="btn-category btn-3" onclick="location.href='${endListViewPath}'">종료된 챌린지</li>
 						</ul>
 					</div><!-- categoryBar -->
 					
-					<!-- ç���� ���� ���� -->
-					<div id="challengeDisplay">
-						<div class="categoryArea">
-							<h3>검색 결과</h3>
-							<!-- ��ȸ�� ç������ ���� -->
-							<p>총 <c:out value="${ pageInfo.listCount }"/>개</p>
-						</div>
-						<hr>
-						<div class="challengeList">
-						<!-- ��ǰ ����Ʈ -->
-							<div class="challengeListCont">
-							<!-- ��ǰ ����Ʈ ���� -->
-								<div class="challengeListDisplay">
-									<ul>
-									<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
-										<li style="width:25%;">
-											<div class="itemCont">
-												<div class="itemPhotoBox">
-													<img src="${path}/resources/images/file.png" alt="desc" width="200px">
-												</div>
-												<div class="itemInfoCont" style="margin-top:30px;">
-													<p>
-														<span class="itemTitle">챌린지를 찾을 수 없음</span><br>
-														<span class="itemSubCont">NONE!</span>
-													</p>
-												</div>
-											</div>
-										</li>
-									</c:if>
-									<c:if test="${ list != null }">
-										<c:forEach var="challenge" items="${ list }">
-										<!-- D-Day ���� ������ ���� include -->
+					<!-- 챌린지 진열 구역 -->
+					<div id="challengeDisplay" class="test">
+						<div class="challengeListDisplay">
+							<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
+								<div class="notFound">
+									<h2>조건에 일치하는 챌린지를 찾을 수 없습니다.</h2>
+								</div>
+							</c:if>
+							<c:if test="${ list != null }">
+							<ul class="test">
+								<c:forEach var="challenge" items="${ list }">
 										<%@ include file="date.jsp" %>
 											<c:choose>
 												<c:when test="${ todayNum < startNum && todayNum < endNum }">
 													<%@ include file="objectRecruit.jsp" %>
 												</c:when>
-												<c:when test="${ todayNum >= startNum && todayNum < endNum }">
+												<c:when test="${ todayNum >= startNum && todayNum <= endNum }">
 													<%@ include file="objectOngoing.jsp" %>
 												</c:when>
-												<c:when test="${ todayNum >= startNum && todayNum >= endNum }">
+												<c:when test="${ todayNum > startNum && todayNum > endNum }">
 													<%@ include file="objectEnd.jsp" %>
 												</c:when>
 												<c:otherwise>
-													<li style="width:25%;">
+													<li>
 														<div class="itemCont">
 															<div class="itemPhotoBox">
 																<img src="${path}/resources/images/file.png" alt="desc" width="200px">
@@ -217,70 +213,28 @@
 													</li>
 												</c:otherwise>
 											</c:choose>
-										</c:forEach>
-									</c:if>
-									<script>
-										$(document).ready(()=>{
-											$("div.itemShowMenu").hide();
-											
-											$(".itemPhotoBox").hover(
-												function(){
-													$(this).find(".itemShowMenu").fadeIn(200);
-												}, 
-												function(){
-													$(this).find(".itemShowMenu").fadeOut(200);
-												}
-											);
-											
-											$("#categoryBar ul li").hover(
-													function(){
-														$(this).css("background", "#FFF000");
-													}, 
-													function(){
-														$(this).css("background", "none");
-													}
-												);
-										});
-									</script>
-									</ul>
-								</div>
-							</div>
+								</c:forEach>
+							</ul>
+							</c:if>
 						</div>
 					</div><!-- #challengeDisplay -->
-					<div id="pageBarContainer">
-						<div id="pageBar">
-							<!-- 
-								�� ó������ 
-								<button class="pageArrow" onclick="<%--location.href='<%= request.getContextPath() %>/board/list?page=1'--%>"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
-							-->
-							
-							<!-- ���� �������� -->
-							<div class="pageArrow" onclick="location.href='${ path }/challenge/search?page=${  pageInfo.prvePage }&key=${key}&word=${word}'">
-								 <i class="fa fa-caret-left" aria-hidden="true"></i>
-							</div>			
-							<!--  10�� ������ ��� -->
+					<div class="pagination-container">
+						<div class="pagination">
+							<!-- 이전 페이지로 -->
+							<a class="pagination-newer" href="${ path }/challenge/search?page=${ pageInfo.prvePage }&key=${key}&word=${word}">PREV</a>			
+							<!--  10개 페이지 목록 -->
 							<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" step="1" varStatus="status">
 					        	<c:if test="${ pageInfo.currentPage == status.current}">
-									<div class="pageCount" style="background-color:yellow;">
-					              		<c:out value="${ status.current }"/>
-					               	</div>
+					               	<a class="pagination-active"><c:out value="${ status.current }"/></a>
 					            </c:if>
 					            <c:if test="${ pageInfo.currentPage != status.current}">
-					               	<div class="pageCount" onclick="location.href='${ path }/challenge/search?page=${ status.current }&key=${key}&word=${word}'">
-					               		<c:out value="${ status.current }"/>
-					               	</div>
+					               	<a href="${ path }/challenge/search?page=${ status.current }&key=${key}&word=${word}"><c:out value="${ status.current }"/></a>
 					            </c:if>
 					        </c:forEach>
-					        <!-- ���� �������� -->
-							<div class="pageArrow" onclick="location.href='${ path }/challenge/search?page=${ pageInfo.nextPage }&key=${key}&word=${word}'">
-								 <i class="fa fa-caret-right" aria-hidden="true"></i>
-							</div>
-									
-							<!-- �� ������ 
-							<button class="pageArrow" onclick="<%-- location.href='<%= request.getContextPath() %>/board/list?page=<%= pageInfo.getMaxPage() %>'--%>"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>'
-							-->
+					        <!-- 다음 페이지로 -->
+							<a class="pagination-older" href="${ path }/challenge/search?page=${ pageInfo.nextPage }&key=${key}&word=${word}">NEXT</a>		
 						</div><!-- #pageBar -->
-					</div><!-- #pageBarContainer -->
+					</div><!-- .pagination-container -->
 				</div><!-- #productContainer -->
 				
 			</div>

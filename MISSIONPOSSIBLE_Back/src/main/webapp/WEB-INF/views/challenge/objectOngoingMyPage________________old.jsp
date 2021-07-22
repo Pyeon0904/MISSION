@@ -21,11 +21,11 @@
 												<div class="itemCont">
 													<div class="itemPhotoBox">
 														<c:if test="${ challenge.thumbnailFile == null }">
-															<img src="${path}/resources/images/c_img/chall01.png" alt="기본 이미지" width="180px" height="180px"/>
+															<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
 														</c:if>
 														<c:if test="${ challenge.thumbnailFile != null }">
 															<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
-																width="180px" height="180px" onerror="this.src='${path}/resources/images/c_img/chall01.png'"/>
+																width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
 														</c:if>
 														<div class="itemShowMenu" onclick="window.parent.location.href='${ path }/challenge/setViewIO.do?no=${ challenge.challengeNo }'">
 															<span class="details">상세보기</span>
@@ -69,7 +69,7 @@
 															<div class="barEmpty">
 																<div class="barGreen" style="width:${progPercent}%"></div>
 															</div>
-															<div class="progStatus">
+															<div class="progStatus" style="float:right">
 																<p>${successDay} / ${totalDay}</p>
 															</div>
 														</div>
