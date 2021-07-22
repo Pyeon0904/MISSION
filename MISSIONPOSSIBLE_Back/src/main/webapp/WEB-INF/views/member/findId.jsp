@@ -12,19 +12,21 @@
 <meta charset="UTF-8">
 <title>아이디 찾기</title>
 <style> 
-	div { position:relative; 	
-		width: 370px;
-		margin-top: 70px;
-		margin-left: 30px;
-		margin-right: 30px;
-		margin-bottom: 10px;} 
+div{ 
+		position:relative; 	
+		height: auto;
+		margin-top: 150px;
+		margin-left: 330px;
+		margin-right: 60px;
+		font-size: 30px;
+	}
 </style> 
 
 </head>
 <body>
 <div>
-	id : <b>${ loginMember.id }</b><br><br><br>
-	<input type='BUTTON' value=" 창닫기" style="width: 380px; height: 30px;" onClick='self.close()'>
+	<h3>id : ${ confirmMember.id }</h3>
+	<input type='BUTTON' value=" 창닫기" style="width: 200px; height: 30px;" onClick='self.close()'>
 </div>
 </body>
 </html>
