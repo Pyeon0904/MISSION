@@ -1,6 +1,6 @@
 package com.missionpossibleback.mvc.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller;	
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -10,9 +10,8 @@ import com.missionpossibleback.mvc.member.controller.MemberController;
 import com.missionpossibleback.mvc.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
-
-@Controller
 @Slf4j
+@Controller
 public class introduceController {
 	
 	@GetMapping("/introduce/introduce")
@@ -40,6 +39,12 @@ public class introduceController {
 	      
 	      return "introduce/test";
 	   }
+	   @GetMapping("/introduce/exmple")
+	   public String exmple() {
+	      log.info("동영상 테스트 페이지 요청");
+	      
+	      return "introduce/exmple";
+	   }
 	  
-	   
+	
 }

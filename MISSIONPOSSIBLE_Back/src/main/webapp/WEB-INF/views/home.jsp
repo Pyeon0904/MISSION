@@ -3,32 +3,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
-
-
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
-<!-- jQuery 1.8 or later, 33 KB -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<!-- Fotorama from CDNJS, 19 KB -->
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css"
-	rel="stylesheet">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
-
-<!-- Animate.CSS -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-
-
+<title>메인페이지</title>
+<meta charset="UTF-8">
+<!-- slick 라이브러리 -->
+  <link rel="stylesheet" type="text/css" href="${path}/resources/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="${path}/resources/slick/slick-theme.css"/>
 
 <%@ include file="/WEB-INF/views/common/headerDetail.jsp"%>
+<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
+<script src="${path}/resources/slick/slick.min.js" type="text/javascript"></script>
+
 <style>
 @font-face {
     font-family: 'GmarketSansMedium';
@@ -77,87 +65,40 @@
 }
 
 /*-----------------------------------------------------------------------------------*/
-/*----------------------기획 의도-----------------------------------*/
-/* 사진 안에 글 */
-.Runing{
-position:absolute;
-top:15px;
-left:250px;
-font-size: 25px;
-font-weight: bold;
-}
-.Runing span{
-color:green;
-}
-.teamevent1{
-position:absolute;
-right:250px;
-top:20px;
-color:black;
-font-size:20px;
-font-weight: bold;
-
-}
-.teamevent1 span{
-  color:#368AFF;
+/* 챌린지 홍보 슬라이드 쇼 영역 지정*/
+.proimg{
+ width:100%;
 }
 
+	.pro-slider .prev{
+  		font-size:3em;
+  		color:#1afc1a;
+  		cursor: pointer;
+  		float:left;
+  		cursor: pointer;
+  		margin-top:180px;
+  		margin-left:200px;
+  		margin-right:10px;
+  	
+	}
+	.pro-slider .next{
+		font-size:3em;
+		color:#1afc1a;
+		cursor: pointer;
+		float:right;
+		margin-top:-380px;
+		margin-left:10px;
+  		margin-right:200px;
+  		
+	}
+	
 
-.JORDANleft{
-position:absolute;
-color:black;
-left:285px;
-font-size:20px;
-top:60px;
-font-weight: bold;
-}
-.JORDANright{
-position:absolute;
-color:white;
-left:700px;
-top:55px;
-font-size: 20px;
-line-height:1.5em;
-font-weight: bold;
-}
-.temaevent2{
-position:absolute;
-color:white;
-top:200px;
-left:780px;
-font-size:19px;
-}
-.temaevent2 span{
-  color:#FF1212;
-  font-weight: bold;
-}
-.JSPARK{
-position:absolute;
-top:10px;
-left:350px;
-color:white;
-font-size: 23px;
-line-height:1.5em;
-}
-
-.temaevent3{
-position:absolute;
-color:white;
-top:200px;
-left:300px;
-font-size:18px;
-}
-
-.temaevent3 span{
-  color:#FF1212;
-  font-weight: bold;
-}
 /* --------------------- 간단히 홈페이지소개 ---------------------- */
 
 /* 간단히 소개 이미지*/
 .introImg{
-  width:500px;
-  height:360px;
+position:relative;
+left : 400px;
 }
 /* 간단히 홈페이지 설명 영역 지정 */
 .introcontent {
@@ -173,62 +114,11 @@ font-weight: bold;
 }
 
 /*------------------------------챌린지 소개--------------------------*/
-/*챌린지 소개 글*/
-.challTitle{
-	font-family: 'notosansgothic';
-    font-size: 18pt;
-	font-weight: bold;
-	color: black;
-	line-height: 1.5em;
+.introduce{
+margin-bottom:100px;
 }
-.challcontext{
-	font-family: 'AppleSDGothicNeoB';
-    width:550px;
-    height:420px;
-	font-size: 13.5pt;
-	color: black;
-	text-align:left;
-	line-height: 2.5em;
-}
-.challcontext span{
-font-weight: bold;
-	color: red;
-}
-
-/*챌린지 소개 이미지*/
-.IntrochallImg1{
-	position:absolute;
-	object-fit: cover;
-    width: 500px;
-	height: 300px;
-	left: 550px;
-	top:870px;
-}
-.IntrochallImg2{
-    position:absolute;
-	object-fit: cover;
-    width: 500px;
-	height: 300px;
-	left: 550px;
-	top:1220px;
-}
-/*챌린지 소개 이미지 소개 글*/
-.challImgtext1{
- text-align:center;
- position:absolute;
- top:1180px;
- left:555px;
- font-size:22px;
- font-weight: bold;
- color: black;
-}
-.challImgtext2{
- text-align:center;
- width:1180px;
- height:30px;
- font-size:22px;
- font-weight: bold;
- color: black;
+.ground{
+margin: 0 auto;
 }
 /*------------------게시판 소개------------------*/
 .boardImg1{
@@ -260,10 +150,10 @@ font-weight: bold;
 /*자세히보기 */
 .ViewMore {
   position:absolute;
-	width: 1280px;
-	height: 30px;
-	top:450px;
-	left:1100px;
+	top:1500px;
+	left:920px;
+	font-size:20pt;
+	color:black;
 }
 .ViewMore2 {
  position:absolute;
@@ -290,78 +180,60 @@ font-weight: bold;
 	color: black;
 }
 </style>
-<script>
-function animateCSS(element, animationName, callback) {
-    const node = document.querySelector(element)
-    node.classList.add('animated', animationName)
-
-     function handleAnimationEnd() {
-        node.classList.remove('animated', animationName)
-        node.removeEventListener('animationend', handleAnimationEnd)
-  
-        if (typeof callback === 'function') callback()
-    }
-
-    node.addEventListener('animationend', handleAnimationEnd)
-}
-animateCSS('.my-element','slideOutLeft')    
-
-animateCSS('.my-element','slideOutLeft',function() {
-	/*슬라이드 바*/
-})
-	$(document).on('mouseover', '.list8', function() {
-		$('.hlist8wd').show();
-	});
-
-	$(document).on('mouseleave', '.hlist8', function() {
-		$('.hlist8wd').hide();
-	});
-</script>
-
 </head>
 <body>
-<!-- 기획의도 -->
-    <div id="box">
-	   <section id="section">
-		   <div id="conbox">
-			    <div id="plan">
-				    <div id="show">
-					    <div class="fotorama" data-width="1200px" 
-					      data-height="400px"data-autoplay="2000" data-loop="true">
-						   <div data-img="${path}/resources/images/Runing.png">
-						     <p class=Runing><span>오늘 하루</span>는 얼마나달려볼까?</p>
-							   <div class="animated fast bounceInUp delay-1s">
-							    <p class="teamevent1"><span>Time </span>to&nbsp;<span>Run</span></p>
-							</div>
-						</div>
-						<div data-img="${path}/resources/images/JORDAN.jpg">
-						<p class=JORDANleft>한 번 포기하면 습관이된다. </p>
-						<p class=JORDANright>절대 포기하지 말아라 <br>&nbsp;&nbsp;&nbsp;&nbsp;-마이클 조던-</p>
-							<div class="animated  fadeInRight delay-3s">
-							<p class="temaevent2">Do <span>not give</span> up</p></div>
-						</div>
-						<div data-img="${path}/resources/images/JSPark.jpg">
-						<p class=JSPARK><br>언젠가 그들도 한번쯤은 쉴것이고 그때내가 쉬지않고<br> 나아간다면 차이는 조금이라도 줄어들 것이다.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							&nbsp;&nbsp;-박지성-</p>
-							<div class="animated  fadeInLeft delay-5s">
-							<p class="temaevent3">Don't rest + <span>Just do it</span></p></div>
-						</div>
-					</div>
-				</div>
-			</div>
-        <hr style="margin-bottom:10px;">
-        
+<!-- 챌린지 홍보 -->
+   	<section class="promotion">
+   	<div class="pro-slider">
+   	<i class="fa fa-angle-left prev" aria-hidden="true"></i>
+   	<div class="pro-wrapper">
+    <div class="proimg">   
+    <a href="${ path}/challenge/recruitList">
+    <img src="${path}/resources/images/walking.png" style="width: 1000px;height: 500px; " >
+    </a>
+    </div>
+    <div class="proimg">
+    <a href="${ path }/challenge/recruitList">
+    <img src="${path}/resources/images/study.png"  style="width: 1000px;height: 500px;">
+    </a>
+    </div>
+    <div class="proimg">
+    <a href="${ path }/challenge/recruitList">
+    <img src="${path}/resources/images/breathe.png" style="width: 1000px;height: 500px;">
+    </a>
+    </div>
+    </div>
+     <i class="fa fa-angle-right next" aria-hidden="true"></i>
+    </div>
+    </section>
+<script type="text/javascript">
+$(function(){
+$(".pro-wrapper").slick({
+	slide: 'div',       //슬라이드 되어야 할 태그 ex) div, li 
+	slidesToShow: 1,    // 한 화면에 보여질 컨텐츠 개수
+	slidesToScroll:1,   //스크롤 한번에 움직일 컨텐츠 개수
+	speed: 200,         // 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
+	Arrows: true,       // 옆으로 이동하는 화살표 표시 여부
+	dots : true,         // 스크롤바 아래 점으로 페이지네이션 여부
+	autoplay : true,      // 자동 스크롤 사용 여부
+	autoplaySpeed : 1000000,  // 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+	pauseOnHover : true,  // 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
+	prevArrow: $('#aro1_prev'),
+	nextArrow: $('#aro1_next'),	
+});
+})
+</script>
+<hr style="margin-bottom:50px;margin-top:50px;">       
 <!-- 간단히 홈페이지 소개  -->
 		     <div id="intro">
 				<table class="introTable">
 				    <tr>
 						<td rowspan="2">
 							<div class="introTitle">챌린지 홈페이지에 오신걸 환영합니다!</div>
-							<img class="introImg"src="${path}/resources/images/Lewan.PNG">
+							
 					       </td>
 						   <td>
 							<div class="ViewMore">
-								<a href="${ path }/introduce/introduce">자세히 보기</a>
 							</div>
 						</td>
 					</tr>
@@ -379,36 +251,44 @@ animateCSS('.my-element','slideOutLeft',function() {
 						      </tr>
 					     </table>
 				   </div>
- <hr style="margin-bottom:10px;"> 
+ <hr style="margin-bottom:50px;margin-top:50px;"> 
  
-<!-- 챌린지 소개 -->
-          <div id=challintro>
-	          <table id="Introchalltable">
-	              <tr>
-					<td>
-					  <div class="introTitle">챌린지 소개</div><br><br><br><br>
-		     <span class="challTitle">지키고 싶은<br> 나와의 약속을 고르세요</span><br><br>
-					  <div class="challcontext">
-                       1.포스트 코로나 시대속 다양한 챌린지 모임 제공<br>
-                       2.외출,인원,방문 각종 제한속에서 지혜롭게일상을 보내는 방안제시<br>
-                       3.다양한 참가자들과의 열정공유, 의지확립으로 코로나 극복<br>
-             <div class="animated fadeInLeft delay-5s">
-      <span>TIP 원하는 챌린지가 없다면<br>
-             "챌린지 개설"로 직접 만들어 보세요.</span></div></div>
-				   <img class="IntrochallImg1"src="${path}/resources/images/mission.png">
-					  <div class="challImgtext1"> 매일 오전 6시 기상</div>
-						<img class="IntrochallImg2"src="${path}/resources/images/mission2.png">
-						  <p class="challImgtext2"><span>책 읽기</span></p>
-					        </td>
-						       <td>
-							      <div class="ViewMore2">
-								     <a href="${ path }/challenge/recruitList">자세히 보기</a>
-							   </div>
-						   </td>
-					 </tr>
-		     </table>
-	    </div>
-<hr style="margin-bottom:10px;">
+<!-- 챌린지 소개 -->   
+   <section class="introduce slider">
+      <div>
+      <img src="${path}/resources/images/wakeupChallenge.png" style="width:250px;height:300px;">
+    </div>
+    <div>
+      <img src="${path}/resources/images/breatheChallenge.png" style="width:250px;height:300px;">
+    </div>
+    <div>
+      <img src="${path}/resources/images/foodChallenge.png"  style="width:250px;height:300px;">
+    </div>
+    <div>
+      <img src="${path}/resources/images/bookChallenge.png" style="width:250px;height:300px;">
+    </div>
+    <div>
+      <img src="${path}/resources/images/gardenChallenge.png" style="width:250px;height:300px;">
+    </div>     
+  </section>
+      <img src="${path}/resources/images/challengeIntroduce.png">
+  <script type="text/javascript">
+  $(".introduce").slick({
+	  slide: 'div',       //슬라이드 되어야 할 태그 ex) div, li 
+		slidesToShow: 1,  // 한 화면에 보여질 컨텐츠 개수
+		slidesToScroll:1,  //스크롤 한번에 움직일 컨텐츠 개수
+		speed: 100,        // 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
+		Arrows: true,       // 옆으로 이동하는 화살표 표시 여부
+      dots: true,           // 하단 paging버튼 노출 여부
+      infinite: true,        // didqkdgid 무한 모션
+      variableWidth: true,   // 이미지 양옆 
+      autoplay : true,       // 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+      autoplaySpeed : 2000,  // 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+      pauseOnHover : true,  // 슬라이드 이동시 마우스 호버하면 슬라이더 멈추게 설정
+      vertical : false,     // 세로 방향 슬라이드 옵션
+    });
+  </script>
+<hr style="margin-bottom:50px;margin-top:50px;"> 
      <!-- 게시판 소개 -->
 		      <div class="boardintro">
 		         <table class="boardtable">
@@ -429,10 +309,7 @@ animateCSS('.my-element','slideOutLeft',function() {
 		     </td>
 		  </tr>
 		     </table>
-		      </div>
-          </div>
-	   </section>
-      </div>
-   </body>
+		 </div>
+    </body>
 </html>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
