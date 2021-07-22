@@ -88,6 +88,7 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 
 .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
 	
+input[type="button"],input[type="submit"],input[type="reset"] {border:1px solid lightgray;width:50px;height:25px;}
 	</style>
 </head>
 	
@@ -383,7 +384,9 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 					<tr>
 						<th>이미지 미리보기</th>
 						<td>
-							<div id="preview" style="width:200px;height:200px;border:1px solid gray;position:relative;"></div>
+							<div id="preview" style="width:200px;height:200px;border:1px solid lightgray;position:relative;">
+								<img style="width:200px;height:200px;" class="thumb" src="${ path }/resources/images/c_img/chall00.png"/>
+							</div>
 						</td>
 					</tr>
 					<script>
@@ -471,10 +474,10 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 						</script>
 					</tr>
 					<tr>
-						<th colspan="2">
+						<td colspan="2" style="text-align:center">
 							<input type="submit" value="등록" /> 
 							<input type="reset"  value="취소" />
-						</th>
+						</td>
 					</tr>
 				</tbody>
 				</table>

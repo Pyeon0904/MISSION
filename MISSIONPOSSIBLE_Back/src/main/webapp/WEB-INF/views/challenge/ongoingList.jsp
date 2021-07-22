@@ -47,7 +47,7 @@
 			   background-color:none;
 			   width:100%;
 			   height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-			   margin-top:100px;
+			   margin-top:50px;
 			   margin-bottom:100px;
 			   margin-left:-10px;
 			   padding:10px;
@@ -107,7 +107,7 @@
 	.itemShowMenu{
 		width:180px; height:180px; background:rgba(0,0,0,0.5); 
 		position:relative; top:-233px; left:0px; 
-		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5.75;
+		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5;
 		opacity : 0; transition : 0.3s;
 	}
 	.itemShowMenu:hover{opacity:1}
@@ -129,7 +129,7 @@
 	.btn.green {box-shadow: 0px 4px 0px #62bf6e;}/*버튼 아랫부분*/
 	.btn.green:active {box-shadow: 0 0 #62bf6e; background-color: #62bf6e;}/*버튼 아랫부분*/
 	
-	footer{width:100%; height:100px; position:absolute; bottom:-650px;}
+	footer{width:100%; height:100px; position:absolute; bottom:-800px;}
 </style>
 </head>
 <body>
@@ -190,11 +190,11 @@
 										<div class="itemCont">
 											<div class="itemPhotoBox">
 												<c:if test="${ challenge.thumbnailFile == null }">
-													<img src="${path}/resources/images/file.png" alt="기본 이미지" width="180px" height="180px"/>
+													<img src="${path}/resources/images/c_img/chall01.png" alt="기본 이미지" width="180px" height="180px"/>
 												</c:if>
 												<c:if test="${ challenge.thumbnailFile != null }">
 													<img src="${path}/resources/upload/challenge/${ challenge.thumbnailFile }" alt="챌린지 썸네일" 
-														width="180px" height="180px" onerror="this.src='${path}/resources/images/file.png'"/>
+														width="180px" height="180px" onerror="this.src='${path}/resources/images/c_img/chall01.png'"/>
 												</c:if>
 												<div class="viewPoint" style="width:100px;height:50px;position:relative;top:-170px;left:10px">
 													<img src="${path}/resources/images/point/icon_ongoing.png" width="50px" height="25px"/>

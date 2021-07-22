@@ -35,7 +35,7 @@
             background-color:none;
             width:100%;
             height:1300px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-            margin-top:330px;
+            margin-top:50px;
             margin-bottom:100px;
             margin-left:-10px;
             padding:10px;
@@ -51,7 +51,7 @@
       /*-----------------------------------------------------------------------------------*/
 		
 		#subHeaderContainer{width:100%; height:70px;}
-    	#subHeaderContainer h2{float:left; margin-top:20px;}
+    	#subHeaderContainer .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
     	#subHeaderContainer .funcArea .btn{float:right; margin:20px 20px 0px 0px;}
     	
     	#challengeContTable table{
@@ -87,7 +87,9 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 				<a href="#" class="btn-gradient purple small">Button</a>
 				-->
 			
-				<h2>모집중인 챌린지 정보</h2>
+				<div class="subHeaderImg test">
+					<img alt="" src="${path}/resources/images/pageTitle/모집중인챌린지정보.png">
+				</div>
 				<div class="funcArea">
 					<!-- 참가신청 버튼 클릭시 addMyChallengeList.do로 참가신청을 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
 					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeJoinForm">
@@ -139,7 +141,9 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 			<!-- 종료된 챌린지 조회 상태일 때의 뷰페이지 SubHeader -->
 			<c:if test="${ (todayNum >= startNum) and (todayNum >= endNum) }">
 			
-				<h2>종료된 챌린지 정보</h2>
+				<div class="subHeaderImg test">
+					<img alt="" src="${path}/resources/images/pageTitle/종료된챌린지정보.png">
+				</div>
 				<div class="funcArea">
 					<a href="${ path }/challenge/recruitList" class="btn blue small">목록으로</a>
 				</div>
@@ -161,32 +165,32 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 								
 								<!-- 모집중인 챌린지 조회 상태일 때의 D-Day 부분-->
 								<c:if test="${ (todayNum < startNum) and (todayNum < endNum) }">
-									<span style="font-size:1.2em;">
+									<span style="font-size:1.2em;color:#4d76ff;font-weight:bold;">
 										D-<c:out value="${ startNum - todayNum }"></c:out>&nbsp;
 									</span>
 								</c:if>
 								
 								<!-- 종료된 챌린지 조회 상태일 때의 D-Day 부분 -->
 								<c:if test="${ (todayNum > startNum) and (todayNum > endNum) }">
-									<span style="font-size:1.2em;">
+									<span style="font-size:1.2em;color:gray;font-weight:bold;">
 										[챌린지종료]
 									</span>
 								</c:if>
 								
 								<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
-									<span style="font-size:1.2em;">[단체]</span>
+									<span style="font-size:1.2em;color:#ff974d;font-weight:bold;">[단체]</span>
 								</c:if>
 								<c:if test="${ challenge.attendStatus == 'PRIVATE' }">
-									<span style="font-size:1.2em;">[개인]</span>
+									<span style="font-size:1.2em;color:#ff974d;font-weight:bold;">[개인]</span>
 								</c:if>
 								
 								<!-- 카테고리 이름 출력 부분-->
-								<span style="font-size:1.2em;">
+								<span style="font-size:1.2em;color:#6b4dff;font-weight:bold;">
 									[<c:out value="${ challenge.categoryName }"/>]
 								</span>
 								
 								<!-- 챌린지 제목 출력 부분 -->
-								<span style="font-size:1.2em;">
+								<span style="font-size:1.2em;color:gray;font-weight:bold;">
 									&nbsp;<c:out value="${ challenge.title }"/>
 								</span>
 							</td>
@@ -268,7 +272,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 						</tr>
 						<tr>
 							<!-- 챌린지 상세 설명(Content) -->
-							<td colspan="10">
+							<td colspan="10" style="vertical-align:top;">
 								<p>
 									${ challenge.content }
 								</p>

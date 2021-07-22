@@ -49,7 +49,7 @@
 	.itemShowMenu{
 		width:180px; height:180px; background:rgba(0,0,0,0.5); 
 		position:relative; top:-182px; left:0px; 
-		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5.75;
+		font-size:2.5em; color:white; font-weight:bold; text-align:center; line-height:5;
 		opacity : 0; transition : 0.3s;
 	}
 	.itemShowMenu:hover{opacity:1}

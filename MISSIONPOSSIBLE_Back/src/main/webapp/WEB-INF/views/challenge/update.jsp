@@ -87,7 +87,8 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 .t_red{color:#f55500}
 
 .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
-	
+
+input[type="button"],input[type="submit"],input[type="reset"] {border:1px solid lightgray;width:70px;height:25px;}
 	</style>
 </head>
 	
@@ -411,7 +412,9 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 					<tr>
 						<th>이미지 미리보기</th>
 						<td>
-							<div id="preview" style="width:200px;height:200px;border:1px solid gray;position:relative;"></div>
+							<div id="preview" style="width:200px;height:200px;border:1px solid lightgray;position:relative;">
+								<img style="width:200px;height:200px;" class="thumb" src="${ path }/resources/upload/challenge/${challenge.thumbnailFile}"/>
+							</div>
 						</td>
 					</tr>
 					<script>
@@ -428,13 +431,13 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 					        reader.readAsDataURL(input.files[0]);
 					    }
 					}
-					$('#upfile').change(handleFileSelect);
+					$('#reloadFile').change(handleFileSelect);
 					$('#deletefile').on('click', ()=> {
 					    $("#preview").empty()
-					    $("#upfile").val("");
+					    $("#reloadFile").val("");
 					});
 					$('#editfile').click( function() {
-					  $("#upfile").click();
+					  $("#reloadFile").click();
 					} );
 					</script>
 					<tr>
@@ -501,10 +504,10 @@ input.tbox01{width:200px;height:26px;line-height:26px}
 						</script>
 					</tr>
 					<tr>
-						<th colspan="2">
+						<td colspan="2" style="text-align:center;">
 							<input type="submit" value="수정" /> 
-							<input type="button" onclick="location.replace('${path}/challenge/recruitList')" value="목록으로" />
-						</th>
+							<input type="button" onclick="location.replace('${path}/challenge/recruitList')" value="목록으로" class="toList"/>
+						</td>
 					</tr>
 				</tbody>
 				</table>
