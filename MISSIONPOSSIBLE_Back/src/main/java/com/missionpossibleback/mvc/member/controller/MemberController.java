@@ -153,18 +153,24 @@ public class MemberController {
 		return model;
 	}
 	@RequestMapping(value = "/member/followPage", method = {RequestMethod.POST})
-	public ModelAndView followPage(ModelAndView model,
+	public ModelAndView followPage(ModelAndView model, @RequestParam("btnFollow")String btnFollow,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@SessionAttribute(name = "followMember", required = false) Member followMember ) {
 			
 		int result = 0;
-			
-		result = service.follow(loginMember.getId(), followMember.getId());
+		
+		if(btnFollow.equals("팔로우")) {
+			result = service.follow(loginMember.getId(), followMember.getId());
+		}else {
+			result = service.deleteFollow(followMember.getId(), loginMember.getId())*-1;
+		}
 
 		if(result > 0) {
 			model.addObject("msg", "팔로우 되었습니다");
+		}else if(result < 0){
+			model.addObject("msg", "팔로우 취소되었습니다");
 		}else {
-			model.addObject("msg", "팔로우가 정상적으로 접수되지 않았습니다");
+			model.addObject("msg", "정상적으로 접수되지 않았습니다");
 		}
 		model.addObject("location", "/member/followPage?ID="+followMember.getId());
 		model.setViewName("common/msg");
@@ -204,6 +210,7 @@ public class MemberController {
 		}else {
 			model.addObject("msg", "신고가 정상적으로 접수되지 않았습니다");
 		}
+		model.addObject("location", "/member/followPage?ID="+reportId);
 		model.setViewName("common/msg_popup");
 		
 		return model;

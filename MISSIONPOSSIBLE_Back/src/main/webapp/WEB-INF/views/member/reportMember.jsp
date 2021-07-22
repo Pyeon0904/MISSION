@@ -11,6 +11,14 @@
 <style>
 #report{ width : 500px; }
  .reportList{ width : 400px; }
+ section{
+ 	position:relative; 	
+	height: auto;
+	margin-top: 150px;
+	margin-left: 230px;
+	margin-right: 60px;
+	font-size: 30px;
+ }
 </style>
 <body>
         <section>
@@ -20,13 +28,13 @@
             	<tr>
                     <td></td>
                     <td> <!-- 현재 페이지 세션에 담긴 게시글 제목 -->
-                        <input type="text" name="reportId" id="reportId" class="reportList" value="${ followMember.id }" readonly/>
+                        <input type="text" name="reportId" id="reportId" class="reportList" value="${ followMember.id }" readonly style="height: 30px"/>
                     </td>
                 </tr>
                 <tr>
                 <td></td>
                     <td>           
-                    <select name="reportType" class="form-control">
+                    <select name="reportType" class="form-control" style="height: 30px">
                   		<option value="">신고 유형 선택</option>
                   		<option value="욕설/비방">욕설/비방</option>
 	                  <option value="광고">광고</option>
@@ -35,9 +43,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
+                <td></td>
                     <td>
-                        <textarea cols="50" row="100" name="reportContent" placeholder="신고 내용을 입력하세요." id="reportContent" class="reportList"></textarea><br><br>    
+                        <textarea cols="50" row="100" name="reportContent" placeholder="신고 내용을 입력하세요." id="reportContent" class="reportList" style="height: 100px"></textarea><br><br>    
                     </td>
                     <td></td>
                 </tr>

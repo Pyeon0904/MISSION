@@ -59,10 +59,10 @@
 			<form name="followPage" action="followPage" method="post" >
 				<div style="margin-left: 730px">
 					<c:if test="${ isfollow > 0}">
-						<input type="submit" value="팔로우" id="btnFollow" class="btn btn-default"  disabled />
+						<input type="submit" value="팔로우취소" id="btnFollow" name="btnFollow" class="btn btn-default" />
 					</c:if>
 					<c:if test="${ isfollow == 0}">
-						<input type="submit" value="팔로우" id="btnFollow" class="btn btn-default" />
+						<input type="submit" value="팔로우" id="btnFollow" name="btnFollow" class="btn btn-default" />
 					</c:if>
 					<input type="button" value="신고하기" id="btnBan" class="btn btn-default"/>
 				</div>
