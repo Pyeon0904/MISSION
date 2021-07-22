@@ -108,6 +108,12 @@ div#pageBar{margin-top:10px; text-align:center; background-color: none;}
 .button_base:hover {cursor: pointer;}
 .b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
 .b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
+
+.notice{background-color: #F7F8E0;}
+
+td#title{text-align:left; padding-left:30px;}
+
+a.titlea{text-decoration:none; color:#666;}
 </style>
 </head>
 <body>
@@ -176,65 +182,66 @@ div#pageBar{margin-top:10px; text-align:center; background-color: none;}
                          <c:forEach var="board" items="${ list }">
                             <tr>
                                <c:if test="${ board.sort == 1 }">
-                               		<td><c:out value="공지"/></td>
+                               		<td class="notice"><c:out value="공지"/></td>
                                </c:if>
                                <c:if test="${ board.sort == 0 }">
                                		<td><c:out value="${ board.qna_no }"/></td> <!-- 브라우저 자체에 값을 찍어줄 땐 c:out 사용 -->
                                </c:if>
-                               
-                               <td style="text-align:left; padding-left:30px;">
+               
+                            
                                <c:if test="${ board.pass != null }"> <!-- 비밀글이면 -->
                                  <%-- 비밀글 && admin 계정이면 --%>
-                                 <c:if test="${loginMember.id eq 'admin' }">
-                                     <a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                 <c:if test="${loginMember.status eq 'A' }">
                                         <%-- 답글이면 --%>
                                         <c:if test="${ board.groupord > 0 }">
-                                           	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                              <td id="title"><a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" class="titlea"><img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/></a></td>
                                         </c:if>
                                         <%-- 원글이면 --%>
                                         <c:if test="${ board.groupord == 0 }">
-                                           	<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                              <td id="title"><a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" class="titlea"><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/></a></td>
                                         </c:if>
-                                      </a>
                                 </c:if>
                                  <%-- 비밀글 && admin 계정이 아니면 --%>
-                                <c:if test="${loginMember.id ne 'admin' }">
-                                 	 <a href="${ path }/board/password?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
+                                <c:if test="${loginMember.status ne 'A' }">
                                         <%-- 답글이면 --%>
                                         <c:if test="${ board.groupord > 0 }">
-                                           	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                              <td id="title"><a href="${ path }/board/password?qna_no=${ board.qna_no }" class="titlea"><img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/></a></td>
                                         </c:if>
                                         <%-- 원글이면 --%>
                                         <c:if test="${ board.groupord == 0 }">
-                                           	<c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/>
+                                              <td id="title"><a href="${ path }/board/password?qna_no=${ board.qna_no }" class="titlea"><c:out value="${ board.title }"/><img src="${path}/resources/images/lock.gif" name="lock" alt="비밀글" style="margin:0 5px;"/></a></td>
                                         </c:if>
-                                     </a>
                                 </c:if>
                               </c:if>
-                             	 
+                                 
                                 <c:if test="${ board.pass == null }"> <!-- 비밀글이 아니면 -->
-                                     <a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" style="text-decoration:none; color:#666;">
                                         <%-- 답글이면 --%>
                                         <c:if test="${ board.groupord > 0 }">
-                                           	<img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
+                                              <td id="title"><a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" class="titlea"><img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/></a></td>
                                         </c:if>
                                         <%-- 원글 && 질문글이면 --%>
                                         <c:if test="${ board.groupord == 0 && board.sort == 0}">
-                                           <c:out value="${ board.title }"/>
+                                           <td id="title"><a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" class="titlea"><c:out value="${ board.title }"/></a></td>
                                         </c:if>
                                         <%-- 원글 && 공지글이면 --%>
                                         <c:if test="${ board.groupord == 0 && board.sort == 1}">
-                                           <b><c:out value="${ board.title }"/></b>
+                                           <td id="title" class="notice"><a href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" class="titlea"><b><c:out value="${ board.title }" /></b></a></td>
                                         </c:if>
-                                     </a>
                                   </c:if>
-                               </td>
-                               <td><c:out value="${ board.writer }"/></td>
-                               <td><fmt:formatDate type="both" value="${ board.createDate }"/></td>
-                               <td><c:out value="${ board.readCount }"/></td>
+                             
+                               <c:if test="${ board.sort == 1 }">
+                               		<td class="notice"><c:out value="${ board.writer }"/></td>
+                               		<td class="notice"><fmt:formatDate type="both" value="${ board.createDate }"/></td>
+                               		<td class="notice"><c:out value="${ board.readCount }"/></td>
+                               </c:if>
+                               <c:if test="${ board.sort == 0 }">
+                               		<td><c:out value="${ board.writer }"/></td>
+                               		<td><fmt:formatDate type="both" value="${ board.createDate }"/></td>
+                               		<td><c:out value="${ board.readCount }"/></td>
+                               </c:if>
                             </tr>
                          </c:forEach>
-                   </c:if>
+                     </c:if>
                </tbody>   
             </table>
          </form>         
