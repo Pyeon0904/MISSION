@@ -12,20 +12,22 @@
 <meta charset="UTF-8">
 <title>이메일 발송 완료</title>
 <style> 
-div { position:relative; 	
-	width: 370px;
-	margin-top: 70px;
-	margin-left: 30px;
-	margin-right: 30px;
-	margin-bottom: 10px;} 
+div{ 
+		position:relative; 	
+		height: auto;
+		margin-top: 100px;
+		margin-left: 100px;
+		margin-right: 60px;
+		font-size: 15px;
+	} 
 </style> 
 
 </head>
 <body>
 <div>
-	회원님의 이메일(${ loginMember.email })로 비밀번호 변경을 위한 임시 비밀번호를 발송하였습니다.<br>
+	회원님의 이메일<b>(${ confirmMember.email })</b>로 비밀번호 변경을 <br>위한 임시 비밀번호를 발송하였습니다.<br>
 	로그인 후 반드시 비밀번호를 재설정 해주십시오.<br><br><br>
-	<input type='BUTTON' value=" 창닫기" style="width: 380px; height: 30px;" onClick='self.close()'>
+	<input type='BUTTON' value=" 창닫기" style="width: 390px; height: 30px; margin-left: 0px" onClick='self.close()'>
 </div>
 </body>
 </html>

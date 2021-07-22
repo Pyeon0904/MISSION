@@ -17,6 +17,7 @@
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;
+        font-size: 20px;
      }
      #conbox{
         width:1600px; 
@@ -50,7 +51,7 @@
 <div id="box">
       <section id="section">
          <div id="conbox">
-			<br><br><br><br><br><br>
+			
 			<br><br>
          	<a><img class="pageTitle" src="${path}/resources/images/pageTitle/회원탈퇴.png" /></a>
 			<hr>
@@ -69,7 +70,7 @@
 							</td>
 							<td>
 								<div class="input-group">
-									<select name="reasonWithdrawal" class="form-control" id="selbox">
+									<select name="reasonWithdrawal" class="form-control" id="selbox" style="height: 30px">
 										<option value="other">다른사이트가 더 좋아서 탈퇴합니다.</option>
 										<option value="personal">개인적인 사정으로 인해 탈퇴합니다.</option>
 										<option value="direct">직접입력</option>
@@ -83,7 +84,7 @@
 								<h4><b>비밀번호</b></h4>
 							</td>
 							<td>
-								<input type="password" class="form-control" name="userPW" id="userPW" placeholder="입력하세요" required>
+								<input type="password" class="form-control" name="userPW" id="userPW" placeholder="입력하세요" required style="height: 30px; width: 240px">
 							</td>
 						</tr>
 						<tr>
@@ -91,7 +92,7 @@
 								<h4><b>비밀번호 확인</b></h4>
 							</td>
 							<td>
-								<input type="password" class="form-control" name="checkPW" id="checkPW" placeholder="입력하세요" required>	
+								<input type="password" class="form-control" name="checkPW" id="checkPW" placeholder="입력하세요" required style="height: 30px; width: 240px">	
 							</td>
 						</tr>
 					</table>

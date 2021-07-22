@@ -361,7 +361,7 @@
 				</li>
 				<c:if test="${ loginMember == null }">
 				<li>
-					<a href="${path}/member/enroll"><img class="pageTitle"
+					<a href="${path}/member/enrollCheck"><img class="pageTitle"
 						src="${path}/resources/images/signinButton.png"/>
 					</a>
 				</li>

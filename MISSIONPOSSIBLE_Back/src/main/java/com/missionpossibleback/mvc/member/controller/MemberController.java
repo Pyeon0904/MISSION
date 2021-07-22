@@ -55,7 +55,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@SessionAttributes({"loginMember", "followMember", "isfollow"})
+@SessionAttributes({"loginMember", "followMember", "isfollow", "confirmMember"})
 public class MemberController {
 	
 	@Autowired
@@ -126,11 +126,11 @@ public class MemberController {
 		
 		Member followMember = service.findById(followID);
 			
-		List<Grade> gradeName = service.setGradeName(loginMember.getPoint());
-		int point = followMember.getPoint();
-		int no = followMember.getMemberNo();
-			
 		if(followMember != null) {
+			List<Grade> gradeName = service.setGradeName(loginMember.getPoint());
+			int point = followMember.getPoint();
+			int no = followMember.getMemberNo();
+			
 			//gradename 재판별 후 업데이트
 			service.updateGradename(grade(gradeName, point), no);
 				
@@ -153,18 +153,24 @@ public class MemberController {
 		return model;
 	}
 	@RequestMapping(value = "/member/followPage", method = {RequestMethod.POST})
-	public ModelAndView followPage(ModelAndView model,
+	public ModelAndView followPage(ModelAndView model, @RequestParam("btnFollow")String btnFollow,
 			@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@SessionAttribute(name = "followMember", required = false) Member followMember ) {
 			
 		int result = 0;
-			
-		result = service.follow(loginMember.getId(), followMember.getId());
+		
+		if(btnFollow.equals("팔로우")) {
+			result = service.follow(loginMember.getId(), followMember.getId());
+		}else {
+			result = service.deleteFollow(followMember.getId(), loginMember.getId())*-1;
+		}
 
 		if(result > 0) {
 			model.addObject("msg", "팔로우 되었습니다");
+		}else if(result < 0){
+			model.addObject("msg", "팔로우 취소되었습니다");
 		}else {
-			model.addObject("msg", "팔로우가 정상적으로 접수되지 않았습니다");
+			model.addObject("msg", "정상적으로 접수되지 않았습니다");
 		}
 		model.addObject("location", "/member/followPage?ID="+followMember.getId());
 		model.setViewName("common/msg");
@@ -204,6 +210,7 @@ public class MemberController {
 		}else {
 			model.addObject("msg", "신고가 정상적으로 접수되지 않았습니다");
 		}
+		model.addObject("location", "/member/followPage?ID="+reportId);
 		model.setViewName("common/msg_popup");
 		
 		return model;
@@ -214,7 +221,6 @@ public class MemberController {
 			@RequestParam(value="page", required = false, defaultValue = "1") int page,
 			@SessionAttribute(name = "followMember", required = false) Member followMember,
 			@ModelAttribute Challenge challege) {
-		
 		
 		String id = followMember.getId();
 		
@@ -244,7 +250,7 @@ public class MemberController {
 		model.addObject("list", list);
 		model.addObject("pageInfo", pageInfo);
 		model.addObject("successCount", successCount);
-		model.setViewName("member/objectJoinList");
+		model.setViewName("member/objectJoinList_follow");
 		
 		return model;
 	}
@@ -509,13 +515,13 @@ public class MemberController {
 		
 		log.info("{}, {}", userId, userEmail);
 		
-		Member loginMember =  service.validateIdEm(userId,userEmail);
+		Member confirmMember =  service.validateIdEm(userId,userEmail);
 		
-		if(loginMember != null) {
-			model.addObject("loginMember", loginMember);
+		if(confirmMember != null) {
+			model.addObject("confirmMember", confirmMember);
 			model.addObject("msg", "인증이 완료되었습니다.");
 			model.addObject("location", "/member/sendMail");
-			service.updateTempPw(Mail(loginMember), loginMember.getMemberNo());
+			service.updateTempPw(Mail(confirmMember), confirmMember.getMemberNo());
 		} else {
 			model.addObject("msg", "인증 실패했습니다. 아이디와 이메일를 다시 확인해주세요.");
 			model.addObject("location", "/member/findPassword");
@@ -529,10 +535,10 @@ public class MemberController {
 	public ModelAndView checkIdPw(ModelAndView model,
 			@RequestParam("userId")String userId, @RequestParam("userPwd")String userPwd) {
 		
-		Member loginMember =  service.login(userId, userPwd);
+		Member confirmMember =  service.login(userId, userPwd);
 		
-		if(loginMember != null) {
-			model.addObject("loginMember", loginMember);
+		if(confirmMember != null) {
+			model.addObject("confirmMember", confirmMember);
 			model.addObject("msg", "인증 성공!");
 			model.addObject("location", "/member/updateMemberInfo");
 		} else {
@@ -547,10 +553,10 @@ public class MemberController {
 	public ModelAndView checkNickEm(ModelAndView model,
 			@RequestParam("userNickname")String userNickname, @RequestParam("userEmail")String userEmail) {
 		
-		Member loginMember = service.validateNickEm(userNickname, userEmail);
+		Member confirmMember = service.validateNickEm(userNickname, userEmail);
 		
-		if(loginMember!= null) {
-			model.addObject("loginMember", loginMember);
+		if(confirmMember!= null) {
+			model.addObject("confirmMember", confirmMember);
 			model.addObject("msg", "인증 성공했습니다.");
 			model.addObject("location", "/member/findId");
 		}else {
