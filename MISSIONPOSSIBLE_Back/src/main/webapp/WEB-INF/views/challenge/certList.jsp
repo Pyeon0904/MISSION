@@ -11,30 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-	.certListDisplay ul{list-style-type : none; margin-left:25px;}
-	.certListDisplay ul li .certItemCont {
-		width:380px; height:75px; margin-bottom:10px;
-	}
-	.certListDisplay ul li .certItemCont .certItemPhotoBox{
-		width:70px; height:70px; float:left;
-	}
-	.certListDisplay ul li .certItemCont .certItemInfoCont{
-		width:300px; height:70px; float:left;
-	}
-	.certListDisplay ul li .certItemCont .certItemInfoCont .certItemTitle{
-		width:100%; height:20px; font-weight:bold; margin-left:5px;
-		overflow:hidden; text-overflow: ellipsis;white-space:nowrap;
-	}
-	.certListDisplay ul li .certItemCont .certItemInfoCont .certItemSubCont{
-		width:100%; height:50px; margin-left:5px;
-		line-height:1.7;
-		overflow:hidden; 
-		display: -webkit-box;
-	    -webkit-line-clamp: 2;
-	    -webkit-box-orient: vertical;
-	}
-</style>
+
 </head>
 <body>
 	<div class="certListDisplay">
@@ -49,24 +26,30 @@
 					<li>
 						<div class="certItemCont">
 							<div class="certItemPhotoBox">
-								<img src="${path}/resources/upload/challenge/certify/${ certify.renamedFilename }" 
-									alt="챌린지 썸네일" width="70px" height="70px" onerror="this.src='${path}/resources/images/file.png'">
+								<c:if test="${ certify.renamedFilename == null }">
+									<img src="${path}/resources/images/c_img/chall00.png" 
+									alt="챌린지 썸네일" width="70px" height="70px">
+								</c:if>
+								<c:if test="${ certify.renamedFilename != null }">
+									<img src="${path}/resources/upload/challenge/certify/${ certify.renamedFilename }" 
+									alt="챌린지 썸네일" width="70px" height="70px" onerror="this.src='${path}/resources/images/c_img/chall00.png'">
+								</c:if>
 							</div>
 					
 							<div class="certItemInfoCont">
 								<div class="certItemTitle">
 									<fmt:formatDate var="certifyDate" value="${ certify.createDate }" pattern="MM월 dd일"/>
-									<c:out value="${ certifyDate }"/>
-									<c:out value="${ certify.id }"/>
-									<c:out value="${ certify.title }"/>
+									<c:out value="${ certify.id }"/>님&nbsp;
+									<c:out value="${ certifyDate }"/>&nbsp;인증완료!
 								</div>
-								<div class="certItemSubCont">									
-									<c:out value="${ certify.content }"/> 							
+								<div class="certItemSubCont">	
+									<c:out value="${ certify.title }"/>					
 								</div>
 							</div>
 						</div>
 					</li>
-				</c:forEach>	
+				</c:forEach>
+					
 			</c:if>
 		</ul>
 	</div>

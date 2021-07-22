@@ -584,7 +584,7 @@
 	
 	<!-- 챌린지 인증 팝업에서 인증 등록 ChallengeCertify -->
 	<insert id="insertCertify" parameterType="map">
-		INSERT INTO CHALLENGE_CERTIFY (
+		INSERT INTO CHALLENGE_CERTIFY(
 			NO,
 			CHALLENGE_NO,
 			ID,
@@ -595,7 +595,7 @@
 			CREATE_DATE,
 			MODIFY_DATE,
 			STATUS
-		) VALUES (
+		) SELECT
 			SEQ_CHALLENGECERTIFY_NO.NEXTVAL,
 			#{challengeNo},
 			#{id},
@@ -603,9 +603,19 @@
 			#{originalFilename},
 			#{renamedFilename},
 			#{content},
-			DEFAULT,
-			DEFAULT,
-			DEFAULT
+			SYSDATE,
+			SYSDATE,
+			'Y'
+		FROM DUAL
+		WHERE NOT EXISTS(
+			SELECT
+				ID, CHALLENGE_NO, CREATE_DATE
+			FROM
+				CHALLENGE_CERTIFY
+			WHERE
+				(ID = #{id}) AND
+				(CHALLENGE_NO = #{challengeNo}) AND
+				(TO_CHAR(CREATE_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD'))
 		)
 	</insert>
 

@@ -27,39 +27,61 @@
 		width:400px;
 		height:570px;
 		position:fixed;
-		background:rgba(200,255,128,0.5);
-		bottom:0px;
+		bottom:-18px;
 		display:none;
 	}
 	.chatTable{
 		width:400px;
 		height:550px;
-		border:1px solid gray;
+		border:1px solid lightgray;
+		border-radius:10px 10px 0 0;
+		background:rgba(255,255,255,0.7);
 	}
 	.chatTable tr.chatHeader{
 		width:100%;
 		height:60px;
+		background-color:#F6F6F6;
+		border-radius:10px;
+	}
+	.chatTable tr.chatFooter{
+		width:100%;
+		height:60px;
+		background-color:#022039;
 	}
 	.chatTable tr.chatHeader td.iconArea{
-		width:60px;
+		width:50px;
 		font-size:2.5em;
 		text-align:center;
+		border-radius:10px 0 0 0;
+		color:#380f0f;
 	}
 	.chatTitle{
-		width:150px; font-size:0.8em; float:left; margin:10px 0 0 10px;
+		width:180px; font-size:0.9em; float:left; margin:10px 0 0 5px;
+		overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+	}
+	.chatTable tr.chatHeader .chatTitle{
+		width:250px;font-size:0.9em; float:left; margin:10px 0 0 5px;
+		overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+	}
+	.chatTable tr.chatHeader td.headerCont{border-radius:0 10px 0 0;}
+	.chatTable tr.chatFooter td{}
+	.chatTable tr.chatHeader td.headerCont table tr td.windowController{
+		width:65px;height:35px;
+		float:left;
+		position:relative;
+		top:-13px;
+		left:20px;
 	}
 	.chatTable tr.chatHeader td.headerCont table tr td.windowController div{
 		float:left;
-		position:relative;
 	}
 	.chatTable tr.chatHeader td.headerCont table tr td.windowController div.windowMin{
-		top: -10px; left: 80px; width:30px; height:30px; border: 1px solid gray; text-align:center;
+		width:30px; height:30px; border-radius:7px; text-align:center;line-height:2.5; 
 	}
 	.chatTable tr.chatHeader td.headerCont table tr td.windowController div.windowClose{
-		top: -10px; left: 85px; width:30px; height:30px; border: 1px solid gray; text-align:center;
-	}
-	.chatTable tr.chatHeader td.headerCont table tr td.windowController div.chatCount{
-		top: 0px; left: 50px; font-size:0.8em;
+		width:30px; height:30px;  
+		border-radius:7px; text-align:center; line-height:1; 
+		font-size:2em;color:#b5645b;
 	}
 	.chatTable tr.chatSection{
 		width:100%;
@@ -82,11 +104,11 @@
 	}
 	.chatTable tr.chatSection td div.msgLine{
 		display:table;
-		border:1px solid gray;
-		min-width:50%;
+		/*border:1px solid gray;*/
+		min-width:51%;
 	}
 	.chatTable tr.chatSection td div.msgLine div.time{
-		width:50px; height:15px; border:1px solid gray; font-size:0.5em;
+		width:50px; height:10px;/* border:1px solid gray; */font-size:0.5em;
 	}
 	.chatTable tr.chatSection td div.msgLine div.recvTime{
 		display:table-cell;
@@ -96,16 +118,15 @@
 		display:table-cell;
 		text-align:right;
 	}
-	.chatTable tr.chatFooter{
-		width:100%;
-		height:60px;
-	}
 	#textSend{
 		margin-left:15px;
-		width:300px; height:20px;
+		width:300px; height:22px;
+		border:1px solid #022039;
+		padding:0 5px 0 5px;
+		background:#ebffeb;
 	}
 	#btnSend{
-		width:50px; height:24px;
+		width:50px; height:22px; border:none; background:#065291; color:#ebffeb; font-weight:bold;margin-top:1px;
 	}
 	.fixit{
 		float:left;
@@ -124,7 +145,7 @@
 		position: relative;
 		display:table;
 		padding: 5px;
-		background: #ccffda;
+		background: #97fd97;
 		-webkit-border-radius: 10px;
 		-moz-border-radius: 10px;
 		border-radius: 10px;
@@ -138,12 +159,12 @@
 		position: absolute;
 		border-style: solid;
 		border-width: 5px 0 5px 10px;
-		border-color: transparent #ccffda;
+		border-color: transparent #97fd97;
 		display: block;
 		width: 0;
 		z-index: 1;
-		right: -10px;
-		top: 14px;
+		right: -7px;
+		top: 10px;
 	}
 	/* 받은 메시지 */
 	.recvMsg {
@@ -152,7 +173,7 @@
 		position: relative;
 		display:table;
 		padding: 5px;
-		background: #f2f2f2;
+		background: #f0f0f0;
 		-webkit-border-radius: 10px;
 		-moz-border-radius: 10px;
 		border-radius: 10px;
@@ -166,34 +187,44 @@
 		position: absolute;
 		border-style: solid;
 		border-width: 5px 10px 5px 0;
-		border-color: transparent #f2f2f2;
+		border-color: transparent #f0f0f0;
 		display: block;
 		width: 0;
 		z-index: 1;
-		left: -10px;
-		top: 14px;
+		left: -7px;
+		top: 12px;
 	}
 	
 	.chatMini {
-		width:240px;
-		height:40px;
-		border:1px solid gray;
+		width:300px;
+		height:35px;
+		border:1px solid lightgray;
+		border-radius:10px 10px 0 0;
 		float:left;
 		position:fixed;
 		bottom:0px;
 		display:none;
-		background-color:yellow;
+		background-color:#F6F6F6;
 	}
 	
-	.chatMini div {
+	.chatMini .winCont {
 		width:30px;
 		height:30px;
-		border:1px solid gray;
 		float:left;
 		text-align:center;
-		margin:5px 0 0 6px;
+		margin:5px 0 0 2px;
+		position:relative;
+		left:20px;
 	}
+	.chatMini .mini_icon{font-size:1.5em; margin-left:5px;}
+	.chatMini .windowClose{font-size:1.5em; top:-7px; color:#b5645b;}
 	
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:15px;color:#333;letter-spacing:0px}
+    	
+/* table */
+table.table01 {border-collapse:separate;border-spacing:0;line-height:1.5;border-top:1px solid #ccc;border-left:1px solid #ccc;margin:auto;}
+table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
+table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 </style>
  <script type="text/javascript">
 		var id = "<c:out value='${ loginMember.id }'/>";
@@ -315,7 +346,7 @@
 <body>
 	<div class="chatContainer">
 		<!-- <form id="chatForm"> -->
-		<table border="1" class="chatTable">
+		<table class="chatTable" cellspacing="0" cellpadding="0">
 			<tr class="chatHeader">
 				<td class="iconArea">
 					<div>
@@ -371,15 +402,16 @@
 	
 	<!-- 최소화 -->
 	<div class="chatMini">
-		<p class="chatTitle">${ cTitle }</p>
-			<div class="windowMax">
+		<div class="mini_icon fixit"><i class="fa fa-comments" aria-hidden="true"></i></div>
+		<div class="chatTitle fixit">${ cTitle }</div>
+			<div class="windowMax winCont">
 				<i class="fa fa-window-maximize" aria-hidden="true"></i>
 			</div>
-			<div class="windowClose">
+			<div class="windowClose winCont">
 				<i class="fa fa-times" aria-hidden="true"></i>
 			</div>
 	</div>
-	<script>
+	<script>	
 		$(document).ready(() => {
 			$(".windowMin").on("click", () => {
 				$(".chatContainer").animate({height:'toggle'}, 500);
