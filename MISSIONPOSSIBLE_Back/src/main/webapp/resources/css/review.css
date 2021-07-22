@@ -40,7 +40,7 @@ a:hover{color:#0076c8} */
 
 /* button_align */
 .btn_left{clear:both;text-align:left}
-.btn_right{clear:both;text-align:right}
+.btn_right{clear:both;text-align:right;}
 .btn_center{clear:both;text-align:center}
 
 /* select_style */
@@ -79,8 +79,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_left01{margin:0 6px 0 3px}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
-div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
-
+div#pageBar{margin-top:10px; text-align:center; background-color:none;}
 
 .ui-autocomplete {
 	max-height: 120px;
@@ -88,8 +87,6 @@ div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 
 	/* prevent horizontal scrollbar */
 	overflow-x: hidden;
 	}
-
-div#pageBar{margin-top:10px; text-align:center; background-color: rgb(224, 239, 132);}
 
 table.type04 {
   border-collapse: separate;
@@ -112,3 +109,7 @@ table.type04 td {
   vertical-align: top;
   border-bottom: 1px solid #ccc;
 }
+
+.button_base:hover {cursor: pointer;}
+.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
+.b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}

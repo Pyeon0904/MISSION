@@ -15,10 +15,10 @@
 		text-align:center;
 	}
 	#box{ 
-        background-color:rgb(224, 239, 132);
+        background-color:none;
         width:100%;
-        height:1000px; 
-        margin-top:330px;
+        height:auto; 
+        margin-top:50px;
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;
@@ -45,6 +45,10 @@
 	    object-fit: cover;
 	}
      .btn {font-family:'malgunbd';display:inline-block;padding:3px 20px 6px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:#333;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#feffff;text-decoration:none;}
+
+/* 타이틀 이미지(물방울) 위치 */
+.pageTitle{margin-left: -34px;}
+
 </style>
 <head>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -93,7 +97,7 @@
       <section id="section">
          <div id="conbox">
 			<br><br><br><br><br><br>
-			<h4>팔로우 리스트</h4>
+			<a><img class="pageTitle" src="${path}/resources/images/pageTitle/팔로우리스트.png" /></a>
 			   <form id="followSearch" name="followSearch" method="GET" action="followPage">
 		            <div align="right" class="row m-4">
 		               <input type="text" name="ID" id="searchID" class="form-control" style="padding: 3px 20px 6px 20px" value="" placeholder="검색할 아이디를 입력하세요" >
@@ -126,7 +130,7 @@
 											<td style="width: 200px; height: 200px;">
 												<c:if test="${ follow.profile == null }">
 													<div class="box" style="background: #BDBDBD;">
-														<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+														<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 													</div>	
 												</c:if>
 												<c:if test="${ follow.profile != null }">

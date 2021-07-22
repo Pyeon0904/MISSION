@@ -19,9 +19,19 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+         margin-top:50px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
+
+	/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 265px;
+	}
+	/* ---------------------- */
+
 </style>
 </head>
 <script>
@@ -43,6 +53,10 @@ $(function () {
 <div id="box">
 	<section id="section">
 		<div id="conbox">
+		<!-- title 이미지 삽입 -->
+		<a><img class="pageTitle"
+			src="${path}/resources/images/pageTitle/후기게시판관리.png" />
+		</a>
 			<div id="wrap">
 				<div id="container">
 					<div class="inner">
@@ -59,7 +73,7 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2 id="title">후기 게시판 관리</h2>
+						<h2>_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
@@ -94,7 +108,14 @@ $(function () {
 											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
 											<td class="view-click td-3"><c:out value="${ review.title } " />
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
 											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>

@@ -21,10 +21,11 @@
 
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+         margin-top:50px; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
+   .pageTitle{ margin-bottom : 50px; margin-left: -32px;}
 </style>
 </head>
 <body>
@@ -34,7 +35,7 @@
 				<div id="wrap">
 					<div id="container">
 						<div class="inner">
-							<h2 style="padding-bottom: 20px;">후기 게시판</h2>
+							<a><img class="pageTitle" src="${path}/resources/images/pageTitle/후기게시판.png" /></a>
 								<input type="hidden" name="no" value="${ review.no }" />
 								<!-- 게시판 상세보기 테이블 ----------------------->
 								<table width="100%" class="table01">
@@ -55,11 +56,18 @@
 											<th>작성자</th>
 											<td>${ review.writerId }</td>
 											<th>작성일</th>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
+											<td><fmt:formatDate type="both" timeStyle="short" value="${ review.createDate }" /></td>
 										</tr>
 										<tr>
 											<th>챌린지 이름</th>
-											<td colspan="3">${ review.challengeTitle }</td>
+											<td colspan="3">
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 										</tr>
 										<tr>
 											<th>제목</th>
@@ -97,16 +105,14 @@
 								<!-- 게시판 상세보기 테이블 끝 ----------------------->		
 								<!-- 하트 버튼 클릭시 추천수 +1 ----------------------->
 								<c:if test="${ !empty loginMember}">
-									<div style="margin-left: 990px;">
-									<c:out value="${ count }"/>
-									</div>
-									<div style="margin-left: 960px;">
+										<div style="margin-left: 990px;"><b style="color:#7A7A7A;">${ count }</b></div>
+									<div style="margin-left: 950px;">
 										<c:if test="${ Heartlist.isEmpty() }">
 											<form action="${ path }/review/reviewLike" method="POST">
 												<c:if test="${ (heart.m_id != loginMember.id )}">
 													<input type="hidden" name="r_no" value="${ review.no }">
 													<input type="hidden" name="m_id" value="${loginMember.id}">
-													<button type="submit" style="border:0;"><img class="imgButton" src="${ path }/resources/images/unheart.png"></button>
+													<button id="like" style="border:0; background-color:white;"><img class="imgButton" src="${ path }/resources/images/unheart.png"></button>
 												</c:if>
 											</form>
 										</c:if>
@@ -115,7 +121,7 @@
 											<c:if test="${heart.m_id == loginMember.id}">
 												<input type="hidden" name="r_no" value="${ review.no }">
 												<input type="hidden" name="m_id" value="${loginMember.id}">
-												<button id="unlike" style="border:0;"><img class="imgButton" src="${ path }/resources/images/heart.png"></button>
+												<button id="unlike" style="border:0; background-color:white;"><img class="imgButton" src="${ path }/resources/images/heart.png"></button>
 											</c:if>	
 										</form>	
 										</c:forEach>
@@ -153,10 +159,10 @@
 										<td id="replyContent">${ reply.content }</td>
 										<td id="replyCreateDate">
 										<c:if test="${ reply.modifyDate != null}">
-											<fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.modifyDate }" />
+											<fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${ reply.modifyDate }" />
 										</c:if>
 										<c:if test="${ reply.modifyDate == null}">
-											<fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${ reply.createDate }" />
+											<fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${ reply.createDate }" />
 										</c:if>
 										</td>
 										<td>
@@ -172,12 +178,12 @@
 							<!-- 로그인X : 목록으로 / 로그인O : 신고하기 / 작성자 로그인 : 수정하기, 삭제하기 -->
 							<div class="btn_right mt15">
 								<c:if test="${ !empty loginMember && (loginMember.id != review.writerId )}">
-									<input type="button" class="btn black" id="btn-report" value="신고하기">
+									<input type="button" class="button_base b01_simple_rollover" id="btn-report" value="신고하기">
 								</c:if>
-								<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewList'">목록으로</button>
+								<button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/review/reviewList'">목록으로</button>
 								<c:if test="${ !empty loginMember && (loginMember.id == review.writerId )}">
-									<button type="button" class="btn black mr5" id="update">수정하기</button>
-									<button type="button" class="btn black" id="delete">삭제하기</button>
+									<button type="button" class="button_base b01_simple_rollover" id="update">수정하기</button>
+									<button type="button" class="button_base b01_simple_rollover" id="delete">삭제하기</button>
 								</c:if>
 							</div>
 							<!-- 이전글/다음글 -->
@@ -307,15 +313,6 @@
 				if(confirm("정말로 댓글을 삭제 하시겠습니까?")) {
 		 		location.replace("${ path }/review/replyDelete?replyNo="+replyNo+"&reviewNo=${ review.no }&id=${loginMember.getId()}");
 		    	}
-	});	
-	
-
-	// 신고하기 버튼 클릭시 팝업 띄우기
-	$().on("click", (e)=>{
-		const url = "${path}/review/reviewReport?id=${loginMember.getId()}&reviewNo=${ review.no }";
-		const status="left=500px, top=200px, width=510px; height=320px";
-		
-		open(url, "", status);
 	});	
 
 	// 게시글 수정&삭제 버튼 클릭시

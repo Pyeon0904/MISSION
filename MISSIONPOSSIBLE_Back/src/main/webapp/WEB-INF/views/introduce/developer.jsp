@@ -13,7 +13,7 @@
 
 /*---------------제일 바깥 영역 설정-----------------*/
 #box {
-	background-color: rgb(224, 239, 132);
+	background-color: none;
 	width: 100%;
 	height: 1200px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
 	margin-top: 100px;
@@ -99,6 +99,12 @@
 	text-align: left;
 	display: inline-block;
 }
+
+/* 이미지 위치 */
+		.pageTitle{
+			margin-left : 130px;
+		}
+
 </style>
 <head>
 <meta charset="UTF-8">
@@ -107,125 +113,12 @@
 	<div id="box">
 		<section id="section">
 			<div id="conbox">
-				<table>
-	<!-------------------- 첫번째 줄 ---------------------------->
-					<tr>
-						<td>
-							<div class="img1">
-								<img src="${path}/resources/images/Lee.png" style="float: left;"
-									width="300px" height="300px" />
-								<div class="lee">
-									<p class="nameTitle">이지은</p>
-									<span class="Title">Introduce</span>
-									<span class="sign">|</span>
-									<span class="text">(본인소개 1줄 소개)</span> <br>
-									<span class="Title">Role</span>
-									<span class="sign">|</span>
-									<span class="text">(우선 빈칸으로)</span> <br>
-									<span class="Title">Email</span>
-									<span class="sign">|</span>
-									<span class="text">x931112@naver.com</span>
-							 </div>
-						</div>
-				   </td>
-					    <td>
-							<div class="img2">
-								<img src="${path}/resources/images/Son.jpg"
-									style="display: block; margin: 0 auto;" width="300px"
-									height="300px" />
-								<div class="Son">
-									<p class="nameTitle">손현종</p>
-									<span class="Title">Introduce</span>
-									<span class="sign">|</span>
-									<span class="text">(본인소개 1줄 소개)</span> <br> 
-									<span class="Title">Role</span>
-									<span class="sign">|</span>
-									<span class="text">(우선 빈칸으로)</span> <br>
-									<span class="Title">Email</span>
-									<span class="sign">|</span>
-									<span class="text">x931112@naver.com</span>
-							</div>
-						</div>
-					</td>
-						<td>
-							<div class="img3">
-								<img src="${path}/resources/images/Pyeon.png"
-									style="float: right; margin: 0 auto;" width="300px"
-									height="300px" />
-								<div class="Pyeon">
-									<p class="nameTitle">편준장</p>
-									<span class="Title">Introduce</span>
-									<span class="sign">|</span>
-									<span class="text">(본인소개 1줄 소개)</span> <br> 
-									<span class="Title">Role</span>
-									<span class="sign">|</span>
-									<span class="text">(우선 빈칸으로)</span> <br>
-									<span class="Title">Email</span>
-									<span class="sign">|</span>
-									<span class="text">x931112@naver.com</span>
-								</div>
-							</div>
-						</td>
-					</tr>
-    <!-------------------- 두번째 줄 ---------------------------->
-					<tr>
-						<td>
-							<div class="img4">
-								<img src="${path}/resources/images/Cho.png" style="float: left;"
-									width="300px" height="300px" />
-								<div class="Cho">
-									<p class="nameTitle">조민형</p>
-									<span class="Title">Introduce</span>
-									<span class="sign">|</span>
-									<span class="text">(본인소개 1줄 소개)</span> <br>
-									<span class="Title">Role</span>
-									<span class="sign">|</span>
-									<span class="text">(우선 빈칸으로)</span> <br>
-									<span class="Title">Email</span>
-									<span class="sign">|</span>
-									<span class="text">x931112@naver.com</span>
-							 </div>
-						</div>
-					</td>
-						<td>
-							<div class="img5">
-								<img src="${path}/resources/images/Choi.jpg"
-									style="display: block; margin: 0 auto;" width="300px"
-									height="300px" />
-								<div class="Choi">
-									<p class="nameTitle">최혜정</p>
-									<span class="Title">Introduce</span>
-									<span class="sign">|</span>
-									<span class="text">(본인소개 1줄 소개)</span> <br> 
-									<span class="Title">Role</span>
-									<span class="sign">|</span>
-									<span class="text">(우선 빈칸으로)</span> <br>
-									<span class="Title">Email</span>
-									<span class="sign">|</span>
-									<span class="text">x931112@naver.com</span>
-							  </div>
-						 </div>
-					 </td>
-						 <td>
-							<div class="img6">
-								<img src="${path}/resources/images/Park.png"
-									style="float: right;" width="300px" height="300px" />
-								<div class="Park">
-									<p class="nameTitle">박진영</p>
-									<span class="Title">Introduce</span>
-									<span class="sign">|</span>
-									<span class="text">(본인소개 1줄 소개)</span> <br>
-									<span class="Title">Role</span>
-									<span class="sign">|</span>
-									<span class="text">(우선 빈칸으로)</span> <br>
-									<span class="Title">Email</span>
-									<span class="sign">|</span>
-									<span class="text">x931112@naver.com</span>
-								</div>
-							</div>
-					    </tr>
-				 </table>
-			  </div>
+				
+				<a><img class="pageTitle"
+					src="${path}/resources/images/개발자소개.png"/>
+				</a>
+				
+			</div>
 		</section>
 	</div>
 </body>

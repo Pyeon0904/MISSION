@@ -21,10 +21,11 @@
 
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1500px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
    .imgButton { width : 35px; height : 35px; }
+   .pageTitle{ margin-bottom : 50px; }
 </style>
 </head>
 <body>
@@ -34,7 +35,7 @@
 				<div id="wrap">
 					<div id="container">
 						<div class="inner">
-							<h2 style="padding-bottom: 20px;">후기 게시판</h2>
+							<a><img class="pageTitle" src="${path}/resources/images/pageTitle/후기게시판.png" /></a>
 								<input type="hidden" name="no" value="${ review.no }" />
 								<!-- 게시판 상세보기 테이블 ----------------------->
 								<table width="100%" class="table01">
@@ -55,11 +56,18 @@
 											<th>작성자</th>
 											<td>${ review.writerId }</td>
 											<th>작성일</th>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
+											<td><fmt:formatDate type="both" timeStyle="short" value="${ review.createDate }" /></td>
 										</tr>
 										<tr>
 											<th>챌린지 이름</th>
-											<td colspan="3">${ review.challengeTitle }</td>
+											<td colspan="3">
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>												
+											</td>
 										</tr>
 										<tr>
 											<th>제목</th>
@@ -183,12 +191,12 @@
 							<!-- 로그인X : 목록으로 / 로그인O : 신고하기 / 작성자 로그인 : 수정하기, 삭제하기 -->
 							<div class="btn_right mt15">
 								<c:if test="${ !empty loginMember && (loginMember.id != review.writerId )}">
-									<input type="button" class="btn black" id="btn-report" value="신고하기">
+									<input type="button" class="button_base b01_simple_rollover" id="btn-report" value="신고하기">
 								</c:if>
-								<button type="button" class="btn black mr5" onclick="location.href='${path}/review/reviewList'">목록으로</button>
+								<button type="button" class="button_base b01_simple_rollover" onclick="location.href='${path}/review/reviewList'">목록으로</button>
 								<c:if test="${ !empty loginMember && (loginMember.id == review.writerId )}">
-									<button type="button" class="btn black mr5" id="update">수정하기</button>
-									<button type="button" class="btn black" id="delete">삭제하기</button>
+									<button type="button" class="button_base b01_simple_rollover" id="update">수정하기</button>
+									<button type="button" class="button_base b01_simple_rollover" id="delete">삭제하기</button>
 								</c:if>
 							</div>
 							<!-- 이전글/다음글 -->

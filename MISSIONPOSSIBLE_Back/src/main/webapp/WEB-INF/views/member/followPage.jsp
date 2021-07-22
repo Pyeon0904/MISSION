@@ -10,10 +10,10 @@
 		text-align:center;
 	}
 	#box{ 
-      background-color:rgb(224, 239, 132);
+      background-color:none;
       width:100%;
-      height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-      margin-top:330px;
+      height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+      margin-top:50px;
       margin-bottom:100px;
       margin-left:-10px;
       padding:10px;
@@ -36,6 +36,9 @@
 	    height: 100%;
 	    object-fit: cover;
 	}
+	
+	.pageTitle{margin-left: -34px;}
+	
 </style>
 <script type="text/javascript">
 	$(document).ready(()=>{
@@ -52,17 +55,17 @@
       <section id="section">
          <div id="conbox">
 			<br><br><br><br><br><br>
-			<h4>팔로우 페이지</h4>
+			<a><img class="pageTitle" src="${path}/resources/images/pageTitle/팔로우리스트.png" /></a>
 			<br><br>
 			<hr>
 			<br><br>
 			<form name="followPage" action="followPage" method="post" >
 				<div style="margin-left: 730px">
 					<c:if test="${ isfollow > 0}">
-						<input type="submit" value="팔로우" id="btnFollow" class="btn btn-default"  disabled />
+						<input type="submit" value="팔로우취소" id="btnFollow" name="btnFollow" class="btn btn-default" />
 					</c:if>
 					<c:if test="${ isfollow == 0}">
-						<input type="submit" value="팔로우" id="btnFollow" class="btn btn-default" />
+						<input type="submit" value="팔로우" id="btnFollow" name="btnFollow" class="btn btn-default" />
 					</c:if>
 					<input type="button" value="신고하기" id="btnBan" class="btn btn-default"/>
 				</div>
@@ -72,7 +75,7 @@
 							<td rowspan="2" style="width:400px; height:200px;">
 								<c:if test="${ followMember.renamedFileName == null }">
 									<div class="box" style="background: #BDBDBD;">
-										<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+										<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 									</div>
 								</c:if>
 								<c:if test="${ followMember.renamedFileName != null }">
@@ -109,7 +112,7 @@
 						<div id="joinList-container">
 							<h3>참여중인 챌린지</h3>
 							<iframe id="joinList-content" name="joinList-content"
-								src="${ path }/member/objectJoinList" 
+								src="${ path }/member/objectJoinList_follow" 
 								width="960px" height="400px" scrolling="no" frameborder="1">
 							</iframe>
 						</div>

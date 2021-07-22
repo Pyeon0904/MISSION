@@ -24,10 +24,10 @@
 				
 			/*---------------제일 바깥 영역 설정-----------------*/
 			#box{ 
-			   background-color:rgb(224, 239, 132);
+			   background-color:none;
 			   width:100%;
-			   height:800px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-			   margin-top:330px;
+			   height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+			   margin-top:50px;
 			   margin-bottom:100px;
 			   margin-left:-10px;
 			   padding:10px;
@@ -46,15 +46,26 @@
 		*{margin:0; padding:0;}
 		
 		#subHeaderContainer{width:100%; height:70px;}
-    	#subHeaderContainer h2{float:left; margin-top:20px;}
+    	#subHeaderContainer .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
     	#subHeaderContainer .funcArea .btn{width:100px; height:30px; float:right; margin:20px 20px 0px 0px;}
     	
     	#challengeGiveupCont table{
-    		width:85%; height:400px; margin:0 auto;
+    		width:100%; height:400px; margin:0 auto;
     	}
-    	.submitArea{width:150px; height:50px; margin:0 auto;}
-    	.btnSubmit{width:150px; height:50px; font-size:1.2em;}
+    	.submitArea{width:150px; height:30px; margin:20px auto;}
+    	.btnSubmit{width:150px; height:30px; font-size:0.9em;border:1px solid lightgray;}
     	
+    	td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+    	
+		/* table */
+		table.table01 {border-collapse:separate;border-spacing:0;line-height:1.5;border-top:1px solid #ccc;border-left:1px solid #ccc;margin:auto;}
+		table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
+		table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
+    	input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3;width:250px;height:25px;}
+    	select{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;vertical-align:middle;border:none}
+    	
+    	/* select_style */
+		.selbox{*margin-top:2px;height:28px;*height:18px;padding:3px 4px 4px 3px;border:solid 1px #abadb3;vertical-align:middle}
     	
 	</style>
 </head>
@@ -66,26 +77,33 @@
 	
 		
 			<div id="subHeaderContainer">
-				<h2>챌린지 포기 신청</h2>
+				<div class="subHeaderImg test">
+					<img alt="" src="${path}/resources/images/pageTitle/챌린지포기신청.png">
+				</div>
 			</div>
 			<div id="challengeGiveupCont">
 				<form action="${ path }/challenge/giveup" method="POST" class="" id="giveupRequest">
 					<table>
+						<colgroup>
+							<col width="50%">
+							<col width="*">
+						</colgroup>
+						<tbody>
 						<tr>
-							<td colspan="2">
+							<td colspan="2" style="text-align:center;font-size:0.9em;line-height:2;">
 								<p>
-									어떠한 사정이 있으신가요? 피드백을 남겨주시면 앞으로 더 좋은 서비스를 제공하기 위해 더 노력하겠습니다.<br>
-									탈퇴할 챌린지의 이름을 띄어쓰기, 기호 포함 <b>"완벽 일치"</b>하게 입력 후 포기 신청바랍니다.
+									<span style="font-size:1.3em;font-weight:bold">더 좋은 서비스를 제공하기 위해 피드백을 남겨주시면 감사하겠습니다.</span><br>
+									<span style="font-size:0.8em;">하단 입력란에 탈퇴할 챌린지의 이름을 띄어쓰기, 기호 포함 <b>"완벽 일치"</b>하게 기입해주세요.</span>
 								</p>
 							</td>
 						</tr>
 						<tr>
-							<td>포기 사유</td>
+							<th>포기 사유</th>
 							<td>
 								<c:set var="giveupArray" 
 									value="${ fn:split('챌린지에 대한 불만족/챌린지 수행 시간 부족/챌린지에 대한 동기부여 및 자존감 하락/건강상의 이유/더 이상 챌린지가 필요하지 않음/기타', '/') }"
 								/>
-								<select id="giveupReason" name="giveupReason">
+								<select id="giveupReason" class="selbox" name="giveupReason">
 									<c:forEach var="item" items="${giveupArray}" varStatus="reason">
 										<option value="${ item }">${ reason.count }. ${ item }</option>
 									</c:forEach>
@@ -93,25 +111,17 @@
 							</td>
 						</tr>
 						<tr>
-							<td>
-								포기 신청 ID
-							</td>
-							<td>
-								"<c:out value="${ loginMember.id }"/>"
-							</td>
-						</tr>
-						<tr>
-							<td>
+							<th>
 								챌린지 이름
-							</td>
+							</th>
 							<td>
-								"<c:out value="${ cTitle }"/>"
+								[<c:out value="${ cTitle }"/>]
 							</td>
 						</tr>
 						<tr>
-							<td>
+							<th>
 								챌린지 이름 입력
-							</td>
+							</th>
 							<td>
 								<input type="hidden" name="cNo" value="${ cNo }"/>
 								<input type="hidden" name="cTitle" value="${ cTitle }"/>
@@ -119,14 +129,11 @@
 								<input type="text" name="inputTitle" placeholder="챌린지 이름을 입력하시오."/>
 							</td>
 						</tr>
-						<tr>
-							<td colspan="2">
-								<div class="submitArea">
-									<input type="submit" class="btnSubmit" value="포기 신청하기"/>
-								</div>
-							</td>
-						</tr>
+						</tbody>
 					</table>
+					<div class="submitArea">
+						<input type="submit" class="btnSubmit" value="포기 신청하기"/>
+					</div>
 				</form>
 			</div>
 	</div>

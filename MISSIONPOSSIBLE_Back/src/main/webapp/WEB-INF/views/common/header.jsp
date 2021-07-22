@@ -152,7 +152,7 @@
 		/*메인 탭*/	
 		.adminMaintab {
 			position:relative;
-			left: 63.1%;
+			left: 58%;
 			list-style-type: none;		
 			padding: 0;
 			margin: 0;
@@ -161,7 +161,7 @@
 		/*메인탭 설정*/
 		.adminMaintab li {
 			float: left;
-			width: 120px;
+			width: 140px;
 			position: relative;
 			padding: 0;
 			line-height: 25px;
@@ -201,7 +201,7 @@
 		
 		#hamburger{
 			width:450px;
-			height:900px;
+			height:850px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
@@ -274,11 +274,11 @@
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">고객관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고접수</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
-						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기게시판관리</a></li>
 					</ul>
 					</div>
 			</div>
@@ -343,8 +343,8 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
+					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
 						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->
@@ -370,19 +370,20 @@
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
-								<td>보유 포인트</td>
+								<td style="color:#8FBC8F">보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
 						</table>
-						<hr>
-						<table style="width: 300px; margin:auto;">
+						
+						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
-								<td>등급</td>
+								<td style="color:#8FBC8F">등급</td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
 						<br><br>
-						<button class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+					
 					</c:if>
 				</div>
 			</div>

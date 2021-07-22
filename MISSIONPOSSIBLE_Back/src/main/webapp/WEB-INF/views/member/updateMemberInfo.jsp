@@ -338,10 +338,10 @@ ul {
 	 text-align: center;
 }
 #box{ 
-        background-color:rgb(224, 239, 132);
+        background-color:none;
         width:100%;
-        height:1000px; 
-        margin-top:330px;
+        height:auto; 
+        margin-top:50px;
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;
@@ -555,20 +555,25 @@ ul {
         }
  	}
  	function valiNick(nickname){
- 		var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
-		var checkBlank = /[\s]/;
-		  
-		  if(nickname.length < 2 || nickname.length > 10){
-			  $(".name.regex").html("영문,숫자를 혼합 2-10자리");
-		  }else if(checkBlank.test(nickname)){
-			  $(".name.regex").html("공백을 포함할 수 없습니다.");
-		  }else if(checkspe.test(nickname)){
-			  $(".name.regex").html("특수문자를 포함할 수 없습니다.");
-		  }else{
-			  $(".name.regex").html("");
-			  return true;
-		  }
- 	}
+         var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+         var checkBlank = /[\s]/;
+         var checkNumber = /[^0-9]/gi;
+         var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+         var checkEnglish =  /[^a-zA-Z]/;
+         
+         if(nickname.length < 2 || nickname.length > 10){
+            $(".name.regex").html("영문 또는 한글 2-10자리");
+         }else if(checkBlank.test(nickname)){
+            $(".name.regex").html("공백을 포함할 수 없습니다.");
+         }else if(checkspe.test(nickname)){
+            $(".name.regex").html("특수문자를 포함할 수 없습니다.");
+         }else if(!checkNumber.test(nickname)){
+            $(".name.regex").html("'숫자'만으로의 조합은 입력할 수 없습니다.");
+         }else{
+            $(".name.regex").html("");
+            return true;
+         }
+     }
  	function valiEmail(){
  		var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         var result = regex.exec($("#member_email").val());
@@ -591,7 +596,7 @@ ul {
       <section id="section">
          <div id="conbox">
 		<br><br><br><br><br><br>
-		<h4 style="text-align: center;">회원정보 수정</h4>
+         <a><img class="pageTitle" src="${path}/resources/images/pageTitle/회원정보수정.png" /></a>
 		<br><br>
 		<hr>
 		<br><br>
@@ -601,7 +606,7 @@ ul {
 					<tr>
 						<td style="width:300px; height:200px;">
 							<c:if test="${ loginMember.renamedFileName == null }">
-								<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
 							</c:if>
 							<c:if test="${ loginMember.renamedFileName != null }">
 								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>

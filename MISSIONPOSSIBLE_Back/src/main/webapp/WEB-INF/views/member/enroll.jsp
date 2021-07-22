@@ -15,6 +15,29 @@
 <title>회원가입</title>
 <style>
 
+/* 전체 페이지 틀 */
+	#box{ 
+    	background-color:none;
+    	width:100%;
+    	height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+    	margin-top:50px;
+    	margin-bottom:150px;
+    	margin-left:-10px;
+    	padding:10px;
+	}       
+	#conbox{
+	     width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
+	     position:relative; 
+	     top:20px;
+	     margin:auto;
+}
+/* -------------------------------------------------------------- */
+	h3{
+		font-weight:bold;
+		text-align:center;
+		font-size:50px;
+	}
+
 .section_join{
     height: auto;
     /* border: 1px solid red; */
@@ -179,7 +202,8 @@
     width: 110px;
     height: 40px;
     border: none;
-    background-color: #eee;
+    background-color: #F7F8E0;
+    color: black;
     cursor: pointer;
 }
 
@@ -272,8 +296,8 @@
 .join_all_btn{
     width: 250px;
     height: 40px;
-    background-color: black;
-    color: white;
+    background-color: #F7F8E0;
+    color: black;
     text-align: center;
     line-height: 40px;
     float: left;
@@ -302,7 +326,6 @@
 /* 기본 setting 사항 */
 
 html,
-body,
 div,
 label,
 section,
@@ -368,29 +391,29 @@ ul {
      color: red;
 }
  
-#box{ 
-      background-color:rgb(224, 239, 132);
-      width:100%;
-      height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-      margin-top:330px;
-      margin-bottom:100px;
-      margin-left:-10px;
-      padding:10px;
-}       
-#conbox{
-	     width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/
-	     position:relative; 
-	     top:20px;
-	     margin:auto;
-}
 .input-file-button{
 
 	  padding: 10px 20px;
-	  background-color:black;
+	  background-color:#F7F8E0;
 	  border-radius: 4px;
-	  color: white;
+	  color: black;
 	  cursor: pointer;
 }
+
+/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 600px;
+	}
+	/* ---------------------- */
+
+.pageTitle{
+	width : 320px;
+	height : 200px;
+}
+
 
 </style>
 <script type="text/javascript">
@@ -627,20 +650,25 @@ ul {
         }
  	}
  	function valiNick(nickname){
- 		var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
-		var checkBlank = /[\s]/;
-		  
-		  if(nickname.length < 2 || nickname.length > 10){
-			  $(".name.regex").html("영문,숫자를 혼합 2-10자리");
-		  }else if(checkBlank.test(nickname)){
-			  $(".name.regex").html("공백을 포함할 수 없습니다.");
-		  }else if(checkspe.test(nickname)){
-			  $(".name.regex").html("특수문자를 포함할 수 없습니다.");
-		  }else{
-			  $(".name.regex").html("");
-			  return true;
-		  }
- 	}
+         var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
+         var checkBlank = /[\s]/;
+         var checkNumber = /[^0-9]/gi;
+         var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+         var checkEnglish =  /[^a-zA-Z]/;
+         
+         if(nickname.length < 2 || nickname.length > 10){
+            $(".name.regex").html("영문 또는 한글 2-10자리");
+         }else if(checkBlank.test(nickname)){
+            $(".name.regex").html("공백을 포함할 수 없습니다.");
+         }else if(checkspe.test(nickname)){
+            $(".name.regex").html("특수문자를 포함할 수 없습니다.");
+         }else if(!checkNumber.test(nickname)){
+            $(".name.regex").html("'숫자'만으로의 조합은 입력할 수 없습니다.");
+         }else{
+            $(".name.regex").html("");
+            return true;
+         }
+     }
  	function valiEmail(){
  		var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         var result = regex.exec($("#member_email").val());
@@ -656,14 +684,15 @@ ul {
 
 </head>
 <body>
-<br><br><br>
 
 <div id="box">
       <section id="section">
-         <div id="conbox">
-	<br><br><br><br><br><br>
-	<h4 style="text-align: center;">회원가입</h4>
-	<br><br>
+        <div id="conbox">
+        <!-- title 이미지 삽입 -->
+		<a><img class="pageTitle"
+			src="${path}/resources/images/pageTitle/회원가입큰버전.png"/>
+		</a>
+	<br><br><br><br>
 	<hr>
 	<br><br>
 	<div id="enroll-container">
@@ -671,7 +700,7 @@ ul {
 			<table  border="1" style="margin:0 auto;">
 				<tr>
 					<td style="width:300px; height:300px;">
-						<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+						<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
 					</td>
 					<td>
 						<ul class="join_ulcss">

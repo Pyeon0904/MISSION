@@ -14,6 +14,31 @@
 <meta charset="UTF-8">
 <title>이용약관</title>
 <style>
+
+/* 전체 페이지 틀 */
+	#box{ 
+	        background-color:none;
+	        width:100%;
+	        height:auto; 
+	        margin-top:50px;
+	        margin-bottom:100px;
+	        margin-left:-10px;
+	        padding:10px;
+	}
+	#conbox{
+	        width:1600px; 
+	        position:relative; 
+	        top:20px;
+	        margin:auto;
+	}
+/*-------------------------------------------------------*/
+
+	h3{
+		font-weight:bold;
+		text-align:center;
+		font-size:50px;
+	}
+
 /*회원가입 부분*/
 .section_agree {
   height: auto;
@@ -112,21 +137,22 @@ ul {
   margin: 0;
   padding: 0;
 }
-#box{ 
-        background-color:rgb(224, 239, 132);
-        width:100%;
-        height:1000px; 
-        margin-top:330px;
-        margin-bottom:100px;
-        margin-left:-10px;
-        padding:10px;
+
+/* 페이지 타이틀 이미지 작업 */
+	h2{
+		color:black;
+	}
+	.pageTitle{
+		margin-left : 600px;
+	}
+	/* ---------------------- */
+
+.pageTitle{
+	width : 320px;
+	height : 200px;
 }
-#conbox{
-        width:1600px; 
-        position:relative; 
-        top:20px;
-        margin:auto;
-}
+
+
 </style>
 </head>
 <body>
@@ -167,8 +193,13 @@ ul {
 <div id="box">
       <section id="section">
          <div id="conbox">
+          <!-- title 이미지 삽입 -->
+			<a><img class="pageTitle"
+				src="${path}/resources/images/pageTitle/회원가입큰버전.png"/>
+			</a>
+			<br><br><br><br>
 			<div class="agreeout">
-			    <p>JOIN US</p>
+	
 			    <form name="member_agree" id="member_agree">
 			        <ul class="agree_ulcss">
 			            <li>약관동의</li>

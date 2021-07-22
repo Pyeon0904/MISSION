@@ -24,6 +24,9 @@
 	<!-- 제이쿼리 import -->
 	<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 	
+	<!-- view 페이지용 테스트 CSS link -->
+	<link rel="stylesheet" href="${ path }/resources/css/btn-view.css">
+	
 	<style>
 		/* 
 		*{margin:0; padding:0;}
@@ -33,11 +36,11 @@
             
          /*---------------제일 바깥 영역 설정-----------------*/
          #box{ 
-            background-color:rgb(224, 239, 132);
+            background-color:none;
             width:100%;
-            /*height:1000px; 높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+            /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
             height:auto;
-            margin-top:330px;
+            margin-top:50px;
             margin-bottom:100px;
             margin-left:-10px;
             padding:20px 0 40px 0;
@@ -53,47 +56,53 @@
       /*-----------------------------------------------------------------------------------*/
 		
 		#subHeaderContainer{width:100%; height:70px; }
-    	#subHeaderContainer h2{float:left; margin-top:20px;}
-    	#subHeaderContainer .funcArea .btn{width:100px; height:30px; float:right; margin:20px 20px 0px 0px;}
+		#subHeaderContainer .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
+		#subHeaderContainer .funcArea {width:800px; height:70px; float:right; position:relative;left:40px; padding:0}
+    	#subHeaderContainer .funcArea .btn{width:80px; height:15px; float:right; margin:20px 20px 0px 0px; font-size:0.9em; padding-top:-5px;}
+    	#subHeaderContainer .funcArea .btn:first-child{margin-right:0;}
     	
-    	#challengeContTable table tr:nth-child(1) #detailCont{
-    		width:750px; height:1013px; background-color:rgb(255,255,255,0.5);
+    	#detailCont{
+    		width:750px; height:auto; background-color:rgb(255,255,255,0.5); vertical-align:top;
     	}
-    	#challengeContTable table tr:nth-child(1) #certCalendarArea{
+    	#detailContInfo{
+    		width:725px;min-height:900px;
+    	}
+    	#detailContInfo tr:nth-child(-n+4){height:50px;}
+    	#certCalendarArea{
     		width:450px; height:350px; 
     	}
-    	#challengeContTable table tr:nth-child(1) #certCalendarArea #calContainer{
+    	#certCalendarArea #calContainer{
     		width:400px; height:300px; margin:0 auto;
     	}
-    	#challengeContTable table tr:nth-child(1) #certCalendarArea #calContainer .calTable #yyyymmArea {
-    		width:150px; height:20px; margin: 0 auto;
+    	#certCalendarArea #calContainer .calTable #yyyymmArea {
+    		width:160px; height:30px; margin: 10px auto; text-align:center; font-size:1em; text-decoration:none;
     	}
-    	#challengeContTable table tr:nth-child(2) #progressBarArea{
+    	#progressBarArea{
     		width:450px; height:150px;
     	}
-    	#challengeContTable table tr:nth-child(2) #progressBarArea #barContainer{
+    	#progressBarArea #barContainer{
     		width:400px; height:100px; margin:0 auto;
     	}
-    	#challengeContTable table tr:nth-child(2) #progressBarArea #barContainer h4{margin:0 0 20px 0px;}
-    	#challengeContTable table tr:nth-child(2) #progressBarArea #barContainer .barEmpty{
+    	#progressBarArea #barContainer h4{margin:0 0 20px 0px;}
+    	#progressBarArea #barContainer .barEmpty{
     		width:400px; height:10px; 
-    		border:1px solid gray; border-radius:5px;
+    		border:1px solid #b3b3b3; border-radius:5px;
     		margin:0 auto; background-color:#f0f0f0;
     	}
-    	#challengeContTable table tr:nth-child(2) #progressBarArea #barContainer .barEmpty .barGreen{
+    	#progressBarArea #barContainer .barEmpty .barGreen{
     		height:100%; background-color:lime; border-radius:5px;
     	}
-    	#challengeContTable table tr:nth-child(2) #progressBarArea #barContainer .progStatus{
+    	#progressBarArea #barContainer .progStatus{
     		float:right;
     	}
-    	#challengeContTable table tr:nth-child(3) #memberCertList{
-    		width:450px; height:513px;
+    	#memberCertList{
+    		width:450px; height:auto;
     	}
-    	#challengeContTable table tr:nth-child(3) #memberCertList h4{
+    	#memberCertList h4{
     		margin:10px 0 20px 20px;
     	}
     	
-    	.certListCont {width:100%; height:90%; overflow:scroll; overflow-x:hidden;}
+    	.certListCont {width:100%; height:600px; overflow:scroll; overflow-x:hidden;}
     	.certListCont .certListDisplay ul{list-style-type : none; margin-left:25px;}
 		.certListCont .certListDisplay ul li .certItemCont {
 			width:380px; height:75px; margin-bottom:10px;
@@ -116,6 +125,17 @@
 	        -webkit-line-clamp: 2;
 	        -webkit-box-orient: vertical;
 	    }
+	    
+h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+
+td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+    	
+/* table */
+table.table01 {border-collapse:separate;border-spacing:0;line-height:1.5;border-top:1px solid #ccc;border-left:1px solid #ccc;margin:auto;}
+table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
+table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
+	#certCalendarArea #calContainer .calTable .calcalcal {border-collapse:separate;border-spacing:0;margin:auto;width:80%;text-align:center;}
+	#certCalendarArea #calContainer .calTable .calcalcal td{padding:10px;vertical-align:middle;border-bottom:1px solid #b5b5b5;border-right:none;}
 	</style>
 <body>	
 	<div id="box">
@@ -132,91 +152,81 @@
 						<!-- 챌린지 달성률 계산식 -->
 						<c:set var="progPercent" value="${(successDay / totalDay) * 100}"/>
 						
-						<h2>참여중인 챌린지 정보</h2>
+						<div class="subHeaderImg test">
+							<img alt="" src="${path}/resources/images/pageTitle/참여중인챌린지정보.png">
+						</div>
 						<div class="funcArea">
 							
 							<!-- 보상받기 버튼 활성화 -->
 							<c:choose>
 								<c:when test="${ (todayNum >= endNum) and (progPercent >= 80 and progPercent <= 100) }">
-									<button type="button" class="btn btnReward" 
+									<a class="btn blue small btnReward" 
 										onclick="location.href='${path}/challenge/reward.do?cNo=${ challenge.challengeNo }&rate=${ progPercent }'">
 										보상받기
-									</button>
+									</a>
 									<script>
 										alert("그 동안 고생 많으셨습니다! 오늘은 챌린지 종료일입니다! 보상 받기 버튼을 클릭하여 포인트를 획득하세요!");
 									</script>
 								</c:when>
 								<c:when test="${ (todayNum >= endNum) and (progPercent < 80) }">
-									<button type="button" class="btn btnReward" disabled="disabled">
+									<a class="btn red small btnReward" disabled="disabled">
 										챌린지 종료
-									</button>
+									</a>
 									<script>
 										alert("그 동안 고생 많으셨습니다. 오늘은 챌린지 종료일입니다. 아쉽게도 챌린지 보상 기준 미달로 인해 보상을 받을 수 없습니다.");
 									</script>
 								</c:when>
 								<c:otherwise>
-									<form action="${path}/challenge/giveup" method="GET" class="" id="challengeGiveupForm">
-										<input type="hidden" name="cNo" value="${ challenge.challengeNo }" />
-										<input type="hidden" name="cTitle" value="${ challenge.title }"/>
-										<button class="btn btnGiveup" type="submit">포기하기</button>
-									</form>
-									<button type="button" class="btn btnCertify" 
-										onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=400,scrollbars= 0, toolbar=0, menubar=no')">
+									<a class="btn red small btnGiveup" 
+										href="${path}/challenge/giveup?cNo=${ challenge.challengeNo }&cTitle=${ challenge.title }">포기하기</a>
+									<a class="btn blue small btnCertify" 
+										onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=520,scrollbars= 0, toolbar=0, menubar=no')">
 										인증하기
-									</button>
+									</a>
 								</c:otherwise>
 							</c:choose>
-							<!--  
-							<form action="${ path }/chat/chatRoom" method="GET" class="" id="challengeChatForm">
-								<input type="hidden" name="bang_id" value="${ challenge.challengeNo }" />
-								<input type="hidden" name="user_id" value="${ loginMember.id }"/>
-							-->
- 								<button class="btn btnChat">채팅방 열기</button>
- 							<!-- 
-							</form>
-							-->
+							
+							<a class="btn cyan small btnChat">채팅방 열기</a>
+							
 							<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
-								<form action="${ path }/challenge/update" method="GET" id="challengeUpdateForm">
-									<input type="hidden" name="challengeNo" value="${ challenge.challengeNo }"/>
-									<input class="btn btnList" type="submit" value="챌린지 수정"/>
-								</form>
+								<a class="btn green small btnList" href="${ path }/challenge/update?challengeNo=${ challenge.challengeNo }">챌린지 수정</a>
 							</c:if>
 						</div>
 					</div>
 
 				<div id="challengeContTable">
-					<table>
-						<tr>
-							<td rowspan="3" id="detailCont">
-								<table id="detailContInfo">
+					<table class="table01">
+						
+							<td id="detailCont">
+								<table class="table01" id="detailContInfo">
 									<tr>
 										<td colspan="2">
 											<!-- [개인] / [단체] 상태 출력 -->
 											<c:if test="${ challenge.attendStatus == 'PUBLIC' }">
-												<span style="font-size:1.2em;">[단체]</span>
+												<span style="font-size:1.2em;color:#ff974d;font-weight:bold;">[단체]</span>
 											</c:if>
 											<c:if test="${ challenge.attendStatus == 'PRIVATE' }">
-												<span style="font-size:1.2em;">[개인]</span>
+												<span style="font-size:1.2em;color:#ff974d;font-weight:bold;">[개인]</span>
 											</c:if>
 											
 											<!-- 카테고리 이름 출력 부분-->
-											<span style="font-size:1.2em;">
+											<span style="font-size:1.2em;color:#6b4dff;font-weight:bold;">
 												[<c:out value="${ challenge.categoryName }"/>]
 											</span>
 											
 											<!-- 챌린지 제목 출력 부분 -->
-											<span style="font-size:1.2em;">
+											<span style="font-size:1.2em;color:gray;font-weight:bold;">
 												<c:out value="${ challenge.title }"/>
 											</span>
 										</td>
 									</tr>
 									<tr>
-										<td>
+										<th>
 											<span>진행 기간</span>
-										</td>
+										</th>
 										<td>
 											<!-- 챌린지 수료까지의 D-Day -->
-											<span>
+											<span style="color:#4d76ff;font-weight:bold;">
 												D-<c:out value="${ endNum - todayNum }"/>
 											</span>
 											<!-- 챌린지 시작일 및 수료일 => Date 포맷으로 변경 -->
@@ -231,9 +241,9 @@
 										</td>
 									</tr>
 									<tr>
-										<td>
+										<th>
 											<span>참여 인원</span>
-										</td>
+										</th>
 										<td>
 											<span>
 												<c:out value="${ challenge.currentCount }"/>명
@@ -241,9 +251,9 @@
 										</td>
 									</tr>
 									<tr>
-										<td>
+										<th>
 											<span>오픈 카톡 링크</span>
-										</td>
+										</th>
 										<td>
 											<span>
 												<c:out value="${ challenge.opentalkLink }"/>
@@ -251,14 +261,20 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2">
-											<c:out value="${ challenge.content }"/><br>
+										<td colspan="2" style="vertical-align:top;">
+											${ challenge.content }
 										</td>
 									</tr>
 								</table>
 								
 							</td>
-							<td id="certCalendarArea">
+						
+						
+							<td style="vertical-align:top;">
+							<table class="table01">
+							<tr>
+							<td>
+							<div id="certCalendarArea">
 								<div id="calContainer">
 									<h4>나의 발자취</h4>
 									<div class="calTable">
@@ -326,14 +342,20 @@
 										%>
 										<!-- 달력 위에 버튼 부분 -->
 										<div id="yyyymmArea">
-											<a href="?no=${ challenge.challengeNo }&y=<%=prevYear%>&m=<%=prevMonth%>">◁</a>
+											<i class="fa fa-chevron-left" aria-hidden="true"
+												onclick="location.replace('?no=${ challenge.challengeNo }&y=<%=prevYear%>&m=<%=prevMonth%>')"
+											></i>&nbsp;
 												<%=year%>년 <%=month+1%>월
-											<a href="?no=${ challenge.challengeNo }&y=<%=nextYear%>&m=<%=nextMonth%>">▷</a>
+												&nbsp;
+											<%-- <a href="?no=${ challenge.challengeNo }&y=<%=nextYear%>&m=<%=nextMonth%>">▷</a> --%>
+											<i class="fa fa-chevron-right" aria-hidden="true"
+												onclick="location.replace('?no=${ challenge.challengeNo }&y=<%=nextYear%>&m=<%=nextMonth%>')"
+											></i>
 										</div>
 										
 										
-										<table width="400" cellpadding="2" cellspacing="0" border="1" style='text-align:center;'>
-											<tr height="30">
+										<table class="calcalcal" cellpadding="2" cellspacing="0">
+											<tr>
 												<td style="color:red;"><font size="2">일</font></td>
 												<td><font size="2">월</font></td>
 										 		<td><font size="2">화</font></td>
@@ -342,7 +364,7 @@
 										  		<td><font size="2">금</font></td>
 										  		<td style="color:blue;"><font size="2">토</font></td>
 										 	</tr>
-										 	<tr height="30">
+										 	<tr>
 											<%
 												// 해달 월의 1일 앞 날짜 자리에 빈 칸 삽입
 												for (int i=1;i<startDay;i++){
@@ -453,7 +475,7 @@
 										  			if(count%7 == 0 && i < endDate){
 											%>
 										 	</tr>
-										 	<tr height="30">
+										 	<tr>
 											<%
 										  			}//if - 줄바꿈
 												}//for - 한달의 날짜 채우기 끝
@@ -472,8 +494,11 @@
 										</table>																					
 									</div>
 								</div>
+							</div>
 							</td>
-						</tr>
+							</tr>
+						
+						
 						<tr>
 							<td id="progressBarArea">
 								<div id="barContainer">
@@ -503,6 +528,8 @@
 								</div>
 							</td>
 						</tr>
+					</table>
+					</td>
 					</table>
 				</div>
 			</div>

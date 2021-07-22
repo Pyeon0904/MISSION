@@ -10,10 +10,10 @@
 		text-align:center;
 	}
 	#box{ 
-        background-color:rgb(224, 239, 132);
+        background-color:none;
         width:100%;
-        height:1500px; 
-        margin-top:330px;
+        height:auto; 
+        margin-top:50px;
         margin-bottom:100px;
         margin-left:-10px;
         padding:10px;
@@ -57,7 +57,7 @@
       <section id="section">
          <div id="conbox">
 		<br><br><br><br><br><br>
-		<h4>마이페이지</h4>
+         <a><img class="pageTitle" src="${path}/resources/images/pageTitle/마이페이지.png" /></a>
 		<br><br>
 		<hr>
 		<br><br>
@@ -67,7 +67,7 @@
 					<td rowspan="4" style="width:400px; height:200px;">
 						<c:if test="${ loginMember.renamedFileName == null }">
 							<div class="box" style="background: #BDBDBD;">
-								<img src="${path}/resources/images/계정프로필기본.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
+								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 							</div>	
 						</c:if>
 						<c:if test="${ loginMember.renamedFileName != null }">
@@ -116,12 +116,12 @@
 				<h3>참여중인 챌린지</h3>
 				<iframe id="joinList-content" name="joinList-content"
 					src="${ path }/member/objectJoinList" 
-					width="960px" height="400px" scrolling="no" frameborder="1">
+					width="960px" height="400px" scrolling="no" frameborder="0">
 				</iframe>
 				<h3>찜한 챌린지</h3>
 				<iframe id="zzimList-content" name="zzimList-content"
 					src="${ path }/member/objectZzimList" 
-					width="960px" height="400px" scrolling="no" frameborder="1">
+					width="960px" height="400px" scrolling="no" frameborder="0">
 				</iframe>
 			</div>
 		 </div>

@@ -41,9 +41,9 @@ public interface BoardMapper {
 	int maxDept(Board board);
 	
 	// 검색
-	List<Board> searchBoardList(@Param("type") String type, @Param("keyword") String keyword, RowBounds rowBounds);
+	List<Board> searchBoardList(@Param("type") String type, @Param("keyword") String keyword, RowBounds rowBounds, @Param("startdate") String startdate, @Param("enddate") String enddate);
 
-	int searchBoardCount(@Param("type") String type, @Param("keyword") String keyword);
+	int searchBoardCount(@Param("type") String type, @Param("keyword") String keyword, @Param("startdate") String startdate, @Param("enddate") String enddate);
 
 	// 관리자 페이지
 	List<Board> selectAll();

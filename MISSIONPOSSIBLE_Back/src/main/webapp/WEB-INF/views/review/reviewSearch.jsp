@@ -20,8 +20,8 @@
 
 <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
-   #box{ background-color:rgb(224, 239, 132); width:100%; height:1000px; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
-         margin-top:330px; margin-bottom:100px; margin-left:-10px; padding:10px;}
+   #box{ background-color:none; width:100%; height:auto; /*높이는 각 세부페이지 컨텐츠 보고 알아서 적~당히 설정하기*/
+         margin-top:auto; margin-bottom:100px; margin-left:-10px; padding:10px;}
    #conbox{ width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/ position:relative; top:20px; margin:auto;}
 </style>
 </head>
@@ -70,7 +70,7 @@
 			<div id="wrap">
 				<div id="container">
 					<div class="inner">
-						<h2>후기 게시판</h2>
+						<a><img class="pageTitle" src="${path}/resources/images/pageTitle/후기게시판.png" /></a>
 						<!-- 검색 폼 시작--------------------- -->
 						<form id="reviewSearch" name="form1" method="GET" action="${path}/review/reviewSearch">
 							<div align="right" class="row m-4">
@@ -94,11 +94,12 @@
 						<br>
 						<table width="100%" class="table01">
 							<colgroup>
-								<col width="10%" />
+								<col width="7%" />
 								<col width="25%" />
 								<col width="15%" />
-								<col width="20%" />
 								<col width="10%" />
+								<col width="18%" />
+								<col width="6%" />
 							</colgroup>
 							<thead>
 								<tr id="titleTd">
@@ -127,9 +128,16 @@
 													</c:if>
 												</a>
 											</td>
-											<td><c:out value="${ review.challengeTitle }" /></td>
+											<td>
+											<c:if test="${ review.challengeTitle != null }">
+												<c:out value="${ review.challengeTitle }" />
+											</c:if>
+											<c:if test="${ review.challengeTitle == null }">
+												-
+											</c:if>			
+											</td>
 											<td><c:out value="${ review.writerId }" /></td>
-											<td><fmt:formatDate type="date" value="${ review.createDate }" /></td>
+											<td><fmt:formatDate type="both" timeStyle="short" value="${ review.createDate }" /></td>
 											<td><c:out value="${ review.viewCount }" /></td>
 										</tr>
 									</c:forEach>
@@ -141,14 +149,14 @@
 						<!-- 로그인 된 회원에게만 글쓰기 버튼 보이기 ------------>
 						<div class="btn_right mt15">
 							<c:if test="${ loginMember != null }">
-								<button type="button" class="btn black mr5"
+								<button type="button" class="button_base b01_simple_rollover" 
 									onclick="location.href='${path}/review/reviewWrite'">글쓰기</button>
 							</c:if>
 						</div>
 					</div>
 
 					<!-- 페이징 처리 ------------>
-					<div id="pageBar" style="align:center;">
+					<div style="align: center; margin-top:10px; text-align:center;">
 						<!-- 맨 처음으로 -->
 						<button onclick="location.href='${ path }/review/reviewSearch?page=1&key=${key}&word=${word}'">&lt;&lt;</button>
 						

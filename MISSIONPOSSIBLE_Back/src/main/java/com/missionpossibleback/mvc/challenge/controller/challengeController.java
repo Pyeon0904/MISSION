@@ -46,8 +46,19 @@ public class challengeController {
 	
 	//첼린지 등록 GET
 	@GetMapping("/challenge/challengeRegister")
-	public void challengeRegisterView() {
+	public ModelAndView challengeRegisterView(@SessionAttribute(name = "loginMember", required = false) Member loginMember, ModelAndView model) {
+		
 		log.info("챌린지 등록페이지 요청");
+		
+		if(loginMember != null) {
+			model.setViewName("challenge/challengeRegister");
+		} else {
+			model.addObject("msg", "로그인 후 이용가능한 페이지입니다. 로그인 페이지로 이동합니다.");
+			model.addObject("location", "/member/login");
+			model.setViewName("common/msg");
+		}
+		
+		return model;
 	}
 	
 	//챌린지 등록 POST
@@ -322,7 +333,7 @@ public class challengeController {
 				model.addObject("msg", "챌린지 인증이 정상적으로 처리되었습니다. 팝업이 닫힙니다.");
 				model.addObject("location", "/challenge/windowClose");
 			} else {
-				model.addObject("msg", "챌린지 인증을 실패하였습니다. 팝업이 닫힙니다.");
+				model.addObject("msg", "챌린지 인증은 하루에 한 번만 가능합니다. 팝업이 닫힙니다.");
 				model.addObject("location", "/challenge/windowClose");
 			}
 		} else {
