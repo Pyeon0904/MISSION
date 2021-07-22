@@ -413,7 +413,9 @@ input[type="button"],input[type="submit"],input[type="reset"] {border:1px solid 
 						<th>이미지 미리보기</th>
 						<td>
 							<div id="preview" style="width:200px;height:200px;border:1px solid lightgray;position:relative;">
-								<img style="width:200px;height:200px;" class="thumb" src="${ path }/resources/upload/challenge/${challenge.thumbnailFile}"/>
+								<img style="width:200px;height:200px;" class="thumb" 
+								src="${ path }/resources/upload/challenge/${challenge.thumbnailFile}"
+								onerror="this.src='${path}/resources/images/c_img/chall00.png'"/>
 							</div>
 						</td>
 					</tr>
