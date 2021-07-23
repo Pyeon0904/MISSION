@@ -201,7 +201,7 @@ $(function () {
 					<div class="cateUpdArea" id="selectWarnArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>후기 게시글 삭제</h2>
+							<h2>신고 게시글 경고</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
@@ -262,11 +262,11 @@ $(function () {
 					<div class="cateUpdArea" id="selectRemoveArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>후기 게시글 삭제</h2>
+							<h2>신고 게시글 경고</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
-								<h2>정말로 삭제하시겠습니까?</h2>
+								<h2>정말로 경고 처리하시겠습니까?</h2>
 							</div>
 							<form id="selDelForm" action="${ path }/admin/report/selectDeleteR" method="POST">
 								<input type="hidden" name="cateSelDelNo" id="cateSelDelNo">

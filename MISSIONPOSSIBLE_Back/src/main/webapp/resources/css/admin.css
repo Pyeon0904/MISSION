@@ -409,7 +409,7 @@ table.category {
 	margin: 0px 0px 50px 0px;
 }
 table.category th {
-	background-color: var(--white);
+	background-color: white;
 	width: 30%;
 	text-align: left;
 }
@@ -445,8 +445,9 @@ div.sendArea {
 }
 input.new-bt2, button.new-bt2 {
 	float: right;
-	background-color: var(--black);
-	color: var(--white);
+	background-color: var(--green);
+	border: 1px solid var(--green) !important;
+	color: var(--black);
 	min-width: 70px;
 	width: auto;
 	height: 35px;
@@ -456,7 +457,8 @@ input.new-bt2, button.new-bt2 {
 }
 button.new-bt1 {
 	float: right;
-	background-color: var(--white);
+	background-color: var(--green);
+	border: 1px solid var(--green) !important;
 	color: var(--black);
 	min-width: 70px;
 	width: auto;

@@ -214,7 +214,7 @@ $(function () {
 					<div class="cateUpdArea" id="selectRemoveArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>챌린지 삭제</h2>
+							<h2>카테고리 삭제</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">

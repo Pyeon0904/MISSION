@@ -202,7 +202,7 @@ $(function () {
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
 							var secId = $(this).val();
-							$('div#individual').html("<h2>"+secId+" 회원을<br> 경고 처리 하시겠습니까?</h2>");
+							$('div#individual').html("<h2>' "+secId+" ' 회원을<br> 경고 처리 하시겠습니까?</h2>");
 							
 							$("input#warnMemberId").val(secId);
 						});

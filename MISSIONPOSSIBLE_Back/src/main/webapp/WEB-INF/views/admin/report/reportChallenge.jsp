@@ -199,7 +199,7 @@ $(function () {
 					<div class="cateUpdArea" id="selectWarnArea">
 					<div class="newWrapper">
 						<div class="titleArea">
-							<h2>후기 게시글 삭제</h2>
+							<h2>신고 챌린지 경고</h2>
 						</div>
 						<div class="contentArea">
 							<div class="div-inf">
