@@ -5,8 +5,8 @@
 /* ----------------------------------------------------------------------------------------------------- */ 
 
 :root {
-	--black: #97FD97;
-	--white: #fff;
+	/*--black: #97FD97;*/
+	--white: #666;
 	--lgray: #ddd;
 	--red: #dd1f1f;
 	--blue: #37a5d1;
@@ -40,11 +40,12 @@ button, input[type=submit], input[type=button] {
 /* 공통 탭 */
 
 ul.tabs {
-	float: right;
+	float: left;
 	margin: 0px 0px 30px 0px;
 	padding: 0;
 	list-style: none;
 }
+
 ul.tabs li {
 	background: none;
 	display: inline-block;
@@ -54,7 +55,7 @@ ul.tabs li {
 ul.tabs li.current {
 	background-color: var(--black);
 	color: var(--white);
-	border-bottom: 3px solid var(--white);
+	border-bottom: 3px solid green;
 }
 div.cateListArea {
 	display: block;
@@ -231,6 +232,7 @@ td.result>a {
 /* 카테고리 */
 /* -------------------------------------------------------- */
 
+th{background-color:#97FD97 !important;}
 div.div-wrapper {
 	box-shadow: 0px 0px 5px rgba(172, 172, 172, 0.664);
 	margin: 0px;
@@ -253,29 +255,33 @@ div.head {
 	padding: 10px;
 }
 div.btnArea {
-	padding: 35px 0px 15px 0px;
+	padding: 80px 0px 25px 0px;
 }
 span.searchArea {
 	margin: 0;
 	padding: 0;
 }
 input#searchTxt {
+	margin-left: 708px !important;
+	border: 1px solid #ABADB3;
 	margin: 0;
 	width: 200px;
 	height: 30px;
 	font-size: 1em;
 }
 span.enrollArea {
-	float: right;
+	float: left;
 }
 button.search-bt1, button.enroll-bt1 {
-	background-color: var(--black);
+	margin-right: 10px;
+	background-color: #97FD97;
 	color: var(--white);
 	min-width: 80px;
 	width: auto;
 	height: 35px;
-	border-radius: 5px;
+	border : 1px solid #97FD97 !important;
 	font-size: 1em;
+	border-radius: 5px;
 }
 div.tbArea {
 	min-height: 300px;
@@ -302,7 +308,8 @@ table input[type=checkbox] {
 	height: 20px;
 }
 button.stat-bt1 {
-	background-color: var(--black);
+	border : 1px solid #97FD97 !important;
+	background-color: #97FD97;
 	color: var(--white);
 	min-width: 50px;
 	width: auto;

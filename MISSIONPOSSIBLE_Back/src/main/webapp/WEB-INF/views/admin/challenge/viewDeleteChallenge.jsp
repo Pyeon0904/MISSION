@@ -78,7 +78,7 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
@@ -95,8 +95,8 @@ $(function () {
 									<th><input type="checkbox" id="allChecked"></th>
 									<th>번호</th><!-- challengeNo -->
 									<th>포인트</th><!-- minusPoint -->
-									<th>카테고리</th><!-- attendStatus / categoryName -->
-									<th>제목</th><!-- title -->
+									<th style="width:14%;">카테고리</th><!-- attendStatus / categoryName -->
+									<th style="width:23%;">제목</th><!-- title -->
 									<th>생성자</th><!-- id -->
 									<th>현재인원</th><!-- currentCount/maxCount -->
 									<th>진행기간</th><!-- startDate ~ deadline -->

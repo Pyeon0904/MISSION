@@ -93,11 +93,11 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:612px !important;">
 							</span>
 							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
@@ -109,7 +109,7 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>코드</th>
+									<th style="width:14%;">코드</th>
 									<th>이름</th>
 									<th colspan="2">처리</th>
 								</tr>

@@ -185,11 +185,11 @@ $(function () {
 			</div>
 			<div class="cateList">
 			<div class="head">
-				<h2>_</h2>
+				<h2 style="color:white;">_</h2>
 			</div>
 			<div class="btnArea">
 				<span class="searchArea">
-					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:800px !important;">
 				</span>
 			</div>
 			<!-- 탈퇴 리스트 테이블 ------------------------>

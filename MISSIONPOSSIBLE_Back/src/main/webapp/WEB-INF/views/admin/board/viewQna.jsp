@@ -58,6 +58,7 @@ $(function () {
 		<a><img class="pageTitle"
 			src="${path}/resources/images/pageTitle/고객센터관리.png" />
 		</a>
+
          <div id="wrap">
             <div id="container">
                <div class="inner">
@@ -72,13 +73,14 @@ $(function () {
                         </li>
                      </ul>
                   </div>
+                  
             <div class="cateList">
                <div class="head">
-                  <h2>_</h2>
+                  <h2 style="color:white;">_</h2>
                </div>
                   <div class="btnArea">
                      <span class="searchArea">
-                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:605px !important;">
                      </span>
                      <span class="enrollArea">
                         <button class="enroll-bt1" id="allRemoveBtn">삭제</button>
@@ -86,6 +88,7 @@ $(function () {
                      <span class="enrollArea">
                         <button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
                      </span>
+                     
                   </div>
                   <!-- 게시글 리스트 테이블 ------------------------>
                   <div class="tbArea">
@@ -260,6 +263,8 @@ $(function () {
                </div>
             </div>
          </div>
+      </div>
+      </div>
       </div>
    </section>
 </div>

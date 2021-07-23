@@ -79,7 +79,7 @@ $(function () {
 						</div>
 					<div class="cateList">
 						<div class="head">
-							<h2>_</h2>
+							<h2 style="color:white;">_</h2>
 						</div>
 						<div class="btnArea">
 							<span class="searchArea">
@@ -94,8 +94,8 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>회원번호</th>
-									<th>회원ID</th>
+									<th style="width:11%;">회원번호</th>
+									<th style="width:20%;">회원ID</th>
 									<th>경고횟수</th>
 									<th>상태</th>
 									<th>처리</th>

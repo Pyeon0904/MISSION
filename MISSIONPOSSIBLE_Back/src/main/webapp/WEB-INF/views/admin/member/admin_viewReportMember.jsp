@@ -186,12 +186,12 @@ $(function () {
 						</div>
 						<div class="cateList">
 						<div class="head">
-							<h2 id="title">신고된 멤버 관리</h2>
+							<h2 style="color:white;">_</h2>
 						</div>
 						<div class="btnArea">
 							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 경고</button>
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:650px !important;">
+								<button class="enroll-bt1" id="allRemoveBtn" style="float:left;" >선택된 회원 경고</button>
 							</span>
 						</div>
 						<!-- 신고된 멤버 테이블 ------------------------>
@@ -199,15 +199,21 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>신고일자</th>
+									<th style="width:11%;">신고일자</th>
 									<th>신고자ID</th>
 									<th>신고된ID</th>
 									<th>신고유형</th>
-									<th>신고내용</th>
-									<th>경고횟수</th>
+									<th style="width:18%;">신고내용</th>
+									<th style="width:11%;">경고횟수</th>
 									<th>상태</th>
 									<th>처리</th>
 								</tr>
+								<c:if test="${ admin_memberList.isEmpty() }">
+									<tr>
+										<td colspan="9">조회된 신고 회원이 없습니다.</td>
+									</tr>
+								</c:if>
+								
 								<c:if test="${ admin_memberList != null}">
 									<c:forEach var="memberReport" items="${ admin_memberList }">
 										<tr>

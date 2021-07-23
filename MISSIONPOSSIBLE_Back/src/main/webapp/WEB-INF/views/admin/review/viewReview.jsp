@@ -73,7 +73,7 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">

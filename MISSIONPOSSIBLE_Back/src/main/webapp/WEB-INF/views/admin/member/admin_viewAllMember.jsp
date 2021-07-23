@@ -185,12 +185,12 @@ $(function () {
 					
 						<div class="cateList">
 						<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 						</div>
 						<div class="btnArea">
 							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 탈퇴</button>
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:650px !important;">
+								<button class="enroll-bt1" id="allRemoveBtn" style="float:left;" >선택된 회원 탈퇴</button>
 							</span>
 						</div>
 						<!-- 전체(활동중) 멤버 테이블 ------------------------>
@@ -198,11 +198,11 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>회원번호</th>
+									<th style="width:8%;">회원번호</th>
 									<th>ID</th>
 									<th>등급</th>
 									<th>포인트</th>
-									<th>닉네임</th>
+									<th style="width:11%;">닉네임</th>
 									<th>이메일</th>
 									<th>경고횟수</th>
 									<th>처리</th>

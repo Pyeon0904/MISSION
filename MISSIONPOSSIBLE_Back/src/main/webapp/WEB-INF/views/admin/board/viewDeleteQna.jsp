@@ -74,11 +74,11 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left: 710px !important;">
 							</span>
 							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRestoreBtn">복구</button>
