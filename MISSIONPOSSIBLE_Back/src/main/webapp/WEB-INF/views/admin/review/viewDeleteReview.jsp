@@ -104,7 +104,8 @@ $(function () {
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
 											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
-											<td class="view-click td-3"><c:out value="${ review.title } " />
+											<td class="view-click td-3"><a class="getURL" style="color:#666;" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
+												<c:out value="${ review.title } " /> </a>
 											</td>
 											<td>
 											<c:if test="${ review.challengeTitle != null }">

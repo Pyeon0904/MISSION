@@ -64,7 +64,7 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link current">
-									<a href="${ path }/admin/review/viewReview">게시된 후기글</a>
+									<a href="${ path }/admin/review/viewReview" >게시된 후기글</a>
 								</li>
 								<li class="tab-link">
 									<a href="${ path }/admin/review/viewDeleteReview">삭제된 후기글</a>
@@ -104,7 +104,7 @@ $(function () {
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
 											<td class="noTd">${ review.no }</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
+											<td class="view-click td-3"><a class="getURL" style="color:#666;" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
 												<c:out value="${ review.title } " /> </a>
 											</td>
 											<td>

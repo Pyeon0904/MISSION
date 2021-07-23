@@ -116,7 +116,7 @@ $(function () {
                                  <c:if test="${board.sort == 0 }">
                                     <td><c:out value="질문" /></td>
                                  </c:if>
-                                 <td class="view-click td-3" style="width:35%; text-align:left; padding-left:60px;"><a class="getURL" href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" target="viewF">
+                                 <td class="view-click td-3" style="width:35%; text-align:left; padding-left:60px;"><a class="getURL" style="color:#666;" href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" target="viewF">
                                  	<%-- 답글 && 비밀글X 이면 --%>
                                     <c:if test="${ board.groupord > 0 && board.pass == null }">
                                         <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>

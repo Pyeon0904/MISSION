@@ -116,7 +116,7 @@ $(function () {
 												<c:out value="${ challenge.attendStatus }"/>
 												 / <c:out value="${ challenge.categoryName }" />
 											</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/challenge/recruit?no=${challenge.challengeNo}" target="viewF">
+											<td class="view-click td-3"><a class="getURL" style="color:#666;" href="${ path }/challenge/recruit?no=${challenge.challengeNo}" target="viewF">
 												<c:out value="${ challenge.title } " /> </a>
 											</td>
 											<td><c:out value="${ challenge.id }" /></td>
