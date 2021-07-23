@@ -37,7 +37,7 @@ height:20px;
 .btn {font-family:'malgunbd';align:center;display:inline;padding:10px 20px 10px 20px;margin:0;border:1px solid #aaa;cursor:pointer;color:white;border-radius:2px;vertical-align:middle;font-size:13px;letter-spacing:-1px;line-height:normal;background-color:#555;text-decoration:none;}
 
 .button_base:hover {cursor: pointer;}
-.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; background-color:#AFE525; padding:10px 20px 10px 20px;}
+.b01_simple_rollover {color: #000000; border: #97FD97 solid 1px; background-color:#97FD97; padding:10px 20px 10px 20px;}
 .b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
 </style>
 
