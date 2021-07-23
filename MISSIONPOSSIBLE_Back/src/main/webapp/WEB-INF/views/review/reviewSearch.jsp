@@ -83,7 +83,7 @@
 									<option value="5">전체</option>
 								</select> 
 								<input type="text" id="searchInput" name="word" class="form-control" 
-									style="width: 200px; padding: 3px 20px 6px 20px" value=${ word }>
+									style="width: 140px; padding: 3px 20px 6px 20px" value=${ word }>
 								<button type="submit" class="btn btn-warning">검색</button>
 							</div>
 						</form>
