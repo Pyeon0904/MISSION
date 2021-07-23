@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
