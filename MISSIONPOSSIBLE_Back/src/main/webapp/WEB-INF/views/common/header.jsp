@@ -381,7 +381,7 @@ font-family: 'NanumBarunGothic', sans-serif;
 						<br><br>
 						<input type="button" id="loginList" onclick="location.href='${path}/challenge/zzimList'" value="찜" style="position: relative; z-index: 2;"/>
 						<br><br><br>
-						<table style="width: 300px; margin:auto; text-align: left;">
+						<table style="width: 300px; margin:auto;  height:100px; text-align: left;">
 							<tr>
 								<td style="color:#8FBC8F">보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
