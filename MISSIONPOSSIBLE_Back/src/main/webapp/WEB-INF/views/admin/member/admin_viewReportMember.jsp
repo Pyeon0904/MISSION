@@ -191,7 +191,7 @@ $(function () {
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 경고</button>
+								<button class="enroll-bt1" id="allRemoveBtn" >경고</button>
 							</span>
 						</div>
 						<!-- 신고된 멤버 테이블 ------------------------>

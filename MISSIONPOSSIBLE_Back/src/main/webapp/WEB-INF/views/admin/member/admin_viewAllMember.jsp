@@ -190,7 +190,7 @@ $(function () {
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-								<button class="enroll-bt1" id="allRemoveBtn" >선택된 회원 탈퇴</button>
+								<button class="enroll-bt1" id="allRemoveBtn" >탈퇴</button>
 							</span>
 						</div>
 						<!-- 전체(활동중) 멤버 테이블 ------------------------>
