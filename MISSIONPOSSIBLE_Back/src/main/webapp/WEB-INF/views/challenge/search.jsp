@@ -279,7 +279,28 @@
 						</div><!-- #pageBar -->
 					</div><!-- .pagination-container -->
 				</div><!-- #productContainer -->
-				
+				<div id="popup" style="width:880px; height:500px;
+						background-image:url('${ path }/resources/images/point/챌린지포인트안내.PNG'); 
+						background-repeat:no-repeat; background-size:cover;position:fixed;top:0px;left:0px; z-index:1000;
+						display:none;box-shadow:5px 5px 5px gray;">
+					<div id="closePop" style="font-size:2em;color:#b5645b;width:30px; height:30px; text-align:center;
+							position:relative; top:10px;left:830px;">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</div>
+				</div>
+				<div id="question" style="width:80px; height:80px; font-size:2em; position:fixed;bottom:0;right:0;">
+					<i class="fa fa-question-circle" aria-hidden="true"></i>
+				</div>
+				<script>
+					$(document).ready(()=>{
+						$("#question").on("click", ()=>{
+							$("#popup").fadeIn(200);
+						});
+						$("#closePop").on("click", ()=>{
+							$("#popup").fadeOut(200);
+						});
+					});
+				</script>
 			</div>
 		</section>
 	</div>
