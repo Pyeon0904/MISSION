@@ -78,9 +78,7 @@ $(function () {
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left: 710px !important;">
-							</span>
-							<span class="enrollArea">
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
 								<button class="enroll-bt1" id="allRestoreBtn">복구</button>
 							</span>
 						</div>

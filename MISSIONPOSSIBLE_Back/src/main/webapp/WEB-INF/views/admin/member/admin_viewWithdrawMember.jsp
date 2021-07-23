@@ -188,8 +188,8 @@ $(function () {
 				<h2 style="color:white;">_</h2>
 			</div>
 			<div class="btnArea">
-				<span class="searchArea">
-					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:800px !important;">
+				<span class="searchArea" style="margin-left: 800px;">
+					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
 				</span>
 			</div>
 			<!-- 탈퇴 리스트 테이블 ------------------------>

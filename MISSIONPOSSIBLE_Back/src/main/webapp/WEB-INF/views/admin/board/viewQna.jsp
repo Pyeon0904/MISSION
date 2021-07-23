@@ -79,15 +79,12 @@ $(function () {
                   <h2 style="color:white;">_</h2>
                </div>
                   <div class="btnArea">
-                     <span class="searchArea">
-                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:605px !important;">
+                     <span>
+                     	<button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
+                        <button class="enroll-bt1" id="allRemoveBtn" style="float:right;">삭제</button>
+                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="float:right;">   
                      </span>
-                     <span class="enrollArea">
-                        <button class="enroll-bt1" id="allRemoveBtn">삭제</button>
-                     </span>
-                     <span class="enrollArea">
-                        <button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
-                     </span>
+
                      
                   </div>
                   <!-- 게시글 리스트 테이블 ------------------------>

@@ -96,12 +96,10 @@ $(function () {
 						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
-							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="margin-left:612px !important;">
-							</span>
-							<span class="enrollArea">
-								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
-								<button type="button" class="enroll-bt1" id="allEnrollBtn">추가</button>
+							<span>
+								<button class="enroll-bt1" id="allEnrollBtn">추가</button>
+								<button class="enroll-bt1" id="allRemoveBtn"style="float:right;">삭제</button>
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="float:right;">
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>

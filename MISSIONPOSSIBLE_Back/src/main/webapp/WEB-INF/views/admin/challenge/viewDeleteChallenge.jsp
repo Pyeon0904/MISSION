@@ -83,8 +83,6 @@ $(function () {
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRestoreBtn">복구</button>
 							</span>
 						</div>
