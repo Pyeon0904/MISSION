@@ -107,6 +107,13 @@
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
 	
+	<!-- 내가 개설한 챌린지 전체 조회 -->
+	<select id="selectMyChallengeList" parameterType="string" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS='Y' AND CLG.ID = #{id}
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
 	<!-- 삭제된 챌린지 전체 조회 -->
 	<select id="selectDeleteChallengeList" resultMap="challengeResultMap">
 		<include refid="selectChallengeSql"/>
@@ -153,6 +160,37 @@
 		]]>
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
+	
+	<!-- 완료한 챌린지 리스트 조회 -->
+	<select id="selectEndJoinList" parameterType="string" resultMap="challengeResultMap">
+		SELECT
+		    CLG.CHALLENGE_NO,
+		    CLG.ID,
+		    CLG.CATEGORY_NO,
+		    CLG.CATEGORY_NAME,
+		    CLG.ATTEND_STATUS,
+		    CLG.STATUS,
+		    CLG.TITLE,
+		    CLG.DEADLINE,
+		    CLG.CREATE_DATE,
+		    CLG.MODIFY_DATE,
+		    CLG.START_DATE,
+		    CLG.MINUS_POINT
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
+		WHERE 
+			(CLG.STATUS = 'Y') 
+			AND (MCL.MY_STATUS = 'JOIN') 
+			AND (MCL.ID = #{id})
+			<![CDATA[
+            AND TO_CHAR(SYSDATE,'YYYYMMDD') > TO_CHAR(CLG.START_DATE,'YYYYMMDD') 
+            AND TO_CHAR(SYSDATE,'YYYYMMDD') > TO_CHAR(CLG.DEADLINE,'YYYYMMDD')
+			]]>
+			
+			
+	</select>	
 	
 	<!-- 찜한 챌린지 리스트 조회 -->
 	<select id="selectZzimList" parameterType="string" resultMap="challengeResultMap">

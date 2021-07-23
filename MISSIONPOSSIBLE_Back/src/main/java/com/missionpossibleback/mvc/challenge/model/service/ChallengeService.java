@@ -111,5 +111,9 @@ public interface ChallengeService {
 	int selectCateDelete(String[] strNo);
 
 	int cateAdd(String str1, String str2);
+
+	List<Challenge> getEndJoinList(PageInfo pageInfo, String id);
+
+	List<Challenge> getMyChallengeList(PageInfo pageInfo, String id);
 	
 }

@@ -595,8 +595,7 @@ public class challengeController {
 	
 	//진행중인 챌린지 LIST
 	@GetMapping("/challenge/ongoingList")
-	public ModelAndView ongoingList(ModelAndView model,
-			@RequestParam(value="page", required = false, defaultValue = "1") int page) {
+	public ModelAndView ongoingList(ModelAndView model, @RequestParam(value="page", required = false, defaultValue = "1") int page) {
 		
 		int listCount = service.getOngoingCount();
 		
@@ -1086,4 +1085,43 @@ public class challengeController {
 		return model;
 	}
 	
+	// 달성한 챌린지 리스트 뷰 페이지
+	@GetMapping("/challenge/successList")
+	public ModelAndView successList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page,
+			@SessionAttribute(name="loginMember") Member loginMember) {
+		
+		int listCount = service.getEndJoinCount(loginMember.getId());
+		
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, listCount, 10);
+		
+		list = service.getEndJoinList(pageInfo, loginMember.getId());
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/successList");
+		
+		return model;
+	}
+	
+	// 내가 개설한 챌린지 리스트 뷰 페이지
+	@GetMapping("/challenge/myCreateList")
+	public ModelAndView myCreateList(ModelAndView model,
+			@RequestParam(value="page", required = false, defaultValue = "1") int page,
+			@SessionAttribute(name="loginMember") Member loginMember) {
+		
+		int listCount = service.getChallengeCountById(loginMember.getId());
+		
+		List<Challenge> list = null;
+		PageInfo pageInfo = new PageInfo(page, 10, listCount, 10);
+		
+		list = service.getMyChallengeList(pageInfo, loginMember.getId());
+		
+		model.addObject("list", list);
+		model.addObject("pageInfo", pageInfo);
+		model.setViewName("challenge/myCreateList");
+		
+		return model;
+	}
 }

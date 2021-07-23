@@ -91,6 +91,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 					<img alt="" src="${path}/resources/images/pageTitle/모집중인챌린지정보.png">
 				</div>
 				<div class="funcArea">
+					<c:if test="${ loginMember != null && loginMember.id != challenge.id}">
 					<!-- 참가신청 버튼 클릭시 addMyChallengeList.do로 참가신청을 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
 					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeJoinForm">
 						<input type="hidden" name="myStatus" value="JOIN" />
@@ -129,6 +130,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 						});
 					});
 					</script>
+					</c:if>
 					<a href="${ path }/challenge/recruitList" class="btn blue small">목록으로</a>
 					
 					<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
@@ -257,16 +259,6 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 								<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy-MM-dd"/>
 								<span>
 									<c:out value="${ regDate }"/>
-								</span>
-							</td>
-						</tr>
-						<tr style="height:50px;">
-							<th>
-								<span>오픈 카톡 링크</span>
-							</th>
-							<td colspan="9">
-								<span>
-									<c:out value="${ challenge.opentalkLink }"/>
 								</span>
 							</td>
 						</tr>

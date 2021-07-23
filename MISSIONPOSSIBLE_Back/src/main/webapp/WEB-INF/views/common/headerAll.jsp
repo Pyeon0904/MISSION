@@ -29,18 +29,9 @@
     font-style: normal;
 }
 
-@font-face {
-	font-family: 'Noto Sans KR','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif; }
-}
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
-		
-		#bg{
-			padding:0px;
-			overflow-x:hidden;
-			z-index:0;	
-		}
-		
+
 		/* 로고 설정 */
 		.logo {
 			margin: 0px;
@@ -152,7 +143,7 @@
 		/*메인 탭*/	
 		.adminMaintab {
 			position:relative;
-			left: 58%;
+			left: 63.1%;
 			list-style-type: none;		
 			padding: 0;
 			margin: 0;
@@ -161,7 +152,7 @@
 		/*메인탭 설정*/
 		.adminMaintab li {
 			float: left;
-			width: 140px;
+			width: 120px;
 			position: relative;
 			padding: 0;
 			line-height: 25px;
@@ -201,7 +192,7 @@
 		
 		#hamburger{
 			width:450px;
-			height:850px;
+			height:900px;
 			background-color:#F7F8E0;
 			left:100%;
 			top:82px;
@@ -246,10 +237,7 @@
 			font-weight:bold;
 			color: #FF6347
 		}
-		
-		.modal{ 
-		  position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none; z-index: 8;
-		}
+	
 	
 /* ----------------------------------------------------------------------------------------------- */
 			
@@ -268,32 +256,20 @@
 		 		$("#hamburger").animate({width:'toggle'}, 400);
 		 	});
 		});
-		
-		$(function(){ 
-
-			  $("#level").click(function(){
-			    $(".modal").fadeIn();
-			  });
-			  
-			  $(".modal").click(function(){
-			    $(".modal").fadeOut();
-			  });
-			  
-		});
 </script>
 
 </head>
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
-		<c:if test="${ loginMember.status eq 'A' }">
+		<c:if test="${ loginMember.id eq 'admin' }">
 			<div class="adminMenu">
 					<div class="adminCol">
 					<ul class="adminMaintab">
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewMember">고객관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/report/reportReview">신고접수</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
-						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기게시판관리</a></li>
+						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기관리</a></li>
 					</ul>
 					</div>
 			</div>
@@ -358,8 +334,8 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
+					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><hr>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><hr>
 						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
 					</c:if>
 					<!-- 로그인 후 -->
@@ -381,27 +357,23 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>" style="position: relative; z-index: 2;"/>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/>
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
-								<td style="color:#8FBC8F">보유 포인트</td>
+								<td>보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
 						</table>
-						
-						<table style="width: 300px; margin:auto; text-align: left;">
+						<hr>
+						<table style="width: 300px; margin:auto;">
 							<tr>
-								<td style="color:#8FBC8F"id="gallery" class="gallery"><a href="#" id="level" class="level">등급</a></td>
+								<td>등급</td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
-						<div class="modal">
-						    <img src="${path}/resources/images/point/등급테이블.JPG" id="gallery_img" class="gallery_img" style="margin-top: 150px;" title="클릭하면 사라집니다">
-						</div>
 						<br><br>
-						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
-					
+						<button class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
 					</c:if>
 				</div>
 			</div>

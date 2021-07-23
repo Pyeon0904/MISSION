@@ -153,7 +153,7 @@
 						<img alt="" src="${path}/resources/images/pageTitle/찜한챌린지목록.png">
 					</div>
 					<div class="searchArea test">
-						 <!-- 검색 폼 시작--------------------- -->
+						 <!-- 검색 폼 시작--------------------- 
 				         <form id="challengeSearch" name="form1" method="GET" action="${path}/challenge/search">
 				            <div align="right" class="row m-4">
 				               <select name="key" class="selectBox" required>
@@ -169,7 +169,7 @@
 				               <button type="submit" class="btn green mini" >검색</button>
 				            </div>
 				         </form>
-				         <!-- 검색 폼 끝---------------------- -->
+				         -- 검색 폼 끝---------------------- -->
 				         <div class="listCountArea test">
 							총 <c:out value="${ pageInfo.listCount }"/>개
 						</div>
@@ -180,11 +180,10 @@
 					<!-- 카테고리 바 -->
 					<div id="categoryBar" class="test">
 						<ul id="categoryList"> 
-						<!--  
-						    <li class="btn-category btn-3" onclick="location.href='${recruitListViewPath}'">모집중인 챌린지</li>
-						    <li class="btn-category btn-3" onclick="location.href='${ongoingListViewPath}'">진행중인 챌린지</li>
-						    <li class="btn-category btn-3" onclick="location.href='${endListViewPath}'">종료된 챌린지</li>
-						-->
+						  
+						    <li class="btn-category btn-3" onclick="location.href='${recruitListViewPath}'">더 많은 챌린지 보러가기</li>
+						    <li class="btn-category btn-3" onclick="location.href='${path}/member/myPage'">마이페이지로 이동</li>
+						
 						</ul>
 					</div><!-- categoryBar -->
 					

@@ -66,7 +66,7 @@
     	#challengeContTable table tr:nth-child(1) #detailCont table#detailContInfo{
 			width:700px; height:auto;    	
     	}
-    	#challengeContTable table tr:nth-child(1) #detailCont table#detailContInfo tr:nth-child(-n+4){
+    	#challengeContTable table tr:nth-child(1) #detailCont table#detailContInfo tr:nth-child(-n+3){
     		height:50px;
     	}
     	#progressBarArea{
@@ -199,16 +199,6 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 									<td>
 										<span>
 											<c:out value="${ challenge.currentCount }"/>명
-										</span>
-									</td>
-								</tr>
-								<tr>
-									<th>
-										<span>오픈 카톡 링크</span>
-									</th>
-									<td>
-										<span>
-											<c:out value="${ challenge.opentalkLink }"/>
 										</span>
 									</td>
 								</tr>

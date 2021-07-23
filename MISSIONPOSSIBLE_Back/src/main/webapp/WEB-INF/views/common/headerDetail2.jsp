@@ -29,24 +29,21 @@
     font-style: normal;
 }
 
-@font-face {
-	font-family: 'Noto Sans KR','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif; }
-}
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
-		
+
 		#bg{
 			padding:0px;
 			overflow-x:hidden;
 			z-index:0;	
 		}
-		
+
 		/* 로고 설정 */
 		.logo {
 			margin: 0px;
 			position: absolute;
 			top: 15px;
-			left:5.5%;
+			left:50%;
 			width: 150px;
 			display: inline-block;
 			z-index:1;
@@ -62,7 +59,17 @@
 		/*메뉴바*/
 		.menu {
 			position: absolute;
-			right:3%;
+			left:3%;
+			top: 20px;
+			margin:0px;
+			width: 800px;
+			height:45px;
+		}
+		
+		/* 햄버거 위치 */
+		.menu2 {
+			position: absolute;
+			right:-13%;
 			top: 20px;
 			margin:0px;
 			width: 800px;
@@ -152,7 +159,7 @@
 		/*메인 탭*/	
 		.adminMaintab {
 			position:relative;
-			left: 58%;
+			left: 0%;
 			list-style-type: none;		
 			padding: 0;
 			margin: 0;
@@ -208,8 +215,8 @@
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 999;
 			display:none;
+			z-index: 999;
 		}
 		
 		#login{
@@ -246,13 +253,16 @@
 			font-weight:bold;
 			color: #FF6347
 		}
-		
-		.modal{ 
-		  position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none; z-index: 8;
-		}
+	
 	
 /* ----------------------------------------------------------------------------------------------- */
-			
+		
+		/* 로그인, 회원가입 버튼 */
+		.pageTitle{
+			width: 100px;
+			height: 45px;
+		}
+		
 </style>
 <script>
 		$(document).on('mouseover', '.menu a', function () {
@@ -267,18 +277,6 @@
 			$(".btnHBG").on("click", () => {
 		 		$("#hamburger").animate({width:'toggle'}, 400);
 		 	});
-		});
-		
-		$(function(){ 
-
-			  $("#level").click(function(){
-			    $(".modal").fadeIn();
-			  });
-			  
-			  $(".modal").click(function(){
-			    $(".modal").fadeOut();
-			  });
-			  
 		});
 </script>
 
@@ -309,10 +307,25 @@
 		<!-- 초록색 선 (로고 아래) -->
 		<hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
 		
+		<!-- 헤더 아래 최상단 이미지 삽입 -->
+		<a><img class="headerTop"
+			src="${path}/resources/images/headerTop.png" />
+		</a>
+		
+		<!-- 버튼(작전 더 자세히보기) -->
+		<a href="${path}/introduce/introduce">
+			<img class="homeIntroButton" src="${path}/resources/images/homeIntroButton.png" 
+			style="margin-left:155px; margin-top:10px"/>
+		</a>
+		
+		<!-- 시침표현 로고 이미지 -->
+		<a>
+			<img class="homeIntroButton" src="${path}/resources/images/timeCircle.png" 
+			style="margin-left:600px; margin-top:-500px"/>
+		</a>
 		
 		<div class="menu">
 			<div class="col">
-			<!-- 메뉴바 상세내역 -->
 			<ul class="maintab">
 				<li><a class="semititle" href="${path}/introduce/introduce">소개</a>
 					<ul class="detailtab">
@@ -334,16 +347,31 @@
 					<ul class="detailtab">
 					</ul></li>
 			</ul>
-			<!-- 햄버거바 상세내역 -->
-			<ul class="maintab">
-				<li class="btnHBG header_li"><a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
-					</li>
-			</ul>
-			
 			</div>
 		</div>
 		
-		<!-- 햄버거 & 햄버거바 내부---------------------------------------------------------- -->
+		<div class="menu2">
+			<div class="col">
+			<ul class="maintab">
+				<li>
+					<a href="${path}/member/login"><img class="pageTitle"
+						src="${path}/resources/images/loginButton.png"/>
+					</a>
+				</li>
+				<li>
+					<a href="${path}/member/enroll"><img class="pageTitle"
+						src="${path}/resources/images/signinButton.png"/>
+					</a>
+				</li>
+				<li class="btnHBG header_li">
+					<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+				</li>
+			</ul>
+			</div>
+		</div>
+			
+			
+			
 		<div id="hamburger">
 				<div id="login">
 					<div class="btnHBG" style="font-size:2em; text-align:left; margin-left:20px;">
@@ -381,27 +409,23 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>" style="position: relative; z-index: 2;"/>
+						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/>
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
-								<td style="color:#8FBC8F">보유 포인트</td>
+								<td>보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
 						</table>
-						
-						<table style="width: 300px; margin:auto; text-align: left;">
+						<hr>
+						<table style="width: 300px; margin:auto;">
 							<tr>
-								<td style="color:#8FBC8F"id="gallery" class="gallery"><a href="#" id="level" class="level">등급</a></td>
+								<td>등급</td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
-						<div class="modal">
-						    <img src="${path}/resources/images/point/등급테이블.JPG" id="gallery_img" class="gallery_img" style="margin-top: 150px;" title="클릭하면 사라집니다">
-						</div>
 						<br><br>
-						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
-					
+						<button class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
 					</c:if>
 				</div>
 			</div>
