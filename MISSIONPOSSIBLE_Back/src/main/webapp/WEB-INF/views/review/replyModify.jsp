@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../common/header.jsp"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
 
 <!DOCTYPE html>
@@ -105,16 +104,14 @@
 								<!-- 게시판 상세보기 테이블 끝 ----------------------->
 								<!-- 하트 버튼 클릭시 추천수 +1 ----------------------->
 								<c:if test="${ !empty loginMember}">
-									<div style="margin-left: 990px;">
-									<c:out value="${ count }"/>
-									</div>
-									<div style="margin-left: 960px;">
+										<div style="margin-left: 990px;"><b style="color:#7A7A7A;">${ count }</b></div>
+									<div style="margin-left: 950px;">
 										<c:if test="${ Heartlist.isEmpty() }">
 											<form action="${ path }/review/reviewLike" method="POST">
 												<c:if test="${ (heart.m_id != loginMember.id )}">
 													<input type="hidden" name="r_no" value="${ review.no }">
 													<input type="hidden" name="m_id" value="${loginMember.id}">
-													<button type="submit" style="border:0;"><img class="imgButton" src="${ path }/resources/images/unheart.png"></button>
+													<button id="like" style="border:0; background-color:white;"><img class="imgButton" src="${ path }/resources/images/unheart.png"></button>
 												</c:if>
 											</form>
 										</c:if>
@@ -123,7 +120,7 @@
 											<c:if test="${heart.m_id == loginMember.id}">
 												<input type="hidden" name="r_no" value="${ review.no }">
 												<input type="hidden" name="m_id" value="${loginMember.id}">
-												<button id="unlike" style="border:0;"><img class="imgButton" src="${ path }/resources/images/heart.png"></button>
+												<button id="unlike" style="border:0; background-color:white;"><img class="imgButton" src="${ path }/resources/images/heart.png"></button>
 											</c:if>	
 										</form>	
 										</c:forEach>

@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../common/header.jsp"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
 
 <!DOCTYPE html>
@@ -235,8 +234,7 @@
 								            	<tr>
 								                    <td></td>
 								                    <td> <!-- 현재 페이지에 담긴 게시글 제목, 게시글 번호, 작성자ID, 신고자ID -->
-								                        신고 후기 게시글 : 
-								                        <input type="text" name="title" id="title" value=" ${ review.title }" readonly><br>
+								                        신고 후기 게시글 :<input type="text" name="title" id="title" value=" ${ review.title }" style="width:300px; border:none;" readonly><br>
 								                        <input type="hidden" name="r_no" id="r_no" value="${ review.no }"readonly>
 								                        <input type="hidden" name="reportedId" id="reportedId" value="${ review.writerId }"readonly>
 								                        <input type="hidden" name="sendId" id="sendId" value="${ loginMember.id }"readonly>
