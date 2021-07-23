@@ -505,6 +505,7 @@ div.infSendArea {
 	min-width: 80px;
 	width: auto;
 	height: 40px;
+	border-radius: 5px;
 	color: var(--white);
 	font-size: 1.1em;
 }

@@ -266,7 +266,7 @@
 								                </tr>
 								                <tr>
 								                    <td colspan="3" align="center">
-								                        <input type="submit" class="inf-bt2" value="신고하기">
+								                        <input type="submit" class="inf-bt2" value="신고">
 								                        <button type="button" class="inf-bt1 closeDelBtn">취소</button>
 								                    </td>
 								                </tr>
