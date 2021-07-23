@@ -42,13 +42,13 @@ public interface MemberMapper {
 
 	List<String> selectMemberIdList();
 
-	List<memberReport> selectReportMemberList(RowBounds rowBounds);
+	List<memberReport> selectReportMemberList();
 
 	int selectReportListCount();
 
 	int addMemberReportCount(@Param("warnMemberId")String warnMemberId);
 
-	List<memberReport> selectWithdrawalMemberList(RowBounds rowBounds);
+	List<memberReport> selectWithdrawalMemberList();
 
 	List<Grade> setGradeName();
 
@@ -58,7 +58,7 @@ public interface MemberMapper {
 
 	void deleteWithdrawal(@Param("returnMemberId")String returnMemberId);
 
-	List<Member> selectAllMemberList(RowBounds rowBounds);
+	List<Member> selectAllMemberList();
 
 	int selectAllMemberListCount();
 

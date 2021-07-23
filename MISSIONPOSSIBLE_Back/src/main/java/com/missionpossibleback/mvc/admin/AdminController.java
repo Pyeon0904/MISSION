@@ -561,42 +561,33 @@ public class AdminController {
 			  
 //탈퇴한 회원
    @GetMapping("/admin/member/admin_viewWithdrawMember")
-      public ModelAndView admin_viewWithdrawMember(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+      public ModelAndView admin_viewWithdrawMember(ModelAndView model) {
          
-      PageInfo pageInfo = new PageInfo(page, 10, M_service.getWithdrawalListCount(), 10);
-      
-      List<memberReport> admin_WithdrawalMemberList= M_service.admin_withdrawalMember(pageInfo);
+      List<memberReport> admin_WithdrawalMemberList= M_service.admin_withdrawalMember();
       
       model.addObject("admin_WithdrawalMemberList", admin_WithdrawalMemberList);
-      model.addObject("pageInfo", pageInfo);
       model.setViewName("admin/member/admin_viewWithdrawMember");
       
        return model; 
    }
  //신고된 회원
    @GetMapping("/admin/member/admin_viewReportMember")
-      public ModelAndView admin_viewReportMember(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+      public ModelAndView admin_viewReportMember(ModelAndView model) {
       
-      PageInfo pageInfo = new PageInfo(page, 10, M_service.getReportListCount(), 10);
-      
-      List<memberReport> admin_memberList= M_service.admin_reportMember(pageInfo);
+      List<memberReport> admin_memberList= M_service.admin_reportMember();
       
       model.addObject("admin_memberList", admin_memberList);
-      model.addObject("pageInfo", pageInfo);
       model.setViewName("admin/member/admin_viewReportMember");
       
        return model; 
    } 
 //전체 회원 관리
    @GetMapping("/admin/member/admin_viewAllMember")
-      public ModelAndView admin_viewAllMameber(ModelAndView model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+      public ModelAndView admin_viewAllMameber(ModelAndView model) {
       
-      PageInfo pageInfo = new PageInfo(page, 10, M_service.getAllMemberListCount(), 10);
-      
-      List<Member> admin_allMemberList= M_service.admin_AllMember(pageInfo);
+      List<Member> admin_allMemberList= M_service.admin_AllMember();
       
       model.addObject("admin_allMemberList", admin_allMemberList);
-      model.addObject("pageInfo", pageInfo);
       model.setViewName("admin/member/admin_viewAllMember");
       
        return model; 
