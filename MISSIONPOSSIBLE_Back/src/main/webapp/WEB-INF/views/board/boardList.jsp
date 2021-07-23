@@ -24,19 +24,20 @@
 
 #conbox{width:1600px; /* 넓이도 각 세부 페이지 컨텐츠에 맞춰서 설정*/position:relative; top:20px;margin:auto;}
 
-h2{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:20px;color:#666;letter-spacing:0px}
+h2{font-size:20px;color:#666;letter-spacing:0px}
 
-p,td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:13px;color:#666;letter-spacing:0px}
+p,td,th,caption{font-size:13px;color:#666;letter-spacing:0px}
 
-input, button{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;overflow:visible}
-input[type="radio"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;}
-input[type="checkbox"]{*width:13px;*height:13px;font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;vertical-align:middle}
-input[type="text"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
-input[type="password"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
-input[type="file"]{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;height:22px;color:#666;background:#fff;border:1px solid #cdcdcd}
-select{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;vertical-align:middle;border:none}
-textarea{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size:12px;color:#666;padding:5px;vertical-align:middle;border:1px solid #cdcdcd}
+input, button{font-size:12px;overflow:visible}
+input[type="radio"]{*width:13px;*height:13px;}
+input[type="checkbox"]{*width:13px;*height:13px;vertical-align:middle}
+input[type="text"]{font-size:12px;color:#666;padding-left:3px;border:1px solid #ABADB3}
+input[type="password"]{font-size:12px;color:#666;padding-left:3px;border:1px solid #cdcdcd}
+input[type="file"]{font-size:12px;height:22px;color:#666;background:#fff;border:1px solid #cdcdcd}
+select{font-size:12px;color:#666;vertical-align:middle;border:none}
+textarea{font-size:12px;color:#666;padding:5px;vertical-align:middle;border:1px solid #cdcdcd}
 em, address{font-style:normal}
+
 
 /* layout */
 html, body{padding:0;margin:0;width:100%;height:100%;}
