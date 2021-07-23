@@ -229,18 +229,6 @@ public class ReviewController {
    }
  
     // 리뷰 게시글 신고
-    @GetMapping("/review/reviewReport")
-    public ModelAndView reviewReportView (ModelAndView model,
-         HttpServletRequest request,
-         @RequestParam("r_no") int reviewNo) {
-       
-          Review review = service.findReviewByNo(reviewNo, true); 
-        
-         model.addObject("review", review);
-         model.setViewName("/review/reviewReport");
-      return model;
-    }
-    
     @PostMapping("/review/reviewReport")
     public ModelAndView reviewReport (ModelAndView model,
          @SessionAttribute(name = "loginMember", required = false) Member loginMember,
