@@ -73,67 +73,62 @@
 
 /*-----------------------------------------------------------------------------------*/
 
-/* 챌린지 홍보 슬라이드 쇼 (3장짜리)-------------------------- */
+/* 이미지 위치 ------------------------------------------------------------ */	
+	/* 1. 페이지 최상단(헤더아래) */
+	.pageTitleText{
+		margin-left: 0px;
+		margin-top : 100px;
+	}
+	.pageTitleButton{
+		margin-left: -20px;
+		margin-top : 100px;
+	}
+	.pageTitleLogo{
+		margin-left: 700px;
+		margin-top : -600px;
+	}
+	
+	.pageTitle2{
+		margin-left: 0px;
+	}
+
+	/* 2. 챌린지 홍보 슬라이드 쇼 (3장짜리)-------------------------- */
 	.fotorama{
 		 position:relative;
 		 text-align:center;
 		 margin-top:50px;
-		 margin-left: 200px;
+		 margin-left: 0px;
 	}
 
+	/* 3. 왜 작전? body에 지정함 */
 
-/* 챌린지 소개(카드형식) ------------------------------------*/
+	/* 4. 챌린지 소개(카드형식) ------------------------------------*/
 	.ground{
 		position:relative;
-		margin-left: 45px; 
+		margin-left: -150px; 
 		margin-bottom:-800px;
 	}
 	.introduce{
 		position:relative;
-		margin-left:-50px;
+		margin-left:-30px;
+		margin-top: 70px;
 	}
 	
 	.ViewMore {
 		position:absolute;
 		width: 100%;
 		height: 100%;
-		left:1550px;
-		top:210px;
+		left:1200px;
+		top:200px;
 		font-size:15pt;
 		text-decoration:none;
 		text-weight: bold;
 		color:black;
-	}   
-
-/*------------------게시판 소개------------------*/
-	.boardImg1{
-		width: 400px;
-		height: 400px;
-		object-fit: cover;   
-	}
-	.boardImg2{
-		width: 400px;
-		height: 400px;
-		object-fit: cover;
-		margin-top:50px;
-	}
-	.boardService{
-		font-size: 25pt;
-		font-weight: bold;
-		color: black;
-	}
-	.boardReview{
-		font-size: 25pt;
-		font-weight: bold;
-		color: black;
-	}
-	
-	.pageTitle2{
-		margin-left: 60px;
 	}
 
+	/* 5. 고객센터 + 후기게시판 위치 */
 	.board{
-		margin-left: 40px; 
+		margin-left: -150px; 
 	}
 	
 </style>
@@ -150,6 +145,25 @@
 </head>
 
 <body>
+<div id="box">
+<section id="section">
+<div id="conbox">
+<!-- 헤더 아래 큰 로고 + 문구 ------------------------------------------------------------------------------------------------- -->
+		<div>
+		<a>
+			<img class="pageTitleText" src="${path}/resources/images/상단문구.png"/>
+		</a>
+		<br>
+		<a href="${path}/introduce/introduce">
+			<img class="pageTitleButton" src="${path}/resources/images/homeIntroButton.png"/>
+		</a>
+ 		</div>
+ 		<div>
+		<a>
+			<img class="pageTitleLogo" style="width: 600px; height: 600px;"
+			src="${path}/resources/images/timeCircle.png"/>
+		</a>
+		</div>
 <hr style="margin-bottom:50px;margin-top:50px;">  
 
 <!-- 챌린지 홍보 ------------------------------------------------------------------------------------------------ -->
@@ -164,49 +178,50 @@
 
 				<!-- -------------- 왜 작전인가? 파트 ------------------ -->
 						<a>
-							<img class="pageTitle2"
+							<img class="pageTitle2" style="width: 1200px; height:750px;"
 							src="${path}/resources/images/whyJackJeon.png"/>
 						</a>
 						
 <hr style="margin-bottom:50px;margin-top:50px;"> 
  
 <!-- 챌린지 소개 -->
-<div class="ground">
-		<a class="ViewMore" href="${path}/challenge/challengeRegister">챌린지 개설</a>
-		<img src="${path}/resources/images/challengeIntroduce.png">
-</div>
-   
-<section class="introduce">
-	<div class="slider">
-		<a href="${path}/challenge/recruitList">
-		<img src="${path}/resources/images/wakeupChallenge.png" style="width:420px;height:550px;">
-		</a>
-    </div>
-    
-    <div class="slider">
-		<a href="${path}/challenge/recruitList">
-		<img src="${path}/resources/images/breatheChallenge.png" style="width:420px;height:550px;">
-		</a>
-    </div>
-    
-    <div class="slider">
-		<a href="${path}/challenge/recruitList">
-		<img src="${path}/resources/images/foodChallenge.png"  style="width:420px;height:550px;">
-		</a>
-    </div>
-    
-    <div class="slider">
-		<a href="${path}/challenge/recruitList">
-		<img src="${path}/resources/images/bookChallenge.png" style="width:420px;height:550px;">
-		</a>
-    </div>
-    
-    <div class="slider">
-		<a href="${path}/challenge/recruitList">
-		<img src="${path}/resources/images/gardenChallenge.png" style="width:420px;height:550px;">
-		</a>
-    </div> 
-</section>
+		<div class="ground">
+				<a class="ViewMore" href="${path}/challenge/challengeRegister">챌린지 개설</a>
+				<img style="width:1500px; height:1000px;" 
+					src="${path}/resources/images/challengeIntroduce.png" >
+		</div>
+		   
+		<section class="introduce">
+			<div class="slider">
+				<a href="${path}/challenge/recruitList">
+				<img src="${path}/resources/images/wakeupChallenge.png" style="width:420px;height:550px;">
+				</a>
+		    </div>
+		    
+		    <div class="slider">
+				<a href="${path}/challenge/recruitList">
+				<img src="${path}/resources/images/breatheChallenge.png" style="width:420px;height:550px;">
+				</a>
+		    </div>
+		    
+		    <div class="slider">
+				<a href="${path}/challenge/recruitList">
+				<img src="${path}/resources/images/foodChallenge.png"  style="width:420px;height:550px;">
+				</a>
+		    </div>
+		    
+		    <div class="slider">
+				<a href="${path}/challenge/recruitList">
+				<img src="${path}/resources/images/bookChallenge.png" style="width:420px;height:550px;">
+				</a>
+		    </div>
+		    
+		    <div class="slider">
+				<a href="${path}/challenge/recruitList">
+				<img src="${path}/resources/images/gardenChallenge.png" style="width:420px;height:550px;">
+				</a>
+		    </div> 
+		</section>
 
 <script type="text/javascript">
 $(function(){
@@ -231,14 +246,16 @@ $(function(){
 
 		      	<!-- -------------- 게시판(고객센터&후기) 관련 사진 삽입 ------------------ -->
 				        <div class="board">
-				            <img src="${ path }/resources/images/boardMain.png" usemap="#maptest">
+				            <img src="${ path }/resources/images/boardMain.png" usemap="#maptest" style="width:1500px; height:500px;">
 				            <map name="maptest">
 				                <area shape="rect" coords="0,0,950,600" href="${ path }/board/boardList">
 				            	<area shape="rect" coords="951,0,1915,600" href="${ path }/review/reviewList">
 				            </map>
 				        </div>
 				<!-- ------------------------------------------------------- -->
-	
+	</div>
+	</section>
+	</div>
 </body>
 </html>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

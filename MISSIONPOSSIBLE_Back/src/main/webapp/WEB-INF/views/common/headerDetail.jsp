@@ -320,29 +320,13 @@
 
 	<header>
 		<!-- 로고 이미지 삽입 -->
-		<a href="${path}/"> <img class="logo"
-			src="${path}/resources/images/greenLogo.png" />
-		</a>
+	      <a href="${path}/"> <img class="logo"
+	         src="${path}/resources/images/greenLogo.png" />
+	      </a>
+	      
+	    <!-- 초록색 선 (로고 아래) -->
+	      <hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
 		
-		<!-- 초록색 선 (로고 아래) -->
-		<hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
-		
-		<!-- 헤더 아래 최상단 이미지 삽입 -->
-		<a><img class="headerTop"
-			src="${path}/resources/images/headerTop.png" />
-		</a>
-		
-		<!-- 버튼(작전 더 자세히보기) -->
-		<a href="${path}/introduce/introduce">
-			<img class="homeIntroButton" src="${path}/resources/images/homeIntroButton.png" 
-			style="margin-left:155px; margin-top:10px"/>
-		</a>
-		
-		<!-- 시침표현 로고 이미지 -->
-		<a>
-			<img class="homeIntroButton" src="${path}/resources/images/timeCircle.png" 
-			style="margin-left:600px; margin-top:-500px"/>
-		</a>
 		
 		<div class="menu">
 			<div class="col">
