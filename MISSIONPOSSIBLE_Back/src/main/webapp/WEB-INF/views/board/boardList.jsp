@@ -107,7 +107,7 @@ div#pageBar{margin-top:10px; text-align:center; background-color: none;}
 
 /* button */
 .button_base:hover {cursor: pointer;}
-.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding:6px 20px 6px 20px; background-color: #AFE525;}
+.b01_simple_rollover {color: #000000; border: #97FD97 solid 1px; padding:6px 20px 6px 20px; background-color: #97FD97;}
 .b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
 .pageTitle{margin-left: -32px;}
 
