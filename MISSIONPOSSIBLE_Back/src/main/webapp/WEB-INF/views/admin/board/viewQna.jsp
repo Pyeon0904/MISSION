@@ -82,7 +82,7 @@ $(function () {
                      <span>
                      	<button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
                         <button class="enroll-bt1" id="allRemoveBtn" style="float:right;">삭제</button>
-                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="float:right;">   
+                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="float:right; margin-right:6px !important; margin-top:3px;">   
                      </span>
 
                      
