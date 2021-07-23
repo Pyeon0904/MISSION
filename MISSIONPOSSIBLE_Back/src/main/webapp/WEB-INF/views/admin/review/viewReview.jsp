@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
@@ -64,7 +64,7 @@ $(function () {
 						<div class="tabs">
 							<ul class="tabs">
 								<li class="tab-link current">
-									<a href="${ path }/admin/review/viewReview">게시된 후기글</a>
+									<a href="${ path }/admin/review/viewReview" >게시된 후기글</a>
 								</li>
 								<li class="tab-link">
 									<a href="${ path }/admin/review/viewDeleteReview">삭제된 후기글</a>
@@ -73,13 +73,11 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
 							</span>
 						</div>
@@ -90,7 +88,7 @@ $(function () {
 									<th><input type="checkbox" id="allChecked"></th>
 									<th>글번호</th>
 									<th>제목</th>
-									<th>챌린지</th>
+									<th style="width:17%;">챌린지</th>
 									<th>작성자</th>
 									<th>작성일</th>
 									<th>조회수</th>
@@ -106,7 +104,7 @@ $(function () {
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
 											<td class="noTd">${ review.no }</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
+											<td class="view-click td-3"><a class="getURL" style="color:#666;" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
 												<c:out value="${ review.title } " /> </a>
 											</td>
 											<td>
@@ -174,7 +172,7 @@ $(function () {
 								
 								// 게시글 제목 알려주기
 								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+title+" ' 게시글을<br>정말로 삭제하겠습니까?</h2>");
 								
 								// 게시글 번호 폼으로 가져오기
 								var updno = $(this).parent('td').siblings('.noTd').html();

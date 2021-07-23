@@ -352,5 +352,18 @@
 				QNA_NO=${qna_no}
 	</update>
 	
+	<!-- 자동검색 -->
+	<!-- 고객센터 게시글 작성자 중복없이 불러오기 -->
+	<select id="selectAllWriter" resultMap="boardListResultMap">
+		SELECT DISTINCT WRITER FROM QNA
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<!-- 고객센터 게시글 제목 중복없이 불러오기 -->
+	<select id="selectAllTitle" resultMap="boardListResultMap">
+		SELECT DISTINCT TITLE FROM QNA
+		WHERE STATUS = 'Y'
+	</select>
+	
 
 </mapper>

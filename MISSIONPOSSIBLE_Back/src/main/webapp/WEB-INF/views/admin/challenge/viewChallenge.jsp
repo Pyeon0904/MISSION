@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
@@ -79,13 +79,11 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
 							</span>
 						</div>
@@ -97,8 +95,8 @@ $(function () {
 									<th>번호</th><!-- challengeNo -->
 									<th>포인트</th><!-- minusPoint -->
 									<th>카테고리</th><!-- attendStatus / categoryName -->
-									<th>제목</th><!-- title -->
-									<th>생성자</th><!-- id -->
+									<th style="width:25%;">제목</th><!-- title -->
+									<th style="width:9%;">생성자</th><!-- id -->
 									<th>현재인원</th><!-- currentCount/maxCount -->
 									<th>진행기간</th><!-- startDate ~ deadline -->
 									<th>처리</th>
@@ -118,7 +116,7 @@ $(function () {
 												<c:out value="${ challenge.attendStatus }"/>
 												 / <c:out value="${ challenge.categoryName }" />
 											</td>
-											<td class="view-click td-3"><a class="getURL" href="${ path }/challenge/recruit?no=${challenge.challengeNo}" target="viewF">
+											<td class="view-click td-3"><a class="getURL" style="color:#666;" href="${ path }/challenge/recruit?no=${challenge.challengeNo}" target="viewF">
 												<c:out value="${ challenge.title } " /> </a>
 											</td>
 											<td><c:out value="${ challenge.id }" /></td>
@@ -184,7 +182,7 @@ $(function () {
 								
 								// 게시글 제목 알려주기
 								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
+								$('div#individual').html("<h2>'"+title+"' 챌린지를<br>정말로 삭제하겠습니까?</h2>");
 								
 								// 게시글 번호 폼으로 가져오기
 								var updno = $(this).parent('td').siblings('.noTd').html();

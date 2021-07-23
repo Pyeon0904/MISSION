@@ -20,6 +20,7 @@ import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
+import com.missionpossibleback.mvc.review.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -314,10 +315,26 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		return mapper.selectJoinCount(id);
 	}
-	
+	// 완료한 챌린지 수 조회
 	@Override
 	public int getEndJoinCount(String id) {
 		return mapper.selectEndJoinCount(id);
+	}
+	// 완료한 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getEndJoinList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectEndJoinList(rowBounds, id);
+	}
+	//내가 개설한 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getMyChallengeList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectMyChallengeList(rowBounds, id);
 	}
 
 	// 참여중인 챌린지 리스트 조회
@@ -449,6 +466,28 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int cateAdd(String str1, String str2) {
 		
 		return mapper.insertCategory(str1, str2);
+	}
+
+	//챌린지 신고
+	@Override
+	public int report(Report report) {
+		return mapper.insertReport(report);
+	}
+
+	// 챌린지 자동 완성 기능(제목)
+	@Override
+	public List getCTitleList() {
+		return mapper.selectAllTitle();
+	}
+	// 챌린지 자동 완성 기능(개설자)
+	@Override
+	public List getCIdList() {
+		return mapper.selectAllCId();
+	}
+	// 챌린지 자동 완성 기능(카테고리이름)
+	@Override
+	public List getCatNameList() {
+		return mapper.selectAllCatName();
 	}
 	
 }

@@ -53,7 +53,11 @@
 		height: 50px;
 		float:none;
 		margin:0 auto;
-		background-color:#F7F8E0;
+		background-color:#97FD97;
+		border-radius: 20px;
+		border : 0;
+		box-shadow: 5px 5px 5px gray;
+		cursor:pointer;
 	}
 	#inputId, #inputPass{
 		width: 300px;
@@ -63,7 +67,11 @@
 	/* 아이디찾기, 비밀번호 찾기 버튼 */
     .btn {
     	color: black;
-    	background-color:#F7F8E0;
+    	background-color:#FFFFFF;
+    	border-radius: 20px;
+		border : 0;
+		box-shadow: 5px 5px 5px gray;
+		cursor:pointer;
     }
     .btn:hover{
   		color:#1AAB8A; /*연두색*/
@@ -71,14 +79,14 @@
 /* ------------------------------------------- */
   
 .button{
-  color:black;
+  color:b#97FD97;
   border:1px solid;
   position:relative;
   height:60px;
   font-size:1.0em;
   padding:0 2em;
   cursor:pointer;
-  transition:800ms ease all;
+  transition:800ms ease all;c
   outline:none;
 }
 .button:hover{

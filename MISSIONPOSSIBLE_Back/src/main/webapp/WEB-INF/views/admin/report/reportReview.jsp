@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
@@ -79,13 +79,11 @@ $(function () {
 						</div>
 					<div class="cateList">
 						<div class="head">
-							<h2>_</h2>
+							<h2 style="color:white;">_</h2>
 						</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allWarnBtn">경고</button>
 							</span>
 						</div>
@@ -185,7 +183,7 @@ $(function () {
 								
 								// 신고된 회원 아이디 알려주기
 								var reportedId = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+reportedId+" 회원을<br>정말로 경고 처리하겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+reportedId+" '  회원을<br>정말로 경고 처리하겠습니까?</h2>");
 								$("input#reportedId").val(reportedId);
 								
 								// 신고 번호 폼으로 가져오기

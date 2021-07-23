@@ -83,7 +83,7 @@
 									<option value="5">전체</option>
 								</select> 
 								<input type="text" id="searchInput" name="word" class="form-control" 
-									style="width: 200px; padding: 3px 20px 6px 20px" value=${ word }>
+									style="width: 140px; padding: 3px 20px 6px 20px" value=${ word }>
 								<button type="submit" class="btn btn-warning">검색</button>
 							</div>
 						</form>
@@ -121,7 +121,7 @@
 									<c:forEach var="review" items="${ list }">
 										<tr>
 											<td><c:out value="${ review.no }" /></td>
-											<td><a href="${ path }/review/reviewView?no=${review.no}">
+											<td><a href="${ path }/review/reviewView?no=${review.no}" style="text-decoration:none; color:#666;">
 												<c:out value="${ review.title } " /> 
 													<c:if test="${ review.replyCount != 0 }">
 														[${ review.replyCount }]

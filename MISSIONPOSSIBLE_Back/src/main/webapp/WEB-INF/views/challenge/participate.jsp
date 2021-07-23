@@ -136,7 +136,17 @@ table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-al
 table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 	#certCalendarArea #calContainer .calTable .calcalcal {border-collapse:separate;border-spacing:0;margin:auto;width:80%;text-align:center;}
 	#certCalendarArea #calContainer .calTable .calcalcal td{padding:10px;vertical-align:middle;border-bottom:1px solid #b5b5b5;border-right:none;}
+
+	/*오른쪽 위 input 버튼 추가 CSS 수정*/
+	.btn.green {background-color: #97fd97; color:black;}/*버튼 윗부분*/
+	.btn.green {box-shadow: 0px 4px 0px #8deb8d;}/*버튼 아랫부분*/
+	.btn.green:active {box-shadow: 0 0 #62bf6e; background-color: #8deb8d;}/*버튼 아랫부분*/
+	
+	.btn.red{background-color:#fd9797;color:black}/*버튼 윗부분*/
+	.btn.red{box-shadow: 0px 4px 0px #e08787;}/*버튼 아랫부분*/
+	.btn.red:active {box-shadow: 0 0 #62bf6e; background-color: #e08787;}/*버튼 아랫부분*/
 	</style>
+</head>
 <body>	
 	<div id="box">
     	<section id="section">
@@ -160,7 +170,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 							<!-- 보상받기 버튼 활성화 -->
 							<c:choose>
 								<c:when test="${ (todayNum >= endNum) and (progPercent >= 80 and progPercent <= 100) }">
-									<a class="btn blue small btnReward" 
+									<a class="btn green small btnReward" 
 										onclick="location.href='${path}/challenge/reward.do?cNo=${ challenge.challengeNo }&rate=${ progPercent }'">
 										보상받기
 									</a>
@@ -179,14 +189,14 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 								<c:otherwise>
 									<a class="btn red small btnGiveup" 
 										href="${path}/challenge/giveup?cNo=${ challenge.challengeNo }&cTitle=${ challenge.title }">포기하기</a>
-									<a class="btn blue small btnCertify" 
+									<a class="btn green small btnCertify" 
 										onclick="window.open('${ path }/challenge/signPopup?no=${ challenge.challengeNo }','인증팝업','width=500, height=520,scrollbars= 0, toolbar=0, menubar=no')">
 										인증하기
 									</a>
 								</c:otherwise>
 							</c:choose>
 							
-							<a class="btn cyan small btnChat">채팅방 열기</a>
+							<a class="btn green small btnChat">채팅방 열기</a>
 							
 							<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
 								<a class="btn green small btnList" href="${ path }/challenge/update?challengeNo=${ challenge.challengeNo }">챌린지 수정</a>

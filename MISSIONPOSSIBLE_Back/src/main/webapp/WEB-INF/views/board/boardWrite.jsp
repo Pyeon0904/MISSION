@@ -109,10 +109,11 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 .pagination .direction_right01{margin:0 3px 0 6px}
 
 .button_base:hover {cursor: pointer;}
-.b01_simple_rollover {color: #ffffff; border: #AFE525 solid 1px; padding: 10px; background-color: #AFE525;}
+.b01_simple_rollover {color: #000000; border: #97FD97 solid 1px; padding: 10px; background-color: #97FD97;}
 .b01_simple_rollover:hover {color: #000000;background-color: #ffffff;}
 .pageTitle{margin-left: -34px;}
 
+label#pass{margin-left:10px; color:red;}
 </style>
 </head>
 
@@ -181,7 +182,7 @@ textarea.textarea01{width:410px;height:95px;margin:10px 0}
 						 
 						<tr>
 							<th scope="row">비밀번호</th>
-							<td><input type="password" class="tbox01" name="pass"></td>
+							<td><input type="password" class="tbox01" name="pass"><label id="pass">비밀번호는 선택입니다.</label></td>
 						</tr>
 						
 						<c:if test="${ loginMember.status eq 'A' }">

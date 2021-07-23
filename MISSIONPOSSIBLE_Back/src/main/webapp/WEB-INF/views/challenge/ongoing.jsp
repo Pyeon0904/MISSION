@@ -66,7 +66,7 @@
     	#challengeContTable table tr:nth-child(1) #detailCont table#detailContInfo{
 			width:700px; height:auto;    	
     	}
-    	#challengeContTable table tr:nth-child(1) #detailCont table#detailContInfo tr:nth-child(-n+4){
+    	#challengeContTable table tr:nth-child(1) #detailCont table#detailContInfo tr:nth-child(-n+3){
     		height:50px;
     	}
     	#progressBarArea{
@@ -128,6 +128,14 @@ table.table01 {border-collapse:separate;border-spacing:0;line-height:1.5;border-
 table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
 table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
 
+	/*오른쪽 위 input 버튼 추가 CSS 수정*/
+	.btn.green {background-color: #97fd97; color:black;}/*버튼 윗부분*/
+	.btn.green {box-shadow: 0px 4px 0px #8deb8d;}/*버튼 아랫부분*/
+	.btn.green:active {box-shadow: 0 0 #62bf6e; background-color: #8deb8d;}/*버튼 아랫부분*/
+	
+	.btn.red{background-color:#fd9797;color:black}/*버튼 윗부분*/
+	.btn.red{box-shadow: 0px 4px 0px #e08787;}/*버튼 아랫부분*/
+	.btn.red:active {box-shadow: 0 0 #62bf6e; background-color: #e08787;}/*버튼 아랫부분*/
 	</style>
 </head>
 <body>
@@ -199,16 +207,6 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 									<td>
 										<span>
 											<c:out value="${ challenge.currentCount }"/>명
-										</span>
-									</td>
-								</tr>
-								<tr>
-									<th>
-										<span>오픈 카톡 링크</span>
-									</th>
-									<td>
-										<span>
-											<c:out value="${ challenge.opentalkLink }"/>
 										</span>
 									</td>
 								</tr>

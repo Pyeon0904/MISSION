@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
@@ -73,13 +73,11 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRestoreBtn">복구</button>
 							</span>
 						</div>
@@ -106,7 +104,8 @@ $(function () {
 										<tr>
 											<td><input type="checkbox" class="tdCheck"></td>
 											<td class="noTd td-2"><c:out value="${ review.no }" /></td>
-											<td class="view-click td-3"><c:out value="${ review.title } " />
+											<td class="view-click td-3"><a class="getURL" style="color:#666;" href="${ path }/review/reviewView?no=${review.no}" target="viewF">
+												<c:out value="${ review.title } " /> </a>
 											</td>
 											<td>
 											<c:if test="${ review.challengeTitle != null }">
@@ -173,7 +172,7 @@ $(function () {
 									
 									// 게시글 제목 알려주기
 									var title = $(this).parent('td').siblings('.td-3').html();
-									$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 복구하겠습니까?</h2>");
+									$('div#individual').html("<h2>' "+title+" ' 게시글을<br>정말로 복구하겠습니까?</h2>");
 									
 									// 게시글 번호 폼으로 가져오기
 									var updno = $(this).parent('td').siblings('.noTd').html();

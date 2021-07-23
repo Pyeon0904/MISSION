@@ -74,13 +74,11 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allRestoreBtn">복구</button>
 							</span>
 						</div>
@@ -172,7 +170,7 @@ $(function () {
 									
 									// 게시글 제목 알려주기
 									var title = $(this).parent('td').siblings('.td-3').html();
-									$('div#individual').html("<h2>"+title+" 게시글을<br>정말로 복구하겠습니까?</h2>");
+									$('div#individual').html("<h2>' "+title+" ' 게시글을<br>정말로 복구하겠습니까?</h2>");
 									
 									// 게시글 번호 폼으로 가져오기
 									var updno = $(this).parent('td').siblings('.noTd').html();

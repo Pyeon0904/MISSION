@@ -39,6 +39,10 @@
 <!-- 제이쿼리 import -->
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <style>
 		/* 전체 영역--------------------------------------------------------------------------*/
 				
@@ -92,8 +96,8 @@
     
 	#categoryBar{ width:200px; height:1000px; float:left;}
 	#categoryBar ul{ list-style-type : none;}
-	#categoryBar ul li{ width:200px; height:50px; border-bottom:1px solid gray; line-height:3; position:relative;left:-40px; top:-18px; font-size:1em;font-weight:bold;transition : 0.3s;}
-	#categoryBar ul li:hover{background:#0bc20b; color:#fff;}
+	#categoryBar ul li{ width:200px; height:50px; border-bottom:1px solid #62bf6e; line-height:3; position:relative;left:-40px; top:-18px; font-size:1em;font-weight:bold;transition : 0.3s;}
+	#categoryBar ul li:hover{background:#8df08d; color:#fff;}
 		
 	#challengeDisplay{ width:995px; height:auto; float:right; font-size:0.9em;}
 	.notFound{width:980px; height:200px;background-color:#edffed; border-radius:10px;text-align:center;margin:10px 0 0 50px;line-height:200px;}
@@ -115,8 +119,8 @@
 	/*페이지 바 CSS 구현*/
 	.pagination-container { width:1015px; height:60px;float:right;margin:0 auto;text-align: center;}
 	.pagination { position: relative;}
-	.pagination a {position: relative;display: inline-block;color: #0b520b;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
-	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #0b520b;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
+	.pagination a {position: relative;display: inline-block;color: black;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
+	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #1afc1a;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
 	.pagination a:hover,.pagination a .pagination-active {color: #fff;}
 	.pagination a:hover:before,.pagination a .pagination-active:before {transform: scale(1);}
 	.pagination .pagination-active {color: #fff;}
@@ -132,6 +136,45 @@
 	footer{width:100%; height:100px; position:absolute; bottom:-800px;}
 </style>
 </head>
+<script>
+    $(function() {
+    	
+        var searchSource = new Array(); // 배열 형태 
+
+	        <c:forEach var="challenge" items="${ mmcTitle }">        
+	        	searchSource.push("${challenge.title}");
+	        </c:forEach>
+	        <c:forEach var="challenge" items="${ mmcId }">        
+        		searchSource.push("${challenge.id }");
+	        </c:forEach>
+	        <c:forEach var="challenge" items="${ mmcatName }">        
+	    		searchSource.push("${challenge.categoryName }");
+	    	</c:forEach>
+	        
+        $("#searchInput").autocomplete({      // 오토 컴플릿트 시작
+            source : searchSource,    		  // source 는 자동 완성 대상
+            select : function(event, ui) {    // 아이템 선택시
+                console.log(ui.item);
+            },
+            focus : function(event, ui) {    // 포커스 가면
+                return false;				 // 한글 에러 잡기 용도로 사용됨
+            },
+            minLength: 1,					// 최소 글자수
+            autoFocus: true, 				// 첫번째 항목 자동 포커스 기본값 false
+            classes: {    
+                "ui-autocomplete": "highlight"
+            },
+            delay: 500,    					// 검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//          disabled: true,   	   			   자동완성 기능 끄기
+            scroll:true,
+            position: { my : "right top", at: "right bottom" }, 
+            close : function(event){    	// 자동완성창 닫아질 때 호출
+                console.log(event);
+            }
+        });
+        
+    });
+</script>
 <body>
 	<div id="box">
 		<section id="section">
@@ -154,7 +197,7 @@
 				                  <option value="5">전체</option>
 				               </select>
 				          
-				               <input type="text" name="word" class="searchText" value=${ word }>
+				               <input type="text" name="word" class="searchText" id="searchInput" value=${ word }>
 				               <button type="submit" class="btn green mini" >검색</button>
 				            </div>
 				         </form>
@@ -235,7 +278,28 @@
 						</div><!-- #pageBar -->
 					</div><!-- .pagination-container -->
 				</div><!-- #productContainer -->
-				
+				<div id="popup" style="width:880px; height:500px;
+						background-image:url('${ path }/resources/images/point/챌린지포인트안내.PNG'); 
+						background-repeat:no-repeat; background-size:cover;position:fixed;top:0px;left:0px; z-index:1000;
+						display:none;box-shadow:5px 5px 5px gray;">
+					<div id="closePop" style="font-size:2em;color:#b5645b;width:30px; height:30px; text-align:center;
+							position:relative; top:10px;left:830px;">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</div>
+				</div>
+				<div id="question" style="width:80px; height:80px; font-size:2em; position:fixed;bottom:0;right:0;">
+					<i class="fa fa-question-circle" aria-hidden="true"></i>
+				</div>
+				<script>
+					$(document).ready(()=>{
+						$("#question").on("click", ()=>{
+							$("#popup").fadeIn(200);
+						});
+						$("#closePop").on("click", ()=>{
+							$("#popup").fadeOut(200);
+						});
+					});
+				</script>
 			</div>
 		</section>
 	</div>

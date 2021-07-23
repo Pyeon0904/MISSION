@@ -243,6 +243,17 @@ public class BoardServiceImpl implements BoardService {
 		
 		return mapper.selectOneRestore(qna_no);
 	}
+	
+	// 자동검색
+	@Override
+	public List getTitleList() {
+		return mapper.selectAllTitle();
+	}
+
+	@Override
+	public List getWriterIdList() {
+		return mapper.selectAllWriter();
+	}
 
 	
 	/*

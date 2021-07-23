@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
@@ -79,13 +79,11 @@ $(function () {
 						</div>
 					<div class="cateList">
 						<div class="head">
-							<h2>_</h2>
+							<h2 style="color:white;">_</h2>
 						</div>
 						<div class="btnArea">
 							<span class="searchArea">
 								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
 								<button class="enroll-bt1" id="allWarnBtn">탈퇴</button>
 							</span>
 						</div>
@@ -94,8 +92,8 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>회원번호</th>
-									<th>회원ID</th>
+									<th style="width:11%;">회원번호</th>
+									<th style="width:20%;">회원ID</th>
 									<th>경고횟수</th>
 									<th>상태</th>
 									<th>처리</th>
@@ -172,7 +170,7 @@ $(function () {
 								
 								// 탈퇴 시킬 아이디 알려주기
 								var warnId = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+warnId+" 회원을<br>정말로 탈퇴 처리하겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+warnId+" ' 회원을<br>정말로 탈퇴 처리하겠습니까?</h2>");
 								$("input#warnId").val(warnId);
 
 							});

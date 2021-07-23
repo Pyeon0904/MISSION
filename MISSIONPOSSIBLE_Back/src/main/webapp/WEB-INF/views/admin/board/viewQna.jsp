@@ -58,6 +58,7 @@ $(function () {
 		<a><img class="pageTitle"
 			src="${path}/resources/images/pageTitle/고객센터관리.png" />
 		</a>
+
          <div id="wrap">
             <div id="container">
                <div class="inner">
@@ -72,20 +73,19 @@ $(function () {
                         </li>
                      </ul>
                   </div>
+                  
             <div class="cateList">
                <div class="head">
-                  <h2>_</h2>
+                  <h2 style="color:white;">_</h2>
                </div>
                   <div class="btnArea">
-                     <span class="searchArea">
-                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
+                     <span>
+                     	<button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
+                        <button class="enroll-bt1" id="allRemoveBtn" style="float:right;">삭제</button>
+                        <input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="float:right; margin-right:6px !important; margin-top:3px;">   
                      </span>
-                     <span class="enrollArea">
-                        <button class="enroll-bt1" id="allRemoveBtn">삭제</button>
-                     </span>
-                     <span class="enrollArea">
-                        <button class="enroll-bt1" id="notice" onclick="location.href='${path}/board/boardWrite'">공지글쓰기</button>
-                     </span>
+
+                     
                   </div>
                   <!-- 게시글 리스트 테이블 ------------------------>
                   <div class="tbArea">
@@ -116,7 +116,7 @@ $(function () {
                                  <c:if test="${board.sort == 0 }">
                                     <td><c:out value="질문" /></td>
                                  </c:if>
-                                 <td class="view-click td-3" style="width:35%; text-align:left; padding-left:60px;"><a class="getURL" href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" target="viewF">
+                                 <td class="view-click td-3" style="width:35%; text-align:left; padding-left:60px;"><a class="getURL" style="color:#666;" href="${ path }/board/boardDetail?qna_no=${ board.qna_no }" target="viewF">
                                  	<%-- 답글 && 비밀글X 이면 --%>
                                     <c:if test="${ board.groupord > 0 && board.pass == null }">
                                         <img src="${path}/resources/images/reicon.png" name="re" id="profile" alt="My Image" style="margin:0 4px 0 0; padding-left:${board.dept * 20 }px;"/><c:out value="${ board.title }"/>
@@ -197,7 +197,7 @@ $(function () {
                         
                         // 게시글 제목 알려주기
                         var title = $(this).parent('td').siblings('.td-3').html();
-                        $('div#individual').html("<h2>"+title+" 게시글을<br>정말로 삭제하겠습니까?</h2>");
+                        $('div#individual').html("<h2>' "+title+" ' 게시글을<br>정말로 삭제하겠습니까?</h2>");
                         
                         // 게시글 번호 폼으로 가져오기
                         var updno = $(this).parent('td').siblings('.noTd').html();
@@ -260,6 +260,8 @@ $(function () {
                </div>
             </div>
          </div>
+      </div>
+      </div>
       </div>
    </section>
 </div>

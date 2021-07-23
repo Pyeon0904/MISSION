@@ -99,11 +99,32 @@
  		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
  		<result property="renamedFileName" column="RENAMED_FILENAME"/>
  	</resultMap>
+ 	
+ 	<!-- Report 객체 매핑 -->
+ 	<resultMap type="Report" id="reviewReportResultMap">
+		<id property="no" column="NO"/>
+		<result property="sendId" column="SEND_ID"/>
+		<result property="reportedId" column="REPORTED_ID"/>
+		<result property="c_no" column="REPORTED_C_NO"/>
+		<result property="r_no" column="REPORTED_R_NO"/>
+		<result property="category" column="CATEGORY"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+ 	
 
 	<!-- 챌린지 전체 조회 -->
 	<select id="selectChallengeList" resultMap="challengeResultMap">
 		<include refid="selectChallengeSql"/>
 		WHERE CLG.STATUS='Y'
+		ORDER BY CLG.CHALLENGE_NO DESC
+	</select>
+	
+	<!-- 내가 개설한 챌린지 전체 조회 -->
+	<select id="selectMyChallengeList" parameterType="string" resultMap="challengeResultMap">
+		<include refid="selectChallengeSql"/>
+		WHERE CLG.STATUS='Y' AND CLG.ID = #{id}
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
 	
@@ -153,6 +174,37 @@
 		]]>
 		ORDER BY CLG.CHALLENGE_NO DESC
 	</select>
+	
+	<!-- 완료한 챌린지 리스트 조회 -->
+	<select id="selectEndJoinList" parameterType="string" resultMap="challengeResultMap">
+		SELECT
+		    CLG.CHALLENGE_NO,
+		    CLG.ID,
+		    CLG.CATEGORY_NO,
+		    CLG.CATEGORY_NAME,
+		    CLG.ATTEND_STATUS,
+		    CLG.STATUS,
+		    CLG.TITLE,
+		    CLG.DEADLINE,
+		    CLG.CREATE_DATE,
+		    CLG.MODIFY_DATE,
+		    CLG.START_DATE,
+		    CLG.MINUS_POINT
+		FROM CHALLENGE CLG
+		JOIN MY_CHALLENGE_LIST MCL ON (CLG.CHALLENGE_NO = MCL.MY_CHALLENGE_NO)
+		JOIN MEMBER MEM ON(MCL.ID = MEM.ID)
+		JOIN CATEGORY CAT ON(CLG.CATEGORY_NO = CAT.CATEGORY_NO)
+		WHERE 
+			(CLG.STATUS = 'Y') 
+			AND (MCL.MY_STATUS = 'JOIN') 
+			AND (MCL.ID = #{id})
+			<![CDATA[
+            AND TO_CHAR(SYSDATE,'YYYYMMDD') > TO_CHAR(CLG.START_DATE,'YYYYMMDD') 
+            AND TO_CHAR(SYSDATE,'YYYYMMDD') > TO_CHAR(CLG.DEADLINE,'YYYYMMDD')
+			]]>
+			
+			
+	</select>	
 	
 	<!-- 찜한 챌린지 리스트 조회 -->
 	<select id="selectZzimList" parameterType="string" resultMap="challengeResultMap">
@@ -689,6 +741,33 @@
 		)
 	</insert>
 	
+	<!-- 챌린지 신고하기 -->
+	<insert id="insertReport" parameterType="map"
+			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+		INSERT INTO REPORT (
+			NO,
+			SEND_ID,
+			REPORTED_ID,
+			REPORTED_C_NO,
+			REPORTED_R_NO,
+			CATEGORY,
+			CONTENT,
+			CREATE_DATE,
+			STATUS
+			) VALUES (
+			SEQ_REPORT_NO.NEXTVAL,
+			#{sendId},
+			#{reportedId},
+			#{c_no},
+			NULL,
+			#{category},
+			#{content},
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	
 	<!-- 챌린지 현재 참여인원 수정 -->
 	<update id="updateCurrentCount" parameterType="map">
 		UPDATE CHALLENGE
@@ -809,5 +888,26 @@
 		WHERE CATEGORY_NO = #{item}
 		</foreach>
 	</delete>
+	
+	<!-- 
+	/////////////////챌린지 자동완성기능///////////////////////
+	 -->
+	<!-- 챌린지 제목 중복없이 불러오기 -->
+	<select id="selectAllTitle" resultMap="challengeResultMap">
+		SELECT DISTINCT TITLE FROM CHALLENGE
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<!-- 챌린지 개설자 중복없이 불러오기 -->
+	<select id="selectAllCId" resultMap="challengeResultMap">
+		SELECT DISTINCT ID FROM CHALLENGE
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<!-- 챌린지 카테고리 이름 중복없이 불러오기 -->
+	<select id="selectAllCatName" resultMap="challengeResultMap">
+		SELECT DISTINCT CATEGORY_NAME FROM CHALLENGE
+		WHERE STATUS = 'Y'
+	</select>
 
 </mapper>

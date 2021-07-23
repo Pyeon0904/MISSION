@@ -25,6 +25,8 @@
 
 	<!-- 제이쿼리 import -->
 	<script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
+	
+	<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 	<style>
 	
@@ -53,7 +55,7 @@
 		#subHeaderContainer{width:100%; height:70px;}
     	#subHeaderContainer .subHeaderImg{width:300px; height:70px; float:left;position:relative;left:-35px;}
     	#subHeaderContainer .funcArea .btn{float:right; margin:20px 20px 0px 0px;}
-    	
+    	#subHeaderContainer .funcArea .btn:first-child{margin-right:0;}
     	#challengeContTable table{
     		width:100%; height:1013px;
     	}
@@ -66,7 +68,15 @@ td,th,caption{font-family:'맑은 고딕', 'malgun', Dotum, sans-serif;font-size
 table.table01 {border-collapse:separate;border-spacing:0;line-height:1.5;border-top:1px solid #ccc;border-left:1px solid #ccc;margin:auto;}
 table.table01 th {padding: 10px;font-weight: bold;vertical-align: middle;text-align:center;border-right:1px solid #ccc;border-bottom:1px solid #ccc;border-top:1px solid #fff;border-left:1px solid #fff;background:#eee;}
 table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
-   	
+
+	/*오른쪽 위 input 버튼 추가 CSS 수정*/
+	.btn.green {background-color: #97fd97; color:black;}/*버튼 윗부분*/
+	.btn.green {box-shadow: 0px 4px 0px #8deb8d;}/*버튼 아랫부분*/
+	.btn.green:active {box-shadow: 0 0 #62bf6e; background-color: #8deb8d;}/*버튼 아랫부분*/   
+	
+	.btn.red{background-color:#fd9797;color:black}/*버튼 윗부분*/
+	.btn.red{box-shadow: 0px 4px 0px #e08787;}/*버튼 아랫부분*/
+	.btn.red:active {box-shadow: 0 0 #62bf6e; background-color: #e08787;}/*버튼 아랫부분*/	
     	
 	</style>
 </head>
@@ -91,6 +101,11 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 					<img alt="" src="${path}/resources/images/pageTitle/모집중인챌린지정보.png">
 				</div>
 				<div class="funcArea">
+					<c:if test="${ loginMember != null && loginMember.id != challenge.id}">
+					
+					<!-- 챌린지 신고하기 버튼 -->
+					<a class="btn red small" id="btn-report">신고하기</a>
+					
 					<!-- 참가신청 버튼 클릭시 addMyChallengeList.do로 참가신청을 의미하는 값과 해당 게시물의 No값을 넘긴다. -->
 					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeJoinForm">
 						<input type="hidden" name="myStatus" value="JOIN" />
@@ -114,7 +129,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 					<form action="${ path }/challenge/saveMyChallengeList.do" method="GET" class="" id="challengeZzimForm">
 						<input type="hidden" name="myStatus" value="ZZIM" />
 						<input type="hidden" name="myChallengeNo" value="${ challenge.challengeNo }"/>
-						<a class="btn red small">찜하기</a>
+						<a class="btn green small">찜하기</a>
 					</form>
 					<script>
 
@@ -129,10 +144,11 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 						});
 					});
 					</script>
-					<a href="${ path }/challenge/recruitList" class="btn blue small">목록으로</a>
+					</c:if>
+					<a href="${ path }/challenge/recruitList" class="btn green small">목록으로</a>
 					
 					<c:if test="${ (loginMember != null) && (loginMember.id == challenge.id) }">
-						<a href="${ path }/challenge/update?challengeNo=${ challenge.challengeNo }" class="btn purple small">챌린지 수정</a>
+						<a href="${ path }/challenge/update?challengeNo=${ challenge.challengeNo }" class="btn green small">챌린지 수정</a>
 					</c:if>
 				</div>
 				
@@ -145,12 +161,84 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 					<img alt="" src="${path}/resources/images/pageTitle/종료된챌린지정보.png">
 				</div>
 				<div class="funcArea">
-					<a href="${ path }/challenge/recruitList" class="btn blue small">목록으로</a>
+					<a href="${ path }/challenge/recruitList" class="btn green small">목록으로</a>
 				</div>
 				
 			</c:if>
 			
 			</div>
+			
+						<!-- 챌린지 신고 모달 -->
+							<div class="cateUpdArea" id="cateDelArea">
+								<div class="newWrapper">
+									<div class="titleArea">
+										<h2>챌린지 신고</h2>
+									</div>
+									<div class="contentArea">
+										<div class="div-inf" id="individual">
+										</div>
+										<form id="report" action="${path}/challenge/challengeReport" method="POST">
+								            <table>
+								            	<tr>
+								                    <td></td>
+								                    <td> <!-- 현재 페이지에 담긴 게시글 제목, 게시글 번호, 작성자ID, 신고자ID -->
+								                        챌린지 : 
+								                        <input type="text" name="title" id="title" value=" ${ challenge.title }" readonly><br>
+								                        <input type="hidden" name="c_no" id="c_no" value="${ challenge.challengeNo }"readonly>
+								                        <input type="hidden" name="reportedId" id="reportedId" value="${ challenge.id }"readonly>
+								                        <input type="hidden" name="sendId" id="sendId" value="${ loginMember.id }"readonly>
+								                    </td>
+								                </tr>
+								                <tr>
+								                <td>&emsp;&emsp;</td>
+								                    <td>           
+								                      	신고 유형 &emsp;&emsp;&emsp; : <select name="category" class="form-control" style="height:22px; width: 177px;" required>
+								                  		<option value="" selected disabled hidden>신고 유형 선택</option>
+								                  		<option value="욕설/비방">욕설/비방</option>
+								                  		<option value="광고">도배</option>
+									                  	<option value="광고">광고</option>
+									                  	<option value="음란물">음란물</option>
+									                  	<option value="개인정보 침해">개인정보 침해</option>
+									                  	<option value="기타">기타</option>
+									              	 </select>
+								                    </td>
+								                </tr>
+								                <tr>
+								                    <td>&emsp;&emsp;</td>
+								                    <td>
+								                        <textarea cols="100" row="100" style="height:50px; width: 400px;" name="content" placeholder="신고 내용을 입력하세요." id="reportContent" class="reportList"></textarea><br><br>    
+								                    </td>
+								                    <td></td>
+								                </tr>
+								                <tr>
+								                    <td colspan="3" align="center">
+								                        <input type="submit" class="inf-bt2" value="신고하기">
+								                        <button type="button" class="inf-bt1 closeDelBtn">취소</button>
+								                    </td>
+								                </tr>
+								            </table>
+								        </form>
+									</div>
+								</div>
+							</div>
+							<script>
+								$(function(){
+									// 게시글 신고
+									$("#btn-report").click(function(){
+										$("div#cateDelArea").css("display", "block");
+										$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
+			
+										// 게시글 번호 폼으로 가져오기
+										var updno = $(this).parent('td').siblings('.noTd').html();
+										$("input#a").val(updno);
+										});
+									
+									$('button.closeDelBtn').click(function(){
+										$('div.cateUpdArea').css("display", "none");
+										$('div.div-wrapper, nav, header, footer').css("pointer-events", "all");
+									});
+								});
+							</script>			
 			
 			<div id="challengeContTable">
 				<table id="detailContInfo" class="table01">
@@ -257,16 +345,6 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 								<fmt:formatDate var="regDate" value="${ challenge.createDate }" pattern="yyyy-MM-dd"/>
 								<span>
 									<c:out value="${ regDate }"/>
-								</span>
-							</td>
-						</tr>
-						<tr style="height:50px;">
-							<th>
-								<span>오픈 카톡 링크</span>
-							</th>
-							<td colspan="9">
-								<span>
-									<c:out value="${ challenge.opentalkLink }"/>
 								</span>
 							</td>
 						</tr>

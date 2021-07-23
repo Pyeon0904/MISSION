@@ -39,6 +39,7 @@
 	.title{
 		text-align: left;
 		font-size: 20px;
+		color: #97FD97;
 	}
 </style>
 <script type="text/javascript">
@@ -62,19 +63,22 @@
 		<hr>
 		<br><br>
 		<div id="myPage-container">
-			<table class="table table-bordered table-hover"  style="width:900px; height:200px; margin:auto;">
+			<table style="width: 900px; height: 200px; margin: auto;">
 				<tr>
 					<td rowspan="4" style="width:400px; height:200px;">
+						
 						<c:if test="${ loginMember.renamedFileName == null }">
 							<div class="box" style="background: #BDBDBD;">
 								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 							</div>	
 						</c:if>
+						
 						<c:if test="${ loginMember.renamedFileName != null }">
 							<div class="box" style="background: #BDBDBD;">
 								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 							</div>
 						</c:if>
+						
 					</td>
 					<td>
 						<h4 class="title"><b>닉네임</b></h4>
@@ -109,7 +113,7 @@
 				</tr>
 			</table>
 			<br><br>
-			<button class="btn btn-outline-success btn-lg" id="check" style="margin-left: 730px">회원정보수정</button>
+			<button class="btn btn-outline-success btn-lg" id="check" style="margin-left: 730px; ackground-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer;">회원정보수정</button>
 			<br><br><br><br>
 			<!-- 참여중인 챌린지 리스트 include -->
 			<div id="joinList-container">

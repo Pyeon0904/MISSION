@@ -11,6 +11,7 @@ import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
+import com.missionpossibleback.mvc.review.model.vo.Report;
 
 public interface ChallengeService {
 
@@ -111,5 +112,17 @@ public interface ChallengeService {
 	int selectCateDelete(String[] strNo);
 
 	int cateAdd(String str1, String str2);
+
+	List<Challenge> getEndJoinList(PageInfo pageInfo, String id);
+
+	List<Challenge> getMyChallengeList(PageInfo pageInfo, String id);
+
+	int report(Report report);
+
+	List getCTitleList();
+
+	List getCIdList();
+
+	List getCatNameList();
 	
 }

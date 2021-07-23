@@ -7,7 +7,7 @@
 
 <c:set var="path" value="${ pageContext.request.contextPath }" />
 <link rel="stylesheet" href="${ path }/resources/css/review.css">
-<link rel="stylesheet" href="${ path }/resources/css/admin2.css">
+<link rel="stylesheet" href="${ path }/resources/css/admin.css">
 
 <!DOCTYPE html>
 <html>
@@ -93,15 +93,13 @@ $(function () {
 						</div>
 				<div class="cateList">
 					<div class="head">
-						<h2>_</h2>
+						<h2 style="color:white;">_</h2>
 					</div>
 						<div class="btnArea">
-							<span class="searchArea">
-								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
-							</span>
-							<span class="enrollArea">
-								<button class="enroll-bt1" id="allRemoveBtn">삭제</button>
-								<button type="button" class="enroll-bt1" id="allEnrollBtn">추가</button>
+							<span>
+								<button class="enroll-bt1" id="allEnrollBtn">추가</button>
+								<button class="enroll-bt1" id="allRemoveBtn"style="float:right;">삭제</button>
+								<input type="text" id="searchTxt" name="searchTxt" placeholder="검색" style="float:right; margin-right:6px !important; margin-top:3px;">
 							</span>
 						</div>
 						<!-- 게시글 리스트 테이블 ------------------------>
@@ -109,7 +107,7 @@ $(function () {
 							<table class="cateListTb memListTb">
 								<tr id="titleTd">
 									<th><input type="checkbox" id="allChecked"></th>
-									<th>코드</th>
+									<th style="width:14%;">코드</th>
 									<th>이름</th>
 									<th colspan="2">처리</th>
 								</tr>
@@ -200,7 +198,7 @@ $(function () {
 								
 								// 게시글 제목 알려주기
 								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 카테고리를<br>정말로 삭제하겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+title+" ' 카테고리를<br>정말로 삭제하겠습니까?</h2>");
 								
 								// 게시글 번호 폼으로 가져오기
 								var updno = $(this).parent('td').siblings('.noTd').html();

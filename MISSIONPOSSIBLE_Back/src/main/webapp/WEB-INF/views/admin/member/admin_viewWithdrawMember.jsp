@@ -185,10 +185,10 @@ $(function () {
 			</div>
 			<div class="cateList">
 			<div class="head">
-				<h2>_</h2>
+				<h2 style="color:white;">_</h2>
 			</div>
 			<div class="btnArea">
-				<span class="searchArea">
+				<span class="searchArea" style="margin-left: 800px;">
 					<input type="text" id="searchTxt" name="searchTxt" placeholder="검색">
 				</span>
 			</div>
@@ -248,7 +248,7 @@ $(function () {
 								
 								// 회원 아이디 알려주기
 								var secId = $(this).val();
-								$('div#individual').html("<h2>"+secId+" 회원을<br> 복구 하시겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+secId+" ' 회원을<br> 정말로 복구 하시겠습니까?</h2>");
 								
 								// 아이디 폼으로 가져오기
 								$("input#returnMemberId").val(secId);

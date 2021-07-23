@@ -202,7 +202,7 @@
     width: 110px;
     height: 40px;
     border: none;
-    background-color: #F7F8E0;
+    background-color: #97FD97;
     color: black;
     cursor: pointer;
 }
@@ -296,7 +296,7 @@
 .join_all_btn{
     width: 250px;
     height: 40px;
-    background-color: #F7F8E0;
+    background-color: #97FD97;
     color: black;
     text-align: center;
     line-height: 40px;
@@ -697,10 +697,16 @@ ul {
 	<br><br>
 	<div id="enroll-container">
 		<form name ="memberEnrollFrm" id="join_content" action="enroll" method="post" enctype="multipart/form-data">
-			<table  border="1" style="margin:0 auto;">
+			<table style="margin:0 auto;">
 				<tr>
-					<td style="width:300px; height:300px;">
-						<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+					<td style="width:300px; height:200px;">
+						<br><br><br>
+						<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:280px; height:280px;"/>
+						<label class="input-file-button" for="input-file" style="text-align: center; width: 280px; background-color:black; color:white;border-radius: 20px; border : 0;">
+						  프로필 사진 등록
+						</label>
+						<input type="file" id="input-file"  name="upfile" style="display:none" accept="image/*" onchange="setThumbnail(event);"/> 
+						<br>
 					</td>
 					<td>
 						<ul class="join_ulcss">
@@ -769,15 +775,6 @@ ul {
 				                </div>
 				            </li>
 			          </ul> 
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: center">
-						<label class="input-file-button" for="input-file">
-						  프로필 사진 등록
-						</label>
-						<input type="file" id="input-file"  name="upfile" style="display:none" accept="image/*" onchange="setThumbnail(event);"/> 
-						<br>
 					</td>
 				</tr>
 			</table>

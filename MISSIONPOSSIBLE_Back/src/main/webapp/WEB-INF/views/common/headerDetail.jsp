@@ -11,23 +11,16 @@
 
 <!-- 아이콘 라이브러리 link -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 폰트 -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
 
 <style>
-@font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
+{
+font-family: 'NanumBarunGothic', sans-serif;
 }
-
-@font-face {
-    font-family: 'GmarketSansLight';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+ a { text-decoration: none; color: black; }
 
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
@@ -43,7 +36,7 @@
 			margin: 0px;
 			position: absolute;
 			top: 15px;
-			left:45%;
+			left:47%;
 			width: 150px;
 			display: inline-block;
 			z-index:1;
@@ -84,7 +77,6 @@
 		.semititle{ 
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px 20px;
 			color:black;
@@ -113,7 +105,6 @@
 		.submenu {
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px 20px;
 			color:#948c84;
@@ -138,10 +129,10 @@
 			z-index:17;
 			text-align:center;
 			position: absolute;
-			left:0%;
-			top: 150px;
+			left:55%;
+			top: 28px;
 			margin:auto;
-			width: 100%;
+			width: 700px;
 			height:45px;
 		}
 		.adminCol{ position:relative; width:100%; }
@@ -149,7 +140,6 @@
 		/*하위 메뉴 구분하기*/
 		.adminSemititle{ 
 			text-align:center;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px 10px;
 			color:green;
@@ -178,7 +168,6 @@
 		.adminSubmenu {
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px;
 			color:#948c84;
@@ -209,7 +198,7 @@
 		#hamburger{
 			width:450px;
 			height:850px;
-			background-color:#F7F8E0;
+			background-color:#FFFFFF;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
@@ -223,7 +212,7 @@
 			width:450px;
 			height:600px;
 			position:absolute;
-			background-color:#F7F8E0;
+			background-color:#FFFFFF;
 			left:100%;
 			transform:translateX(-100%);
 			text-align:center;
@@ -236,7 +225,11 @@
 			height:50px;
 			float:none;
 			margin:0 auto;
-			background-color:#8FBC8F;
+			background-color:#FFFFFF;
+			border-radius: 20px;
+			border : 0;
+			box-shadow: 5px 5px 5px gray;
+			cursor:pointer;
 		}
 		#loginList{
 			font-size:20px;
@@ -244,14 +237,18 @@
 			height:50px;
 			float:none;
 			margin:0 auto;
-			background-color:#F7F8E0;
+			background-color:#97FD97;
 			position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 			z-index: 999;
+			border-radius: 20px;
+			border : 0;
+			box-shadow: 5px 5px 5px gray;
+			cursor:pointer;
 		}
 		#hamburgerText{
 			font-size:25px;
 			font-weight:bold;
-			color: #FF6347
+			color: #FF6347;
 		}
 	
 		.menu2 ul li{
@@ -266,6 +263,11 @@
 			height: 45px;
 		}
 		
+		.modal{ 
+		  position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none; z-index: 8;
+		}
+				
+	
 </style>
 <script>
 		$(document).on('mouseover', '.menu a', function () {
@@ -281,13 +283,25 @@
 		 		$("#hamburger").animate({width:'toggle'}, 400);
 		 	});
 		});
+		
+		$(function(){ 
+
+			  $("#level").click(function(){
+			    $(".modal").fadeIn();
+			  });
+			  
+			  $(".modal").click(function(){
+			    $(".modal").fadeOut();
+			  });
+			  
+		});
 </script>
 
 </head>
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
 		<c:if test="${ loginMember.status eq 'A' }">
-			<div class="adminMenu">
+			<div class="adminMenu" style="font-weight: bold;">
 					<div class="adminCol">
 					<ul class="adminMaintab">
 						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
@@ -303,31 +317,15 @@
 
 	<header>
 		<!-- 로고 이미지 삽입 -->
-		<a href="${path}/"> <img class="logo"
-			src="${path}/resources/images/greenLogo.png" />
-		</a>
+	      <a href="${path}/"> <img class="logo" style="width: 100px; height:100px"
+	         src="${path}/resources/images/greenLogo.png" />
+	      </a>
+	      
+	    <!-- 초록색 선 (로고 아래) -->
+	      <hr id="greenLine" style="margin-top:150px; background-color:rgba(26, 252, 26); height:2px;">
 		
-		<!-- 초록색 선 (로고 아래) -->
-		<hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
 		
-		<!-- 헤더 아래 최상단 이미지 삽입 -->
-		<a><img class="headerTop"
-			src="${path}/resources/images/headerTop.png" />
-		</a>
-		
-		<!-- 버튼(작전 더 자세히보기) -->
-		<a href="${path}/introduce/introduce">
-			<img class="homeIntroButton" src="${path}/resources/images/homeIntroButton.png" 
-			style="margin-left:155px; margin-top:10px"/>
-		</a>
-		
-		<!-- 시침표현 로고 이미지 -->
-		<a>
-			<img class="homeIntroButton" src="${path}/resources/images/timeCircle.png" 
-			style="margin-left:600px; margin-top:-500px"/>
-		</a>
-		
-		<div class="menu">
+		<div class="menu" style="font-weight: bold;">
 			<div class="col">
 			<ul class="maintab">
 				<li><a class="semititle" href="${path}/introduce/introduce">소개</a>
@@ -356,8 +354,8 @@
 		<div class="menu2">
 			<div class="col">
 			<ul class="maintab">
-				<li class="btnHBG header_li">
-					<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+				<li class="btnHBG header_li" style="width:160px; ">
+					<a href="#"><i class="fa fa-bars" aria-hidden="true" style="color:black;"></i></a>
 				</li>
 				<c:if test="${ loginMember == null }">
 				<li>
@@ -389,11 +387,11 @@
 						<br><br>
 						<h4>로그인 해주세요</h4>
 						<br><br>
-						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
+						<input type="button" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인" style="font-size:20px;"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
+					    <input type="button" id="loginList"  onclick="#" value="후기"/><br><br>
+						<input type="button" id="loginList"  onclick="#" value="인증샷"/><br><br>
+						<input type="button" id="loginList"  onclick="#" value="고객센터"/>
 					</c:if>
 					<!-- 로그인 후 -->
 					<c:if test="${ loginMember != null }">
@@ -404,8 +402,8 @@
 						<input type="button" id="afterLoginList" class="btn btn-outline-success btn-lg" onclick="location.href='${ path }/member/followList'" value="팔로우"/><br><br>
 						<table class="table table-striped table-bordered table-hover" id="loginTable" style="width: 300px; margin:auto; text-align: center">
 							<th class="success">참가중</th>
-							<th class="success">완료</th>
-							<th class="success">개설</th>
+							<th class="success" onclick="location.href='${path}/challenge/successList'">완료</th>
+							<th class="success" onclick="location.href='${path}/challenge/myCreateList'">개설</th>
 							<tr class="success">
 								<!-- 로그인 POST 요청에서 구한 유저의 업적을 출력 -->
 								<c:forEach var="achieveCount" items="${ achievements }">
@@ -414,23 +412,23 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/>
+						<input type="button" id="loginList" onclick="location.href='${path}/challenge/zzimList'" value="찜" style="position: relative; z-index: 2;"/>
 						<br><br><br>
-						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
+						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
 								<td style="color:#8FBC8F">보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
-						</table>
-						
-						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
-								<td style="color:#8FBC8F">등급</td>
+								<td id="gallery" class="gallery"><a href="#" id="level" class="level" style="color:#8FBC8F">등급</a></td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
+						<div class="modal">
+						    <img src="${path}/resources/images/point/tbLevel.png" id="gallery_img" class="gallery_img" style="width: 350px; height: 300px; margin-top: 150px" title="클릭하면 사라집니다">
+						</div>
 						<br><br>
-						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+						<button style="background-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; " onclick="location.replace('${path}/member/logout')">로그아웃</button>
 					</c:if>
 				</div>
 			</div>
