@@ -47,7 +47,7 @@
 			<div id="conbox">
 
 					<a><img class="pageTitle"
-					src="${path}/resources/images/홈페이지소개.png"/>
+					src="${path}/resources/images/소개.png"/>
 					</a>
 					
 			</div>
