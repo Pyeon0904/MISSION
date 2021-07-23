@@ -22,7 +22,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   padding: 0;
   border: 0;
   font-size: 100%;
-  font-weight: bold;
   vertical-align: baseline;
  }
 @font-face {
@@ -314,7 +313,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 <body id="bg">
 	<!-- 헤더 관리자권한 부분------------------------------------------------------------ -->
 		<c:if test="${ loginMember.status eq 'A' }">
-			<div class="adminMenu">
+			<div class="adminMenu" style="font-weight: bold;">
 					<div class="adminCol">
 					<ul class="adminMaintab">
 						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
@@ -338,7 +337,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	      <hr id="greenLine" style="margin-top:150px; background-color:rgba(26, 252, 26); height:2px;">
 		
 		
-		<div class="menu">
+		<div class="menu" style="font-weight: bold;">
 			<div class="col">
 			<ul class="maintab">
 				<li><a class="semititle" href="${path}/introduce/introduce">소개</a>
