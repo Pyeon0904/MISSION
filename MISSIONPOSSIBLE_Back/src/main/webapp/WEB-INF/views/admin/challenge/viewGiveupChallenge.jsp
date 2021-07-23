@@ -167,7 +167,7 @@ $(function () {
 								
 								// 게시글 제목 알려주기
 								var title = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+title+" 사유를<br>정말로 확인하셨습니까?</h2>");
+								$('div#individual').html("<h2>'"+title+"' 사유를<br>정말로 확인하셨습니까?</h2>");
 								
 								// 게시글 번호 폼으로 가져오기
 								var updno = $(this).parent('td').siblings('.noTd').html();

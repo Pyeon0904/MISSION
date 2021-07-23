@@ -270,7 +270,7 @@ $(function () {
 							$('div.div-wrapper, nav, header, footer').css("pointer-events", "none");
 							
 							var secId = $(this).val();
-							$('div#individual').html("<h2>"+secId+" 회원을<br> 탈퇴 처리 하시겠습니까?</h2>");
+							$('div#individual').html("<h2>' "+secId+" ' 회원을<br> 정말로 탈퇴 처리 하시겠습니까?</h2>");
 							
 							// 회원 탈퇴 폼으로 가져오기
 							$("input#oneDeleteId").val(secId);

@@ -170,7 +170,7 @@ $(function () {
 								
 								// 탈퇴 시킬 아이디 알려주기
 								var warnId = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+warnId+" 회원을<br>정말로 탈퇴 처리하겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+warnId+" ' 회원을<br>정말로 탈퇴 처리하겠습니까?</h2>");
 								$("input#warnId").val(warnId);
 
 							});

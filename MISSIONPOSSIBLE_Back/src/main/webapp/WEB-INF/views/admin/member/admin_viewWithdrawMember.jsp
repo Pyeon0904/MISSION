@@ -248,7 +248,7 @@ $(function () {
 								
 								// 회원 아이디 알려주기
 								var secId = $(this).val();
-								$('div#individual').html("<h2>"+secId+" 회원을<br> 복구 하시겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+secId+" ' 회원을<br> 정말로 복구 하시겠습니까?</h2>");
 								
 								// 아이디 폼으로 가져오기
 								$("input#returnMemberId").val(secId);

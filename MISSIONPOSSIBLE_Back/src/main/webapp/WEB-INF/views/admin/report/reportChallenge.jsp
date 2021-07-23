@@ -181,7 +181,7 @@ $(function () {
 								
 								// 신고된 메이커 아이디 알려주기
 								var reportedId = $(this).parent('td').siblings('.td-3').html();
-								$('div#individual').html("<h2>"+reportedId+" 회원을<br>정말로 경고 처리하겠습니까?</h2>");
+								$('div#individual').html("<h2>' "+reportedId+" ' 회원을<br>정말로 경고 처리하겠습니까?</h2>");
 								$("input#reportedId").val(reportedId);
 								
 								// 신고 번호 폼으로 가져오기
