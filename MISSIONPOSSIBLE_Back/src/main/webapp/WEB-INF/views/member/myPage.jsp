@@ -66,16 +66,19 @@
 			<table style="width: 900px; height: 200px; margin: auto;">
 				<tr>
 					<td rowspan="4" style="width:400px; height:200px;">
+						
 						<c:if test="${ loginMember.renamedFileName == null }">
 							<div class="box" style="background: #BDBDBD;">
 								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 							</div>	
 						</c:if>
+						
 						<c:if test="${ loginMember.renamedFileName != null }">
 							<div class="box" style="background: #BDBDBD;">
 								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:200px; height:200px;"/>
 							</div>
 						</c:if>
+						
 					</td>
 					<td>
 						<h4 class="title"><b>닉네임</b></h4>

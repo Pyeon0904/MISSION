@@ -11,36 +11,21 @@
 
 <!-- 아이콘 라이브러리 link -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 폰트 -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
 
 <style>
-<<<<<<< HEAD
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
- {
-    font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif' !important;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  vertical-align: baseline;
- }
-=======
- a { text-decoration: none; color: black; }
->>>>>>> login
-@font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+@font-face { font-family: 'NanumBarunGothic';
+src: url('/font/NanumBarunGothic.eot');
+src: url('/font/NanumBarunGothic.eot') format('embedded-opentype'),
+url('/font/NanumBarunGothic.woff') format('woff');}
 
-@font-face {
-    font-family: 'GmarketSansLight';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
+{
+font-family: 'NanumBarunGothic', sans-serif;
 }
+ a { text-decoration: none; color: black; }
 
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
@@ -97,7 +82,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 		.semititle{ 
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px 20px;
 			color:black;
@@ -126,7 +110,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 		.submenu {
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px 20px;
 			color:#948c84;
@@ -162,7 +145,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 		/*하위 메뉴 구분하기*/
 		.adminSemititle{ 
 			text-align:center;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px 10px;
 			color:green;
@@ -191,7 +173,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 		.adminSubmenu {
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
 			font-size: 16px;
 			padding: 10px;
 			color:#948c84;
