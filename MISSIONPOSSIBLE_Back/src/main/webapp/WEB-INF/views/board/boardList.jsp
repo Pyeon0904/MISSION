@@ -117,8 +117,45 @@ td#title{text-align:left; padding-left:30px;}
 
 a.titlea{text-decoration:none; color:#666;}
 </style>
-
 </head>
+
+<script>
+    $(function() {
+    	
+        var searchSource = new Array(); // 배열 형태 
+
+	        <c:forEach var="board" items="${ title }">        
+	        	searchSource.push("${board.title}");
+	        </c:forEach>
+	        <c:forEach var="board" items="${ writer }">        
+	    		searchSource.push("${board.writer }");
+	    	</c:forEach>
+	        
+        $("#keyword").autocomplete({      // 오토 컴플릿트 시작
+            source : searchSource,    		  // source 는 자동 완성 대상
+            select : function(event, ui) {    // 아이템 선택시
+                console.log(ui.item);
+            },
+            focus : function(event, ui) {    // 포커스 가면
+                return false;				 // 한글 에러 잡기 용도로 사용됨
+            },
+            minLength: 1,					// 최소 글자수
+            autoFocus: true, 				// 첫번째 항목 자동 포커스 기본값 false
+            classes: {    
+                "ui-autocomplete": "highlight"
+            },
+            delay: 500,    					// 검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//          disabled: true,   	   			   자동완성 기능 끄기
+            scroll:true,
+            position: { my : "right top", at: "right bottom" }, 
+            close : function(event){    	// 자동완성창 닫아질 때 호출
+                console.log(event);
+            }
+        });
+        
+    });
+</script>
+
 <body>
 <div id="box">
 <section id="section">

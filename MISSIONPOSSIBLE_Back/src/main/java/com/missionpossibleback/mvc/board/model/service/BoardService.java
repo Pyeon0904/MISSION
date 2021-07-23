@@ -47,6 +47,11 @@ public interface BoardService {
 	int selectRestore(int[] intNo);
 
 	int selectOneRestore(int qna_no);
+	
+	// 자동검색 관련
+	List getTitleList();
+	
+	List getWriterIdList();
 
 	
 }

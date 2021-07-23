@@ -35,6 +35,7 @@ import com.missionpossibleback.mvc.board.model.service.BoardService;
 import com.missionpossibleback.mvc.board.model.vo.Board;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.review.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,11 +56,18 @@ public class BoardController {
 
 		// 전체 리스트 조회해오고 페이징
 		List<Board> list = null;
+		List title = null;
+	    List writer = null;
+	    List<Board> all = null;
 		PageInfo pageInfo = new PageInfo(page, 10, service.getBoardCount(), 10); // (현재 페이지,한 페이지에 보여질 페이지의 수,전체 게시글,하나의 페이지에서 보여줄 리스트 개수)
 		
 		list = service.getBoardList(pageInfo);
-		
+		title = service.getTitleList();
+	    writer = service.getWriterIdList();
+			
 		model.addObject("list", list);
+		model.addObject("title", title);
+	    model.addObject("writer", writer);
 		model.addObject("pageInfo", pageInfo);
 		model.setViewName("board/boardList"); // views/board/list.jsp를 찾아줌
 		
