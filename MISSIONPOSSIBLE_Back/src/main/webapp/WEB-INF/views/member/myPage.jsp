@@ -39,6 +39,7 @@
 	.title{
 		text-align: left;
 		font-size: 20px;
+		color: #97FD97;
 	}
 </style>
 <script type="text/javascript">
@@ -62,7 +63,7 @@
 		<hr>
 		<br><br>
 		<div id="myPage-container">
-			<table class="table table-bordered table-hover"  style="width:900px; height:200px; margin:auto;">
+			<table style="width: 900px; height: 200px; margin: auto;">
 				<tr>
 					<td rowspan="4" style="width:400px; height:200px;">
 						<c:if test="${ loginMember.renamedFileName == null }">

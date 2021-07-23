@@ -46,6 +46,19 @@
 					$("#selboxDirect").hide();
 				}
 		}); 
+		
+		$("#checkPW").blur((event) => {
+		      let pass1 = $("#userPW").val();         
+		      let pass2 = $(event.target).val();
+		      
+		      if(pass1.trim() != pass2.trim()) {
+		         alert("비밀번호가 일치하지 않습니다.");
+		         
+		         $("#userPW").val("");
+		         $(event.target).val("");
+		         $("#userPW").focus();
+		      }
+		   });
 	});
 </script>
 <div id="box">
@@ -97,7 +110,7 @@
 						</tr>
 					</table>
 					<br>
-					<input type="submit" class="btn btn-primary" value="더 큰 행복을 찾으러 가기" />
+					<input type="submit" class="btn btn-primary" value="탈퇴하기" style="background-color: #97FD97; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; "/>
 				</form>
 				<br>
 			</div>

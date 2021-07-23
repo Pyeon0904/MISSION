@@ -456,7 +456,11 @@ public class MemberController {
 					member.setOriginalFileName(upfile.getOriginalFilename());
 					member.setRenamedFileName(renameFileName);
 				}
-			}			
+				
+			}else {
+				member.setOriginalFileName(loginMember.getOriginalFileName());
+				member.setRenamedFileName(loginMember.getRenamedFileName());
+			}
 			
 			result = service.save(member);		
 			

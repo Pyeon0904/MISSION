@@ -363,14 +363,7 @@ ul {
 
 </style>
 <script type="text/javascript">
-	$(document).ready(() => {	
-		$("#profile").on("click", (e)=>{
-			
-			const url = "${path}/member/profile";
-			const status="left=500px, top=200px, width=450px; height=300px";
-			
-			open(url, "", status);
-		});	
+	$(document).ready(() => {
 		
 	   $("#member_pw1").blur((event) => {
 	      let pass1 = $("#member_pw").val();         
@@ -384,12 +377,6 @@ ul {
 	         $("#member_pw").focus();
 	      }
 	   });
-	   
-	 //아이디 유효성검사
-       $("#member_id").on("input",function(){
-    	   let id = $("#member_id").val().trim();
-    	   valiId(id);
-       });
 	 
 	 //비밀번호 유효성검사
        $("#member_pw").on("input",function(){
@@ -448,11 +435,6 @@ ul {
     	   var pw = $("#member_pw").val().trim();
     	   var nickname = $("#member_nickname").val().trim();
     	   var email = $("#member_email").val().trim();
-    	   
-    	   if(!valiId(id)){
-    		   alert("아이디 양식을 다시 확인해주세요");
-    		   return;
-    	   }
     	   
     	   if(!valiPw(pw)){
     		   alert("비밀번호 양식을 다시 확인해주세요");
@@ -532,28 +514,6 @@ ul {
         }
  	}
  	
- 	function valiId(id){
- 	   var checkNumber = /[^0-9]/;
- 	   var checkEnglish =  /[^a-zA-Z]/;
- 	   var checkBlank = /[\s]/;
- 	   var checkKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
- 	   var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
- 	   
-        if(id.length < 4 || id.length > 12){
-            $(".id.regex").html("영문,숫자를 혼합 4-12자리");
-        }else if(checkKorean.test(id)){
-     	   $(".id.regex").html("한글을 포함할 수 없습니다.");
-        }else if(!checkEnglish.test(id)||!checkNumber.test(id)){
-     	   $(".id.regex").html("영문,숫자를 혼합하여 입력해주세요.");
-        }else if(checkBlank.test(id)){
-            $(".id.regex").html("공백을 포함할 수 없습니다.");
-        }else if(checkspe.test(id)){
-        	 $(".id.regex").html("특수문자를 포함할 수 없습니다.");
-        }else{
-     	   $(".id.regex").html("");
-     	  return true;
-        }
- 	}
  	function valiNick(nickname){
          var checkspe = /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/;
          var checkBlank = /[\s]/;
@@ -635,7 +595,7 @@ ul {
 					                <span class="join_li_title">
 					                    <b style="color:red;">·</b>비밀번호</span>
 					                <div class="join_li_input">
-					                    <input type="password" class="member_pw" id="member_pw" name="password" value="${ loginMember.password }" placeholder="영문대/소문자, 숫자 4-12자리">
+					                    <input type="password" class="member_pw" id="member_pw" name="password" placeholder="영문대/소문자, 숫자 4-12자리">
 					                    <div class="pw regex"></div>
 					                       
 					                </div>
@@ -644,7 +604,7 @@ ul {
 					            <li>
 					                <span class="join_li_title"><b style="color:red;">·</b>비밀번호 확인</span>
 					                <div class="join_li_input">
-					                    <input type="password" class="member_pw" id="member_pw1" value="${ loginMember.password }">
+					                    <input type="password" class="member_pw" id="member_pw1">
 					                    <div class="repw regex"></div>
 					                </div>
 					            </li>
@@ -688,8 +648,8 @@ ul {
 				<br>
 			</form>
 			<div id="bottomButton">
-				<button class="btn btn-primary" onclick="location.replace('${path}/member/withdrawal')">회원탈퇴</button>
-				<input type="submit" class="btn btn-primary" id="updateSubmit" value="수정하기" />
+				<button class="btn btn-primary" onclick="location.replace('${path}/member/withdrawal')" style="background-color: #97FD97; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; ">회원탈퇴</button>
+				<input type="submit" class="btn btn-primary" id="updateSubmit" value="수정하기" style="background-color: #97FD97; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; "/>
 			</div>
 		 </div>
 		</div>
