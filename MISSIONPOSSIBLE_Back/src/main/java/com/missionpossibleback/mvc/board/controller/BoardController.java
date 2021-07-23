@@ -69,7 +69,8 @@ public class BoardController {
 // 글 상세보기
 	@GetMapping("/board/boardDetail")
 	public ModelAndView view(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			ModelAndView model, @RequestParam("qna_no") int qna_no) {
+			ModelAndView model, @RequestParam("qna_no") int qna_no,
+			@SessionAttribute(name = "loginMember", required = false) Member loginMember) {
 		
 		// 저장된 쿠키 불러오기
 		Cookie cookies[] = request.getCookies();
@@ -120,6 +121,13 @@ public class BoardController {
 				model.addObject("msg", "삭제된 게시글입니다.");
 				model.addObject("location", "/board/boardList");
 				model.setViewName("common/msg");
+			}
+			
+			if(board.getPass() != null && !loginMember.getId().equals(board.getWriter())) {
+				model.addObject("msg", "비밀글 입니다.");
+				model.addObject("location", "/board/password?qna_no="+ board.getQna_no());
+				model.setViewName("common/msg");
+					
 			}
 		
 		
