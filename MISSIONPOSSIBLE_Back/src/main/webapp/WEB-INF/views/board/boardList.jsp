@@ -171,7 +171,7 @@ a.titlea{text-decoration:none; color:#666;}
          <form id="searchForm" name="form1" method="GET" action="${path}/board/boardSearch">
             <div align="right" class="row m-4">
             
-               <p>조회기간을 선택해주세요 
+               <p style="margin-bottom:10px;">조회기간을 선택해주세요 
                   <input type="text" id="datepicker1" name="startdate" style="padding-top: 5px; padding-bottom: 6px;"><img src="${path}/resources/images/calendar-icon.png" id="startDt" style="margin-left:-24px; margin-bottom:-7px;">~
                   <input type="text" id="datepicker2" name="enddate" style="padding-top: 5px; padding-bottom: 6px;"><img src="${path}/resources/images/calendar-icon.png" id="endDt" style="margin-left:-24px; margin-bottom:-7px;">
                </p>
