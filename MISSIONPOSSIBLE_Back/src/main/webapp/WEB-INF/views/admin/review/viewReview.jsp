@@ -88,7 +88,7 @@ $(function () {
 									<th><input type="checkbox" id="allChecked"></th>
 									<th>글번호</th>
 									<th>제목</th>
-									<th>챌린지</th>
+									<th style="width:17%;">챌린지</th>
 									<th>작성자</th>
 									<th>작성일</th>
 									<th>조회수</th>
