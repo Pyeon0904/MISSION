@@ -384,7 +384,7 @@ table.cateTb tr td:nth-child(7) {
 div.cateUpdArea, div.cateInsArea {
 	margin: 0;
 	padding: 0;
-	background-color: var(--white);
+	background-color: white;
 	border: 1px solid var(--lgray);
 	width: 600px;
 	min-height: 300px;
@@ -502,20 +502,22 @@ div.infSendArea {
 	text-align: center;
 }
 .inf-bt1 {
-	background-color: var(--white);
+	background-color: #97FD97;
+	border: 1px solid #97FD97 !important;
 	min-width: 80px;
 	width: auto;
 	height: 40px;
-	border-radius: 5px;
+	color: var(--white);
 	font-size: 1.1em;
 }
 .inf-bt2 {
-	background-color: var(--black);
+	background-color: #97FD97;
+	border: 1px solid #97FD97 !important;
 	color: var(--white);
 	min-width: 80px;
 	width: auto;
 	height: 40px;
-	border-radius: 5px;
+
 	font-size: 1.1em;
 }
 .scrSubmit {
