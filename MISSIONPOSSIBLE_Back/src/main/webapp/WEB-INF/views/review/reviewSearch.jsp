@@ -121,7 +121,7 @@
 									<c:forEach var="review" items="${ list }">
 										<tr>
 											<td><c:out value="${ review.no }" /></td>
-											<td><a href="${ path }/review/reviewView?no=${review.no}">
+											<td><a href="${ path }/review/reviewView?no=${review.no}" style="text-decoration:none; color:#666;">
 												<c:out value="${ review.title } " /> 
 													<c:if test="${ review.replyCount != 0 }">
 														[${ review.replyCount }]
