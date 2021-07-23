@@ -22,12 +22,6 @@
 <!-- 폰트 -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
 <style type="text/css">
-
-@font-face { font-family: 'NanumBarunGothic';
-src: url('/font/NanumBarunGothic.eot');
-src: url('/font/NanumBarunGothic.eot') format('embedded-opentype'),
-url('/font/NanumBarunGothic.woff') format('woff');}
-
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
 {
 font-family: 'NanumBarunGothic', sans-serif;

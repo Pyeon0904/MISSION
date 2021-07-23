@@ -16,11 +16,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
-@font-face { font-family: 'NanumBarunGothic';
-src: url('/font/NanumBarunGothic.eot');
-src: url('/font/NanumBarunGothic.eot') format('embedded-opentype'),
-url('/font/NanumBarunGothic.woff') format('woff');}
-
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
 {
 font-family: 'NanumBarunGothic', sans-serif;
@@ -386,14 +381,11 @@ font-family: 'NanumBarunGothic', sans-serif;
 						<br><br>
 						<input type="button" id="loginList" onclick="location.href='${path}/challenge/zzimList'" value="찜" style="position: relative; z-index: 2;"/>
 						<br><br><br>
-						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
+						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
 								<td style="color:#8FBC8F">보유 포인트</td>
 								<th style="width: 100px">${ loginMember.point }</th>
 							</tr>
-						</table>
-						
-						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
 								<td id="gallery" class="gallery"><a href="#" id="level" class="level" style="color:#8FBC8F">등급</a></td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
