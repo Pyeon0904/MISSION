@@ -15,6 +15,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
+ {
+    font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif' !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-weight: bold;
+  vertical-align: baseline;
+ }
 @font-face {
     font-family: 'GmarketSansMedium';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
@@ -43,7 +53,7 @@
 			margin: 0px;
 			position: absolute;
 			top: 15px;
-			left:45%;
+			left:47%;
 			width: 150px;
 			display: inline-block;
 			z-index:1;
@@ -138,10 +148,10 @@
 			z-index:17;
 			text-align:center;
 			position: absolute;
-			left:0%;
-			top: 150px;
+			left:55%;
+			top: 28px;
 			margin:auto;
-			width: 100%;
+			width: 700px;
 			height:45px;
 		}
 		.adminCol{ position:relative; width:100%; }
@@ -320,12 +330,12 @@
 
 	<header>
 		<!-- 로고 이미지 삽입 -->
-	      <a href="${path}/"> <img class="logo"
+	      <a href="${path}/"> <img class="logo" style="width: 100px; height:100px"
 	         src="${path}/resources/images/greenLogo.png" />
 	      </a>
 	      
 	    <!-- 초록색 선 (로고 아래) -->
-	      <hr id="greenLine" style="margin-top:200px; background-color:rgba(26, 252, 26); height:2px;">
+	      <hr id="greenLine" style="margin-top:150px; background-color:rgba(26, 252, 26); height:2px;">
 		
 		
 		<div class="menu">
@@ -357,8 +367,8 @@
 		<div class="menu2">
 			<div class="col">
 			<ul class="maintab">
-				<li class="btnHBG header_li">
-					<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+				<li class="btnHBG header_li" style="width:160px; ">
+					<a href="#"><i class="fa fa-bars" aria-hidden="true" style="color:black;"></i></a>
 				</li>
 				<c:if test="${ loginMember == null }">
 				<li>

@@ -15,23 +15,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
-@font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'GmarketSansLight';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-	font-family: 'Noto Sans KR','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif; }
-}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
+ {
+    font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif' !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-weight: bold;
+  vertical-align: baseline;
+ }
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
 		
@@ -77,7 +70,8 @@
 		.semititle{ 
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
+  			font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif';
+			font-weight: 20px;
 			font-size: 16px;
 			padding: 10px 20px;
 			color:black;
@@ -106,7 +100,7 @@
 		.submenu {
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
+  			font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif';
 			font-size: 16px;
 			padding: 10px 20px;
 			color:#948c84;
@@ -131,7 +125,7 @@
 			z-index:17;
 			text-align:center;
 			position: absolute;
-			left:0%;
+			left:-3.2%;
 			top: 150px;
 			margin:auto;
 			width: 100%;
@@ -142,7 +136,7 @@
 		/*하위 메뉴 구분하기*/
 		.adminSemititle{ 
 			text-align:center;
-			font-family: 'GmarketSansMedium';
+  			font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif';
 			font-size: 16px;
 			padding: 10px 10px;
 			color:green;
@@ -171,7 +165,7 @@
 		.adminSubmenu {
 			text-align:center;
 			display: block;
-			font-family: 'GmarketSansMedium';
+  			font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif';
 			font-size: 16px;
 			padding: 10px;
 			color:#948c84;
@@ -302,7 +296,7 @@
 
 	<header>
 		<!-- 로고 이미지 삽입 -->
-		<a href="${path}/"> <img class="logo"
+		<a href="${path}/"> <img class="logo" style="width: 100px; height:100px"
 			src="${path}/resources/images/greenLogo.png" />
 		</a>
 		
@@ -336,7 +330,7 @@
 			</ul>
 			<!-- 햄버거바 상세내역 -->
 			<ul class="maintab">
-				<li class="btnHBG header_li"><a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+				<li class="btnHBG header_li"><a href="#"><i class="fa fa-bars" aria-hidden="true" style="color:black;"></i></a>
 					</li>
 			</ul>
 			
@@ -347,7 +341,7 @@
 		<div id="hamburger">
 				<div id="login">
 					<div class="btnHBG" style="font-size:2em; text-align:left; margin-left:20px;">
-						<i class="fa fa-caret-square-o-right" aria-hidden="true"></i>
+						<i class="fa fa-caret-square-o-right" aria-hidden="true" ></i>
 					</div>
 					<br><br><br><br><br><br><br>
 					<!-- 로그인 전 -->
