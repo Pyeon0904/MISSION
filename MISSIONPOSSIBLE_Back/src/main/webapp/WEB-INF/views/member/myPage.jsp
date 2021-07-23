@@ -39,6 +39,7 @@
 	.title{
 		text-align: left;
 		font-size: 20px;
+		color: #97FD97;
 	}
 </style>
 <script type="text/javascript">
@@ -62,7 +63,7 @@
 		<hr>
 		<br><br>
 		<div id="myPage-container">
-			<table class="table table-bordered table-hover"  style="width:900px; height:200px; margin:auto;">
+			<table style="width: 900px; height: 200px; margin: auto;">
 				<tr>
 					<td rowspan="4" style="width:400px; height:200px;">
 						<c:if test="${ loginMember.renamedFileName == null }">
@@ -109,7 +110,7 @@
 				</tr>
 			</table>
 			<br><br>
-			<button class="btn btn-outline-success btn-lg" id="check" style="margin-left: 730px">회원정보수정</button>
+			<button class="btn btn-outline-success btn-lg" id="check" style="margin-left: 730px; ackground-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer;">회원정보수정</button>
 			<br><br><br><br>
 			<!-- 참여중인 챌린지 리스트 include -->
 			<div id="joinList-container">

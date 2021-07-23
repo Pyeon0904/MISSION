@@ -47,13 +47,13 @@ public interface MemberService {
 
 	List<String> getMemberIdList();
 
-	List<memberReport> admin_reportMember(PageInfo pageInfo);
+	List<memberReport> admin_reportMember();
 
 	int getReportListCount();
 
 	int admin_warnMember(String warnMemberId);
 
-	List<memberReport> admin_withdrawalMember(PageInfo pageInfo);
+	List<memberReport> admin_withdrawalMember();
 
 	List<Grade> setGradeName(int point);
 
@@ -65,7 +65,7 @@ public interface MemberService {
 
 	void admin_deleteWithdrawal(String returnMemberId);
 
-	List<Member> admin_AllMember(PageInfo pageInfo);
+	List<Member> admin_AllMember();
 
 	int getAllMemberListCount();
 

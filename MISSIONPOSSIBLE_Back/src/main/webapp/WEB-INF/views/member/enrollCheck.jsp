@@ -264,7 +264,7 @@ ul {
 			                </textarea>
 			            </li>
 			            <li style="width: 100%;">
-			                <button type="button" class="btn btn-outline-success btn-lg" onclick="agree_btn();">다음단계</button>
+			                <button type="button" style="background-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; " class="btn btn-outline-success btn-lg" onclick="agree_btn();">다음단계</button>
 			            </li>
 			        </ul>
 			    </form>

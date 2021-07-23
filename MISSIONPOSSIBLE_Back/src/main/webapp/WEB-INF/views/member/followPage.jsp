@@ -62,12 +62,12 @@
 			<form name="followPage" action="followPage" method="post" >
 				<div style="margin-left: 730px">
 					<c:if test="${ isfollow > 0}">
-						<input type="submit" value="팔로우취소" id="btnFollow" name="btnFollow" class="btn btn-default" />
+						<input type="submit" value="팔로우취소" id="btnFollow" name="btnFollow" class="btn btn-default" style="background-color: #97FD97; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; " />
 					</c:if>
 					<c:if test="${ isfollow == 0}">
-						<input type="submit" value="팔로우" id="btnFollow" name="btnFollow" class="btn btn-default" />
+						<input type="submit" value="팔로우" id="btnFollow" name="btnFollow" class="btn btn-default" style="background-color: #97FD97; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; "/>
 					</c:if>
-					<input type="button" value="신고하기" id="btnBan" class="btn btn-default"/>
+					<input type="button" value="신고하기" id="btnBan" class="btn btn-default" style="background-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; "/>
 				</div>
 				<div id="myPage-container">
 					<table class="table table-bordered table-hover" style="width:900px; height:200px; margin:auto;">

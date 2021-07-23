@@ -15,6 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
  {
     font-family: '애플 SD 산돌고딕 Neo','Apple SD Gothic Neo','Helvetica Neue','Helvetica','나눔바른고딕','NanumBarunGothic','나눔바른고딕OTF','NanumBarunGothicOTF','Noto Sans','Noto+Sans','notokr-demilight','나눔고딕','NanumGothic','맑은 고딕','Malgun Gothic','sans-serif' !important;
@@ -24,6 +25,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   font-size: 100%;
   vertical-align: baseline;
  }
+ a { text-decoration: none; color: black; }
 
 /* --- 헤더(로고 & 메뉴바) 스타일 ------------------------------------------------------------------------- */
 		
@@ -192,24 +194,24 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 			text-align:center;
 		}
 		
-		#hamburger{
+			#hamburger{
 			width:450px;
 			height:850px;
-			background-color:#F7F8E0;
+			background-color:#FFFFFF;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 999;
 			display:none;
+			z-index: 999;
 		}
 		
 		#login{
 			width:450px;
 			height:600px;
 			position:absolute;
-			background-color:#F7F8E0;
+			background-color:#FFFFFF;
 			left:100%;
 			transform:translateX(-100%);
 			text-align:center;
@@ -222,7 +224,11 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 			height:50px;
 			float:none;
 			margin:0 auto;
-			background-color:#8FBC8F;
+			background-color:#FFFFFF;
+			border-radius: 20px;
+			border : 0;
+			box-shadow: 5px 5px 5px gray;
+			cursor:pointer;
 		}
 		#loginList{
 			font-size:20px;
@@ -230,14 +236,18 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 			height:50px;
 			float:none;
 			margin:0 auto;
-			background-color:#F7F8E0;
+			background-color:#97FD97;
 			position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 			z-index: 999;
+			border-radius: 20px;
+			border : 0;
+			box-shadow: 5px 5px 5px gray;
+			cursor:pointer;
 		}
 		#hamburgerText{
 			font-size:25px;
 			font-weight:bold;
-			color: #FF6347
+			color: #FF6347;
 		}
 		
 		.modal{ 
@@ -349,19 +359,19 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 						<br><br>
 						<h4>로그인 해주세요</h4>
 						<br><br>
-						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
+						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인" style="font-size:20px;"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
+					    <input type="button" id="loginList"  onclick="#" value="후기"/><br><br>
+						<input type="button" id="loginList"  onclick="#" value="인증샷"/><br><br>
+						<input type="button" id="loginList"  onclick="#" value="고객센터"/>
 					</c:if>
 					<!-- 로그인 후 -->
 					<c:if test="${ loginMember != null }">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						<h3>${ loginMember.nickname }</h3>
 						<br><br><br>
-						<input type="button" id="afterLoginList" class="btn btn-outline-success btn-lg" onclick="location.href='${ path }/member/myPage'" value="마이페이지"/><br><br>
-						<input type="button" id="afterLoginList" class="btn btn-outline-success btn-lg" onclick="location.href='${ path }/member/followList'" value="팔로우"/><br><br>
+						<input type="button" id="afterLoginList"  onclick="location.href='${ path }/member/myPage'" value="마이페이지"/><br><br>
+						<input type="button" id="afterLoginList"  onclick="location.href='${ path }/member/followList'" value="팔로우"/><br><br>
 						<table class="table table-striped table-bordered table-hover" id="loginTable" style="width: 300px; margin:auto; text-align: center">
 							<th class="success">참가중</th>
 							<th class="success" onclick="location.href='${path}/challenge/successList'">완료</th>
@@ -374,7 +384,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>" style="position: relative; z-index: 2;"/>
+						<input type="button" id="loginList" onclick="location.href='${path}/challenge/zzimList'" value="찜" style="position: relative; z-index: 2;"/>
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
@@ -385,15 +395,15 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 						
 						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
-								<td style="color:#8FBC8F"id="gallery" class="gallery"><a href="#" id="level" class="level">등급</a></td>
+								<td id="gallery" class="gallery"><a href="#" id="level" class="level" style="color:#8FBC8F">등급</a></td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
 						<div class="modal">
-						    <img src="${path}/resources/images/point/등급테이블.JPG" id="gallery_img" class="gallery_img" style="margin-top: 150px;" title="클릭하면 사라집니다">
+						    <img src="${path}/resources/images/point/tbLevel.png" id="gallery_img" class="gallery_img" style="width: 350px; height: 300px; margin-top: 150px" title="클릭하면 사라집니다">
 						</div>
 						<br><br>
-						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+						<button style="background-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; " onclick="location.replace('${path}/member/logout')">로그아웃</button>
 					
 					</c:if>
 				</div>

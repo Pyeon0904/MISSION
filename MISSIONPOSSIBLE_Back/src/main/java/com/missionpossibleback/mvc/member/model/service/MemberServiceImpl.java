@@ -212,27 +212,21 @@ public class MemberServiceImpl implements MemberService {
 ////////////////////////////////////////관리자/////////////////////////////////////////////////////////
 //admin_viewMember - 신고된 회원 조회
 	@Override
-	public List<memberReport> admin_reportMember(PageInfo pageInfo) {
-		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
-		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+	public List<memberReport> admin_reportMember() {
 		
-		return mapper.selectReportMemberList(rowBounds);
+		return mapper.selectReportMemberList();
 	}
 //admin_viewMember - 전체 회원 조회
 	@Override
-	public List<Member> admin_AllMember(PageInfo pageInfo) {
-		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
-		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+	public List<Member> admin_AllMember() {
 		
-		return mapper.selectAllMemberList(rowBounds);
+		return mapper.selectAllMemberList();
 	}
 //admin_viewWithdrawMember- 탈퇴 회원 뷰
 	@Override
-	public List<memberReport> admin_withdrawalMember(PageInfo pageInfo) {
-		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
-		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+	public List<memberReport> admin_withdrawalMember() {
 		
-		return mapper.selectWithdrawalMemberList(rowBounds);
+		return mapper.selectWithdrawalMemberList();
 	}
 //관리자 - 신고된 회원 수 
 	@Override
