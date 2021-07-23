@@ -266,6 +266,11 @@
 			height: 45px;
 		}
 		
+		.modal{ 
+		  position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none; z-index: 8;
+		}
+				
+	
 </style>
 <script>
 		$(document).on('mouseover', '.menu a', function () {
@@ -280,6 +285,18 @@
 			$(".btnHBG").on("click", () => {
 		 		$("#hamburger").animate({width:'toggle'}, 400);
 		 	});
+		});
+		
+		$(function(){ 
+
+			  $("#level").click(function(){
+			    $(".modal").fadeIn();
+			  });
+			  
+			  $(".modal").click(function(){
+			    $(".modal").fadeOut();
+			  });
+			  
 		});
 </script>
 
@@ -414,7 +431,7 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>"/>
+						<input type="button" id="loginList" onclick="location.href='${path}/challenge/zzimList'" value="찜>" style="position: relative; z-index: 2;"/>
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
@@ -425,10 +442,13 @@
 						
 						<table style="width: 300px; margin:auto; text-align: left;">
 							<tr>
-								<td style="color:#8FBC8F">등급</td>
+								<td style="color:#8FBC8F" id="gallery" class="gallery"><a href="#" id="level" class="level">등급</a></td>
 								<th style="width: 100px">${ loginMember.gradeName }</th>
 							</tr>
 						</table>
+						<div class="modal">
+						    <img src="${path}/resources/images/point/등급테이블.JPG" id="gallery_img" class="gallery_img" style="margin-top: 150px;" title="클릭하면 사라집니다">
+						</div>
 						<br><br>
 						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
 					</c:if>
