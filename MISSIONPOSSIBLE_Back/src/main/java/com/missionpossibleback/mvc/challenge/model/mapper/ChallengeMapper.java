@@ -111,5 +111,9 @@ public interface ChallengeMapper {
 	int selectCateDelete(String[] strNo);
 
 	int insertCategory(@Param("categoryNo") String categoryNo, @Param("name") String name);
+
+	List<Challenge> selectEndJoinList(RowBounds rowBounds, @Param("id") String id);
+
+	List<Challenge> selectMyChallengeList(RowBounds rowBounds, @Param("id") String id);
 	
 }

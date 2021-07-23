@@ -371,8 +371,8 @@
 						<input type="button" id="afterLoginList" class="btn btn-outline-success btn-lg" onclick="location.href='${ path }/member/followList'" value="팔로우"/><br><br>
 						<table class="table table-striped table-bordered table-hover" id="loginTable" style="width: 300px; margin:auto; text-align: center">
 							<th class="success">참가중</th>
-							<th class="success">완료</th>
-							<th class="success">개설</th>
+							<th class="success" onclick="location.href='${path}/challenge/successList'">완료</th>
+							<th class="success" onclick="location.href='${path}/challenge/myCreateList'">개설</th>
 							<tr class="success">
 								<!-- 로그인 POST 요청에서 구한 유저의 업적을 출력 -->
 								<c:forEach var="achieveCount" items="${ achievements }">

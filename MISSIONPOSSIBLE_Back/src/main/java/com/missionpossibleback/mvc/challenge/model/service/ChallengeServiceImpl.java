@@ -314,10 +314,26 @@ public class ChallengeServiceImpl implements ChallengeService {
 		
 		return mapper.selectJoinCount(id);
 	}
-	
+	// 완료한 챌린지 수 조회
 	@Override
 	public int getEndJoinCount(String id) {
 		return mapper.selectEndJoinCount(id);
+	}
+	// 완료한 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getEndJoinList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectEndJoinList(rowBounds, id);
+	}
+	//내가 개설한 챌린지 리스트 조회
+	@Override
+	public List<Challenge> getMyChallengeList(PageInfo pageInfo, String id) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, pageInfo.getListLimit());
+		
+		return mapper.selectMyChallengeList(rowBounds, id);
 	}
 
 	// 참여중인 챌린지 리스트 조회
