@@ -123,7 +123,7 @@
 		width:300px; height:22px;
 		border:1px solid #022039;
 		padding:0 5px 0 5px;
-		background:#ebffeb;
+		background:#fff;
 	}
 	#btnSend{
 		width:50px; height:22px; border:none; background:#065291; color:#ebffeb; font-weight:bold;margin-top:1px;

@@ -31,6 +31,9 @@ import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
 import com.missionpossibleback.mvc.member.model.service.MemberService;
 import com.missionpossibleback.mvc.member.model.vo.Member;
+import com.missionpossibleback.mvc.review.model.service.ReviewService;
+import com.missionpossibleback.mvc.review.model.vo.Report;
+import com.missionpossibleback.mvc.review.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +45,29 @@ public class challengeController {
 	private ChallengeService service; 
 	
 	@Autowired
+	private ReviewService rService; 
+	
+	@Autowired
 	private MemberService memberService;
+	
+	   // 챌린지 자동 완성 기능
+//	   @GetMapping("/challenge/*")
+//	    public ModelAndView list(ModelAndView model) {
+//	      List<String> mmcTitle = null;
+//	      List<String> mmcId = null;
+//	      List<String> mmcatName = null;
+//	      
+//	      mmcTitle = service.getCTitleList();
+//	      mmcId = service.getCIdList();
+//	      mmcatName = service.getCatNameList();
+//	      
+//	      model.addObject("mmcTitle", mmcTitle);
+//	      model.addObject("mmcId", mmcId);
+//	      model.addObject("mmcatName", mmcatName);
+//	      model.setViewName("challenge/*");
+//	      
+//	      return model;
+//	   }	
 	
 	//첼린지 등록 GET
 	@GetMapping("/challenge/challengeRegister")
@@ -549,6 +574,18 @@ public class challengeController {
 		
 		list = service.getEndList(pageInfo);
 		
+	      List<String> mmcTitle = null;
+	      List<String> mmcId = null;
+	      List<String> mmcatName = null;
+	      
+	      mmcTitle = service.getCTitleList();
+	      mmcId = service.getCIdList();
+	      mmcatName = service.getCatNameList();
+	      
+	      model.addObject("mmcTitle", mmcTitle);
+	      model.addObject("mmcId", mmcId);
+	      model.addObject("mmcatName", mmcatName);
+		
 		model.addObject("list", list);
 		model.addObject("pageInfo", pageInfo);
 		model.setViewName("challenge/endList");
@@ -586,6 +623,18 @@ public class challengeController {
 		
 		list = service.getRecruitList(pageInfo);
 		
+	      List<String> mmcTitle = null;
+	      List<String> mmcId = null;
+	      List<String> mmcatName = null;
+	      
+	      mmcTitle = service.getCTitleList();
+	      mmcId = service.getCIdList();
+	      mmcatName = service.getCatNameList();
+	      
+	      model.addObject("mmcTitle", mmcTitle);
+	      model.addObject("mmcId", mmcId);
+	      model.addObject("mmcatName", mmcatName);
+
 		model.addObject("list", list);
 		model.addObject("pageInfo", pageInfo);
 		model.setViewName("challenge/recruitList");
@@ -603,6 +652,18 @@ public class challengeController {
 		PageInfo pageInfo = new PageInfo(page, 3, listCount, 12);
 		
 		list = service.getOngoingList(pageInfo);
+		
+	      List<String> mmcTitle = null;
+	      List<String> mmcId = null;
+	      List<String> mmcatName = null;
+	      
+	      mmcTitle = service.getCTitleList();
+	      mmcId = service.getCIdList();
+	      mmcatName = service.getCatNameList();
+	      
+	      model.addObject("mmcTitle", mmcTitle);
+	      model.addObject("mmcId", mmcId);
+	      model.addObject("mmcatName", mmcatName);
 		
 		model.addObject("list", list);
 		model.addObject("pageInfo", pageInfo);
@@ -1003,6 +1064,18 @@ public class challengeController {
 
 		list = service.getSearchList(key, word, pageInfo);
 		
+	      List<String> mmcTitle = null;
+	      List<String> mmcId = null;
+	      List<String> mmcatName = null;
+	      
+	      mmcTitle = service.getCTitleList();
+	      mmcId = service.getCIdList();
+	      mmcatName = service.getCatNameList();
+	      
+	      model.addObject("mmcTitle", mmcTitle);
+	      model.addObject("mmcId", mmcId);
+	      model.addObject("mmcatName", mmcatName);
+		
 		model.addObject("list", list);
 		model.addObject("key", key);
 		model.addObject("word", word);
@@ -1124,4 +1197,36 @@ public class challengeController {
 		
 		return model;
 	}
+	
+    // 챌린지 신고
+    @PostMapping("/challenge/challengeReport")
+    public ModelAndView challengeReport (ModelAndView model,
+         @SessionAttribute(name = "loginMember", required = false) Member loginMember,
+         HttpServletRequest request,
+         @RequestParam("c_no") int c_no,
+         @RequestParam("sendId") String sendId,
+         @ModelAttribute Report report) {
+       
+          Challenge challenge = service.findByNo(c_no); 
+          
+          int result = 0;
+          if(loginMember.getId().equals(sendId)) {
+             result = service.report(report);
+             
+             if(result > 0) {
+                model.addObject("msg", "신고가 정상적으로 접수되었습니다.");
+                model.addObject("location", "/challenge/recruit?no="+c_no);
+             } else {
+                model.addObject("msg", "신고 접수에 실패하였습니다.");
+                model.addObject("location", "self.close()");
+             }
+             
+          model.setViewName("common/msg");
+          } else {
+              model.addObject("msg", "잘못된 접근입니다");
+              model.addObject("location", "/challenge/recruitList");      
+              model.setViewName("common/msg");
+           }
+          return model;
+       }
 }

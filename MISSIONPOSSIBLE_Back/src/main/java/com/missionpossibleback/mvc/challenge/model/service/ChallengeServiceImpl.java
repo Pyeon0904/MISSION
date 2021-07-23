@@ -20,6 +20,7 @@ import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
 import com.missionpossibleback.mvc.common.util.PageInfo;
+import com.missionpossibleback.mvc.review.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -465,6 +466,28 @@ public class ChallengeServiceImpl implements ChallengeService {
 	public int cateAdd(String str1, String str2) {
 		
 		return mapper.insertCategory(str1, str2);
+	}
+
+	//챌린지 신고
+	@Override
+	public int report(Report report) {
+		return mapper.insertReport(report);
+	}
+
+	// 챌린지 자동 완성 기능(제목)
+	@Override
+	public List getCTitleList() {
+		return mapper.selectAllTitle();
+	}
+	// 챌린지 자동 완성 기능(개설자)
+	@Override
+	public List getCIdList() {
+		return mapper.selectAllCId();
+	}
+	// 챌린지 자동 완성 기능(카테고리이름)
+	@Override
+	public List getCatNameList() {
+		return mapper.selectAllCatName();
 	}
 	
 }

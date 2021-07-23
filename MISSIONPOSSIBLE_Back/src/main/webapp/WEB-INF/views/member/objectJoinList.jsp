@@ -55,10 +55,10 @@
 	.itemShowMenu:hover{opacity:1}
 	
 	/*페이지 바 CSS 구현*/
-	.pagination-container { width:1015px; height:60px;float:right;margin:0 auto;text-align: center; position:absolute; top:350px;}
+	.pagination-container { width:1015px; height:60px;float:right;margin:0 auto;text-align: center;}
 	.pagination { position: relative;}
-	.pagination a {position: relative;display: inline-block;color: #0b520b;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
-	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #0b520b;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
+	.pagination a {position: relative;display: inline-block;color: black;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
+	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #1afc1a;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
 	.pagination a:hover,.pagination a .pagination-active {color: #fff;}
 	.pagination a:hover:before,.pagination a .pagination-active:before {transform: scale(1);}
 	.pagination .pagination-active {color: #fff;}

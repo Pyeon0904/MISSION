@@ -12,6 +12,7 @@ import com.missionpossibleback.mvc.challenge.model.vo.ChallengeCertify;
 import com.missionpossibleback.mvc.challenge.model.vo.Giveup;
 import com.missionpossibleback.mvc.challenge.model.vo.MyChallengeList;
 import com.missionpossibleback.mvc.challenge.model.vo.Pointlog;
+import com.missionpossibleback.mvc.review.model.vo.Report;
 
 @Mapper
 public interface ChallengeMapper {
@@ -115,5 +116,13 @@ public interface ChallengeMapper {
 	List<Challenge> selectEndJoinList(RowBounds rowBounds, @Param("id") String id);
 
 	List<Challenge> selectMyChallengeList(RowBounds rowBounds, @Param("id") String id);
+
+	int insertReport(Report report);
+
+	List selectAllTitle();
+
+	List selectAllCId();
+
+	List selectAllCatName();
 	
 }

@@ -92,8 +92,8 @@
     
 	#categoryBar{ width:200px; height:1000px; float:left;}
 	#categoryBar ul{ list-style-type : none;}
-	#categoryBar ul li{ width:200px; height:50px; border-bottom:1px solid gray; line-height:3; position:relative;left:-40px; top:-18px; font-size:1em;font-weight:bold;transition : 0.3s;}
-	#categoryBar ul li:hover{background:#0bc20b; color:#fff;}
+	#categoryBar ul li{ width:200px; height:50px; border-bottom:1px solid #62bf6e; line-height:3; position:relative;left:-40px; top:-18px; font-size:1em;font-weight:bold;transition : 0.3s;}
+	#categoryBar ul li:hover{background:#8df08d; color:#fff;}
 		
 	#challengeDisplay{ width:995px; height:auto; float:right; font-size:0.9em;}
 	.notFound{width:980px; height:200px;background-color:#edffed; border-radius:10px;text-align:center;margin:10px 0 0 50px;line-height:200px;}
@@ -126,8 +126,8 @@
 	/*페이지 바 CSS 구현*/
 	.pagination-container { width:1015px; height:60px;float:right;margin:0 auto;text-align: center;}
 	.pagination { position: relative;}
-	.pagination a {position: relative;display: inline-block;color: #0b520b;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
-	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #0b520b;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
+	.pagination a {position: relative;display: inline-block;color: black;text-decoration: none;font-size: 1.2rem;padding: 8px 16px 10px;}
+	.pagination a:before { z-index: -1; position: absolute;height: 100%;width: 100%;content: "";top: 0;left: 0;background-color: #1afc1a;border-radius: 24px;transform: scale(0);transition: all 0.2s;}
 	.pagination a:hover,.pagination a .pagination-active {color: #fff;}
 	.pagination a:hover:before,.pagination a .pagination-active:before {transform: scale(1);}
 	.pagination .pagination-active {color: #fff;}
