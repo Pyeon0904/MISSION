@@ -602,15 +602,20 @@ ul {
 		<br><br>
 		<div id="myPage-container">
 			<form name ="memberUpdateFrm" action="updateMemberInfo" id="join_content" method="post" enctype="multipart/form-data">
-				<table  border="1" style="margin:0 auto;">
+				<table style="margin:0 auto;">
 					<tr>
 						<td style="width:300px; height:200px;">
+							<br><br>
 							<c:if test="${ loginMember.renamedFileName == null }">
-								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+								<img src="${path}/resources/images/기본프로필.png" name="profile" id="profile" alt="My Image" style="width:280px; height:280px;"/>
 							</c:if>
 							<c:if test="${ loginMember.renamedFileName != null }">
-								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:300px; height:300px;"/>
+								<img src="${path}/resources/upload/profile/${ loginMember.renamedFileName }" name="profile" id="profile" alt="My Image" style="width:280px; height: 280px;"/>
 							</c:if>
+							<label class="input-file-button" for="input-file" style="text-align: center; width: 280px;">
+						  		프로필 사진 수정
+							</label>
+							<input type="file" id="input-file"  name="upfile" style="display:none;" accept="image/*" onchange="setThumbnail(event);"/> 
 						</td>
 						<td>
 							<ul class="join_ulcss">
@@ -630,8 +635,7 @@ ul {
 					                <span class="join_li_title">
 					                    <b style="color:red;">·</b>비밀번호</span>
 					                <div class="join_li_input">
-					                    <input type="password" class="member_pw" id="member_pw" name="password"
-					                        placeholder="영문대/소문자, 숫자 4-12자리">
+					                    <input type="password" class="member_pw" id="member_pw" name="password" value="${ loginMember.password }" placeholder="영문대/소문자, 숫자 4-12자리">
 					                    <div class="pw regex"></div>
 					                       
 					                </div>
@@ -640,7 +644,7 @@ ul {
 					            <li>
 					                <span class="join_li_title"><b style="color:red;">·</b>비밀번호 확인</span>
 					                <div class="join_li_input">
-					                    <input type="password" class="member_pw" id="member_pw1">
+					                    <input type="password" class="member_pw" id="member_pw1" value="${ loginMember.password }">
 					                    <div class="repw regex"></div>
 					                </div>
 					            </li>
@@ -678,15 +682,6 @@ ul {
 					                </div>
 					            </li>
 				          </ul> 
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center">
-							<label class="input-file-button" for="input-file">
-						  		프로필 사진 수정
-							</label>
-							<input type="file" id="input-file"  name="upfile" style="display:none" accept="image/*" onchange="setThumbnail(event);"/> 
-							<br>
 						</td>
 					</tr>
 				</table>

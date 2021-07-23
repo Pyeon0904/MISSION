@@ -11,6 +11,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <style>
+	a { text-decoration: none; color: black; }
 	section{
 		text-align:center;
 	}
@@ -101,7 +102,7 @@
 			   <form id="followSearch" name="followSearch" method="GET" action="followPage">
 		            <div align="right" class="row m-4">
 		               <input type="text" name="ID" id="searchID" class="form-control" style="padding: 3px 20px 6px 20px" value="" placeholder="검색할 아이디를 입력하세요" >
-		               <button type="submit" class="btn btn-warning" >검색</button>
+		               <button type="submit" class="btn btn-warning" style="background-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; ">검색</button>
 		            </div>
 		            <table width="100%" class="table01">
 						<c:if test="${ list == null }">
@@ -142,7 +143,7 @@
 											<td style="text-align: center; font-size: 25px">
 												<a href="${path}/member/followPage?ID=${ follow.followId }" >${ follow.followId }</a>
 											</td>
-											<td><button class="btn btn-warning" id="btDelete">팔로우 취소</button></td>
+											<td><button class="btn btn-warning" id="btDelete" style="background-color: #97FD97; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; ">팔로우 취소</button></td>
 										</tr>		
 											<input style="visibility: hidden;" name ="deleteFollow" id="deleteFollow" value="${ follow.followId }">
 									</form>

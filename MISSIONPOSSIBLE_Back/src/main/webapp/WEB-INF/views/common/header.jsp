@@ -15,6 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+ a { text-decoration: none; color: black; }
 @font-face {
     font-family: 'GmarketSansMedium';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
@@ -199,24 +200,24 @@
 			text-align:center;
 		}
 		
-		#hamburger{
+			#hamburger{
 			width:450px;
 			height:850px;
-			background-color:#F7F8E0;
+			background-color:#FFFFFF;
 			left:100%;
 			top:82px;
 			transform:translateX(-100%);
 			box-shadow: -20px 20px 20px grey;
 			position: fixed; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
-			z-index: 999;
 			display:none;
+			z-index: 999;
 		}
 		
 		#login{
 			width:450px;
 			height:600px;
 			position:absolute;
-			background-color:#F7F8E0;
+			background-color:#FFFFFF;
 			left:100%;
 			transform:translateX(-100%);
 			text-align:center;
@@ -229,7 +230,11 @@
 			height:50px;
 			float:none;
 			margin:0 auto;
-			background-color:#8FBC8F;
+			background-color:#FFFFFF;
+			border-radius: 20px;
+			border : 0;
+			box-shadow: 5px 5px 5px gray;
+			cursor:pointer;
 		}
 		#loginList{
 			font-size:20px;
@@ -237,14 +242,18 @@
 			height:50px;
 			float:none;
 			margin:0 auto;
-			background-color:#F7F8E0;
+			background-color:#97FD97;
 			position: relative; /*z-index 사용해서 배치 앞으로 하기 위해 작성*/
 			z-index: 999;
+			border-radius: 20px;
+			border : 0;
+			box-shadow: 5px 5px 5px gray;
+			cursor:pointer;
 		}
 		#hamburgerText{
 			font-size:25px;
 			font-weight:bold;
-			color: #FF6347
+			color: #FF6347;
 		}
 		
 		.modal{ 
@@ -358,17 +367,17 @@
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="후기>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="인증샷>"/><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="#" value="고객센터>"/>
+					    <input type="button" id="loginList"  onclick="#" value="후기"/><br><br>
+						<input type="button" id="loginList"  onclick="#" value="인증샷"/><br><br>
+						<input type="button" id="loginList"  onclick="#" value="고객센터"/>
 					</c:if>
 					<!-- 로그인 후 -->
 					<c:if test="${ loginMember != null }">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						<h3>${ loginMember.nickname }</h3>
 						<br><br><br>
-						<input type="button" id="afterLoginList" class="btn btn-outline-success btn-lg" onclick="location.href='${ path }/member/myPage'" value="마이페이지"/><br><br>
-						<input type="button" id="afterLoginList" class="btn btn-outline-success btn-lg" onclick="location.href='${ path }/member/followList'" value="팔로우"/><br><br>
+						<input type="button" id="afterLoginList"  onclick="location.href='${ path }/member/myPage'" value="마이페이지"/><br><br>
+						<input type="button" id="afterLoginList"  onclick="location.href='${ path }/member/followList'" value="팔로우"/><br><br>
 						<table class="table table-striped table-bordered table-hover" id="loginTable" style="width: 300px; margin:auto; text-align: center">
 							<th class="success">참가중</th>
 							<th class="success" onclick="location.href='${path}/challenge/successList'">완료</th>
@@ -381,7 +390,7 @@
 							</tr>
 						</table>
 						<br><br>
-						<input type="button" id="loginList" class="btn btn-outline-success btn-lg" onclick="location.href='${path}/challenge/zzimList'" value="찜>" style="position: relative; z-index: 2;"/>
+						<input type="button" id="loginList" onclick="location.href='${path}/challenge/zzimList'" value="찜>" style="position: relative; z-index: 2;"/>
 						<br><br><br>
 						<table style="width: 300px; height: 100px; margin:auto; text-align: left;">
 							<tr>
@@ -397,10 +406,10 @@
 							</tr>
 						</table>
 						<div class="modal">
-						    <img src="${path}/resources/images/point/등급테이블.JPG" id="gallery_img" class="gallery_img" style="margin-top: 150px;" title="클릭하면 사라집니다">
+						    <img src="${path}/resources/images/point/tbLevel.JPG" id="gallery_img" class="gallery_img" style="margin-top: 150px;" title="클릭하면 사라집니다">
 						</div>
 						<br><br>
-						<button style="background-color:#8FBC8F" class="btn btn-outline-success btn-lg" onclick="location.replace('${path}/member/logout')">로그아웃</button>
+						<button style="background-color: #FFFFFF; border-radius: 20px; border : 0; box-shadow: 5px 5px 5px gray;cursor:pointer; " onclick="location.replace('${path}/member/logout')">로그아웃</button>
 					
 					</c:if>
 				</div>
