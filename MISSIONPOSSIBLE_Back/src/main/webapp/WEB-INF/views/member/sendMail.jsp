@@ -25,9 +25,9 @@ div{
 </head>
 <body>
 <div>
-	회원님의 이메일<b>(${ confirmMember.email })</b>로 비밀번호 변경을 <br>위한 임시 비밀번호를 발송하였습니다.<br>
+	회원님의 이메일<b>(${ confirmMember.email })</b>로<br> 변경된 '임시 비밀번호'를 발송하였습니다.<br>
 	로그인 후 반드시 비밀번호를 재설정 해주십시오.<br><br><br>
-	<input type='BUTTON' value=" 창닫기" style="width: 390px; height: 30px; margin-left: 0px" onClick='self.close()'>
+	<input type='BUTTON' value=" 창닫기" style="width: 327px; height: 30px; margin-left: 0px" onClick='self.close()'>
 </div>
 </body>
 </html>
