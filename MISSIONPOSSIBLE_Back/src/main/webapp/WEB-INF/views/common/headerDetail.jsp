@@ -387,7 +387,8 @@ font-family: 'NanumBarunGothic', sans-serif;
 						<br><br>
 						<h4>로그인 해주세요</h4>
 						<br><br>
-						<input type="button" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인" style="font-size:20px;"/>
+						<input type="button" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인" style="font-size:20px;"/><br><br>
+						<input type="button" id="loginSubmit" onclick="location.href='${ path }/member/enrollCheck'" value="회원가입" style="font-size:20px;"/>
 						<br><br><br><br><br>
 					    <input type="button" id="loginList"  onclick="location.href='${ path }/review/reviewList'" value="후기"/><br><br>
 						<input type="button" id="loginList"  onclick="location.href='${ path }/board/boardList'" value="고객센터"/>
