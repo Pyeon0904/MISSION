@@ -356,9 +356,8 @@ font-family: 'NanumBarunGothic', sans-serif;
 						<br><br>
 						<input type="button" class="btn btn-outline-success btn-lg" id="loginSubmit" onclick="location.href='${ path }/member/login'" value="로그인" style="font-size:20px;"/>
 						<br><br><br><br><br>
-					    <input type="button" id="loginList"  onclick="#" value="후기"/><br><br>
-						<input type="button" id="loginList"  onclick="#" value="인증샷"/><br><br>
-						<input type="button" id="loginList"  onclick="#" value="고객센터"/>
+					    <input type="button" id="loginList"  onclick="location.href='${ path }/review/reviewList'" value="후기"/><br><br>
+						<input type="button" id="loginList"  onclick="location.href='${ path }/board/boardList'" value="고객센터"/>
 					</c:if>
 					<!-- 로그인 후 -->
 					<c:if test="${ loginMember != null }">
