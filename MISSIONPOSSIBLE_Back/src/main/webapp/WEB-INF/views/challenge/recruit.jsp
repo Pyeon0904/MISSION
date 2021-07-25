@@ -304,7 +304,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 							<td>
 								<fmt:formatDate var="recruitEnd" value="${ challenge.startDate }" pattern="yyyy-MM-dd"/>
 								<span>
-									<c:out value="${ recruitEnd }"/>까지
+									<c:out value="${ recruitEnd }"/><br>까지
 								</span>
 							</td>
 							<th>
@@ -313,7 +313,7 @@ table.table01 td {padding:10px;vertical-align:middle;border-right:1px solid #ccc
 							<td>
 								<fmt:formatDate var="clgEnd" value="${ challenge.deadline }" pattern="yyyy-MM-dd"/>
 								<span>
-									<c:out value="${ clgEnd }"/>까지
+									<c:out value="${ clgEnd }"/><br>까지
 								</span>
 							</td>
 							<th>

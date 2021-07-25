@@ -287,9 +287,9 @@ font-family: 'NanumBarunGothic', sans-serif;
 			<div class="adminMenu" style="font-weight: bold;">
 					<div class="adminCol">
 					<ul class="adminMaintab">
+						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewAllMember">회원관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/challenge/viewChallenge">챌린지관리</a></li>
-						<li><a class="adminSemititle" href="${ path }/admin/member/admin_viewReportMember">신고관리</a></li>
 						<li><a class="adminSemititle" href="${ path }/admin/board/viewQna">고객센터관리</a>
 						<li><a class="adminSemititle" href="${ path }/admin/review/viewReview">후기게시판관리</a></li>
 					</ul>
