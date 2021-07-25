@@ -117,12 +117,12 @@
 			<br><br><br><br>
 			<!-- 참여중인 챌린지 리스트 include -->
 			<div id="joinList-container">
-				<h3>참여중인 챌린지</h3>
+				<h2>참여중인 챌린지</h3>
 				<iframe id="joinList-content" name="joinList-content"
 					src="${ path }/member/objectJoinList" 
 					width="960px" height="400px" scrolling="no" frameborder="0">
 				</iframe>
-				<h3>찜한 챌린지</h3>
+				<h2 style="margin-left:0px">찜한 챌린지</h3>
 				<iframe id="zzimList-content" name="zzimList-content"
 					src="${ path }/member/objectZzimList" 
 					width="960px" height="400px" scrolling="no" frameborder="0">
