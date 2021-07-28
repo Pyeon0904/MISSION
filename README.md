@@ -40,7 +40,7 @@
 ***
   
 ### UserPage UI/UX
-<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/mainPage.png"></img>
+<img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/mainPage.png"></img>
 ***
 <img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/developerList.png"></img>
 ***
