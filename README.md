@@ -42,15 +42,15 @@
 ### UserPage UI/UX
 <img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/mainPage.png"></img>
 ***
-<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/developerList.png"></img>
+<img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/developerList.png"></img>
 ***
-<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/challengList.png"></img>
+<img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/challengList.png"></img>
 ***
-<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/challengeDetail.png"></img>
+<img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/challengeDetail.png"></img>
 ***
-<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/board.png"></img>
+<img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/board.png"></img>
 ***
-<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/review.png"></img>
+<img src="MISSIONPOSSIBLE_Back/src/main/webapp/resources/images/readmeImages/review.png"></img>
 ***
 
 ### Developer
