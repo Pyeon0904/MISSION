@@ -4,7 +4,7 @@
 ### 프로젝트 팀명 : 작전명 404에러 의미
 ```
 프로젝트명 : 작전
-작심(作心)      : 마음을 단단히 먹음
+작심(作心)         : 마음을 단단히 먹음
 이심전심(以心傳心) : 마음과 뜻이 서로 통함
 '작' 심 '전' 심 -> 마음먹은 일을 뜻이 맞는 사람과 함께 한다. 
 ```
@@ -40,17 +40,17 @@
 ***
   
 ### UserPage UI/UX
-<img src="MISSION_Back/WebContent/resources/images/readmeImages/mainPage.png"></img>
+<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/mainPage.png"></img>
 ***
-<img src="MISSION_Back/WebContent/resources/images/readmeImages/developerList.png"></img>
+<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/developerList.png"></img>
 ***
-<img src="MISSION_Back/WebContent/resources/images/readmeImages/challengList.png"></img>
+<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/challengList.png"></img>
 ***
-<img src="MISSION_Back/WebContent/resources/images/readmeImages/challengeDetail.png"></img>
+<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/challengeDetail.png"></img>
 ***
-<img src="MISSION_Back/WebContent/resources/images/readmeImages/board.png"></img>
+<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/board.png"></img>
 ***
-<img src="MISSION_Back/WebContent/resources/images/readmeImages/review.png"></img>
+<img src="MISSIONPOSSIBLE_Back/WebContent/resources/images/readmeImages/review.png"></img>
 ***
 
 ### Developer
