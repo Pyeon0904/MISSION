@@ -85,7 +85,7 @@
 
 					<div id="challengeDisplay" class="test">
 						<div class="challengeListDisplay">
-							<c:if test="${ (list == null) or (pageInfo.listCount == 0)}">
+							<c:if test="${ (list == null)}">
 								<div class="notFound">
 									<h2>조건에 일치하는 챌린지를 찾을 수 없습니다.</h2>
 								</div>
